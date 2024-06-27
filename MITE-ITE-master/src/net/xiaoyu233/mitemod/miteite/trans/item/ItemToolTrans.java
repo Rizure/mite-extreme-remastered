@@ -34,25 +34,25 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
 
    @Inject(method = "<init>",at = @At("RETURN"))
    private void injectInitExpForLevel(int par1, Material material,CallbackInfo callbackInfo){
-      if (material == Material.copper || material == Material.silver){
-         this.expForLevel = this.createExpForLevel(100,50);
-      }else if (material == Material.gold){
-         this.expForLevel = this.createExpForLevel(125,60);
-      }else if (material == Material.iron || material == Material.ancient_metal){
-         this.expForLevel = this.createExpForLevel(150,75);
+      if (material == Material.copper || material == Material.silver || material == Material.gold){
+         this.expForLevel = this.createExpForLevel(300,75,25);
+      }else if (material == Material.iron){
+         this.expForLevel = this.createExpForLevel(300,75,25);
+      }else if (material == Material.ancient_metal){
+         this.expForLevel = this.createExpForLevel(450,150,75);
       } else if (material == Material.mithril) {
-         this.expForLevel = this.createExpForLevel(200,100);
+         this.expForLevel = this.createExpForLevel(750,250,125);
       }else if (material == Material.adamantium){
-         this.expForLevel = this.createExpForLevel(200,120);
+         this.expForLevel = this.createExpForLevel(900,300,150);
       }else if (material == Materials.vibranium){
-         this.expForLevel = this.createExpForLevel(200,150);
+         this.expForLevel = this.createExpForLevel(1200,400,200);
       }else {
-         this.expForLevel = this.createExpForLevel(150,75);
+         this.expForLevel = this.createExpForLevel(450,150,75);
       }
    }
 
-   private BiFunction<Integer, Boolean, Integer> createExpForLevel(int base,int increase){
-      return (level, isWeapon) -> base + level * increase * (isWeapon ? 2 : 1 );
+   private BiFunction<Integer, Boolean, Integer> createExpForLevel(int start, int base, int increase){
+      return (level, isWeapon) -> level == 0 ? start : base + level * increase * (isWeapon ? 2 : 1 );
    }
 
    public void addInformation(ItemStack item_stack, EntityPlayer player, List info, boolean extended_info, Slot slot) {
@@ -87,6 +87,7 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
          if (extended_info) {
             info.add("§5宝石:");
             info.add(" §3攻击增加:§6" + ItemStack.field_111284_a.format(item_stack.getGemMaxNumeric(GemModifierTypes.damage)));
+            info.add(" §3效率增加:§6" + ItemStack.field_111284_a.format(item_stack.getGemMaxNumeric(GemModifierTypes.haste)));
             NBTTagCompound compound = item_stack.stackTagCompound.getCompoundTag("modifiers");
             if (!compound.hasNoTags()) {
                info.add("工具强化:");
@@ -199,15 +200,22 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
    public final float getMultipliedHarvestEfficiency(Block block, ItemStack itemStack, EntityPlayer player) {
       float commonModifierValue = ToolModifierTypes.EFFICIENCY_MODIFIER.getModifierValue(itemStack.getTagCompound());
       float unnaturalModifierValue = ToolModifierTypes.UNNATURAL_MODIFIER.getModifierValue(itemStack.getTagCompound());
+      float gemModifierValue = itemStack.getGemMaxNumeric(GemModifierTypes.haste);
+
       if (unnaturalModifierValue > 0.0F) {
          int deltaLevel = itemStack.getItem().getMaterialForRepairs().getMinHarvestLevel() - block.blockMaterial.getMinHarvestLevel();
          if (deltaLevel > 0) {
             commonModifierValue += (float)deltaLevel * unnaturalModifierValue;
          }
       }
-      float enhanceModifierValue = (float) (1 + itemStack.getEnhanceFactor());
+      commonModifierValue += gemModifierValue;
 
-      return !player.isInWater() && !player.isInRain() ? this.getBaseHarvestEfficiency(block) * (this.getMaterialHarvestEfficiency() + commonModifierValue) * enhanceModifierValue : this.getBaseHarvestEfficiency(block) * (this.getMaterialHarvestEfficiency() + commonModifierValue + ToolModifierTypes.AQUADYNAMIC_MODIFIER.getModifierValue(itemStack.getTagCompound()));
+      float enhanceModifierValue = (float) (1 + itemStack.getEnhanceFactor());
+      float result = this.getBaseHarvestEfficiency(block) * (this.getMaterialHarvestEfficiency() + commonModifierValue) * enhanceModifierValue;
+      if(player.isInWater() || player.isInRain()){
+         result *= 1 + ToolModifierTypes.AQUADYNAMIC_MODIFIER.getModifierValue(itemStack.getTagCompound());
+      }
+      return result;
    }
 
    public float getStrVsBlock(Block block, int metadata, ItemStack itemStack, EntityPlayer player) {
@@ -251,7 +259,7 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
    }
 
    public int getMaxToolLevel(ItemStack itemStack){
-      return 15 + itemStack.getForgingGrade();
+      return 6 + itemStack.getMaterialForRepairs().getMinHarvestLevel() * 2 + itemStack.getForgingGrade();
    }
 
    public boolean isWeapon(Item item) {
@@ -276,6 +284,13 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
             }
          }
       }
+      if(itemRand.nextFloat() < ToolModifierTypes.BLESS_OF_NATURE.getModifierValue(info.getHarvesterItemStack().getTagCompound())){
+         info.getResponsiblePlayer().getFoodStats().addSatiation(1);
+         info.getResponsiblePlayer().getFoodStats().addNutrition(2);
+         if(itemRand.nextFloat() < ToolModifierTypes.BLESS_OF_NATURE.getModifierValue(info.getHarvesterItemStack().getTagCompound())){
+            info.getResponsiblePlayer().heal(1);
+         }
+      }
       if (item_stack.isItemStackDamageable() && !block.isPortable(info.world, info.getHarvester(), info.x, info.y, info.z) && !info.isResponsiblePlayerInCreativeMode() && info.getBlockHardness() > 0.0F && this.getStrVsBlock(block, info.getMetadata()) > 1.0F) {
          if (!(item_stack.getItem() instanceof ItemSword) && this.isEffectiveAgainstBlock(info.block, info.getMetadata()) &&!item_stack.getItem().isMaxToolLevel(item_stack)) {
             this.addExpForTool(info.getHarvesterItemStack(), info.getResponsiblePlayer(), this.getExpForBlockBreak(info));
@@ -289,7 +304,7 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
    }
 
    protected int getExpForBlockBreak(BlockBreakInfo blockBreakInfo){
-      return blockBreakInfo.block.blockMaterial.getMinHarvestLevel();
+      return (int) Math.pow(blockBreakInfo.block.getMinHarvestLevel(0),3);
    }
 
    @Override
@@ -299,16 +314,58 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
 
    public void onItemLevelUp(NBTTagCompound tagCompound, EntityPlayer player, ItemStack stack) {
       NBTTagCompound modifiers = tagCompound.getCompoundTag("modifiers");
-      ToolModifierTypes modifierType = ModifierUtils.getModifierWithWeight(ModifierUtils.getAllCanBeAppliedToolModifiers(stack),player.getRNG());
-      if (modifierType != null) {
-         if (modifiers.hasKey(modifierType.nbtName)) {
-            player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "的" + modifierType.color.toString() + modifierType.displayName + "§r属性已升级到" + this.addModifierLevelFor(modifiers, modifierType)+ "级"));
-         } else {
-            this.addModifierLevelFor(modifiers, modifierType);
-            player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "获得了" + modifierType.color.toString() + modifierType.displayName + "§r属性"));
+      ToolModifierTypes modifierType;
+      ToolModifierTypes[] all_modifiers = ModifierUtils.getAllToolModifiers(stack).toArray(new ToolModifierTypes[0]);
+      ToolModifierTypes[] available_modifiers = ModifierUtils.getAllCanBeAppliedToolModifiers(stack).toArray(new ToolModifierTypes[0]);
+      if(tagCompound.getInteger("tool_level") == 1){
+         int i = itemRand.nextInt(4) == 0 ? 0 : 1;
+         while (i < 4){
+            modifierType = ModifierUtils.getModifierWithWeight(ModifierUtils.getAllCanBeAppliedToolModifiers(stack),player.getRNG());
+            if (modifierType != null) {
+               if (!modifiers.hasKey(modifierType.nbtName)) {
+                  this.addModifierLevelFor(modifiers, modifierType);
+                  player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "获得了" + modifierType.color.toString() + modifierType.displayName + "§r属性"));
+                  i++;
+               }
+            } else {
+               i++;
+            }
          }
       }
-
+      else {
+         int i = itemRand.nextInt(8) == 0 ? 2 : 1;
+         while (i > 0){
+            modifierType = ModifierUtils.getModifierWithWeight(ModifierUtils.getAllCanBeAppliedToolModifiers(stack),player.getRNG());
+            if(modifierType != null){
+               if(modifiers.hasKey(modifierType.nbtName)){
+                  player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "的" + modifierType.color.toString() + modifierType.displayName + "§r属性已升级到" + this.addModifierLevelFor(modifiers, modifierType)+ "级"));
+                  i--;
+               }else {
+                  int m = 0;
+                  for (int n = 0; n < all_modifiers.length; n++) {
+                     if(modifiers.hasKey(all_modifiers[n].nbtName)){
+                        m++;
+                     }
+                  }
+                  if(m < 4){
+                     this.addModifierLevelFor(modifiers, modifierType);
+                     player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "获得了" + modifierType.color.toString() + modifierType.displayName + "§r属性"));
+                     i--;
+                  }else {
+                     int n;
+                     for(n = itemRand.nextInt(available_modifiers.length);n< available_modifiers.length;n++){
+                        if(modifiers.hasKey(available_modifiers[n].nbtName)){
+                           player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "的" + available_modifiers[n].color.toString() + available_modifiers[n].displayName + "§r属性已升级到" + this.addModifierLevelFor(modifiers, available_modifiers[n])+ "级"));
+                        }
+                     }
+                     break;
+                  }
+               }
+            }else {
+               i--;
+            }
+         }
+      }
    }
 
    //Client+Server

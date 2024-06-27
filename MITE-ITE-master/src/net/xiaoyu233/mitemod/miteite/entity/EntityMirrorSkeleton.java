@@ -2,6 +2,7 @@ package net.xiaoyu233.mitemod.miteite.entity;
 
 import net.minecraft.*;
 import net.xiaoyu233.mitemod.miteite.item.Items;
+import net.xiaoyu233.mitemod.miteite.util.MonsterUtil;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -16,12 +17,24 @@ public class EntityMirrorSkeleton extends EntitySkeleton {
     public boolean canNeverPickUpItem(Item item) {
         return true;
     }
-
+    @Override
+    protected void addRandomEquipment() {
+        this.addRandomWeapon();
+        int day = this.getWorld() != null ? Math.max(this.getWorld().getDayOfOverworld(), 0) : 0;
+        if (day < 80) {
+            this.setBoots((new ItemStack(Item.bootsGold)).randomizeForMob(this, true));
+            this.setLeggings((new ItemStack(Item.legsGold)).randomizeForMob(this, true));
+            this.setCuirass((new ItemStack(Item.plateGold)).randomizeForMob(this, true));
+            this.setHelmet((new ItemStack(Item.helmetGold)).randomizeForMob(this, true));
+        } else {
+            MonsterUtil.addDefaultArmor(day, this, true);
+        }
+    }
     protected void dropFewItems(boolean recently_hit_by_player, DamageSource damage_source) {
         if (recently_hit_by_player){
-            this.dropItem(Items.voucherZombieLord);
+            this.dropItem(Items.voucherMagic);
             int day = this.getWorld().getDayOfOverworld();
-            int diamond_count = (day / 32) > 3 ? 3 : (day / 32);
+            int diamond_count = Math.min((day + 16) / 32, 3);
             for (int i1 = 0; i1 < diamond_count; i1++) {
                 this.dropItem(Item.emerald);
             }
@@ -40,10 +53,7 @@ public class EntityMirrorSkeleton extends EntitySkeleton {
 
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        int day = this.getWorld().getDayOfOverworld();
-        double x = day / 7 - 7;
-        double rate = (0.5+ x / (20 + Math.abs(x)));
-        this.setEntityAttribute(GenericAttributes.attackDamage, rate * 40);
+        this.setEntityAttribute(GenericAttributes.attackDamage, 1);
     }
 
     public void onUpdate() {

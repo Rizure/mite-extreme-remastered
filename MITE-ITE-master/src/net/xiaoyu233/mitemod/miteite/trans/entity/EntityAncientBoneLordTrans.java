@@ -3,6 +3,7 @@ package net.xiaoyu233.mitemod.miteite.trans.entity;
 import net.minecraft.*;
 import net.xiaoyu233.mitemod.miteite.item.Items;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
+import net.xiaoyu233.mitemod.miteite.util.Constant;
 import net.xiaoyu233.mitemod.miteite.util.MonsterUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -17,7 +18,7 @@ public class EntityAncientBoneLordTrans extends EntityBoneLordTrans {
    protected void addRandomEquipment() {
       this.addRandomWeapon();
       int day = this.getWorld() != null ? Math.max(this.getWorld().getDayOfOverworld() - 16, 0) : 0;
-      if (day < 96) {
+      if (day < 112) {
          this.setBoots((new ItemStack(Item.bootsAncientMetal)).randomizeForMob(this, true));
          this.setLeggings((new ItemStack(Item.legsAncientMetal)).randomizeForMob(this, true));
          this.setCuirass((new ItemStack(Item.plateAncientMetal)).randomizeForMob(this, true));
@@ -28,11 +29,17 @@ public class EntityAncientBoneLordTrans extends EntityBoneLordTrans {
       this.initStockedWeapon();
    }
 
-   @Override
    protected void dropFewItems(boolean recently_hit_by_player, DamageSource damage_source) {
       super.dropFewItems(recently_hit_by_player, damage_source);
       if (recently_hit_by_player){
-         this.dropItem(Items.voucherAnnihilationSkeleton);
+         int day = this.getWorld().getDayOfOverworld();
+         int count = Math.min(day / 8, 6);
+         for (int i1 = 0; i1 < count; i1++) {
+            if(this.rand.nextInt(4) == 0){
+               this.dropItemStack(new ItemStack(Item.emerald));
+            }
+         }
+         this.dropItem(Items.voucherStrike);
       }
    }
 
@@ -42,9 +49,9 @@ public class EntityAncientBoneLordTrans extends EntityBoneLordTrans {
       boolean boneLordTweak = Configs.wenscConfig.boneLordTweak.ConfigValue;
       int day = this.getWorld() != null ? this.getWorld().getDayOfOverworld() : 0;
       this.setEntityAttribute(GenericAttributes.followRange, 48.0D);
-      this.setEntityAttribute(GenericAttributes.movementSpeed, 0.30000001192092896D);
-      this.setEntityAttribute(GenericAttributes.attackDamage, boneLordTweak ? 13D + day / 10D : 8.0D);
-      this.setEntityAttribute(GenericAttributes.maxHealth, boneLordTweak ? 40 + day / 6D : 25.0D);
+      this.setEntityAttribute(GenericAttributes.attackDamage, (boneLordTweak ? 15 : 8) * Constant.getEliteMobModifier("Damage",day));
+      this.setEntityAttribute(GenericAttributes.maxHealth, (boneLordTweak ? 60 : 30) * Constant.getEliteMobModifier("Health",day));
+      this.setEntityAttribute(GenericAttributes.movementSpeed, 0.3D * Constant.getEliteMobModifier("Speed",day));
    }
 
    protected void enchantEquipment(ItemStack item_stack) {

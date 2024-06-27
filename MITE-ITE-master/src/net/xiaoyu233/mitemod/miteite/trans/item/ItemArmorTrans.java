@@ -2,9 +2,7 @@ package net.xiaoyu233.mitemod.miteite.trans.item;
 
 import net.minecraft.*;
 import net.xiaoyu233.mitemod.miteite.item.*;
-import net.xiaoyu233.mitemod.miteite.util.ItemUtil;
-import net.xiaoyu233.mitemod.miteite.util.ReflectHelper;
-import net.xiaoyu233.mitemod.miteite.util.StringUtil;
+import net.xiaoyu233.mitemod.miteite.util.*;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -32,25 +30,25 @@ public abstract class ItemArmorTrans extends Item implements IDamageableItem, IU
 
    @Inject(method = "<init>",at = @At("RETURN"))
    private void injectInitExpForLevel(int par1, Material material,int par2,boolean is_chain_mail, CallbackInfo callbackInfo){
-      if (material == Material.copper || material == Material.silver){
-         this.expForLevel = this.createExpForLevel(16,8);
-      }else if (material == Material.gold){
-         this.expForLevel = this.createExpForLevel(18,9);
-      }else if (material == Material.iron || material == Material.ancient_metal){
-         this.expForLevel = this.createExpForLevel(20,10);
+      if (material == Material.copper || material == Material.silver || material == Material.gold){
+         this.expForLevel = this.createExpForLevel(20,8,2);
+      }else if (material == Material.iron){
+         this.expForLevel = this.createExpForLevel(30,12,3);
+      }else if (material == Material.ancient_metal){
+         this.expForLevel = this.createExpForLevel(40,16,4);
       } else if (material == Material.mithril) {
-         this.expForLevel = this.createExpForLevel(24,12);
+         this.expForLevel = this.createExpForLevel(60,24,6);
       }else if (material == Material.adamantium){
-         this.expForLevel = this.createExpForLevel(28,14);
+         this.expForLevel = this.createExpForLevel(80,32,8);
       }else if (material == Materials.vibranium){
-         this.expForLevel = this.createExpForLevel(32,16);
+         this.expForLevel = this.createExpForLevel(120,48,12);
       }else {
-         this.expForLevel = this.createExpForLevel(150,75);
+         this.expForLevel = this.createExpForLevel(40,16,4);
       }
    }
 
-   private Function<Integer, Integer> createExpForLevel(int base,int increase){
-      return (level) -> base + level * increase;
+   private Function<Integer, Integer> createExpForLevel(int start, int base,int increase){
+      return (level) -> level == 0 ? start : base + level * increase;
    }
 
    @Overwrite
@@ -91,9 +89,6 @@ public abstract class ItemArmorTrans extends Item implements IDamageableItem, IU
          }
 
          total_defense = MathHelper.tryFitToNearestInteger(total_defense, 1.0E-4F);
-         if(owner instanceof EntityPlayer) {
-            total_defense += (float) ((EntityPlayer) owner).getGemSumNumeric(GemModifierTypes.protection);
-         }
          return total_defense;
       }
    }
@@ -125,7 +120,7 @@ public abstract class ItemArmorTrans extends Item implements IDamageableItem, IU
 
          if (extended_info) {
             info.add("§5宝石:");
-            info.add(" §3护甲增加:§6" + ItemStack.field_111284_a.format(itemStack.getGemMaxNumeric(GemModifierTypes.protection)));
+            info.add(" §3抗性增加:§6" + ItemStack.field_111284_a.format(itemStack.getGemMaxNumeric(GemModifierTypes.protection)));
             info.add(" §3生命增加:§6" + ItemStack.field_111284_a.format(itemStack.getGemMaxNumeric(GemModifierTypes.health)));
             info.add(" §3恢复增加:§6" + ItemStack.field_111284_a.format(itemStack.getGemMaxNumeric(GemModifierTypes.recover)));
             NBTTagCompound compound = itemStack.stackTagCompound.getCompoundTag("modifiers");
@@ -158,30 +153,45 @@ public abstract class ItemArmorTrans extends Item implements IDamageableItem, IU
 
    @Override
    public void addExpForTool(ItemStack stack, EntityPlayer player, int exp) {
-      super.addExpForTool(stack, player, (int) (exp * (this.getEquipmentExpBounce(stack) + 1)) * 2);
+      super.addExpForTool(stack, player, (int) (exp * (this.getEquipmentExpBounce(stack) + 1)));
    }
 
    public int getExpReqForLevel(int tool_level, int slotIndexl, ItemArmor armor) {
       switch(slotIndexl) {
-          case 0:
-             return 2 * this.expForLevel.apply(tool_level);
-          case 1:
-             return 4 * this.expForLevel.apply(tool_level);
-          case 2:
-             return 3 * this.expForLevel.apply(tool_level);
-          case 3:
-             return this.expForLevel.apply(tool_level);
-          default:
-             return 64 * tool_level;
+         case 0:
+            return 5 * this.expForLevel.apply(tool_level);
+         case 1:
+            return 8 * this.expForLevel.apply(tool_level);
+         case 2:
+            return 7 * this.expForLevel.apply(tool_level);
+         case 3:
+            return 4 * this.expForLevel.apply(tool_level);
+         default:
+            return 64 * tool_level;
       }
    }
 
    private float getEnhancedProtection(ItemStack itemStack) {
-      return (float)(itemStack.getEnhanceFactor() * (double)this.getRawProtection() * 0.68f + (double)((float)itemStack.getForgingGrade() / 3.0F)) * (0.2f);
+      return (float)(itemStack.getEnhanceFactor() * (double)this.getRawProtection() * 0.68f + (double)((float)itemStack.getForgingGrade() / 2.0F)) * (0.2f);
    }
 
    public int getExpReqForLevel(int i, boolean weapon) {
       return this.getExpReqForLevel(i, this.armorType, ReflectHelper.dyCast(this));
+   }
+   @Overwrite
+   public final float getDamageFactor(ItemStack item_stack, EntityLiving owner) {
+      if (owner != null && !owner.isEntityPlayer()) {
+         return Configs.wenscConfig.enhanceMobsArmor.ConfigValue ? Constant.getNormalMobModifier("Damage", owner.worldObj.getDayOfOverworld()) : 0.5F;
+      } else if (owner instanceof EntityPlayer && item_stack.getMaxDamage() > 1 && item_stack.getItemDamage() >= item_stack.getMaxDamage() - 1) {
+         return 0.0F;
+      } else {
+         float armor_damage_factor = 2.0F - (float)item_stack.getItemDamage() / (float)item_stack.getItem().getMaxDamage(item_stack) * 2.0F;
+         if (armor_damage_factor > 1.0F) {
+            armor_damage_factor = 1.0F;
+         }
+
+         return armor_damage_factor;
+      }
    }
 
    @Overwrite
@@ -235,7 +245,7 @@ public abstract class ItemArmorTrans extends Item implements IDamageableItem, IU
       if (item_stack != null && item_stack.stackTagCompound != null) {
          float protection_modifier = ArmorModifierTypes.PROTECTION_MODIFIER.getModifierValue(item_stack.stackTagCompound);
          if (protection_modifier > 0.0F) {
-            multiplied_protection += protection_modifier;
+            multiplied_protection *= (1 + protection_modifier);
          }
       }
 
@@ -265,7 +275,7 @@ public abstract class ItemArmorTrans extends Item implements IDamageableItem, IU
    }
 
    public int getMaxToolLevel(ItemStack itemStack){
-      return this.getMaterialForDurability().getMinHarvestLevel() * 3 + itemStack.getForgingGrade();
+      return this.getMaterialForDurability().getMinHarvestLevel() * 2 + itemStack.getForgingGrade();
    }
 
    public boolean isMaxToolLevel(ItemStack itemStack) {
@@ -277,18 +287,71 @@ public abstract class ItemArmorTrans extends Item implements IDamageableItem, IU
    }
 
    public void onItemLevelUp(NBTTagCompound tagCompound, EntityPlayer player, ItemStack stack) {
+//      NBTTagCompound modifiers = tagCompound.getCompoundTag("modifiers");
+//      ArmorModifierTypes modifierType = ModifierUtils.getModifierWithWeight(ModifierUtils.getAllCanBeAppliedArmorModifiers(stack),player.getRNG());
+//      if (modifierType != null) {
+//         if (modifiers.hasKey(modifierType.nbtName)) {
+//            player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "的" + modifierType.color.toString() + modifierType.displayName + "§r属性已升级到" + this.addModifierLevelFor(modifiers, modifierType) + "级"
+//            ));
+//         } else {
+//            this.addModifierLevelFor(modifiers, modifierType);
+//            player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "获得了" + modifierType.color.toString() + modifierType.displayName + "§r属性"));
+//         }
+//      }
+//      player.suppressNextStatIncrement();
       NBTTagCompound modifiers = tagCompound.getCompoundTag("modifiers");
-      ArmorModifierTypes modifierType = ModifierUtils.getModifierWithWeight(ModifierUtils.getAllCanBeAppliedArmorModifiers(stack),player.getRNG());
-      if (modifierType != null) {
-         if (modifiers.hasKey(modifierType.nbtName)) {
-            player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "的" + modifierType.color.toString() + modifierType.displayName + "§r属性已升级到" + this.addModifierLevelFor(modifiers, modifierType) + "级"
-            ));
-         } else {
-            this.addModifierLevelFor(modifiers, modifierType);
-            player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "获得了" + modifierType.color.toString() + modifierType.displayName + "§r属性"));
+      ArmorModifierTypes modifierType;
+      ArmorModifierTypes[] all_modifiers = ModifierUtils.getAllArmorModifiers(stack).toArray(new ArmorModifierTypes[0]);
+      ArmorModifierTypes[] available_modifiers = ModifierUtils.getAllCanBeAppliedArmorModifiers(stack).toArray(new ArmorModifierTypes[0]);
+      if(tagCompound.getInteger("tool_level") == 1){
+         int i = itemRand.nextInt(4) == 0 ? 0 : 1;
+         while (i < 4){
+            modifierType = ModifierUtils.getModifierWithWeight(ModifierUtils.getAllCanBeAppliedArmorModifiers(stack),player.getRNG());
+            if (modifierType != null) {
+               if (!modifiers.hasKey(modifierType.nbtName)) {
+                  this.addModifierLevelFor(modifiers, modifierType);
+                  player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "获得了" + modifierType.color.toString() + modifierType.displayName + "§r属性"));
+                  i++;
+               }
+            } else {
+               i++;
+            }
          }
       }
-
+      else {
+         int i = itemRand.nextInt(8) == 0 ? 2 : 1;
+         while (i > 0){
+            modifierType = ModifierUtils.getModifierWithWeight(ModifierUtils.getAllCanBeAppliedArmorModifiers(stack),player.getRNG());
+            if(modifierType != null){
+               if(modifiers.hasKey(modifierType.nbtName)){
+                  player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "的" + modifierType.color.toString() + modifierType.displayName + "§r属性已升级到" + this.addModifierLevelFor(modifiers, modifierType)+ "级"));
+                  i--;
+               }else {
+                  int m = 0;
+                  for (int n = 0; n < all_modifiers.length; n++) {
+                     if(modifiers.hasKey(all_modifiers[n].nbtName)){
+                        m++;
+                     }
+                  }
+                  if(m < 4){
+                     this.addModifierLevelFor(modifiers, modifierType);
+                     player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "获得了" + modifierType.color.toString() + modifierType.displayName + "§r属性"));
+                     i--;
+                  }else {
+                     int n;
+                     for(n = itemRand.nextInt(available_modifiers.length);n< available_modifiers.length;n++){
+                        if(modifiers.hasKey(available_modifiers[n].nbtName)){
+                           player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "的" + available_modifiers[n].color.toString() + available_modifiers[n].displayName + "§r属性已升级到" + this.addModifierLevelFor(modifiers, available_modifiers[n])+ "级"));
+                        }
+                     }
+                     break;
+                  }
+               }
+            }else {
+               i--;
+            }
+         }
+      }
       player.suppressNextStatIncrement();
    }
 }

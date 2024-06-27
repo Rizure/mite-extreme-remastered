@@ -39,12 +39,12 @@ public abstract class BlockGravelTrans extends BlockFalling implements IBlockWit
             Random rand = info.world.rand;
             int id_dropped;
             if (Configs.wenscConfig.BlnGravel.ConfigValue) {
-                if (rand.nextInt(4 - fortune) > 2) {
+                if (rand.nextInt(6 - fortune) > 2) {
                     return super.dropBlockAsEntityItem(info);
                 }
 
                 if (rand.nextInt(3) > 0) {
-                    if (rand.nextInt(16) > 7) {
+                    if (rand.nextInt(2) > 0) {
                         id_dropped = info.wasExploded() ? Item.chipFlint.itemID : Item.flint.itemID;
                     } else {
                         if (info.wasExploded()) {

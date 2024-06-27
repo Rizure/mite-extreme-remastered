@@ -29,5 +29,6 @@ public class BiomeGenUnderworldTrans extends BiomeBase {
       this.spawnableMonsterList.add(new BiomeMeta(EntityWanderingWitch.class, 1, 1, 1));
       this.spawnableMonsterList.add(new BiomeMeta(EntityHellhound.class, 15, 1, 2));
       this.spawnableMonsterList.add(new BiomeMeta(EntityExchanger.class, 5,1, 1));
+      this.spawnableMonsterList.add(new BiomeMeta(EntitySpiderKing.class, 5,1,1));
    }
 }

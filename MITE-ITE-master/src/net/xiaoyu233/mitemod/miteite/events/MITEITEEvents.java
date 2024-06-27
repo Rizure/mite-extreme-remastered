@@ -386,11 +386,16 @@ public class MITEITEEvents {
     @Subscribe
     public void onPlayerLoggedIn(PlayerLoggedInEvent event) {
         EntityPlayer player = event.getPlayer();
-        player.sendChatToPlayer(ChatMessage.createFromTranslationKey("[Server] ").appendComponent(ChatMessage.createFromTranslationKey("MITE-Extreme模组已加载,当前版本:").setColor(EnumChatFormat.DARK_GREEN)).appendComponent(ChatMessage.createFromText(Constant.MITE_ITE_VERSION).setColor(EnumChatFormat.DARK_RED)));
-        player.sendChatToPlayer(ChatMessage.createFromTranslationKey("[MITE-Extreme]:").setColor(EnumChatFormat.WHITE)
+        player.sendChatToPlayer(ChatMessage.createFromTranslationKey("[Server] ").appendComponent(ChatMessage.createFromTranslationKey("MITE-Extreme-REMASTERED模组已加载,当前版本:").setColor(EnumChatFormat.DARK_GREEN)).appendComponent(ChatMessage.createFromText(Constant.MITE_ITE_VERSION).setColor(EnumChatFormat.DARK_RED)));
+        player.sendChatToPlayer(ChatMessage.createFromTranslationKey("[MITE-Extreme-REMASTERED]:").setColor(EnumChatFormat.WHITE)
+                .appendComponent(ChatMessage.createFromTranslationKey("MITE-Extreme-REMASTERED由 ").setColor(EnumChatFormat.DARK_AQUA))
+                .appendComponent(ChatMessage.createFromTranslationKey("Rikalzery").setColor(EnumChatFormat.WHITE))
+                .appendComponent(ChatMessage.createFromTranslationKey(" 重写,").setColor(EnumChatFormat.DARK_AQUA)));
+        player.sendChatToPlayer(ChatMessage.createFromTranslationKey("[MITE-Extreme-REMASTERED]:").setColor(EnumChatFormat.WHITE)
                 .appendComponent(ChatMessage.createFromTranslationKey("MITE-Extreme由 ").setColor(EnumChatFormat.DARK_AQUA))
                 .appendComponent(ChatMessage.createFromTranslationKey("wensc,洛小雨").setColor(EnumChatFormat.WHITE))
                 .appendComponent(ChatMessage.createFromTranslationKey(" 重写,").setColor(EnumChatFormat.DARK_AQUA))
+                .appendComponent(ChatMessage.createFromTranslationKey("「我对你好吗」特约赞助").setColor(EnumChatFormat.BROWN))
                 .appendComponent(ChatMessage.createFromTranslationKey(" 下载地址：wensc.cn").setColor(EnumChatFormat.DARK_GREEN)));
         if (player.isFirstLogin == true) {
 

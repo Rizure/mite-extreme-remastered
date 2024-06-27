@@ -17,9 +17,10 @@ public class EntitySpiderTrans extends EntityArachnid {
    @Overwrite
    protected void applyEntityAttributes() {
       super.applyEntityAttributes();
-      int day = this.getWorld() != null ? Math.max(this.getWorld().getDayOfOverworld() - 32, 0) : 0;
-      this.setEntityAttribute(GenericAttributes.maxHealth, this.getEntityAttributeValue(GenericAttributes.maxHealth) * 1.5D + (double)day / 12.0D);
-      this.setEntityAttribute(GenericAttributes.attackDamage, this.getEntityAttributeValue(GenericAttributes.attackDamage) + (double)day / 12.0D);
+      int day = this.worldObj.getDayOfOverworld();
       this.setEntityAttribute(GenericAttributes.followRange, 64.0D);
+      this.setEntityAttribute(GenericAttributes.attackDamage, 5 * Constant.getNormalMobModifier("Damage",day));
+      this.setEntityAttribute(GenericAttributes.maxHealth, 15 * Constant.getNormalMobModifier("Health",day));
+      this.setEntityAttribute(GenericAttributes.movementSpeed, 1.0D * Constant.getNormalMobModifier("Speed",day));
    }
 }

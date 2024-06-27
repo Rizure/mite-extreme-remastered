@@ -36,23 +36,23 @@ public class GuiPlayerOverlayTrans extends avk {
    private void injectRenderNutrition(int par1, int par2, CallbackInfo ci, boolean var3, int var4, int var5, FoodMetaData var7, int var8, AttributeInstance var10, int var11, int var12, int var13, float var14, float var15){
       float protein = (float)this.g.h.getProtein();
       float phytonutrients = (float)this.g.h.getPhytonutrients();
-      int var26 = var12 + 240 + Configs.wenscConfig.healthBarXOffset.ConfigValue;
-      int var25 = var13 + 32 + Configs.wenscConfig.healthBarYOffset.ConfigValue;
+      int var26 = var12 - 90;
+      int var25 = var13 + 32;
       GL11.glPushMatrix();
       GL11.glPushMatrix();
-      this.b(this.g.l, (int)phytonutrients + "/" + 160000, var26 - 167, var25 - 8, 16777215);
+      this.b(this.g.l, (int)phytonutrients + "/" + 160000, (int)(par1 * 0.15), var25 - 8, 16777215);
       GL11.glScalef(0.6F, 1.0F, 1.0F);
       this.g.J().a(Constant.icons_ite);
-      this.b(var26, var25, 0, 106, 182, 6);
-      this.b(var26, var25, 0, 94, (int)(182.0F * (phytonutrients / 160000.0F)), 6);
+      this.b(var26 - 205, var25, 0, 106, 182, 6);
+      this.b(var26 - 205, var25, 0, 94, (int)(182.0F * (phytonutrients / 160000.0F)), 6);
       GL11.glPopMatrix();
       var26 = var12 - 303;
       GL11.glPushMatrix();
-      this.b(this.g.l, (int)protein + "/" + 160000, var26, var25 - 8, 16777215);
+      this.b(this.g.l, (int)protein + "/" + 160000, (int)(par1 * 0.8), var25 - 8, 16777215);
       GL11.glScalef(0.6F, 1.0F, 1.0F);
       this.g.J().a(Constant.icons_ite);
-      this.b(var26, var25, 0, 106, 182, 6);
-      this.b(var26, var25, 0, 100, (int)(182.0F * (protein / 160000.0F)), 6);
+      this.b((int) (par1 * 1.21), var25, 0, 106, 182, 6);
+      this.b((int) (par1 * 1.21), var25, 0, 100, (int)(182.0F * (protein / 160000.0F)), 6);
       GL11.glPopMatrix();
       GL11.glPopMatrix();
    }

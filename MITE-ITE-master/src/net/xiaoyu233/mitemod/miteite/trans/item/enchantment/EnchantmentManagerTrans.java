@@ -18,7 +18,7 @@ public class EnchantmentManagerTrans {
       if (enchantability <= 0) {
          return null;
       } else {
-         float randomness = 1.0F + (random.nextFloat() - 0.75F) * 0.5F;
+         float randomness = 1.0F + (random.nextFloat() - 0.5F) * 0.5F;
          int adjusted_enchantment_levels = (int)((float)enchantment_levels * randomness);
          if (adjusted_enchantment_levels < 1) {
             adjusted_enchantment_levels = 1;

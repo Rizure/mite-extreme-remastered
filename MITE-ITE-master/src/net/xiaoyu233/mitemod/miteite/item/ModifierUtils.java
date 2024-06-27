@@ -39,7 +39,16 @@ public class ModifierUtils {
 
         return toolModifierTypes;
     }
-
+    public static ArrayList<ToolModifierTypes> getAllToolModifiers(ItemStack stack){
+        ArrayList<ToolModifierTypes> toolModifierTypes = Lists.newArrayList(ToolModifierTypes.values());
+        toolModifierTypes.removeIf((modifierType) -> !modifierType.canApplyTo(stack));
+        return toolModifierTypes;
+    }
+    public static ArrayList<ArmorModifierTypes> getAllArmorModifiers(ItemStack stack) {
+        ArrayList<ArmorModifierTypes> armorModifierTypes = Lists.newArrayList(ArmorModifierTypes.values());
+        armorModifierTypes.removeIf((modifierType) -> !modifierType.canApplyTo(stack));
+        return armorModifierTypes;
+    }
     public static ArrayList<ArmorModifierTypes> getAllCanBeAppliedArmorModifiers(ItemStack stack) {
         ArrayList<ArmorModifierTypes> armorModifierTypes = Lists.newArrayList(ArmorModifierTypes.values());
         armorModifierTypes.removeIf((modifierType) -> !modifierType.canApplyTo(stack));

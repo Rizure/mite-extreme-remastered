@@ -42,23 +42,24 @@ public abstract class EntityZombiePigmanTrans extends EntityZombie implements IR
       super(par1World);
    }
 //
-   @Overwrite
-   protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
-        int day = this.getWorld() != null ? Math.max(this.getWorld().getDayOfOverworld(), 0) : 0;
-        double x = day / 9 - 9;
-        double rate = (0.5+ x / (20 + Math.abs(x)));
-        int healthRate = Math.min(day / 16, 10);
-        this.setEntityAttribute(GenericAttributes.attackDamage, rate * 100);
-        this.setEntityAttribute(GenericAttributes.maxHealth, rate * 100 + healthRate * 15);
-        this.setEntityAttribute(GenericAttributes.followRange, 64.0D);
-        this.setEntityAttribute(GenericAttributes.movementSpeed, 0.5D);
-        this.setEntityAttribute(EntityZombie.field_110186_bp, this.rand.nextDouble() * 0.10000000149011612D);
-   }
+@Overwrite
+protected void applyEntityAttributes() {
+    super.applyEntityAttributes();
+    int day = this.getWorld() != null ? Math.max(this.getWorld().getDayOfOverworld(), 0) : 0;
+    this.setEntityAttribute(GenericAttributes.followRange, 64.0D);
+    this.setEntityAttribute(GenericAttributes.attackDamage, 15 * Constant.getNormalMobModifier("Damage",day));
+    this.setEntityAttribute(GenericAttributes.maxHealth, 40 * Constant.getNormalMobModifier("Health",day));
+    this.setEntityAttribute(GenericAttributes.movementSpeed, 0.4D * Constant.getNormalMobModifier("Speed",day));
+    this.setEntityAttribute(EntityZombie.field_110186_bp, this.rand.nextDouble() * 0.10000000149011612D);
+}
 
     @Overwrite
     protected void dropFewItems(boolean recently_hit_by_player, DamageSource damage_source) {
-        this.dropItem(Items.voucherPigman);
+        if(this.angerLevel < 1){
+            this.dropItem(Items.voucherGuard);
+        }else {
+            this.dropItem(Items.voucherCluster);
+        }
         if (this.rand.nextFloat() < (recently_hit_by_player ? 0.5F : 0.25F)) {
             this.dropItem(Item.rottenFlesh);
         }

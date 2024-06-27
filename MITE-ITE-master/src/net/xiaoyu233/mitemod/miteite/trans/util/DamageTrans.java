@@ -1,6 +1,9 @@
 package net.xiaoyu233.mitemod.miteite.trans.util;
 
 import net.minecraft.*;
+import net.xiaoyu233.mitemod.miteite.item.ArmorModifierTypes;
+import net.xiaoyu233.mitemod.miteite.item.GemModifierTypes;
+import net.xiaoyu233.mitemod.miteite.item.ToolModifierTypes;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -18,7 +21,13 @@ public class DamageTrans {
       if (target.onClient()) {
          Minecraft.setErrorMessage("applyTargetDefenseModifiers: called on client?");
       }
-
+      ItemStack boots = target.getBoots();
+      if (boots != null){
+         float value = ArmorModifierTypes.SWIFTNESS.getModifierValue(boots.getTagCompound());
+         if(target.getRNG().nextFloat() < value){
+            return 0.0F;
+         }
+      }
       if (this.amount <= 0.0F) {
          return 0.0F;
       } else if (this.isAbsolute()) {
@@ -27,15 +36,16 @@ public class DamageTrans {
          if (target instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer)target;
             if (!this.bypassesMundaneArmor() && player.isBlocking()) {
-               this.amount /= 2.0F;
-               if (this.amount < 1.0F) {
-                  this.amount = 1.0F;
-               }
-
                ItemStack item_stack = player.getHeldItemStack();
+               float invincible_modifier = 0.0F;
                if (item_stack != null && item_stack.getItem() instanceof ItemTool) {
                   ItemTool item_tool = (ItemTool)item_stack.getItem();
                   result.applyHeldItemDamageResult(item_stack.tryDamageItem(DamageSource.generic, (int)(this.amount * (float)item_tool.getToolDecayFromAttackingEntity(item_stack, null)), target));
+                  invincible_modifier = ToolModifierTypes.INVINCIBLE.getModifierValue(item_stack.getTagCompound());
+               }
+               this.amount /= 2.0F + invincible_modifier;
+               if (this.amount < 1.0F) {
+                  this.amount = 1.0F;
                }
             }
          }
@@ -43,6 +53,7 @@ public class DamageTrans {
          float total_protection = target.getTotalProtection(this.getSource());
          ItemStack[] wornItems = target.getWornItems();
          int delta;
+         float protection_fraction = 0.0F;
          if (wornItems.length >= 4) {
             boolean allProtectionV = true;
             ItemStack[] var6 = wornItems;
@@ -58,9 +69,15 @@ public class DamageTrans {
             }
 
             if (allProtectionV) {
-               this.amount = (float)((double)this.amount - Math.min((double)this.amount * Configs.wenscConfig.allProtectionVDefenceFraction.ConfigValue, this.amount));
+               protection_fraction += Configs.wenscConfig.allProtectionVDefenceFraction.ConfigValue;
             }
          }
+
+         if(target instanceof EntityPlayer) {
+            protection_fraction += (float) ((EntityPlayer) target).getGemSumNumeric(GemModifierTypes.protection);
+         }
+         protection_fraction = MathHelper.clamp_float(protection_fraction,0.0F,1.0F);
+         this.amount *= 1.0F - protection_fraction;
 
          DebugAttack.setTargetProtection(total_protection);
          float amount_dealt_to_armor = Math.min(target.getProtectionFromArmor(this.getSource(), false), this.amount);

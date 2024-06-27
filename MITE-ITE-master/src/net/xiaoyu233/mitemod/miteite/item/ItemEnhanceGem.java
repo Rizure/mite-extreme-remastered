@@ -11,7 +11,7 @@ public class ItemEnhanceGem extends Item {
     public ItemEnhanceGem(int id, int level)
     {
         super(id, Material.diamond, "gem/enhance_gem_phase" + level);
-        this.gemLevel = level;
+        this.gemLevel = (level + 3) * level / 4;
         this.setMaxStackSize(1);
         this.setCraftingDifficultyAsComponent(25.0F);
         this.setCreativeTab(CreativeModeTab.tabMisc);

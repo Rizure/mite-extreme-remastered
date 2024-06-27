@@ -10,7 +10,7 @@ public class EnchantmentChain extends Enchantment {
 
     @Override
     public int getNumLevels() {
-        return 1;
+        return 5;
     }
 
 //    @Override
@@ -49,6 +49,6 @@ public class EnchantmentChain extends Enchantment {
     @Override
     public boolean isOnCreativeTab(CreativeModeTab creative_tab)
     {
-        return this == looting ? creative_tab == CreativeModeTab.tabCombat : creative_tab == CreativeModeTab.tabTools;
+        return creative_tab == CreativeModeTab.tabTools;
     }
 }

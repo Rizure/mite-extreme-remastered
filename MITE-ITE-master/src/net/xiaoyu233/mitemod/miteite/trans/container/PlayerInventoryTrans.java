@@ -1,9 +1,7 @@
 package net.xiaoyu233.mitemod.miteite.trans.container;
 
 import net.minecraft.*;
-import net.xiaoyu233.mitemod.miteite.item.ItemDynamicCore;
-import net.xiaoyu233.mitemod.miteite.item.ItemRingKiller;
-import net.xiaoyu233.mitemod.miteite.item.Items;
+import net.xiaoyu233.mitemod.miteite.item.*;
 import net.xiaoyu233.mitemod.miteite.network.CPacketSyncItems;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
 import org.spongepowered.asm.mixin.Mixin;
@@ -70,6 +68,22 @@ public class PlayerInventoryTrans {
    public ItemStack getDynamicCore() {
       for(int i = 0; i < this.jewelryInventory.length; ++i) {
          if (this.jewelryInventory[i] != null && (this.jewelryInventory[i].getItem() instanceof ItemDynamicCore)) {
+            return this.jewelryInventory[i];
+         }
+      }
+      return null;
+   }
+   public ItemStack getRegenerationCore() {
+      for(int i = 0; i < this.jewelryInventory.length; ++i) {
+         if (this.jewelryInventory[i] != null && (this.jewelryInventory[i].getItem() instanceof ItemRegenerationCore)) {
+            return this.jewelryInventory[i];
+         }
+      }
+      return null;
+   }
+   public ItemStack getGuardCore() {
+      for(int i = 0; i < this.jewelryInventory.length; ++i) {
+         if (this.jewelryInventory[i] != null && (this.jewelryInventory[i].getItem() instanceof ItemGuardCore)) {
             return this.jewelryInventory[i];
          }
       }

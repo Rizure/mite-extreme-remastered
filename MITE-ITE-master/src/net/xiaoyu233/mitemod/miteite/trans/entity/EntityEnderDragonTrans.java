@@ -2,6 +2,7 @@ package net.xiaoyu233.mitemod.miteite.trans.entity;
 
 import net.minecraft.*;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
+import net.xiaoyu233.mitemod.miteite.util.Constant;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -55,7 +56,8 @@ public class EntityEnderDragonTrans extends EntityInsentient implements IComplex
    @Override
    protected void applyEntityAttributes() {
       super.applyEntityAttributes();
-      this.getEntityAttribute(GenericAttributes.maxHealth).setAttribute(1250D);
+      int day = this.worldObj.getDayOfOverworld();
+      this.getEntityAttribute(GenericAttributes.maxHealth).setAttribute(500 * Constant.getBossMobModifier("Health",day));
    }
 
    @Override

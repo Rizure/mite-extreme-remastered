@@ -1,6 +1,7 @@
 package net.xiaoyu233.mitemod.miteite.trans.world;
 
 import net.minecraft.*;
+import net.xiaoyu233.mitemod.miteite.util.Configs;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -11,6 +12,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import static net.xiaoyu233.mitemod.miteite.util.WorldUtil.isBloodMoonDay;
@@ -31,7 +35,49 @@ public abstract class WorldTrans {
    public WorldData worldInfo;
    @Shadow
    protected Set activeChunkSet;
+   @Shadow
+   public final int getDimensionId() {
+      return 0;
+   }
+   @Shadow
+   private long getWorldCreationTime() {
+      return 0;
+   }
 
+   @Shadow
+   private String getDimensionName() {
+      return null;
+   }
+   @Overwrite
+   public final List generateWeatherEvents(int day) {
+      if (!this.isOverworld()) {
+         Debug.setErrorMessage("generateWeatherEvents: called for " + this.getDimensionName());
+      }
+
+      List events = new ArrayList();
+      if (day < 2) {
+         return events;
+      } else {
+         long first_tick_of_day = (long)((day - 1) * 24000 - 6000);
+         Random random = new Random(this.getWorldCreationTime() + (long)(this.getDimensionId() * 938473) + (long)day);
+         random.nextInt();
+
+         for(int i = 0; i < 3 && random.nextInt(4) <= 0; ++i) {
+            WeatherEvent event = new WeatherEvent(first_tick_of_day + (long)random.nextInt(24000), random.nextInt(12000) + 6000);
+            if (!isHarvestMoon(event.start, true) && !isHarvestMoon(event.end, true) && !isHarvestMoon(event.start + 6000L, true) && !isHarvestMoon(event.end - 6000L, true) && !isBloodMoon(event.start, false) && !isBloodMoon(event.end, false) && !isBlueMoon(event.start, false) && !isBlueMoon(event.end, false)) {
+               events.add(event);
+            }
+         }
+
+         if (isBloodMoon(first_tick_of_day + 6000L, false)) {
+            WeatherEvent event = new WeatherEvent(first_tick_of_day + 5000L, (int) (13000 * Configs.wenscConfig.timeSpeedInDay.ConfigValue) + 1000);
+            event.setStorm(event.start, event.end);
+            events.add(event);
+         }
+
+         return events;
+      }
+   }
    @Inject(locals = LocalCapture.CAPTURE_FAILHARD, method = "getBlockId", at = @At(value = "FIELD", target = "Lnet/minecraft/Chunk;storageArrays:[Lnet/minecraft/ChunkSection;", shift = At.Shift.AFTER), cancellable = true)
    private void injectGetBlockId(int par1, int par2, int par3, CallbackInfoReturnable<Integer> cir, Chunk var4) {
       ChunkSection extended_block_storage = var4.storageArrays[par2 >> 4];

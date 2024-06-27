@@ -2,6 +2,7 @@ package net.xiaoyu233.mitemod.miteite.trans.entity;
 
 import net.minecraft.*;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
+import net.xiaoyu233.mitemod.miteite.util.Constant;
 import net.xiaoyu233.mitemod.miteite.util.MonsterUtil;
 import net.xiaoyu233.mitemod.miteite.util.ReflectHelper;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,11 +24,11 @@ public class EntityLongdeadTrans extends EntitySkeletonTrans {
    protected void addRandomEquipment() {
       this.addRandomWeapon();
       int day = this.getWorld() != null ? Math.max(this.getWorld().getDayOfOverworld(), 0) : 0;
-      if (day < 96) {
-         this.setBoots((new ItemStack(Item.bootsIron)).randomizeForMob(this, true));
-         this.setLeggings((new ItemStack(Item.legsIron)).randomizeForMob(this, true));
-         this.setCuirass((new ItemStack(Item.plateIron)).randomizeForMob(this, true));
-         this.setHelmet((new ItemStack(Item.helmetIron)).randomizeForMob(this, true));
+      if (day < 64) {
+         this.setBoots((new ItemStack(Item.bootsChainAncientMetal)).randomizeForMob(this, true));
+         this.setLeggings((new ItemStack(Item.legsChainAncientMetal)).randomizeForMob(this, true));
+         this.setCuirass((new ItemStack(Item.plateChainAncientMetal)).randomizeForMob(this, true));
+         this.setHelmet((new ItemStack(Item.helmetChainAncientMetal)).randomizeForMob(this, true));
       } else {
          MonsterUtil.addDefaultArmor(day, this, true);
       }
@@ -45,9 +46,15 @@ public class EntityLongdeadTrans extends EntitySkeletonTrans {
       super.applyEntityAttributes();
       int day = this.getWorld() != null ? this.getWorld().getDayOfOverworld() : 0;
       this.setEntityAttribute(GenericAttributes.followRange, 40.0D);
-      this.setEntityAttribute(GenericAttributes.maxHealth, (this.isGuardian() ? 26.0D : 15.0D) + day / 8D);
-      this.setEntityAttribute(GenericAttributes.movementSpeed, 0.28999999165534973D);
-      this.setEntityAttribute(GenericAttributes.attackDamage, (this.isGuardian() ? 10.0D : 8.0D) + day / 10D);
+      if(this.isGuardian()){
+         this.setEntityAttribute(GenericAttributes.maxHealth, 26 * Constant.getEliteMobModifier("Health",day));
+         this.setEntityAttribute(GenericAttributes.movementSpeed, 0.29D * Constant.getEliteMobModifier("Speed",day));
+         this.setEntityAttribute(GenericAttributes.attackDamage, 13 * Constant.getEliteMobModifier("Damage",day));
+      }else {
+         this.setEntityAttribute(GenericAttributes.attackDamage, 10 * Constant.getNormalMobModifier("Damage",day));
+         this.setEntityAttribute(GenericAttributes.maxHealth, 18 * Constant.getNormalMobModifier("Health",day));
+         this.setEntityAttribute(GenericAttributes.movementSpeed, 0.27D * Constant.getNormalMobModifier("Speed",day));
+      }
    }
 
    protected void enchantEquipment(ItemStack item_stack) {

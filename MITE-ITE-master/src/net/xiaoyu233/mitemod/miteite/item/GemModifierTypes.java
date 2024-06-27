@@ -6,10 +6,11 @@ import net.minecraft.Material;
 import javax.swing.*;
 
 public enum GemModifierTypes{
-    damage("damage", "White"),
-    health("health", "Red"),
+    damage("damage", "Red"),
+    health("health", "Green"),
     protection("protection", "Purple"),
-    recover("recover", "Aquamarine");
+    recover("recover", "Aquamarine"),
+    haste("haste","Teal");
     public String gemName;
     public String iconName;
 
@@ -20,8 +21,10 @@ public enum GemModifierTypes{
 
     public float getRate() {
         if(this == protection) {
-            return 0.25f;
+            return 0.01f;
         } else if(this == recover) {
+            return 0.125f;
+        } else if(this == haste) {
             return 0.125f;
         } else {
             return 1f;

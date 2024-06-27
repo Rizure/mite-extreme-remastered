@@ -29,6 +29,9 @@ public class BiomeDecoratorTrans {
    private static final int MITHRIL_FREQUENCY_UNDERWORLD = Configs.wenscConfig.mithrilFrequencyUnderworld.ConfigValue;
    private static final int SILVER_FREQUENCY_OVERWORLD = Configs.wenscConfig.silverFrequencyOverworld.ConfigValue;
    private static final int SILVER_FREQUENCY_UNDERWORLD = Configs.wenscConfig.silverFrequencyUnderworld.ConfigValue;
+   private static final int REDSTONE_FREQUENCY_OVERWORLD = Configs.wenscConfig.redstoneFrequencyOverworld.ConfigValue;
+   private static final int REDSTONE_FREQUENCY_UNDERWORLD = Configs.wenscConfig.redstoneFrequencyUnderworld.ConfigValue;
+   private static final int COAL_FREQUENCY_OVERWORLD = Configs.wenscConfig.coalFrequencyOverworld.ConfigValue;
    @Shadow
    public boolean generateLakes;
    @Shadow
@@ -173,14 +176,14 @@ public class BiomeDecoratorTrans {
       if (this.currentWorld.isOverworld()) {
          this.genMinable(200, this.dirtGen);
          this.genMinable(200, this.gravelGen);
-         this.genMinable(50, this.coalGen);
+         this.genMinable(COAL_FREQUENCY_OVERWORLD, this.coalGen);
          this.genMinable(COPPER_FREQUENCY_OVERWORLD, this.copperGen, true);
          this.genMinable(SILVER_FREQUENCY_OVERWORLD, this.silverGen, true);
          this.genMinable(GOLD_FREQUENCY_OVERWORLD, this.goldGen, true);
          this.genMinable(IRON_FREQUENCY_OVERWORLD, this.ironGen, true);
          this.genMinable(MITHRIL_FREQUENCY_OVERWORLD, this.mithrilGen, true);
          this.genMinable(5, this.silverfishGen, true);
-         this.genMinable(10, this.redstoneGen);
+         this.genMinable(REDSTONE_FREQUENCY_OVERWORLD, this.redstoneGen);
          this.genMinable(DIAMOND_FREQUENCY_OVERWORLD, this.diamondGen);
          this.genMinable(LAPIS_FREQUENCY_OVERWORLD, this.lapisGen);
          if (Configs.wenscConfig.overworldAdamantiteOre.ConfigValue) {
@@ -194,7 +197,7 @@ public class BiomeDecoratorTrans {
          this.genMinable(IRON_FREQUENCY_UNDERWORLD, this.ironGen, false);
          this.genMinable(MITHRIL_FREQUENCY_UNDERWORLD, this.mithrilGen, false);
          this.genMinable(ADAMANTIUM_FREQUENCY_UNDERWORLD, this.adamantiteGen, false);
-         this.genMinable(5, this.redstoneGen);
+         this.genMinable(REDSTONE_FREQUENCY_UNDERWORLD, this.redstoneGen);
          this.genMinable(DIAMOND_FREQUENCY_UNDERWORLD, this.diamondGen);
          this.genMinable(FANCY_RED_FREQUENCY_UNDERWORLD, this.fancyRedGen);
          this.genMinable(LAPIS_FREQUENCY_UNDERWORLD, this.lapisGen);

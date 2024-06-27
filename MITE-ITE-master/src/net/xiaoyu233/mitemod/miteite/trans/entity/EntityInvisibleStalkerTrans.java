@@ -19,8 +19,14 @@ public class EntityInvisibleStalkerTrans extends EntityMonster {
       super.applyEntityAttributes();
       int day = this.getWorld() != null ? this.getWorld().getDayOfOverworld() : 0;
       this.getEntityAttribute(GenericAttributes.followRange).setAttribute(40.0D);
-      this.getEntityAttribute(GenericAttributes.movementSpeed).setAttribute(0.23000000417232513D);
-      this.getEntityAttribute(GenericAttributes.maxHealth).setAttribute(20D + day / 8D);
-      this.getEntityAttribute(GenericAttributes.attackDamage).setAttribute(6.0D + day / 8D);
+      this.setEntityAttribute(GenericAttributes.attackDamage, 8 * Constant.getNormalMobModifier("Damage",day));
+      this.setEntityAttribute(GenericAttributes.maxHealth, 30 * Constant.getNormalMobModifier("Health",day));
+      this.setEntityAttribute(GenericAttributes.movementSpeed, 0.23D * Constant.getNormalMobModifier("Speed",day));
+   }
+   @Override
+   protected void dropFewItems(boolean recently_hit_by_player, DamageSource damage_source) {
+      if (this.rand.nextFloat() < (recently_hit_by_player ? 1.0F : 0.05F)) {
+         this.dropItem(Items.colorBag);
+      }
    }
 }

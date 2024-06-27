@@ -10,31 +10,28 @@ public class EntityZombieDoor extends EntityZombie {
     private int spawnSums;
     private boolean haveTryToSpawnExchanger = false;
 
+    private boolean modifiedAttribute = false;
+    private final Item [] doorList = new Item[] {Items.doorWood, Items.doorGold, Items.doorCopper, Items.doorSilver, Items.doorIron,Items.doorAncientMetal ,Items.doorMithril, Items.doorAdamantium };
+    private int danger_level;
+
     public EntityZombieDoor(World par1World) {
         super(par1World);
+        this.danger_level = Constant.GARandom.nextInt(doorList.length - 1);
     }
 
     @Override
     protected void addRandomEquipment() {
-        int day = this.getWorld().getDayOfOverworld();
-        Item [] doorList = new Item[] {Items.doorAdamantium, Items.doorWood, Items.doorGold, Items.doorSilver, Items.doorIron, Items.doorCopper, Items.doorGold};
-        this.setCurrentItemOrArmor(0, (new ItemStack(doorList[Constant.GARandom.nextInt(doorList.length - 1)], 1)).randomizeForMob(this, false));
-        this.addPotionEffect(new MobEffect(MobEffectList.moveSpeed.id, 2147483647, 0));
-        if( day / 32 >= 1) {
-            this.addPotionEffect(new MobEffect(MobEffectList.damageBoost.id, 2147483647, 0));
-        }
+        super.addRandomEquipment();
+        this.setCurrentItemOrArmor(0, (new ItemStack(doorList[this.danger_level], 1)).randomizeForMob(this, false));
     }
 
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         int day = this.getWorld().getDayOfOverworld();
-        double x = day / 8 - 8;
-        double rate = (0.5+ x / (20 + Math.abs(x)));
-        int healthRate = Math.min(day / 16, 10);
-        this.setEntityAttribute(GenericAttributes.attackDamage, rate * 50);
-        this.setEntityAttribute(GenericAttributes.maxHealth, rate * 60 + healthRate * 10);
-        this.setEntityAttribute(GenericAttributes.movementSpeed, 0.3D);
+        this.setEntityAttribute(GenericAttributes.attackDamage,(8) * Constant.getEliteMobModifier("Damage",day));
+        this.setEntityAttribute(GenericAttributes.maxHealth, (30) * Constant.getEliteMobModifier("Health",day));
+        this.setEntityAttribute(GenericAttributes.movementSpeed, (0.23D) * Constant.getEliteMobModifier("Speed",day));
     }
 
     @Override
@@ -45,9 +42,9 @@ public class EntityZombieDoor extends EntityZombie {
     @Override
     protected void dropFewItems(boolean recently_hit_by_player, DamageSource damage_source) {
         if (recently_hit_by_player){
-            this.dropItem(Items.voucherDoor);
+            this.dropItem(Items.voucherDestruction);
             int day = this.getWorld().getDayOfOverworld();
-            int diamond_count = (day / 32) > 3 ? 3 : (day / 32);
+            int diamond_count = Math.min((day + 16) / 32, 3);
             for (int i1 = 0; i1 < diamond_count; i1++) {
                 this.dropItem(Item.emerald);
             }
@@ -63,6 +60,13 @@ public class EntityZombieDoor extends EntityZombie {
     public void onUpdate() {
         super.onUpdate();
         if (!this.getWorld().isRemote){
+            if(this.modifiedAttribute == false){
+                this.getEntityAttribute(GenericAttributes.maxHealth).setAttribute(this.getMaxHealth() + danger_level * 4);
+                this.heal(danger_level * 4);
+                this.getEntityAttribute(GenericAttributes.attackDamage).setAttribute(this.getEntityAttributeValue(GenericAttributes.attackDamage) + danger_level);
+                this.getEntityAttribute(GenericAttributes.movementSpeed).setAttribute(this.getEntityAttributeValue(GenericAttributes.movementSpeed) + danger_level * 0.01D);
+                this.modifiedAttribute = true;
+            }
             EntityLiving target = this.getAttackTarget();
             if(target instanceof EntityPlayer) {
                 if (spawnSums < 10) {
@@ -84,10 +88,10 @@ public class EntityZombieDoor extends EntityZombie {
                         ++spawnSums;
                     }
                 }
-                if(Configs.wenscConfig.isSpawnExchanger.ConfigValue) {
+                if(Configs.wenscConfig.isSpawnDragger.ConfigValue) {
                     if(haveTryToSpawnExchanger == false) {
                         if( rand.nextInt(10) == 0) {
-                            EntityExchanger entityExchanger = new EntityExchanger(this.worldObj);
+                            EntityDragger entityExchanger = new EntityDragger(this.worldObj);
                             entityExchanger.setPosition(this.posX, this.posY, this.posZ);
                             entityExchanger.refreshDespawnCounter(-9600);
                             this.worldObj.spawnEntityInWorld(entityExchanger);

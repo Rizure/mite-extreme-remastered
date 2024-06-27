@@ -1,14 +1,10 @@
 package net.xiaoyu233.mitemod.miteite.trans.render;
 
 import net.minecraft.*;
-import net.xiaoyu233.mitemod.miteite.entity.EntityAncientDragon;
-import net.xiaoyu233.mitemod.miteite.entity.EntityAnnihilationSkeleton;
+import net.xiaoyu233.mitemod.miteite.entity.*;
 //import net.xiaoyu233.mitemod.miteite.entity.EntityThunderMan;
-import net.xiaoyu233.mitemod.miteite.entity.EntityWanderingWitch;
-import net.xiaoyu233.mitemod.miteite.render.entity.RenderAncientDragon;
-import net.xiaoyu233.mitemod.miteite.render.entity.RenderAnnihilationSkeleton;
+import net.xiaoyu233.mitemod.miteite.render.entity.*;
 //import net.xiaoyu233.mitemod.miteite.render.entity.RenderEntityThunderMan;
-import net.xiaoyu233.mitemod.miteite.render.entity.RenderWanderingWitch;
 import net.xiaoyu233.mitemod.miteite.util.ReflectHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -34,6 +30,10 @@ public class RenderManagerTrans {
       this.q.put(EntityAnnihilationSkeleton.class, new RenderAnnihilationSkeleton());
       this.q.put(EntityWanderingWitch.class, new RenderWanderingWitch());
 //      this.q.put(EntityThunderMan.class, new RenderEntityThunderMan());
+      this.q.put(EntityZombieBoss.class, new RenderZombieBoss());
+      this.q.put(EntitySpiderKing.class, new RenderSpiderKing(1.45F));
+      this.q.put(EntitySpiderQueen.class, new RenderSpiderQueen(1.45F));
+      this.q.put(EntityClusterSpider.class, new RenderClusterSpider(0.5F));
       for (bgm o : this.q.values()) {
          o.a(ReflectHelper.dyCast(bgl.class, this));
       }

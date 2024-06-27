@@ -20,7 +20,7 @@ public class EntityIronGolemTrans extends EntityGolem {
    protected void applyEntityAttributes() {
       super.applyEntityAttributes();
       int day = this.getWorld() != null ? this.getWorld().getDayOfOverworld() : 0;
-      this.getEntityAttribute(GenericAttributes.maxHealth).setAttribute(200.0D + day / 26D);
+      this.getEntityAttribute(GenericAttributes.maxHealth).setAttribute(200.0D);
       this.getEntityAttribute(GenericAttributes.movementSpeed).setAttribute(0.25D);
       this.setEntityAttribute(GenericAttributes.attackDamage, 0.0D);
    }

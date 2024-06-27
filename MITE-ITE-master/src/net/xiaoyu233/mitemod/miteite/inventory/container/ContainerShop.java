@@ -70,6 +70,7 @@ public class ContainerShop extends Container {
 
             } else {
                 ItemStack var5 = var4.getStack();
+                System.out.println(var5.getItem());
                 double soldPrice = (double) var5.getItem().soldPriceArray.get(var5.getItemSubtype());
                 if(soldPrice > 0d) {
                     double totalMoney = var5.stackSize * soldPrice;

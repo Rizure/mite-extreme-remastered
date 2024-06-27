@@ -17,7 +17,11 @@ public class EntityRevenantTrans extends EntityZombie {
    protected void dropFewItems(boolean recently_hit_by_player, DamageSource damage_source) {
       super.dropFewItems(recently_hit_by_player, damage_source);
       if (recently_hit_by_player){
-         this.dropItemStack(new ItemStack(Items.dyePowder, 5, 4));
+         int day = this.getWorld().getDayOfOverworld();
+         int count = Math.min(day / 8, 6);
+         for (int i1 = 0; i1 < count; i1++) {
+            this.dropItemStack(new ItemStack(Items.dyePowder, 1, 4));
+         }
       }
    }
 
@@ -25,7 +29,7 @@ public class EntityRevenantTrans extends EntityZombie {
    protected void addRandomEquipment() {
       this.addRandomWeapon();
       int day = this.getWorld().getDayOfOverworld();
-      if (day < 128) {
+      if (day < 64) {
          this.setBoots((new ItemStack(Item.bootsRustedIron)).randomizeForMob(this, true));
          this.setLeggings((new ItemStack(Item.legsRustedIron)).randomizeForMob(this, true));
          this.setCuirass((new ItemStack(Item.plateRustedIron)).randomizeForMob(this, true));
@@ -40,10 +44,10 @@ public class EntityRevenantTrans extends EntityZombie {
       super.applyEntityAttributes();
       int day = this.getWorld() != null ? this.getWorld().getDayOfOverworld() : 0;
       this.setEntityAttribute(GenericAttributes.followRange, 64.0D);
-      this.setEntityAttribute(GenericAttributes.movementSpeed, 0.2800000011920929D);
-      this.setEntityAttribute(GenericAttributes.attackDamage, 12.0D + day / 12d);
       this.setEntityAttribute(EntityZombie.field_110186_bp, this.getRNG().nextDouble() * 0.10000000149011612D);
-      this.setEntityAttribute(GenericAttributes.maxHealth, 35.0D + day / 8D);
+      this.setEntityAttribute(GenericAttributes.attackDamage, (12) * Constant.getEliteMobModifier("Damage",day));
+      this.setEntityAttribute(GenericAttributes.maxHealth, (35) * Constant.getEliteMobModifier("Health",day));
+      this.setEntityAttribute(GenericAttributes.movementSpeed, 0.27D * Constant.getEliteMobModifier("Speed",day));
    }
 
    protected void enchantEquipment(ItemStack item_stack) {

@@ -75,7 +75,7 @@ public abstract class EntityLivestockTrans extends EntityAnimalTrans {
    private void setWater(float water) {
    }
 
-   @Inject(method = "onLivingUpdate",at = @At(value = "FIELD",shift = At.Shift.AFTER,target = "Lnet/minecraft/World;isRemote:Z",ordinal = 1))
+   @Inject(method = "onLivingUpdate",at = @At(value = "FIELD",shift = At.Shift.AFTER,target = "Lnet/minecraft/World;isRemote:Z",ordinal = 0))
    private void injectIllnessToDeath(CallbackInfo c){
       if (!this.isWell()) {
          ++this.illnessToDeathCounter;

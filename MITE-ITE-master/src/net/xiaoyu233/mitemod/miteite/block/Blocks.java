@@ -88,6 +88,11 @@ public class Blocks extends Block{
 
     public static final Block stairsMaple = (new BlockStairs1(273, planks, 4)).setUnlocalizedName("stairsMaple");
     public static final Block stairsCherry = (new BlockStairs1(274, planks, 5)).setUnlocalizedName("stairsCherry");
+    public static final Block blockColorfulWall = new BlockColorfulWall(286, blockColorful, 0);
+    public static final BlockSlabGroup4 blockColorfulSingleSlabGroup1 = (BlockSlabGroup4) new BlockSlabGroup4(283, Material.stone).setStepSound_(soundStoneFootstep);
+    public static final BlockColorfulDoubleSlab blockColorfulDoubleSlabGroup1 = (BlockColorfulDoubleSlab) new BlockColorfulDoubleSlab(282, blockColorfulSingleSlabGroup1).setStepSound_(soundStoneFootstep);
+    public static final BlockSlabGroup5 blockColorfulSingleSlabGroup2 = (BlockSlabGroup5) new BlockSlabGroup5(285, Material.stone).setStepSound_(soundStoneFootstep);
+    public static final BlockColorfulDoubleSlab blockColorfulDoubleSlabGroup2 = (BlockColorfulDoubleSlab) new BlockColorfulDoubleSlab(284, blockColorfulSingleSlabGroup2).setStepSound_(soundStoneFootstep);
 
     static {
         try {
@@ -130,6 +135,7 @@ public class Blocks extends Block{
         block.setResourceLocation(resourceLocation);
     }
 
+
     public static void registerBlocks(){
 
         registerAnvil(anvilVibranium,"anvil_vibranium");
@@ -149,6 +155,7 @@ public class Blocks extends Block{
         registerItemBlock(blockColorful, "colorful");
         registerItemBlock(blockColorfulBrick, "colorful_brick");
         registerItemBlock(blockLantern, "block_lantern");
+        registerItemBlock(blockColorfulWall, "colorful_wall");
 
         registerItemBlock(blockStairsColorful0, "colorful_stair");
         registerItemBlock(blockStairsColorful1, "colorful_stair");
@@ -186,7 +193,8 @@ public class Blocks extends Block{
         registerItemBlock(leaves1, (new ItemLeaves1(leaves1)).setUnlocalizedName("leaves1"));
         registerItemBlock(sapling1, (new ItemMultiTexture(sapling1, BlockSapling1.WOOD_TYPES)).setUnlocalizedName("sapling1"));
     }
-
+    private static void registerItemBlock(Item blockColorfulSlab1, String colorfulSlab) {
+    }
     private static void registerItemBlock(Block block,String resourceLocation){
         block.setUnlocalizedName(resourceLocation);
         block.setResourceLocation(resourceLocation);
@@ -239,9 +247,9 @@ public class Blocks extends Block{
                 "ABA",
                 "BCB",
                 "ABA",
-                'A', Blocks.obsidian,
+                'A', Item.enderPearl,
                 'B', Items.diamond,
-                'C', Items.enderPearl);
+                'C', Items.voucherSpider);
         register.registerShapedRecipe(new ItemStack(anvilVibranium),true,
                 "AVA",
                 " I ",

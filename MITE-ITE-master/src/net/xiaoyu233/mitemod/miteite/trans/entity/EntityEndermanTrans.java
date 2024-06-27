@@ -29,16 +29,16 @@ public class EntityEndermanTrans extends EntityMonster {
    @Overwrite
    protected void applyEntityAttributes() {
       super.applyEntityAttributes();
-      int day = this.getWorld() != null ? this.getWorld().getDayOfOverworld() : 0;
-      this.getEntityAttribute(GenericAttributes.maxHealth).setAttribute(100.0D + day / 20D);
-      this.getEntityAttribute(GenericAttributes.movementSpeed).setAttribute(0.3D);
-      this.getEntityAttribute(GenericAttributes.attackDamage).setAttribute(30.0D + day / 20D);
+      int day = this.worldObj.getDayOfOverworld();
+      this.setEntityAttribute(GenericAttributes.attackDamage, 18 * net.xiaoyu233.mitemod.miteite.util.Constant.getEliteMobModifier("Damage",day));
+      this.setEntityAttribute(GenericAttributes.maxHealth, 60 * net.xiaoyu233.mitemod.miteite.util.Constant.getEliteMobModifier("Health",day));
+      this.setEntityAttribute(GenericAttributes.movementSpeed, 0.27D * net.xiaoyu233.mitemod.miteite.util.Constant.getEliteMobModifier("Speed",day));
    }
 
    @Overwrite
    protected void dropFewItems(boolean recently_hit_by_player, DamageSource damage_source) {
       if (recently_hit_by_player){
-         this.dropItem(Items.voucherWitch);
+         this.dropItem(Items.voucherPhase);
       }
       int item_id = this.getDropItemId();
       if (item_id > 0) {
@@ -54,7 +54,7 @@ public class EntityEndermanTrans extends EntityMonster {
       this.worldObj.setEntityState(this, EnumEntityState.golem_throw);
       EntityDamageResult result = target.attackEntityFrom(new Damage(DamageSource.causeMobDamage(this), (float)this.getEntityAttributeValue(GenericAttributes.attackDamage)));
       if (result != null && result.entityWasKnockedBack()) {
-         target.motionY += 0.6D;
+         target.motionY += 0.2D;
       }
 
       return result;

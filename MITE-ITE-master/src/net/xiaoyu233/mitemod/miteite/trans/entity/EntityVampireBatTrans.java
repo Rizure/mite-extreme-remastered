@@ -11,25 +11,23 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(EntityVampireBat.class)
 public class EntityVampireBatTrans extends EntityBat {
-   @Shadow
-   private int attack_cooldown;
-   @Shadow
-   private int feed_cooldown;
 
    public EntityVampireBatTrans(World par1World) {
       super(par1World);
    }
 
-   @Inject(locals = LocalCapture.CAPTURE_FAILHARD,
-           method = "collideWithEntity",
-           at = @At(value = "INVOKE",
-               shift = At.Shift.AFTER,
-               target = "Lnet/minecraft/EntityLiving;heal(FLnet/minecraft/EnumEntityFX;)V"))
-   private void injectAttack(Entity targeEntity,CallbackInfo c,EntityDamageResult result){
+   @Inject(method = "collideWithEntity(Lnet/minecraft/Entity;)V",
+           at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/EntityDamageResult;entityLostHealth()Z"))
+   private void injectAttack(Entity entity,CallbackInfo callbackInfo){
       if (this.rand.nextBoolean() && Configs.wenscConfig.batPoisonAttack.ConfigValue) {
-         result.entity.getAsEntityLivingBase().addPotionEffect(new MobEffect(MobEffectList.poison.id, 480, 0));
+         entity.getAsEntityLivingBase().addPotionEffect(new MobEffect(MobEffectList.poison.id, 480, 0));
       }
    }
+//   @Inject(method = "collideWithEntity",
+//           at = @At(value = "RETURN"))
+//   private void injectNothing(Entity entity,CallbackInfo callbackInfo){
+//      System.out.println("bee");
+//   }
 
 //   @Override
 //   protected void collideWithEntity(Entity entity) {

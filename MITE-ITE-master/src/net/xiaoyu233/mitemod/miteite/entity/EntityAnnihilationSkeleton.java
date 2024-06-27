@@ -4,6 +4,7 @@ import net.minecraft.*;
 import net.xiaoyu233.fml.util.Utils;
 import net.xiaoyu233.mitemod.miteite.item.Items;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
+import net.xiaoyu233.mitemod.miteite.util.Constant;
 
 public class EntityAnnihilationSkeleton extends EntitySkeleton {
     private boolean attackedByPlayer;
@@ -11,7 +12,7 @@ public class EntityAnnihilationSkeleton extends EntitySkeleton {
     private boolean haveTryToSpawnExchanger = false;
     private final ItemStack weapon = Utils.safeMake(()-> {
         ItemStack itemStack = new ItemStack(Items.VIBRANIUM_DAGGER);
-        itemStack.addEnchantment(Enchantment.knockback,5);
+        itemStack.addEnchantment(Enchantment.knockback,2);
         return itemStack;
     }, null);
     private int particleCount;
@@ -91,13 +92,13 @@ public class EntityAnnihilationSkeleton extends EntitySkeleton {
             this.generateRandomParticles(EnumParticle.largesmoke);
             this.generateRandomParticles(EnumParticle.largesmoke);
         }
-        if(Configs.wenscConfig.isSpawnExchanger.ConfigValue) {
+        if(Configs.wenscConfig.isSpawnDragger.ConfigValue) {
             if (!this.getWorld().isRemote) {
                 EntityLiving target = this.getAttackTarget();
                 if (target instanceof EntityPlayer) {
                     if (!haveTryToSpawnExchanger) {
                         if (rand.nextInt(50) == 0) {
-                            EntityExchanger entityExchanger = new EntityExchanger(this.worldObj);
+                            EntityDragger entityExchanger = new EntityDragger(this.worldObj);
                             entityExchanger.setPosition(this.posX, this.posY, this.posZ);
                             entityExchanger.refreshDespawnCounter(-9600);
                             this.worldObj.spawnEntityInWorld(entityExchanger);
@@ -146,16 +147,20 @@ public class EntityAnnihilationSkeleton extends EntitySkeleton {
     public boolean handleLavaMovement() {
         return false;
     }
-
+    @Override
+    public EntityDamageResult attackEntityAsMob(Entity target) {
+        target.getAsEntityLivingBase().attackEntityFrom(new Damage(DamageSource.magic, ((EntityLiving) target).getMaxHealth() / 4));
+        return super.attackEntityAsMob(target);
+    }
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         boolean boneLordTweak = Configs.wenscConfig.boneLordTweak.ConfigValue;
         int day = this.getWorld() != null ? this.getWorld().getDayOfOverworld() : 0;
         this.setEntityAttribute(GenericAttributes.followRange, 48.0D);
-        this.setEntityAttribute(GenericAttributes.movementSpeed, 0.30000001192092896D);
-        this.setEntityAttribute(GenericAttributes.attackDamage, (boneLordTweak ? 13D + (double)day / 5D : 16.0D) * 3D);
-        this.setEntityAttribute(GenericAttributes.maxHealth,30);
+        this.setEntityAttribute(GenericAttributes.attackDamage, (boneLordTweak ? 5 : 3) * Constant.getEliteMobModifier("Damage",day));
+        this.setEntityAttribute(GenericAttributes.maxHealth, (boneLordTweak ? 60 : 30) * Constant.getEliteMobModifier("Health",day));
+        this.setEntityAttribute(GenericAttributes.movementSpeed, 0.3D * Constant.getEliteMobModifier("Speed",day));
     }
 
     @Override
@@ -175,7 +180,11 @@ public class EntityAnnihilationSkeleton extends EntitySkeleton {
     @Override
     protected void dropFewItems(boolean recently_hit_by_player, DamageSource damage_source) {
         if (recently_hit_by_player){
-            this.dropItem(Items.voucherAnnihilationSkeleton);
+            if(this.rand.nextInt(2) == 0){
+                this.dropItem(Items.voucherStrike);
+            }else {
+                this.dropItem(Items.voucherMagic);
+            }
             this.dropItemStack(new ItemStack(Items.VIBRANIUM_NUGGET,2));
             this.dropItemStack(new ItemStack(Item.diamond,2));
         }
@@ -199,6 +208,7 @@ public class EntityAnnihilationSkeleton extends EntitySkeleton {
 
     @Override
     protected void addRandomEquipment() {
+        super.addRandomEquipment();
         this.addRandomWeapon();
     }
 

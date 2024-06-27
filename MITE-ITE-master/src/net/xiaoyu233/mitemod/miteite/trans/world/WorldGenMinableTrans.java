@@ -2,6 +2,7 @@ package net.xiaoyu233.mitemod.miteite.trans.world;
 
 import net.minecraft.*;
 import net.xiaoyu233.mitemod.miteite.block.Blocks;
+import net.xiaoyu233.mitemod.miteite.util.Configs;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -114,7 +115,7 @@ public class WorldGenMinableTrans {
 //         if (block == Block.oreAdamantium){
 //            return 130;
 //         }
-         return 140;
+         return Configs.wenscConfig.underworldMantleBlockOffset.ConfigValue + 30;
       } else if (block == Block.dirt) {
          return 32;
       } else if (block == Block.gravel) {

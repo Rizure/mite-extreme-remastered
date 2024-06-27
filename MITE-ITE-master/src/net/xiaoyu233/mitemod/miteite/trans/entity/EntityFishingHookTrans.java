@@ -3,6 +3,7 @@ package net.xiaoyu233.mitemod.miteite.trans.entity;
 import net.minecraft.*;
 import net.xiaoyu233.mitemod.miteite.achievement.Achievements;
 import net.xiaoyu233.mitemod.miteite.item.Items;
+import net.xiaoyu233.mitemod.miteite.item.enchantment.Enchantments;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -44,11 +45,11 @@ public abstract class EntityFishingHookTrans extends Entity {
       z = MathHelper.floor_double(this.posZ);
       long count = 0L;
 
-      Item[] fishTypeListStage0 = new Item[]{Item.appleRed, Item.potato, Item.banana, Item.carrot, Item.orange, Item.onion, Item.melon, Item.pumpkinSeeds};
+      Item[] fishTypeListStage0 = new Item[]{Item.bootsLeather, Item.arrowRustedIron, Item.silverNugget, Item.goldNugget, Item.leather, Item.getItem(Block.waterlily), Item.rottenFlesh, Item.bone, Item.stick, Item.silk, Item.sinew, Item.bowlWater, Item.copperNugget, Item.coinCopper, Item.chainRustedIron, Item.getItem(Block.cactus), Item.getItem(Block.planks), Item.getItem(Block.sandStone), Item.getItem(Block.planks)};
 
-      Item[] fishTypeListStage1 = new Item[]{Item.copperNugget, Item.silverNugget, Item.goldNugget, Item.ironNugget};
+      Item[] fishTypeListStage1 = new Item[]{Item.coinSilver, Item.coinGold, Item.ironNugget, Item.ingotIron, Item.ingotGold, Item.ingotSilver, Item.bow, Item.ancientMetalNugget, Item.mithrilNugget, Item.adamantiumNugget, Item.ingotIron, Item.appleGold, Items.powder_liquid, Item.carrot, Item.potato, Item.onion};
 
-      Item[] fishTypeListStage2 = new Item[]{Item.mithrilNugget, Item.ancientMetalNugget, Item.adamantiumNugget, Items.VIBRANIUM_NUGGET};
+      Item[] fishTypeListStage2 = new Item[]{Items.VIBRANIUM_NUGGET, Item.ingotMithril, Item.ingotAdamantium, Item.ingotAncientMetal, Item.coinMithril, Item.coinAncientMetal};
 
       int k;
       for( k = -16; k <= 16; ++k) {
@@ -61,34 +62,29 @@ public abstract class EntityFishingHookTrans extends Entity {
             }
          }
       }
-
-
-      if (this.rand.nextInt(3) == 0) {
-         if (this.rand.nextInt(16) == 0) {
-            angler.triggerAchievement(Achievements.fishFortune);
-            return Items.voucherFishing;
+      int fortune = EnchantmentManager.getEnchantmentLevel(Enchantments.enchantmentLuckOfTheSea.effectId, this.angler.getHeldItemStack());
+      this.angler.triggerAchievement(Achievements.fishFortune);
+      if (this.rand.nextInt(25) == 0) {
+         return Items.voucherFishing;
+      }
+      int outcome = this.rand.nextInt(100 + fortune * 25);
+      if (outcome > 100) {
+         if (outcome > 200) {
+            return fishTypeListStage2[this.rand.nextInt(fishTypeListStage2.length)];
          }
-
-         if(this.rand.nextInt(2) == 0) {
-            angler.triggerAchievement(Achievements.fishFortune);
-            return fishTypeListStage0[this.rand.nextInt(8)];
+         if (outcome > 150) {
+            return fishTypeListStage1[this.rand.nextInt(fishTypeListStage1.length)];
          }
-
-         if (this.rand.nextInt(2) == 0) {
-            angler.triggerAchievement(Achievements.fishFortune);
-            return fishTypeListStage1[this.rand.nextInt(4)];
+         return fishTypeListStage0[this.rand.nextInt(fishTypeListStage0.length)];
+      }
+      if (this.worldObj.getBiomeGenForCoords(x, z) == BiomeBase.ocean && count == 0L) {
+         if(this.rand.nextInt(10) == 0){
+            return Item.fishLargeRaw;
          }
-
-         if (this.rand.nextInt(2) == 0) {
-            angler.triggerAchievement(Achievements.fishFortune);
-            return fishTypeListStage2[this.rand.nextInt(4)];
+         if(this.rand.nextInt(10) == 0){
+            return fishTypeListStage0[this.rand.nextInt(fishTypeListStage0.length)];
          }
       }
-
-      if (this.worldObj.getBiomeGenForCoords(x, z) == BiomeBase.ocean && count == 0L && this.rand.nextInt(10) == 0) {
-         return Item.fishLargeRaw;
-      }
-
       return Item.fishRaw;
 //      if (Configs.wenscConfig.isOpenExtremeFishing.ConfigValue) {
 //

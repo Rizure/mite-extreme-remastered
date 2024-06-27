@@ -3,6 +3,7 @@ package net.xiaoyu233.mitemod.miteite.entity;
 import net.minecraft.*;
 import net.xiaoyu233.mitemod.miteite.item.Items;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
+import net.xiaoyu233.mitemod.miteite.util.Constant;
 
 import java.util.Random;
 import java.util.UUID;
@@ -156,7 +157,7 @@ public class EntityWanderingWitch extends EntityWitch {
                 int batCounts = this.maxBatsCount - this.aliveBatsCount;
 
                 for(int attempts = 0; attempts < batCounts; ++attempts) {
-                    EntityBat bat = rand.nextInt(10) > 8 ? new EntityNightwing(this.worldObj) : new EntityGiantVampireBat(this.worldObj);
+                    EntityBat bat = this.rand.nextInt(3) == 0 ? new EntityNightwing(this.worldObj) : this.rand.nextInt(3) == 0 ? new EntityGiantVampireBat(this.worldObj) : new EntityVampireBat(this.worldObj);
                     bat.addPotionEffect(new MobEffect(MobEffectList.damageBoost.id,Integer.MAX_VALUE,1));
                     bat.setSpawnedByWitch(true,this);
                     bat.setPosition(target_x,target_y,target_z);
@@ -190,8 +191,9 @@ public class EntityWanderingWitch extends EntityWitch {
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.setEntityAttribute(GenericAttributes.maxHealth,80d);
-        this.setEntityAttribute(GenericAttributes.movementSpeed,0.3d);
+        int day = this.worldObj.getDayOfOverworld();
+        this.setEntityAttribute(GenericAttributes.maxHealth,32d * Constant.getEliteMobModifier("Health",day));
+        this.setEntityAttribute(GenericAttributes.movementSpeed,0.27d);
     }
 
     @Override
@@ -203,10 +205,18 @@ public class EntityWanderingWitch extends EntityWitch {
 
     @Override
     protected void dropFewItems(boolean recently_hit_by_player, DamageSource damage_source) {
-        super.dropFewItems(recently_hit_by_player, damage_source);
-        this.dropItem(Items.voucherWitch);
-        this.dropItemStack(new ItemStack(Item.adamantiumNugget,rand.nextInt(3) + 1));
-        this.dropItemStack(new ItemStack(Item.netherStalkSeeds,4));
+        this.dropItem(Items.voucherMagic);
+        int day = this.getWorld().getDayOfOverworld();
+        int num_drops = this.rand.nextInt(5 + damage_source.getLootingModifier()) + Math.min(6,(day + 16)/ 32);
+        for(int i = 0;i< num_drops;i++){
+            if(this.rand.nextInt(4) == 0){
+                this.dropItemStack(new ItemStack(Item.adamantiumNugget,1));
+            }else {
+                this.dropItemStack(new ItemStack(Item.netherStalkSeeds,1));
+            }
+        }
+
+
     }
 
     @Override

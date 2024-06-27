@@ -13,7 +13,7 @@ public class ItemLavaInPipes extends Item {
     }
 
     public int getBurnTime(ItemStack item_stack) {
-        return 3200;
+        return 200;
     }
 
     public int getHeatLevel(ItemStack item_stack) {

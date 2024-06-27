@@ -4,17 +4,18 @@ import net.minecraft.*;
 import net.xiaoyu233.mitemod.miteite.block.Blocks;
 import net.xiaoyu233.mitemod.miteite.item.Items;
 
+import java.util.Objects;
 import java.util.Random;
 
 public class Constant {
     public static final double[] ENHANCE_FACTORS;
     public static final bjo icons_ite = new bjo("textures/gui/icons_ite.png");
-    public static final String MITE_ITE_VERSION = "v0.1.5.11";
+    public static final String MITE_ITE_VERSION = "v1.2";
     public static final int MITE_ITE_VER_NUM = 77;
     public static final bjo RES_VIBRANIUM_SINGLE = new bjo("textures/entity/chest/vibranium_single.png");
     public static int nextItemID = 2024;
     public static int nextBlockID = 160;
-    public static int nextEnchantmentID = 97;
+    public static int nextEnchantmentID = 96;
     public static int nextAchievementID = 136;
     public static ItemArmor[] HELMETS = null;
     public static ItemArmor[] CHESTPLATES = null;
@@ -24,6 +25,39 @@ public class Constant {
     public static ItemArmor[][] ARMORS = null;
     public static BlockBed [] bedBlockTypes= null;
     public static Random GARandom = new Random();
+    public static float getNormalMobModifier(String method,int day){
+        if(Objects.equals(method, "Health")){
+            return 1.0F + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 128.0F;
+        }else if(Objects.equals(method, "Damage")){
+            return 1.0F + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 256.0F;
+        }else if(Objects.equals(method, "Speed")){
+            return 1.0F + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 2048.0F;
+        }else {
+            return 1.0F;
+        }
+    }
+    public static float getEliteMobModifier(String method,int day){
+        if(Objects.equals(method, "Health")){
+            return 1.0F + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 96.0F;
+        }else if(Objects.equals(method, "Damage")){
+            return 1.0F + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 192.0F;
+        }else if(Objects.equals(method, "Speed")){
+            return 1.0F + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 2048.0F;
+        }else {
+            return 1.0F;
+        }
+    }
+    public static float getBossMobModifier(String method,int day){
+        if(Objects.equals(method, "Health")){
+            return 1.0F + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 80.0F;
+        }else if(Objects.equals(method, "Damage")){
+            return 1.0F + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 160.0F;
+        }else if(Objects.equals(method, "Speed")){
+            return 1.0F + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 2048.0F;
+        }else {
+            return 1.0F;
+        }
+    }
 
     static {
         ENHANCE_FACTORS = new double[Short.MAX_VALUE];
@@ -58,10 +92,10 @@ public class Constant {
     }
 
     public static void initItemArray() {
-        HELMETS = new ItemArmor[]{Item.helmetLeather, Item.helmetChainCopper, Item.helmetCopper, Item.helmetRustedIron, Item.helmetChainIron, Item.helmetIron, Item.helmetChainAncientMetal, Item.helmetAncientMetal, Item.helmetChainMithril, Item.helmetMithril, Item.helmetAdamantium, Items.VIBRANIUM_HELMET};
-        CHESTPLATES = new ItemArmor[]{Item.plateLeather, Item.plateChainCopper, Item.plateCopper, Item.plateRustedIron, Item.plateChainIron, Item.plateIron, Item.plateChainAncientMetal, Item.plateAncientMetal, Item.plateChainMithril, Item.plateMithril, Item.plateAdamantium, Items.VIBRANIUM_CHESTPLATE};
-        LEGGINGS = new ItemArmor[]{Item.legsLeather, Item.legsChainCopper, Item.legsCopper, Item.legsRustedIron, Item.legsChainIron, Item.legsIron, Item.legsChainAncientMetal, Item.legsAncientMetal, Item.legsChainMithril, Item.legsMithril, Item.legsAdamantium, Items.VIBRANIUM_LEGGINGS};
-        BOOTS = new ItemArmor[]{Item.bootsLeather, Item.bootsChainCopper, Item.bootsCopper, Item.bootsRustedIron, Item.bootsChainIron, Item.bootsIron, Item.bootsChainAncientMetal, Item.bootsAncientMetal, Item.bootsChainMithril, Item.bootsMithril, Item.bootsAdamantium, Items.VIBRANIUM_BOOTS};
+        HELMETS = new ItemArmor[]{Item.helmetLeather, Item.helmetChainCopper, Item.helmetChainIron, Item.helmetChainAncientMetal, Item.helmetRustedIron, Item.helmetCopper, Item.helmetIron, Item.helmetAncientMetal, Item.helmetChainMithril, Item.helmetMithril, Item.helmetAdamantium, Items.VIBRANIUM_HELMET};
+        CHESTPLATES = new ItemArmor[]{Item.plateLeather, Item.plateChainCopper, Item.plateChainIron, Item.plateChainAncientMetal, Item.plateRustedIron, Item.plateCopper, Item.plateIron, Item.plateAncientMetal, Item.plateChainMithril, Item.plateMithril, Item.plateAdamantium, Items.VIBRANIUM_CHESTPLATE};
+        LEGGINGS = new ItemArmor[]{Item.legsLeather, Item.legsChainCopper, Item.legsChainIron, Item.legsChainAncientMetal, Item.legsRustedIron, Item.legsCopper, Item.legsIron, Item.legsAncientMetal, Item.legsChainMithril, Item.legsMithril, Item.legsAdamantium, Items.VIBRANIUM_LEGGINGS};
+        BOOTS = new ItemArmor[]{Item.bootsLeather, Item.bootsChainCopper, Item.bootsChainIron, Item.bootsChainAncientMetal, Item.bootsRustedIron, Item.bootsCopper, Item.bootsIron, Item.bootsAncientMetal, Item.bootsChainMithril, Item.bootsMithril, Item.bootsAdamantium, Items.VIBRANIUM_BOOTS};
         ARMORS = new ItemArmor[][]{HELMETS, CHESTPLATES, LEGGINGS, BOOTS};
         SWORDS = new Item[]{Item.swordRustedIron, Item.swordIron, Items.clubIron, Item.swordAncientMetal,Item.swordMithril,Item.swordAdamantium,Items.VIBRANIUM_SWORD};
         bedBlockTypes = new BlockBed[] {Blocks.blackBed,

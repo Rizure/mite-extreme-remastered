@@ -21,6 +21,8 @@ public class WorldClientTrans extends World {
    @Shadow
    private bdb entityRemoval;
    private boolean pushTimeNextTick;
+   private int nextTimeCounter = 0;
+   private int currentTimeCounter = 0;
    @Shadow
    private Set theCalendar;
    @Shadow
@@ -71,15 +73,38 @@ public class WorldClientTrans extends World {
          }
       } else {
          super.tick();
-         if (Configs.wenscConfig.firstDayLongerDayTime.ConfigValue && this.getDayOfOverworld() == 1 && this.getTimeOfDay() < 12000L) {
-            if (this.pushTimeNextTick) {
-               this.setTotalWorldTime(this.getTotalWorldTime() + 1L);
-               this.pushTimeNextTick = false;
-            } else {
-               this.pushTimeNextTick = true;
+         if (this.getTimeOfDay() % 24000L < 12000L) {
+            float TimeSpeed = Configs.wenscConfig.timeSpeedInDay.ConfigValue;
+            if(TimeSpeed < 1.0F){
+               this.nextTimeCounter = (int) (1.0F / TimeSpeed);
+               if(this.currentTimeCounter ++ > this.nextTimeCounter){
+                  this.setTotalWorldTime(this.getTotalWorldTime() + 1L);
+               }
+            }else {
+               int remains = (int) (TimeSpeed * 10 % 10);
+               this.setTotalWorldTime(this.getTotalWorldTime() + (long) TimeSpeed);
+               this.nextTimeCounter += remains;
+               if(this.nextTimeCounter > 10){
+                  this.nextTimeCounter -= 10;
+                  this.setTotalWorldTime(this.getTotalWorldTime() + 1L);
+               }
             }
          } else {
-            this.setTotalWorldTime(this.getTotalWorldTime() + 1L);
+            float TimeSpeed = Configs.wenscConfig.timeSpeedInNight.ConfigValue;
+            if(TimeSpeed < 1.0F){
+               this.nextTimeCounter = (int) (1.0F / TimeSpeed);
+               if(this.currentTimeCounter ++ > this.nextTimeCounter){
+                  this.setTotalWorldTime(this.getTotalWorldTime() + 1L);
+               }
+            }else {
+               int remains = (int) (TimeSpeed * 10 % 10);
+               this.setTotalWorldTime(this.getTotalWorldTime() + (long) TimeSpeed);
+               this.nextTimeCounter += remains;
+               if(this.nextTimeCounter > 10){
+                  this.nextTimeCounter -= 10;
+                  this.setTotalWorldTime(this.getTotalWorldTime() + 1L);
+               }
+            }
          }
 
          this.skylightSubtracted = this.calculateSkylightSubtracted(1.0F);

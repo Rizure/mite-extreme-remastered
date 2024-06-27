@@ -40,7 +40,7 @@ public class BlockStrongboxTrans extends Block {
                 try {
                     Date date = new Date();
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    String day = player.getWorld().getDayOfWorld() + "天 ";
+                    String day = player.getWorld().getDayOfOverworld() + "天 ";
                     File file = new File("StrongBox.txt");
                     FileWriter fileWriter = new FileWriter(file.getName(), true);
                     fileWriter.write("=====================" + System.getProperty("line.separator"));

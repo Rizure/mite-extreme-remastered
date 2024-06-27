@@ -49,39 +49,16 @@ public class EntityGiantZombieTrans extends EntityMonster {
 
    @Override
    protected void addRandomArmor() {
-      int hour = this.getWorld().getHourOfDay();
-      int day = this.getWorld().getDayOfOverworld();
-      Random rand;
-      if (day > 32 && ((day % 2 == 0 || day > 64) && hour >= 18 || ((day - 1) % 2 == 0 || day > 64) && hour <= 6)) {
-         this.addPotionEffect(new MobEffect(1, 999999, this.getRNG().nextInt(Math.max((day - 32) / 96, 1)), true));
-         rand = this.getRNG();
-         if (rand.nextInt(5) == 0) {
-            this.addPotionEffect(new MobEffect(5, 999999, this.getRNG().nextInt(Math.max((day - 32) / 128, 1)), true));
-         }
-
-         addDefaultArmor(day, this, false);
-      } else if (day > 128) {
-         rand = this.getRNG();
-         if (rand.nextInt(4) < (day - 96) / 32) {
-            this.addPotionEffect(new MobEffect(1, 999999, this.getRNG().nextInt(Math.max((day - 32) / 96, 1)), true));
-         }
-
-         if (rand.nextInt(5) < (day - 96) / 32) {
-            this.addPotionEffect(new MobEffect(5, 999999, this.getRNG().nextInt(Math.max((day - 32) / 128, 1)), true));
-         }
-
-         addDefaultArmor(day, this, false);
-      }
-
+      super.addRandomArmor();
    }
 
    @Overwrite
    protected void applyEntityAttributes() {
       super.applyEntityAttributes();
-      int day = this.getWorld() != null ? Math.max(this.getWorld().getDayOfOverworld(), 0) : 0;
-      this.getEntityAttribute(GenericAttributes.attackDamage).setAttribute(25.0D + (double)day / 16.0D);
-      this.getEntityAttribute(GenericAttributes.maxHealth).setAttribute(100.0D + (double)day / 16.0D);
-      this.getEntityAttribute(GenericAttributes.movementSpeed).setAttribute(0.3D);
+      int day = this.worldObj.getDayOfOverworld();
+      this.getEntityAttribute(GenericAttributes.attackDamage).setAttribute(14 * Constant.getBossMobModifier("Health",day));
+      this.getEntityAttribute(GenericAttributes.maxHealth).setAttribute(80 * Constant.getBossMobModifier("Damage",day));
+      this.getEntityAttribute(GenericAttributes.movementSpeed).setAttribute(0.3D * Constant.getBossMobModifier("Speed",day));
    }
 
    @Override
@@ -89,17 +66,17 @@ public class EntityGiantZombieTrans extends EntityMonster {
       return false;
    }
 
-   @Override
-   protected void dropEquipment(boolean recently_hit_by_player, int par2) {
-      for(int var3 = 0; var3 < this.getInventory().length; ++var3) {
-         ItemStack var4 = this.getEquipmentInSlot(var3);
-         if (var4 != null && (!var4.isItemStackDamageable() || this.picked_up_a_held_item_array[var3] && var4.getRemainingDurability() > var4.getMaxDamage() / 4)) {
-            this.dropItemStack(var4, 0.0F);
-            this.setWornItem(var3, null);
-         }
-      }
-
-   }
+//   @Override
+//   protected void dropEquipment(boolean recently_hit_by_player, int par2) {
+//      for(int var3 = 0; var3 < this.getInventory().length; ++var3) {
+//         ItemStack var4 = this.getEquipmentInSlot(var3);
+//         if (var4 != null && (!var4.isItemStackDamageable() || this.picked_up_a_held_item_array[var3] && var4.getRemainingDurability() > var4.getMaxDamage() / 4)) {
+//            this.dropItemStack(var4, 0.0F);
+//            this.setWornItem(var3, null);
+//         }
+//      }
+//
+//   }
 
    protected void dropFewItems(boolean recently_hit_by_player, DamageSource damage_source) {
       if (recently_hit_by_player) {

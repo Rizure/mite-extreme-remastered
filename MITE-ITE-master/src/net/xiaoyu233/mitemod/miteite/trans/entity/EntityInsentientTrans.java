@@ -6,6 +6,7 @@ import net.xiaoyu233.mitemod.miteite.item.ToolModifierTypes;
 import net.xiaoyu233.mitemod.miteite.item.enchantment.Enchantments;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
 import net.xiaoyu233.mitemod.miteite.util.ReflectHelper;
+import org.lwjgl.Sys;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -178,10 +179,10 @@ public abstract class EntityInsentientTrans extends EntityLiving {
          ItemStack stack = attacker.getHeldItemStack();
          if (stack != null) {
             Item item = stack.getItem();
-            if (attacker instanceof EntityPlayer && (item instanceof ItemSword || item instanceof ItemWarHammer || item instanceof ItemAxe || item instanceof ItemCudgel)) {
+            if (attacker instanceof EntityPlayer && (item instanceof ItemSword || item instanceof ItemAxe || item instanceof ItemCudgel || item instanceof ItemPickaxe)) {
                int amp = 1;
-               if (item instanceof ItemAxe && dyCast(this) instanceof EntityEarthElemental){
-                  amp = 10;
+               if (dyCast(this) instanceof EntityEarthElemental){
+                  amp = 2;
                }
                if (!item.isMaxToolLevel(stack)) {
                   if (item.isWeapon(item) || amp != 1) {
@@ -190,10 +191,31 @@ public abstract class EntityInsentientTrans extends EntityLiving {
                      item.addExpForTool(stack, (EntityPlayer) attacker, 1);
                   }
                }
-
+               boolean performDiscord = ToolModifierTypes.DISCORD.getModifierLevel(stack.getTagCompound()) != 0;
+               float discordLvl = ToolModifierTypes.DISCORD.getModifierValue(stack.getTagCompound());
                float slowMdfLvl = ToolModifierTypes.SLOWDOWN_MODIFIER.getModifierValue(stack.getTagCompound());
+               float witherLvl = ToolModifierTypes.APOCALYPSE.getModifierValue(stack.getTagCompound());
                if (result.entity instanceof EntityLiving && slowMdfLvl >= 1.0F) {
-                  ((EntityLiving)result.entity).addPotionEffect(new MobEffect(2, (int)(slowMdfLvl * 20.0F), (int)(slowMdfLvl / 2.0F)));
+                  ((EntityLiving)result.entity).addPotionEffect(new MobEffect(MobEffectList.moveSlowdown.id, (int)(slowMdfLvl * 20.0F), (int)(slowMdfLvl / 2.0F)));
+               }
+               if (result.entity instanceof EntityLiving && witherLvl >= 1.0F) {
+                  ((EntityLiving)result.entity).addPotionEffect(new MobEffect(MobEffectList.wither.id, (int)(witherLvl * 40.0F), (int)(witherLvl / 3.0F)));
+               }
+               if (result.entity instanceof EntityInsentient && performDiscord){
+                  List <Entity>targets  = result.entity.getNearbyEntities(discordLvl, discordLvl);
+                  for(int i = 0; i < targets.size() ; i++){
+                     EntityMonster entityMonster = targets.get(i) instanceof EntityMonster ? (EntityMonster) targets.get(i) : null;
+                     if(entityMonster != null) {
+                        entityMonster.setRevengeTarget(this);
+                     }
+                  }
+               }
+               if(attacker.getRNG().nextFloat() < ToolModifierTypes.BLESS_OF_NATURE.getModifierValue(stack.getTagCompound())){
+                  attacker.getAsPlayer().getFoodStats().addSatiation(2);
+                  attacker.getAsPlayer().getFoodStats().addNutrition(1);
+                  if(attacker.getRNG().nextFloat() < ToolModifierTypes.BLESS_OF_NATURE.getModifierValue(stack.getTagCompound())){
+                     attacker.getAsPlayer().heal(1);
+                  }
                }
             }
          }
@@ -216,8 +238,8 @@ public abstract class EntityInsentientTrans extends EntityLiving {
                      Integer time = this.playerSteppedCountMap.get(responsibleEntity);
                      damage.setAmount((float) (damage.getAmount() +
                              //Increase per lvl: enchantment + player base
-                             (time * EnchantmentManager.getEnchantmentLevel(Enchantments.CONQUEROR,itemAttackedWith) * Configs.wenscConfig.conquerorDamageBoostPerLvl.ConfigValue) +
-                             (Math.min(max, time * Math.max(0,player.getExperienceLevel()) * Configs.wenscConfig.steppedPlayerDamageIncreasePerLvl.ConfigValue))));
+                             (time * EnchantmentManager.getEnchantmentLevel(Enchantments.CONQUEROR,itemAttackedWith) * 2) +
+                             (Math.min(max, time * Math.max(0,player.getExperienceLevel()) * 0.1))));
                      this.playerSteppedCountMap.put(player, time + 1);
                   } else {
                      this.playerSteppedCountMap.put(player, 1);

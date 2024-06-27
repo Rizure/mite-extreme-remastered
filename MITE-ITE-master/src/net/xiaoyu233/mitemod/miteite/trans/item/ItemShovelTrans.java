@@ -10,6 +10,6 @@ public class ItemShovelTrans extends ItemToolTrans{
     @Override
     @SoftOverride
     protected int getExpForBlockBreak(BlockBreakInfo blockBreakInfo) {
-        return 3;
+        return 5;
     }
 }

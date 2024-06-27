@@ -10,7 +10,7 @@ public interface IUpgradableItem {
     boolean isMaxToolLevel(ItemStack itemStack);
     int getMaxToolLevel(ItemStack itemStack);
     default float getEquipmentExpBounce(@Nonnull ItemStack itemStack){
-        return (0.05f + itemStack.getForgingGrade() * 0.05f) * itemStack.getForgingGrade() / 2;
+        return (0.25f + itemStack.getForgingGrade() * 0.15f) * itemStack.getForgingGrade() / 4.0F;
     }
 
     void addExpForTool(ItemStack stack, EntityPlayer player, int exp);

@@ -1,9 +1,7 @@
 package net.xiaoyu233.mitemod.miteite.trans;
 
-import net.minecraft.EntityArachnid;
-import net.minecraft.EntityMonster;
-import net.minecraft.GenericAttributes;
-import net.minecraft.World;
+import net.minecraft.*;
+import net.xiaoyu233.mitemod.miteite.item.Items;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
@@ -20,5 +18,15 @@ public class EntityArachnidTrans extends EntityMonster {
         this.setEntityAttribute(GenericAttributes.followRange, 28.0D);
         this.setEntityAttribute(GenericAttributes.movementSpeed, 1.0D);
         this.setEntityAttribute(GenericAttributes.attackDamage, 6.0D);
+    }
+    @Override
+    public void onDeath(DamageSource damageSource){
+        super.onDeath(damageSource);
+        Entity player = damageSource.getResponsibleEntity();
+        if(player instanceof EntityPlayer){
+            if(this.isPotionActive(MobEffectList.moveSpeed)){
+                this.dropItem(Items.powder_wind);
+            }
+        }
     }
 }

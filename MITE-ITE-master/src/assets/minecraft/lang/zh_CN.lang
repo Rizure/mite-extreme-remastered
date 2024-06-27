@@ -76,17 +76,17 @@ achievement.vibraniumFurnace.desc=制作一个振金熔炉(它可以把煤炭变
 achievement.openShop=打开商店
 achievement.openShop.desc=按V可以打开商店出售或购买物品
 achievement.rideBat=我会飞了
-achievement.rideBat.desc=空手对蝙蝠右键可以骑乘
+achievement.rideBat.desc=骑蝙蝠！？
 achievement.fishFortune=摸鱼开始
-achievement.fishFortune.desc=钓鱼可以获得各种种植物以及金属粒
-achievement.spawnBlock=杀不死的小强
-achievement.spawnBlock.desc=无论以何种死法，都会带你复活重生
-achievement.gemSettingBlock=宝石之路
-achievement.gemSettingBlock.desc=可以给装备或者工具镶嵌对应宝石
+achievement.fishFortune.desc=我需要海之眷顾！重复一遍！我需要海之眷顾！
+achievement.spawnBlock=转瞬即逝
+achievement.spawnBlock.desc=就当无事发生就好，大概
+achievement.gemSettingBlock=矿物在燃烧！
+achievement.gemSettingBlock.desc=它值得吗？
 achievement.ringKillerCopper=刮痧之刃
-achievement.ringKillerCopper.desc=会自动帮你攻击周边怪物，但是伤害不高
-achievement.itemDynamicCoreIron=不再恐惧黑暗
-achievement.itemDynamicCoreIron.desc=随着品质升级，提供不同亮度的夜视效果
+achievement.ringKillerCopper.desc=真的……刮痧吗？
+achievement.itemDynamicCoreIron=无惧黑暗
+achievement.itemDynamicCoreIron.desc=Gamma！OUT！
 achievement.killZombieBoss=立于不败之地
 achievement.killZombieBoss.desc=BOSS会掉落各种附魔书以及钻石
 
@@ -101,6 +101,8 @@ enchantment.beheading=斩首
 enchantment.conqueror=征服者
 enchantment.fixed=固定
 enchantment.chain=连锁
+enchantment.phasedefend=相位反制
+enchantment.luckOfTheSea=海之眷顾
 
 entity.EntityZombieLord.name=僵尸领主
 entity.EntityAnnihilationSkeleton.name=湮灭骷髅
@@ -108,6 +110,10 @@ entity.EntityWanderingWitch.name=流浪女巫
 entity.EntityZombieDoor.name=僵尸盗贼
 entity.EntityExchanger.name=转移骷髅
 entity.EntityZombieBoss.name=僵尸BOSS
+entity.EntityClusterSpider.name=集群蜘蛛
+entity.EntitySpiderKing.name=国王蜘蛛
+entity.EntitySpiderQueen.name=蛛后
+entity.EntityDragger.name=拖曳骷髅
 
 gui.forgingTable.start=开始锻造
 gui.forgingTable.item_req=锻造需要
@@ -144,29 +150,45 @@ tile.gotcha.name=灵石
 tile.colorful.name=彩石
 tile.colorful_brick.name=彩石石砖
 tile.colorful_stair.name=彩石楼梯
+tile.colorful_wall.name=彩石栅栏
 tile.block_lantern.name=灯笼
 tile.block_spawn.name=复活传送阵
-item.stack_torch.name=一捆火把
+item.bunch_torch.name=一捆火把
+item.stack_torch.name=火把堆
 item.gem_blue.name=蓝宝石
 item.lava_in_pipes.name=管道岩浆
 
-item.dynamic_core_iron.name=铁光源
-item.dynamic_core_ancient_metal.name=远古金属光源
-item.dynamic_core_mithril.name=秘银光源
-item.dynamic_core_adamantium.name=艾德曼光源
-item.dynamic_core_vibranium.name=振金光源
+item.dynamic_core_iron.name=铁夜视饰品
+item.dynamic_core_ancient_metal.name=远古金属夜视饰品
+item.dynamic_core_mithril.name=秘银夜视饰品
+item.dynamic_core_adamantium.name=艾德曼夜视饰品
+item.dynamic_core_vibranium.name=振金夜视饰品
+
+item.regeneration_core_iron.name=铁恢复饰品
+item.regeneration_core_ancient_metal.name=远古金属恢复饰品
+item.regeneration_core_mithril.name=秘银恢复饰品
+item.regeneration_core_adamantium.name=艾德曼恢复饰品
+item.regeneration_core_vibranium.name=振金恢复饰品
+
+item.guard_core_iron.name=铁护盾饰品
+item.guard_core_ancient_metal.name=远古金属护盾饰品
+item.guard_core_mithril.name=秘银护盾饰品
+item.guard_core_adamantium.name=艾德曼护盾饰品
+item.guard_core_vibranium.name=振金护盾饰品
 
 item.voucher_core.name=振金核心
-item.voucher_witch.name=流浪女巫,末影人凭证
-item.voucher_pigman.name=猪人凭证
-item.voucher_annihilation_skeleton.name=湮灭骷髅,远古骷髅领主凭证
-item.voucher_zombie_lord.name=僵尸领主凭证
-item.voucher_door.name=僵尸盗贼,地狱苦力怕凭证
-item.voucher_exchanger.name=转移骷髅凭证
-item.voucher_club_core.name=棒核心
-item.voucher_fishing.name=垂钓凭证
-item.voucher_planting.name=种植凭证
-item.voucher_villager.name=村民凭证
+item.voucher_witch.name=魔法凭证
+item.voucher_pigman.name=集群凭证
+item.voucher_annihilation_skeleton.name=闪击凭证
+item.voucher_zombie_lord.name=霸主凭证
+item.voucher_door.name=破坏凭证
+item.voucher_exchanger.name=空间凭证
+item.voucher_club_core.name=振金棒核心
+item.voucher_fishing.name=恬静凭证
+item.voucher_planting.name=丰饶凭证
+item.voucher_villager.name=交易凭证
+item.voucher_spider.name=繁育凭证
+item.voucher_guard.name=戍卫凭证
 
 tile.fancy_red.name=红钻矿石
 item.fancy_red.name=红钻
@@ -175,31 +197,37 @@ item.enhance_gem_phase1.damage.name=三角攻击宝石
 item.enhance_gem_phase1.protection.name=三角保护宝石
 item.enhance_gem_phase1.health.name=三角生命宝石
 item.enhance_gem_phase1.recover.name=三角恢复宝石
+item.enhance_gem_phase1.haste.name=三角急迫宝石
 
 item.enhance_gem_phase2.damage.name=四角攻击宝石
 item.enhance_gem_phase2.protection.name=四角保护宝石
 item.enhance_gem_phase2.health.name=四角生命宝石
 item.enhance_gem_phase2.recover.name=四角恢复宝石
+item.enhance_gem_phase2.haste.name=四角急迫宝石
 
 item.enhance_gem_phase3.damage.name=五角攻击宝石
 item.enhance_gem_phase3.protection.name=五角保护宝石
 item.enhance_gem_phase3.health.name=五角生命宝石
 item.enhance_gem_phase3.recover.name=五角恢复宝石
+item.enhance_gem_phase3.haste.name=五角急迫宝石
 
 item.enhance_gem_phase4.damage.name=六角攻击宝石
 item.enhance_gem_phase4.protection.name=六角保护宝石
 item.enhance_gem_phase4.health.name=六角生命宝石
 item.enhance_gem_phase4.recover.name=六角恢复宝石
+item.enhance_gem_phase4.haste.name=六角急迫宝石
 
 item.enhance_gem_phase5.damage.name=七角攻击宝石
 item.enhance_gem_phase5.protection.name=七角保护宝石
 item.enhance_gem_phase5.health.name=七角生命宝石
 item.enhance_gem_phase5.recover.name=七角恢复宝石
+item.enhance_gem_phase5.haste.name=七角急迫宝石
 
 item.enhance_gem_phase6.damage.name=八角攻击宝石
 item.enhance_gem_phase6.protection.name=八角保护宝石
 item.enhance_gem_phase6.health.name=八角生命宝石
 item.enhance_gem_phase6.recover.name=八角恢复宝石
+item.enhance_gem_phase6.haste.name=八角急迫宝石
 
 item.gem_shard_0.name=朴素四角宝石
 item.gem_shard_1.name=朴素五角宝石
@@ -215,12 +243,32 @@ item.tooltip.attributeGem.damage=基础攻击增加
 item.tooltip.attributeGem.protection=保护值增加
 item.tooltip.attributeGem.health=最大生命增加
 item.tooltip.attributeGem.recover=恢复速度增加
+item.tooltip.attributeGem.haste=挖掘效率增加
 
-item.tooltip.gem_shard_usage_0=用于合成四角宝石
-item.tooltip.gem_shard_usage_1=用于合成五宝石
-item.tooltip.gem_shard_usage_2=用于合成六角宝石
-item.tooltip.gem_shard_usage_3=用于合成七角宝石
-item.tooltip.gem_shard_usage_4=用于合成八角宝石
+item.tooltip.gem_shard_usage_0=用于合成高级宝石
+item.tooltip.gem_shard_usage_1=用于合成高级宝石
+item.tooltip.gem_shard_usage_2=用于合成高级宝石
+item.tooltip.gem_shard_usage_3=用于合成高级宝石
+item.tooltip.gem_shard_usage_4=用于合成高级宝石
+
+item.powder_jin.name=金の萃
+item.powder_mu.name=森の精
+item.powder_shui.name=月の雫
+item.powder_huo.name=炎の爆
+item.powder_tu.name=轻の尘
+item.powder_feng.name=风の速
+item.powder_lei.name=雷の劫
+item.powder_bing.name=冰の寒
+item.powder_an.name=深の暗
+
+item.drug_bg.name=辟谷丹
+item.drug_yd.name=妖丹
+item.drug_yd_b.name=忘尘丹
+item.cubesugar.name=方糖
+
+item.color_bag.name=彩色喵爪
+
+item.pants.name=蓝白内裤
 
 tile.gem_setting.name=宝石镶嵌台
 container.crafting.needsRemoveGems=请先移除宝石
@@ -238,6 +286,25 @@ tile.sapling1.cherry.name=樱花树树苗
 tile.wood.cherry.name=樱花树木板
 tile.slab.group2.cherry.name=樱花树木台阶
 tile.stairsCherry.name=樱花树木楼梯
+
+tile.slab.group4.name=彩石台阶
+tile.slab.group5.name=彩石台阶
+tile.slab.group4.black.name=彩石台阶
+tile.slab.group4.red.name=彩石台阶
+tile.slab.group4.green.name=彩石台阶
+tile.slab.group4.brown.name=彩石台阶
+tile.slab.group4.blue.name=彩石台阶
+tile.slab.group4.purple.name=彩石台阶
+tile.slab.group4.cyan.name=彩石台阶
+tile.slab.group4.light_gray.name=彩石台阶
+tile.slab.group5.gray.name=彩石台阶
+tile.slab.group5.pink.name=彩石台阶
+tile.slab.group5.lime.name=彩石台阶
+tile.slab.group5.yellow.name=彩石台阶
+tile.slab.group5.light_blue.name=彩石台阶
+tile.slab.group5.magenta.name=彩石台阶
+tile.slab.group5.orange.name=彩石台阶
+tile.slab.group5.white.name=彩石台阶
 
 container.shop=商店
 container.shop.money=余额:%s

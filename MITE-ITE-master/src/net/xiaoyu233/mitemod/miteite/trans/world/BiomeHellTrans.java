@@ -22,7 +22,9 @@ public class BiomeHellTrans extends BiomeBase {
       this.spawnableMonsterList.add(new BiomeMeta(EntityMagmaCube.class, 20, 4, 4));
       this.spawnableMonsterList.add(new BiomeMeta(EntityEarthElemental.class, 80, 1, 1));
       this.spawnableMonsterList.add(new BiomeMeta(EntityZombiePigmanLord.class, 1, 1, 1));
-      this.spawnableMonsterList.add(new BiomeMeta(EntityAnnihilationSkeleton.class, 1, 1, 1));
-      this.spawnableMonsterList.add(new BiomeMeta(EntityHellhound.class, 20, 1, 2));
+      this.spawnableMonsterList.add(new BiomeMeta(EntityAnnihilationSkeleton.class, 1, 1, 4));
+      this.spawnableMonsterList.add(new BiomeMeta(EntityHellhound.class, 20, 2, 4));
+      this.spawnableMonsterList.add(new BiomeMeta(EntityInfernalCreeper.class, 20, 2, 4));
+      this.spawnableMonsterList.add(new BiomeMeta(EntityDemonSpider.class, 20, 4, 4));
    }
 }

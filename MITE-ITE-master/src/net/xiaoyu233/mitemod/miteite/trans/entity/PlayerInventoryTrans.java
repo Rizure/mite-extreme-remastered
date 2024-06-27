@@ -37,9 +37,9 @@ public class PlayerInventoryTrans {
       result.applyArmorDamageResult(item_stack.tryDamageItem(damage_source, (int)Math.max((1.0F - durability_modifier) * (float)portion, 1.0F), this.player));
       Item item = item_stack.getItem();
       if (damage_source != null && damage_source.getResponsibleEntity() != null
-              && !item.isMaxToolLevel(item_stack)
+              && !item.isMaxToolLevel(item_stack) && this.player.hurtTime == 10
       ) {
-         item.addExpForTool(item_stack, this.player, (int) MathHelper.clamp_float(result.getAmountOfHealthLost(),1f,4f) * 2);
+         item.addExpForTool(item_stack, this.player, (int) Math.max(this.player.getTotalProtection(damage_source),result.getAmountOfHealthLost()));
       }
    }
 

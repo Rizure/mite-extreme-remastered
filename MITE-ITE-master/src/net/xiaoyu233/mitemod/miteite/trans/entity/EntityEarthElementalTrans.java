@@ -2,6 +2,7 @@ package net.xiaoyu233.mitemod.miteite.trans.entity;
 
 import net.minecraft.*;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
+import net.xiaoyu233.mitemod.miteite.util.Constant;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -58,12 +59,12 @@ public abstract class EntityEarthElementalTrans extends EntityAnimalWatcher {
       super.applyEntityAttributes();
       int day = this.getWorld() != null ? Math.max(this.getWorld().getDayOfOverworld(), 0) : 0;
       this.setEntityAttribute(GenericAttributes.followRange, 20.0D);
-      this.setEntityAttribute(GenericAttributes.movementSpeed, 0.20000000298023224D);
-      this.setEntityAttribute(GenericAttributes.attackDamage, 12.0D + (double)day / 16.0D);
+      this.setEntityAttribute(GenericAttributes.movementSpeed, 0.2D * Constant.getNormalMobModifier("Speed",day));
+      this.setEntityAttribute(GenericAttributes.attackDamage, 15.0D * Constant.getNormalMobModifier("Damage",day));
       if (this.getWorld().isTheNether()){
-         this.setEntityAttribute(GenericAttributes.maxHealth, 60.0D);
+         this.setEntityAttribute(GenericAttributes.maxHealth, 40.0D * Constant.getNormalMobModifier("Health",day));
       }else {
-         this.setEntityAttribute(GenericAttributes.maxHealth, 30.0D);
+         this.setEntityAttribute(GenericAttributes.maxHealth, 30.0D * Constant.getNormalMobModifier("Health",day));
       }
    }
 

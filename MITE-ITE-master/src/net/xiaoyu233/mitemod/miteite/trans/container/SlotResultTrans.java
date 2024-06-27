@@ -60,6 +60,8 @@ public class SlotResultTrans {
             this.thePlayer.triggerAchievement(AchievementList.obsidianFurnace);
          } else if (par1ItemStack.itemID == Block.furnaceNetherrackIdle.blockID) {
             this.thePlayer.triggerAchievement(AchievementList.netherrackFurnace);
+         } else if (par1ItemStack.itemID == Blocks.furnaceVibraniumIdle.blockID) {
+            this.thePlayer.triggerAchievement(Achievements.vibraniumFurnace);
          } else if (!(item instanceof ItemHoe) && !(item instanceof ItemMattock)) {
             if (par1ItemStack.itemID == Item.cake.itemID) {
                this.thePlayer.addStat(AchievementList.bakeCake, 1);

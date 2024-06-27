@@ -52,7 +52,7 @@ public abstract class EntityVillagerTrans extends EntityAgeable implements IMerc
    }
 
    private void initEnhanceBookList() {
-      villagerEnhanceSpecialBookList = new Enchantment[] {Enchantment.protection, Enchantment.sharpness,  Enchantment.fortune, Enchantment.harvesting, Enchantments.EXTEND, Enchantment.efficiency, Enchantment.vampiric, Enchantment.butchering, Enchantments.enchantmentFixed, Enchantments.enchantmentChain, Enchantments.EMERGENCY};
+      villagerEnhanceSpecialBookList = new Enchantment[] {Enchantments.enchantmentPhaseDefend, Enchantments.enchantmentLuckOfTheSea, Enchantment.protection, Enchantment.sharpness,  Enchantment.fortune, Enchantment.harvesting, Enchantments.EXTEND, Enchantment.efficiency, Enchantment.vampiric, Enchantment.butchering, Enchantments.enchantmentChain, Enchantments.EMERGENCY};
       villagerEnhanceSimpleBookList = Arrays.stream(Enchantment.enchantmentsBookList).filter(enhance -> (enhance.getNumLevels() > 1 && !Arrays.stream(villagerEnhanceSpecialBookList).anyMatch(spcialEnhance ->  spcialEnhance.effectId == enhance.effectId))).toArray();
    }
 
@@ -112,8 +112,8 @@ public abstract class EntityVillagerTrans extends EntityAgeable implements IMerc
          --this.timeUntilReset;
          if (this.timeUntilReset <= 0) {
             if (this.needsInitilization) {
-               if(rand.nextInt(50) == 0) {
-                   this.dropItemStack(new ItemStack(Items.voucherVillager, 1));
+               if(rand.nextInt(10) == 0) {
+                  this.dropItemStack(new ItemStack(Items.voucherVillager, 1));
                }
                if (this.buyingList.size() > 1) {
                   Iterator var3 = this.buyingList.iterator();

@@ -45,6 +45,16 @@ public class BlockOreTrans extends Block {
             if (info.wasHarvestedByPlayer() && info.getResponsiblePlayer().worldObj.areSkillsEnabled() && !info.getResponsiblePlayer().hasSkill(Skill.MINING)) {
                 return super.dropBlockAsEntityItem(info);
             }
+            EntityPlayer player = info.getResponsiblePlayer();
+            float melting = 0.0f;
+            boolean melt_enabled = false;
+            if (player.getHeldItemStack() != null) {
+                melting = (ToolModifierTypes.MELTING.getModifierValue(player.getHeldItemStack().getTagCompound()));
+                melting *= info.responsible_item_stack.getItemAsTool().getMaterialHarvestLevel() - this.getMinHarvestLevel(0);
+            }
+            if(info.world.rand.nextFloat() < melting){
+                melt_enabled = true;
+            }
 
             if (this == oreCoal) {
                 id_dropped = Item.coal.itemID;
@@ -56,9 +66,22 @@ public class BlockOreTrans extends Block {
                 quantity_dropped = 3 + info.world.rand.nextInt(3);
             } else if (this == oreEmerald) {
                 id_dropped = Item.emerald.itemID;
+            }else if (this == oreCopper && melt_enabled) {
+                id_dropped = Item.ingotCopper.itemID;
+            }  else if (this == oreSilver && melt_enabled) {
+                id_dropped = Item.ingotSilver.itemID;
+            }  else if (this == oreGold && melt_enabled) {
+                id_dropped = Item.ingotGold.itemID;
+            }  else if (this == oreIron && melt_enabled) {
+                id_dropped = Item.ingotIron.itemID;
+            }  else if (this == oreMithril && melt_enabled) {
+                id_dropped = Item.ingotMithril.itemID;
+            } else if (this == oreAdamantium && melt_enabled) {
+                id_dropped = Item.ingotAdamantium.itemID;
             } else if (this == oreNetherQuartz) {
                 id_dropped = Item.netherQuartz.itemID;
-            } else if(this == Blocks.fancyRed){
+            }
+            else if(this == Blocks.fancyRed){
                 id_dropped = Items.fancyRed.itemID;
             } else {
                 id_dropped = this.blockID;
@@ -75,42 +98,6 @@ public class BlockOreTrans extends Block {
         }
 
         float chance = suppress_fortune ? 1.0F : 1.0F + (float)info.getHarvesterFortune() * 0.1F;
-        int total = super.dropBlockAsEntityItem(info, id_dropped, metadata_dropped, quantity_dropped, chance);
-        if(info.wasHarvestedByPlayer()) {
-            if(EnchantmentManager.hasEnchantment(info.getResponsiblePlayer().getHeldItemStack(), Enchantments.enchantmentChain)) {
-                for(int dx = -1; dx <= 1; ++dx) {
-                    for(int dy = -1; dy <= 1; ++dy) {
-                        for(int dz = -1; dz <= 1; ++dz) {
-                            Block searchedBlock = info.world.getBlock(info.x + dx, info.y + dy, info.z + dz);
-                            if(searchedBlock != null) {
-                                BlockBreakInfo entity_item = (new BlockBreakInfo(info.world, info.x + dx, info.y + dy, info.z + dz)).setHarvestedBy(info.getResponsiblePlayer());
-                                if(searchedBlock.blockID == this.blockID) {
-                                    if(searchedBlock == oreLapis || searchedBlock.getItemSubtype(entity_item.getMetadata()) == metadata_dropped) {
-                                        if (info.world.setBlockToAir(info.x + dx, info.y + dy, info.z + dz))
-                                        {
-                                            total += super.dropBlockAsEntityItem(entity_item, id_dropped, metadata_dropped, quantity_dropped, chance);
-                                            if(info.getResponsiblePlayer().getHeldItem() instanceof ItemTool) {
-                                                if (this.canDropExperienceOrbs()) {
-                                                    int xp_reward_per_unit = Item.getItem(info.block.blockID).getExperienceReward(info.getMetadata());
-                                                    if (xp_reward_per_unit > 0) {
-                                                        this.dropXpOnBlockBreak(info.world, info.x, info.y, info.z, xp_reward_per_unit);
-                                                    }
-                                                }
-                                                info.getResponsiblePlayer().getHeldItem().addExpForTool(info.getHarvesterItemStack(), info.getResponsiblePlayer(), info.block.blockMaterial.getMinHarvestLevel());
-                                                info.getResponsiblePlayer().tryDamageHeldItem(DamageSource.generic, ((ItemTool)info.getResponsiblePlayer().getHeldItem()).getToolDecayFromBreakingBlock(info));
-                                                if(info.getResponsiblePlayer().getHeldItemStack().getMaxDamage() - info.getResponsiblePlayer().getHeldItemStack().getItemDamage() - ((ItemTool)info.getResponsiblePlayer().getHeldItem()).getToolDecayFromBreakingBlock(info) <= 0) {
-                                                    return total;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return total;
+        return super.dropBlockAsEntityItem(info, id_dropped, metadata_dropped, quantity_dropped, chance);
     }
 }

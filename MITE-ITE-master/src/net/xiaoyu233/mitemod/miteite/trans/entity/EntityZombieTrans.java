@@ -9,11 +9,20 @@ import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import net.xiaoyu233.mitemod.miteite.util.Constant;
 import net.xiaoyu233.mitemod.miteite.item.Items;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Arrays;
 
 @Mixin(EntityZombie.class)
 class EntityZombieTrans extends EntityAnimalWatcher {
+   @Shadow
+   private boolean is_smart;
+   @Inject(method = "<init>",at = @At("RETURN"))
+   public void injectCtor(CallbackInfo callbackInfo) {
+      this.is_smart = true;
+   }
    @Shadow
    @Final
    protected static IAttribute field_110186_bp;
@@ -58,12 +67,12 @@ class EntityZombieTrans extends EntityAnimalWatcher {
    @Overwrite
    protected void applyEntityAttributes() {
       super.applyEntityAttributes();
-      int day = this.getWorld() != null ? Math.max(this.getWorld().getDayOfOverworld() - 64, 0) : 0;
+      int day = this.getWorld() != null ? this.getWorld().getDayOfOverworld() : 0;
       this.setEntityAttribute(GenericAttributes.followRange, 64.0D);
-      this.setEntityAttribute(GenericAttributes.movementSpeed, 0.23000000417232513D);
-      this.setEntityAttribute(GenericAttributes.attackDamage, 8D + (double)day / 24.0D);
-      this.setEntityAttribute(GenericAttributes.maxHealth, 30D + (double)day / 16.0D);
       this.setEntityAttribute(field_110186_bp, this.getRNG().nextDouble() * 0.10000000149011612D);
+      this.setEntityAttribute(GenericAttributes.attackDamage, 8 * Constant.getNormalMobModifier("Damage",day));
+      this.setEntityAttribute(GenericAttributes.maxHealth, 30 * Constant.getNormalMobModifier("Health",day));
+      this.setEntityAttribute(GenericAttributes.movementSpeed, 0.23D * Constant.getNormalMobModifier("Speed",day));
    }
 
    @Override

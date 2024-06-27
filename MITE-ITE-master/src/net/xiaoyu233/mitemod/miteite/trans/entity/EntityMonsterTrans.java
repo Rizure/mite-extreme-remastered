@@ -30,7 +30,7 @@ public abstract class EntityMonsterTrans extends EntityInsentient implements IMo
 
    @Redirect(method = "isValidLightLevel(Lnet/minecraft/EntityInsentient;)Z", at=@At(value = "INVOKE", target = "Ljava/util/Random;nextInt(I)I", ordinal = 1))
    private static int randLightValue(Random random, int lightValue) {
-      return random.nextInt(lightValue + 3);
+      return random.nextInt(lightValue + 1);
    }
 
    @Redirect(method = {"attackEntityAsMob(Lnet/minecraft/Entity;)Lnet/minecraft/EntityDamageResult;"},
@@ -55,7 +55,7 @@ public abstract class EntityMonsterTrans extends EntityInsentient implements IMo
    public void attackEntityFrom(Damage damage, CallbackInfoReturnable<EntityDamageResult> c) {
       if ((Configs.wenscConfig.mobDefense.ConfigValue)
               && damage.getResponsibleEntityP() != null
-              && this.getHeldItem() != null && this.rand.nextInt(10) > 8) {
+              && this.getHeldItem() instanceof ItemTool && this.rand.nextInt(2) > 0) {
          damage.scaleAmount(0.5F);
          if (Configs.wenscConfig.mobDisarmWhenDefence.ConfigValue){
             this.tryDisarmTarget(damage.getResponsibleEntityP());
@@ -86,41 +86,29 @@ public abstract class EntityMonsterTrans extends EntityInsentient implements IMo
    }
 
    protected void dropEquipment(boolean recently_hit_by_player, int par2) {
-      for(int var3 = 0; var3 < this.getInventory().length; ++var3) {
-         ItemStack var4 = this.getEquipmentInSlot(var3);
-         if (var4 != null && (!var4.isItemStackDamageable() || this.picked_up_a_held_item_array[var3] && var4.getRemainingDurability() > var4.getMaxDamage() / 4)) {
-            this.dropItemStack(var4, 0.0F);
-            this.getInventory()[var3]=null;
+      try{
+         for(int var3 = 0; var3 < this.getInventory().length; ++var3) {
+            ItemStack var4 = this.getEquipmentInSlot(var3);
+//            System.out.println(var4);
+//            System.out.println(var4.isItemStackDamageable());
+//            System.out.println(this.picked_up_a_held_item_array[var3]);
+//            System.out.println(var4.getRemainingDurability());
+//            System.out.println(var4.getMaxDamage());
+            if (var4 != null && (!var4.isItemStackDamageable() || this.picked_up_a_held_item_array[var3] && var4.getRemainingDurability() > var4.getMaxDamage() / 4)) {
+               this.dropItemStack(var4, 0.0F);
+               this.setWornItem(var3, null);
+            }
          }
+      }catch (NullPointerException e){
+         e.printStackTrace();
       }
+
 
    }
 
    protected void addRandomArmor() {
-      int hour = this.getWorld().getHourOfDay();
       int day = this.getWorld().getDayOfOverworld();
-      Random rand;
-      if (day > 32 && ((day % 2 == 0 || day > 64) && hour >= 18 || ((day - 1) % 2 == 0 || day > 64) && hour <= 6)) {
-         this.addPotionEffect(new MobEffect(MobEffectList.moveSpeed.id, 999999, Math.min(this.getRNG().nextInt(Math.max((day - 32) / 96, 1)),4), true));
-         rand = this.getRNG();
-         if (rand.nextInt(5) == 0) {
-            this.addPotionEffect(new MobEffect(MobEffectList.damageBoost.id, 999999, Math.min(this.getRNG().nextInt(Math.max((day - 32) / 128, 1)),3), true));
-         }
-
-         MonsterUtil.addDefaultArmor(day, this, false);
-      } else if (day > 128) {
-         rand = this.getRNG();
-         if (rand.nextInt(4) < (day - 96) / 32) {
-            this.addPotionEffect(new MobEffect(MobEffectList.moveSpeed.id, 999999, Math.min(this.getRNG().nextInt(Math.max((day - 32) / 96, 1)),4), true));
-         }
-
-         if (rand.nextInt(5) < (day - 96) / 32) {
-            this.addPotionEffect(new MobEffect(MobEffectList.damageBoost.id, 999999, Math.min(this.getRNG().nextInt(Math.max((day - 32) / 128, 1)),3), true));
-         }
-
-         MonsterUtil.addDefaultArmor(day, this, false);
-      }
-
+      MonsterUtil.addDefaultArmor(day, this, day > 64);
    }
 
    protected void enchantEquipment(ItemStack item_stack) {
@@ -156,14 +144,14 @@ public abstract class EntityMonsterTrans extends EntityInsentient implements IMo
       this.picked_up_a_held_item_array = super.picked_up_a_held_item_array;
 
       try {
-         this.setEntityAttribute(GenericAttributes.maxHealth, this.getEntityAttributeValue(GenericAttributes.maxHealth) * 2.0D);
-         this.setEntityAttribute(GenericAttributes.attackDamage, this.getEntityAttributeValue(GenericAttributes.attackDamage) * 2.0D);
+         this.setEntityAttribute(GenericAttributes.maxHealth, this.getEntityAttributeValue(GenericAttributes.maxHealth)) ;
+         this.setEntityAttribute(GenericAttributes.attackDamage, this.getEntityAttributeValue(GenericAttributes.attackDamage)) ;
       } catch (NullPointerException var2) {
-         this.setEntityAttribute(GenericAttributes.maxHealth, GenericAttributes.maxHealth.getDefaultValue() * 2.0D);
-         this.setEntityAttribute(GenericAttributes.attackDamage, GenericAttributes.attackDamage.getDefaultValue() * 2.0D);
+         this.setEntityAttribute(GenericAttributes.maxHealth, GenericAttributes.maxHealth.getDefaultValue());
+         this.setEntityAttribute(GenericAttributes.attackDamage, GenericAttributes.attackDamage.getDefaultValue());
       }
 
-      this.setEntityAttribute(GenericAttributes.followRange, 32.0D);
+//      this.setEntityAttribute(GenericAttributes.followRange, 32.0D);
       this.setEntityAttribute(GenericAttributes.attackDamage);
    }
 
@@ -180,8 +168,8 @@ public abstract class EntityMonsterTrans extends EntityInsentient implements IMo
       boolean critical = false;
       if (EnchantmentManager.hasEnchantment(this.getHeldItemStack(), Enchantments.CRIT)) {
          int critLevel = EnchantmentManager.getEnchantmentLevel(Enchantments.CRIT, this.getHeldItemStack());
-         critical = this.rand.nextInt(10) < Configs.wenscConfig.critEnchantmentChanceBoostPerLvl.ConfigValue * critLevel;
-         critBouns = (float) critLevel * Configs.wenscConfig.critEnchantmentDamageBoostPerLvl.ConfigValue;
+         critical = this.rand.nextInt(10) < critLevel;
+         critBouns = (float) critLevel;
       }
       if (critical) {
          damage.scaleAmount(1.5F);

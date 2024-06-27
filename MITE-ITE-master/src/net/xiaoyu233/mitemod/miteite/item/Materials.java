@@ -7,6 +7,7 @@ import net.minecraft.Minecraft;
 
 public class Materials extends Material {
     public static final Materials vibranium = (Materials) new Materials(EnumEquipmentMaterials.vibranium).setMetal(false).setHarmedByLava(false).setMinHarvestLevel(6);
+    public static final Materials invincible = (Materials) new Materials("misc").setHarmedByLava(false).setHarmedByAcid(false).setHarmedByLava(false).setMetal(false).setFlammability(false,false,false);
     public Materials(EnumEquipmentMaterial enum_crafting_material) {
         super(enum_crafting_material);
     }

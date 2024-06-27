@@ -7,15 +7,19 @@ import java.util.function.Predicate;
 
 public enum ArmorModifierTypes implements ItemModifierTypes{
     //Armor Modifiers
-    DURABILITY_MODIFIER(0.1F,"持久",EnumChatFormat.DARK_PURPLE,20,5,(stack -> true)),
-    PROJECTILE_PROTECTION_MODIFIER(0.5F,"弹射物保护", EnumChatFormat.BLUE,7,5,(stack -> hasNotOtherProtectionModifier(stack,3))),
-    EXPLOSION_PROTECTION_MODIFIER(0.5F,"爆炸保护", EnumChatFormat.GREEN,7,5,(stack -> hasNotOtherProtectionModifier(stack,2))),
-    FIRE_PROTECTION_MODIFIER(0.5F,"火焰保护", EnumChatFormat.RED,7,5,(stack -> hasNotOtherProtectionModifier(stack,0))),
-    PROTECTION_MODIFIER(0.2F,"保护",EnumChatFormat.DARK_RED,5,5,(stack -> hasNotOtherProtectionModifier(stack,1))),
-    STEADY_MODIFIER(0.15F,"稳定",EnumChatFormat.BROWN,8,5,(stack -> true)),
-    BLESSED_MODIFIER(1F,"神圣",EnumChatFormat.YELLOW,8,5,(stack -> true)),
-    INDOMITABLE(0.25f,"坚毅不倒",EnumChatFormat.DARK_GRAY,5,4,itemStack -> itemStack.getItem() instanceof ItemCuirass),
-    IMMUNITY(0.15f,"免疫",EnumChatFormat.DARK_AQUA,3,4,itemStack -> itemStack.getItem() instanceof ItemHelmet);
+    DURABILITY_MODIFIER(0.15F,"持久",EnumChatFormat.WHITE,50,5,(stack -> true)),
+    PROJECTILE_PROTECTION_MODIFIER(1.0F,"弹射物保护", EnumChatFormat.AQUA,25,5,(stack -> hasNotOtherProtectionModifier(stack,3))),
+    EXPLOSION_PROTECTION_MODIFIER(2.0F,"爆炸保护", EnumChatFormat.AQUA,25,5,(stack -> hasNotOtherProtectionModifier(stack,2))),
+    FIRE_PROTECTION_MODIFIER(0.75F,"火焰保护", EnumChatFormat.AQUA,25,5,(stack -> hasNotOtherProtectionModifier(stack,0))),
+    PROTECTION_MODIFIER(0.2F,"保护",EnumChatFormat.AQUA,25,5,(stack -> hasNotOtherProtectionModifier(stack,1))),
+    STEADY_MODIFIER(0.15F,"稳定",EnumChatFormat.AQUA,25,5,(stack -> true)),
+    BLESSED_MODIFIER(0.5F,"神圣",EnumChatFormat.AQUA,25,5,(stack -> true)),
+    INDOMITABLE(0.1f,"坚毅不倒",EnumChatFormat.LIGHT_PURPLE,10,4,itemStack -> itemStack.getItem() instanceof ItemCuirass),
+    ENERGETIC(0.1f,"海纳百川",EnumChatFormat.LIGHT_PURPLE,10,5,itemStack -> itemStack.getItem() instanceof ItemLeggings),
+    SUN_AFFINITY(0.05f,"领航",EnumChatFormat.LIGHT_PURPLE,10,5,itemStack -> itemStack.getItem() instanceof ItemBoots),
+    NIGHT_AFFINITY(0.05f,"夜行",EnumChatFormat.LIGHT_PURPLE,10,5,itemStack -> itemStack.getItem() instanceof ItemHelmet),
+    IMMUNITY(0.2f,"免疫",EnumChatFormat.RED,5,4,itemStack -> itemStack.getItem() instanceof ItemHelmet),
+    SWIFTNESS(0.05f,"灵敏",EnumChatFormat.RED,5,5,itemStack -> itemStack.getItem() instanceof ItemBoots);
     public final String nbtName;
     public final float levelAddition;
     public final String displayName;
@@ -51,7 +55,15 @@ public enum ArmorModifierTypes implements ItemModifierTypes{
             default:
                 return true;
         }
-
+    }
+    private static boolean hasNoOtherModifier(ItemStack stack, ArmorModifierTypes... modifierTypes){
+        boolean couldApply = true;
+        for (ArmorModifierTypes modifierType : modifierTypes) {
+            if (ItemModifierTypes.hasModifier(stack, modifierType)) {
+                couldApply = false;
+            }
+        }
+        return couldApply;
     }
 
     @Override

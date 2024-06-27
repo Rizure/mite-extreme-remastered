@@ -48,15 +48,15 @@ public class ItemRingKiller extends Item{
     }
 
     public int getRingKillerSkillCoolDownTime() {
-        return (7 - this.level) * 10;
+        return (13 - this.level * 2) * 20;
     }
 
     public float getRingKillerSkillRange() {
-        return 3F;
+        return 4F;
     }
 
     public float getRingKillerSkillDamage() {
-        return (float) this.level * 0.5F;
+        return (float) this.level + 4F;
     }
 
     public void addInformation(ItemStack item_stack, EntityPlayer player, List info, boolean extended_info, Slot slot) {

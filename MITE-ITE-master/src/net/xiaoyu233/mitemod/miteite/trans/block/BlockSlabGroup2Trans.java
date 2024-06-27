@@ -16,6 +16,6 @@ public class BlockSlabGroup2Trans {
 
     @Overwrite
     public int getBlockSubtypeUnchecked(int metadata) {
-        return metadata & 15;
+        return metadata & 7;
     }
 }

@@ -15,11 +15,11 @@ public class ItemHoeTrans extends ItemToolTrans{
         Block block = blockBreakInfo.block;
         if (block instanceof BlockCrops){
             if (((BlockCrops) block).isMature(blockBreakInfo.getMetadata())) {
-                return 8;
+                return 10;
             }
         }
         if (this.materials_effective_against.contains(block)){
-            return 3;
+            return 5;
         }
         return 0;
     }

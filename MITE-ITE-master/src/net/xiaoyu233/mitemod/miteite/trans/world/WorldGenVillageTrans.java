@@ -28,7 +28,7 @@ public abstract class WorldGenVillageTrans extends StructureGenerator{
     protected boolean canSpawnStructureAtCoords(int par1, int par2) {
         if (Minecraft.isInTournamentMode()) {
             return false;
-        } else if (this.worldObj.getDayOfWorld() < Configs.wenscConfig.whichDayGenVillage.ConfigValue) {
+        } else if (this.worldObj.getDayOfOverworld() < Configs.wenscConfig.whichDayGenVillage.ConfigValue) {
             return false;
         } else {
             byte required_village_conditions = WorldData.getVillagePrerequisites();

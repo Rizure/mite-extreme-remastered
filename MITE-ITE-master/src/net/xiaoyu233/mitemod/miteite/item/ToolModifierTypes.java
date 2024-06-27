@@ -27,14 +27,20 @@ import java.util.function.Predicate;
 
 public enum ToolModifierTypes implements ItemModifierTypes{
     //Tool Modifiers
-    EFFICIENCY_MODIFIER(0.25F,"急速",EnumChatFormat.DARK_RED,20, (stack -> !ToolModifierTypes.isWeapon(stack)),10),
-    AQUADYNAMIC_MODIFIER(1.25F,"喜水",EnumChatFormat.AQUA,10, (stack -> !ToolModifierTypes.isWeapon(stack)),5),
-    DURABILITY_MODIFIER(0.1F,"耐久",EnumChatFormat.DARK_PURPLE,40,(stack -> true),5),
-    DAMAGE_MODIFIER(1.0F,"锋利", EnumChatFormat.WHITE,20, (ToolModifierTypes::isWeapon),10),
-    SLOWDOWN_MODIFIER(1.0F,"织网",EnumChatFormat.GRAY,10, ToolModifierTypes::isWeapon,5),
-    UNNATURAL_MODIFIER(0.1f,"超自然",EnumChatFormat.LIGHT_GRAY,6, itemStack -> !ToolModifierTypes.isWeapon(itemStack),5),
-    DEMON_POWER(0.25f,"恶魔之力",EnumChatFormat.RED,4, ToolModifierTypes::isWeapon, 1),
-    GEOLOGY(0.5f,"地质学",EnumChatFormat.LIGHT_PURPLE,2,itemStack -> itemStack.getItem() instanceof ItemPickaxe,1);
+    EFFICIENCY_MODIFIER(0.2F,"急速",EnumChatFormat.WHITE,50, (ToolModifierTypes::isNotWeapon),10),
+    DURABILITY_MODIFIER(0.15F,"耐久",EnumChatFormat.WHITE,50,(stack -> true),5),
+    DAMAGE_MODIFIER(1.0F,"锋利", EnumChatFormat.WHITE,50, (ToolModifierTypes::isWeapon),10),
+    INVINCIBLE(1.0f,"不动如山",EnumChatFormat.AQUA,25,(stack -> true),4),
+    SLOWDOWN_MODIFIER(1.0F,"织网",EnumChatFormat.LIGHT_PURPLE,10, ToolModifierTypes::isWeapon,5),
+    UNNATURAL_MODIFIER(0.1f,"超自然",EnumChatFormat.LIGHT_PURPLE,10, ToolModifierTypes::isNotWeapon,5),
+    APOCALYPSE(1.0f,"启示录",EnumChatFormat.LIGHT_PURPLE,10,(ToolModifierTypes::isWeapon),4),
+    AQUADYNAMIC_MODIFIER(0.3F,"喜水",EnumChatFormat.LIGHT_PURPLE,10, (ToolModifierTypes::isNotWeapon),5),
+    DEMON_POWER(0.25f,"恶魔之力",EnumChatFormat.RED,5, ToolModifierTypes::isWeapon, 1),
+    DISCORD(6.0f,"混沌",EnumChatFormat.RED,5,ToolModifierTypes::isWeapon,4),
+    GEOLOGY(0.25f,"地质学",EnumChatFormat.YELLOW,2,itemStack -> itemStack.getItem() instanceof ItemPickaxe && WithoutMiningModifier(itemStack,0),4),
+    BLESS_OF_NATURE(0.05f,"自然祝福",EnumChatFormat.YELLOW,2,(stack -> true),4),
+    MELTING(0.25f,"自动冶炼",EnumChatFormat.YELLOW,2,itemStack -> itemStack.getItem() instanceof ItemPickaxe && WithoutMiningModifier(itemStack,1),4);
+
 //    BEHEADING_MODIFIER(0.02f, "斩首" , EnumChatFormats.DEAR_GREEN,1, ToolModifierTypes::isWeapon, 5);
     public final String nbtName;
     public final float levelAddition;
@@ -57,7 +63,10 @@ public enum ToolModifierTypes implements ItemModifierTypes{
         Item item = stack.getItem();
         return item instanceof ItemSword || item instanceof ItemBattleAxe || item instanceof ItemWarHammer || item instanceof ItemCudgel;
     }
-
+    public static boolean isNotWeapon(ItemStack stack) {
+        Item item = stack.getItem();
+        return !(item instanceof ItemSword || item instanceof ItemCudgel);
+    }
     @Override
     public float getModifierValue(NBTTagCompound itemTag){
         return this.levelAddition * getModifierLevel(itemTag);
@@ -94,5 +103,16 @@ public enum ToolModifierTypes implements ItemModifierTypes{
     @Override
     public int getMaxLevel() {
         return maxLevel;
+    }
+    private static boolean WithoutMiningModifier(ItemStack stack,int MiningType){
+        switch (MiningType){
+            case 0:
+                return !ItemModifierTypes.hasModifier(stack,MELTING);
+            case 1:
+                return !ItemModifierTypes.hasModifier(stack,GEOLOGY);
+            default:
+                return true;
+        }
+
     }
 }

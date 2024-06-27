@@ -11,7 +11,7 @@ public class ItemMattockTrans extends ItemShovelTrans{
     @SoftOverride
     protected int getExpForBlockBreak(BlockBreakInfo blockBreakInfo) {
         if (this.materials_effective_against.contains(blockBreakInfo.block)){
-            return 2;
+            return 5;
         }
         return 0;
     }

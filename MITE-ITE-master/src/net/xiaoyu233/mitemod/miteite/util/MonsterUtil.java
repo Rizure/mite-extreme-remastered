@@ -12,12 +12,14 @@ import static net.minecraft.EnchantmentManager.getEnchantmentLevelsAlteredByItem
 public class MonsterUtil {
     public static void addDefaultArmor(int day_count, EntityInsentient monster, boolean haveAll) {
        Random rand = monster.getRNG();
-       if (rand.nextInt(3 - Math.min(day_count / 128, 2)) == 0 || day_count > 365 || haveAll) {
-          for(int index = 4; index > 0; --index) {
-             if (rand.nextInt(5 - Math.min(day_count / 32, 4)) == 0 || day_count > 192 || haveAll) {
-                monster.setCurrentItemOrArmor(index, (new ItemStack(Constant.ARMORS[index - 1][Math.min(getRandomItemTier(rand,day_count) + (day_count > 365 ? 1 : 0), Constant.ARMORS[index - 1].length - 1)])).randomizeForMob(monster, day_count > 64));
-             }
-          }
+       if(day_count > 8){
+           if (rand.nextInt(Math.max(3 - day_count / 32, 1)) == 0 || haveAll) {
+               for(int index = 3; index >= 0; --index) {
+                   if (rand.nextBoolean() || haveAll) {
+                       monster.setCurrentItemOrArmor(index + 1, (new ItemStack(Constant.ARMORS[index][getRandomItemTier(rand,day_count,index)])).randomizeForMob(monster, day_count > 32));
+                   }
+               }
+           }
        }
     }
 
@@ -35,15 +37,24 @@ public class MonsterUtil {
         return itemStack;
     }
 
-    public static int getRandomItemTier(Random rand,int day_count){
-        return getRandomItemTier(rand, Math.min(10, day_count / 16), rand.nextInt(2 + Math.min(day_count / 64, 6)) + 1, day_count);
+    public static int getRandomItemTier(Random rand,int day_count,int equip_index){
+        return getRandomItemTier(rand,day_count / 8, day_count / 16,equip_index);
     }
 
-    public static int getRandomItemTier(Random random, int maxTier, int minTier, int dayCount) {
-       int now = minTier;
-       while (now < maxTier && random.nextInt(Math.max(2 * now + 1 - dayCount / 12, 1)) == 0) {
-          ++now;
-       }
-       return now;
+    public static int getRandomItemTier(Random random, int maxTier, int minTier, int equip_index) {
+        if(maxTier > Constant.ARMORS[equip_index].length - 1){
+            maxTier = Constant.ARMORS[equip_index].length - 1;
+        }
+        if(minTier < 0){
+            maxTier = 0;
+        }
+        int result = maxTier;
+        while (result > minTier){
+            if(random.nextInt(4) == 0){
+                return result;
+            }
+            result --;
+        }
+        return result;
     }
 }

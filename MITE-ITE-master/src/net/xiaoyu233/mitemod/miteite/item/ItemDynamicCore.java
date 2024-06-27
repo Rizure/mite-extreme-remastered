@@ -29,7 +29,7 @@ public class ItemDynamicCore extends Item implements IDamageableItem {
 
     public final int getMultipliedDurability()
     {
-        return 3200 * level;
+        return 400 * (int)this.reinforcement_material.getDurability() * 20;
     }
 
     @Override
@@ -39,7 +39,7 @@ public class ItemDynamicCore extends Item implements IDamageableItem {
 
     @Override
     public int getRepairCost() {
-        return 9;
+        return 40;
     };
 
     public Material getMaterialForDurability()

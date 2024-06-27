@@ -7,12 +7,63 @@ import net.xiaoyu233.mitemod.miteite.achievement.Achievements;
 import net.xiaoyu233.mitemod.miteite.item.Items;
 import net.xiaoyu233.mitemod.miteite.item.enchantment.Enchantments;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
+import net.xiaoyu233.mitemod.miteite.util.Constant;
 
 import java.util.*;
 
-public class EntityZombieBoss extends EntityZombie {
+public class EntityZombieBoss extends EntityZombie implements IBossbarEntity{
 //    private Enchantment [] enhanceSpecialBookList = new Enchantment[] {Enchantment.protection, Enchantment.sharpness,  Enchantment.fortune, Enchantment.harvesting, Enchantments.EXTEND, Enchantment.efficiency, Enchantment.vampiric, Enchantment.butchering, Enchantment.featherFalling};
 //    private Enchantment [] nonLevelsBookList = new Enchantment[] {Enchantments.enchantmentFixed, Enchantments.enchantmentChain, Enchantments.EMERGENCY};
+    private Enchantment [] enhanceSpecialBookList = new Enchantment[] {
+            Enchantment.protection,
+            Enchantment.fireProtection,
+            Enchantment.projectileProtection,
+            Enchantment.blastProtection,
+            Enchantment.sharpness,
+            Enchantment.smite,
+            Enchantment.baneOfArthropods,
+            Enchantment.fireAspect,
+            Enchantment.looting,
+            Enchantment.knockback,
+            Enchantment.fortune,
+            Enchantment.harvesting,
+            Enchantment.efficiency,
+            Enchantment.unbreaking,
+            Enchantment.power,
+            Enchantment.punch,
+            Enchantment.vampiric,
+            Enchantment.butchering,
+            Enchantment.featherFalling,
+            Enchantment.arrow_recovery,
+            Enchantment.fishing_fortune,
+            Enchantment.stun,
+            Enchantment.fertility,
+            Enchantment.tree_felling,
+            Enchantment.speed,
+            Enchantment.regeneration,
+            Enchantment.free_action,
+            Enchantment.true_flight,
+            Enchantment.quickness,
+            Enchantment.aquaAffinity,
+            Enchantment.poison,
+            Enchantment.disarming,
+            Enchantment.butchering,
+            Enchantment.piercing,
+            Enchantment.endurance,
+            Enchantments.enchantmentLuckOfTheSea,
+            Enchantments.CRIT,
+            Enchantments.EXTEND,
+            Enchantments.CONQUEROR,
+            Enchantments.enchantmentChain,
+
+    };
+    private Enchantment [] nonLevelsBookList = new Enchantment[] {
+            Enchantments.enchantmentPhaseDefend,
+            Enchantments.EMERGENCY,
+            Enchantment.flame,
+            Enchantment.respiration,
+
+    };
     private int thunderTick = 0;
     private int attackedCounter = 200;
     public Map<String, Float> attackDamageMap = new HashMap<>();
@@ -27,8 +78,6 @@ public class EntityZombieBoss extends EntityZombie {
         this.setCurrentItemOrArmor(2, new ItemStack(Items.VIBRANIUM_CHESTPLATE, 1).randomizeForMob(this, true));
         this.setCurrentItemOrArmor(3, new ItemStack(Items.VIBRANIUM_LEGGINGS, 1).randomizeForMob(this, true));
         this.setCurrentItemOrArmor(4, new ItemStack(Items.VIBRANIUM_BOOTS, 1).randomizeForMob(this, true));
-        this.addPotionEffect(new MobEffect(1, 2147483647, 0));
-        this.addPotionEffect(new MobEffect(5, 2147483647, 0));
     }
 
     public void addPotionEffect(MobEffect par1PotionEffect) {
@@ -62,30 +111,38 @@ public class EntityZombieBoss extends EntityZombie {
             MinecraftServer server = MinecraftServer.F();
             Iterator var4 = server.getConfigurationManager().playerEntityList.iterator();
 
+            Item[] drops = {Item.diamond,Item.diamond,Item.diamond,Item.diamond,Items.fancyRed,Item.blazePowder,Item.ghastTear};
             while (var4.hasNext()) {
                 Object o = var4.next();
                 EntityPlayer player = (EntityPlayer)o;
-                if(attackDamageMap.containsKey(player.getEntityName()) && player != null) {
-                    player.triggerAchievement(Achievements.killZombieBoss);
+                if(attackDamageMap.containsKey(player.getEntityName())) {
                     float damage = attackDamageMap.get(player.getEntityName());
-                    int nums = Math.round(damage) / 20;
-                    int damageWithEnchantBookRate = Math.round(damage) / 50;
-                    if(damageWithEnchantBookRate > 0) {
-                        this.getEnchantBookDependsOnDamageRate(player, damageWithEnchantBookRate);
-                    }
-                    if(nums > 0) {
-                        player.inventory.addItemStackToInventoryOrDropIt(new ItemStack(Item.diamond, nums));
+                    int nums = Math.round(damage) / 25;
+                    while (nums-- > 0) {
+                        player.inventory.addItemStackToInventoryOrDropIt(new ItemStack(drops[this.rand.nextInt(drops.length)], 1));
+                        player.triggerAchievement(Achievements.killZombieBoss);
                     }
                 }
             }
+            ItemStack stack;
+            Enchantment dropEnchantment;
+            dropEnchantment = this.nonLevelsBookList[this.rand.nextInt(this.nonLevelsBookList.length)];
+            stack = Item.enchantedBook.getEnchantedItemStack(new EnchantmentInstance(dropEnchantment, dropEnchantment.getNumLevelsForVibranium()));
+            if(this.rand.nextInt(4) == 0){
+                this.dropItemStack(stack);
+                return;
+            }
+            dropEnchantment = this.enhanceSpecialBookList[this.rand.nextInt(this.enhanceSpecialBookList.length)];
+            stack = Item.enchantedBook.getEnchantedItemStack(new EnchantmentInstance(dropEnchantment, dropEnchantment.getNumLevelsForVibranium()));
+            this.dropItemStack(stack);
         }
     }
 
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        int rate = Math.min(200, worldObj.getDayOfOverworld()) / 10;
-        this.setEntityAttribute(GenericAttributes.attackDamage, 6 + rate);
-        this.setEntityAttribute(GenericAttributes.maxHealth, 20 + rate * 30);
+        int day = this.worldObj.getDayOfOverworld();
+        this.setEntityAttribute(GenericAttributes.attackDamage, 15 * Constant.getBossMobModifier("Damage",day));
+        this.setEntityAttribute(GenericAttributes.maxHealth, 400 * Constant.getBossMobModifier("Health",day));
         this.setEntityAttribute(GenericAttributes.movementSpeed, 0.3D);
     }
 
@@ -142,8 +199,8 @@ public class EntityZombieBoss extends EntityZombie {
                 player.removePotionEffect(MobEffectList.damageBoost.id);
                 player.bossResetDamageBoostCounter = 200;
                 this.attackedCounter = 200;
-                damage.setAmount(damage.getAmount() / 5);
                 EntityDamageResult originDamage = super.attackEntityFrom(damage);
+                damage.setAmount(damage.getAmount() * 1.5F);
                 try {
                     if(attackDamageMap.containsKey(player.getEntityName())) {
                         attackDamageMap.put(player.getEntityName(), attackDamageMap.get(player.getEntityName()) + originDamage.getAmountOfHealthLost());
@@ -264,10 +321,10 @@ public class EntityZombieBoss extends EntityZombie {
             if(!(target instanceof EntityPlayer)) {
                 this.healAndBroadcast();
             }
-            if(thunderTick % 20 == 0) {
+            if(thunderTick % 40 == 0) {
                 if(target != null && target instanceof EntityPlayer) {
                     if(((EntityPlayer) target).isAttackByBossCounter <= 0) {
-                        addThunderAttack((EntityPlayer)target, 10f);
+                        addThunderAttack((EntityPlayer)target, 6f);
                     }
                 }
                 if(thunderTick == 60) {

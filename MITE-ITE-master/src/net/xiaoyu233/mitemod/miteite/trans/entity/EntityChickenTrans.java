@@ -1,6 +1,7 @@
 package net.xiaoyu233.mitemod.miteite.trans.entity;
 
 import net.minecraft.*;
+import net.xiaoyu233.mitemod.miteite.achievement.Achievements;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.SoftOverride;
@@ -9,6 +10,9 @@ import org.spongepowered.asm.mixin.SoftOverride;
 public abstract class EntityChickenTrans extends EntityLivestockTrans {
    public EntityChickenTrans(World world) {
       super(world);
+   }
+   public float getAIMoveSpeed() {
+      return this.riddenByEntity == null ? super.getAIMoveSpeed() : 0.0875F;
    }
 
    @SoftOverride
@@ -46,7 +50,7 @@ public abstract class EntityChickenTrans extends EntityLivestockTrans {
          this.stepHeight = 1.0F;
          this.jumpMovementFactor = this.getAIMoveSpeed() * 0.1F;
          if (!this.worldObj.isRemote) {
-            this.setAIMoveSpeed((float)this.getEntityAttribute(GenericAttributes.movementSpeed).getAttributeValue());
+            this.setAIMoveSpeed(this.getAIMoveSpeed());
             super.moveEntityWithHeading(par1, par2);
          }
 
@@ -67,5 +71,6 @@ public abstract class EntityChickenTrans extends EntityLivestockTrans {
       }
 
    }
+
 
 }
