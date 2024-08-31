@@ -45,7 +45,7 @@ public class SlotArmorTrans extends Container {
             return Math.max(Math.round((float)enchantment_levels * fraction), 1);
          }
       } else {
-         return item.itemID == Item.appleGold.itemID ? 5 : 2;
+         return 5;
       }
    }
 

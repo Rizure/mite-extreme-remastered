@@ -2,6 +2,7 @@ package net.xiaoyu233.mitemod.miteite.item;
 
 import net.minecraft.*;
 
+import java.util.List;
 import java.util.Random;
 
 public class ItemColorBag extends Item{
@@ -24,5 +25,13 @@ public class ItemColorBag extends Item{
             return true;
         }
         return false;
+    }
+    public void addInformation(ItemStack item_stack, EntityPlayer player, List info, boolean extended_info, Slot slot) {
+        if (extended_info) {
+            info.add(" ");
+            info.add(EnumChatFormat.BROWN + Translator.getFormatted("豪德寺三花的卡片", new Object[0]));
+            info.add(EnumChatFormat.BROWN + Translator.getFormatted("虹龙洞的隐秘道具", new Object[0]));
+        }
+
     }
 }

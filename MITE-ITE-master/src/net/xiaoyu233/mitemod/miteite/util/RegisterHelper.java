@@ -44,7 +44,8 @@ public class RegisterHelper {
         }
         Items.manure.setSoldPrice(1.0D);
         Items.seeds.setSoldPrice(0.25D);
-        Items.sinew.setSoldPrice(1.0D);
+        Items.sinew.setSoldPrice(0.25D);
+        Items.leather.setSoldPrice(1.0D);
         Items.silk.setSoldPrice(1.0D);
         Items.feather.setSoldPrice(1.0D);
         Items.flint.setSoldPrice(2.5D);
@@ -75,6 +76,9 @@ public class RegisterHelper {
         Items.ingotMithril.setSoldPrice(40D);
         Items.ingotAdamantium.setSoldPrice(80D);
         VIBRANIUM_INGOT.setSoldPrice(250D);
+        
+        Items.minecartEmpty.setSoldPrice(100D);
+        Items.saddle.setSoldPrice(5D);
 
         Items.copperNugget.setSoldPrice(1D);
         Items.silverNugget.setSoldPrice(1D);

@@ -138,6 +138,12 @@ public class EntitySpiderKing extends EntityArachnid {
             for(int i = 0;i< count;i++){
                 this.dropItem(Item.emerald);
             }
+            for(int i = 0;i< 8;i++){
+                this.dropItem(Items.hugeSpiderLeg);
+                if(this.rand.nextInt(4) == 0){
+                    i++;
+                }
+            }
         }
     }
 

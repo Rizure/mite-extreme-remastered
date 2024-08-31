@@ -35,7 +35,7 @@ public class EntityAncientBoneLordTrans extends EntityBoneLordTrans {
          int day = this.getWorld().getDayOfOverworld();
          int count = Math.min(day / 8, 6);
          for (int i1 = 0; i1 < count; i1++) {
-            if(this.rand.nextInt(4) == 0){
+            if(this.rand.nextInt(4) > 0){
                this.dropItemStack(new ItemStack(Item.emerald));
             }
          }
@@ -49,7 +49,7 @@ public class EntityAncientBoneLordTrans extends EntityBoneLordTrans {
       boolean boneLordTweak = Configs.wenscConfig.boneLordTweak.ConfigValue;
       int day = this.getWorld() != null ? this.getWorld().getDayOfOverworld() : 0;
       this.setEntityAttribute(GenericAttributes.followRange, 48.0D);
-      this.setEntityAttribute(GenericAttributes.attackDamage, (boneLordTweak ? 15 : 8) * Constant.getEliteMobModifier("Damage",day));
+      this.setEntityAttribute(GenericAttributes.attackDamage, (boneLordTweak ? 15 : 10) * Constant.getEliteMobModifier("Damage",day));
       this.setEntityAttribute(GenericAttributes.maxHealth, (boneLordTweak ? 60 : 30) * Constant.getEliteMobModifier("Health",day));
       this.setEntityAttribute(GenericAttributes.movementSpeed, 0.3D * Constant.getEliteMobModifier("Speed",day));
    }

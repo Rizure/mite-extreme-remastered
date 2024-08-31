@@ -17,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+import java.util.Arrays;
 import java.util.Random;
 
 @Mixin(EntityMonster.class)
@@ -86,24 +87,13 @@ public abstract class EntityMonsterTrans extends EntityInsentient implements IMo
    }
 
    protected void dropEquipment(boolean recently_hit_by_player, int par2) {
-      try{
          for(int var3 = 0; var3 < this.getInventory().length; ++var3) {
             ItemStack var4 = this.getEquipmentInSlot(var3);
-//            System.out.println(var4);
-//            System.out.println(var4.isItemStackDamageable());
-//            System.out.println(this.picked_up_a_held_item_array[var3]);
-//            System.out.println(var4.getRemainingDurability());
-//            System.out.println(var4.getMaxDamage());
             if (var4 != null && (!var4.isItemStackDamageable() || this.picked_up_a_held_item_array[var3] && var4.getRemainingDurability() > var4.getMaxDamage() / 4)) {
                this.dropItemStack(var4, 0.0F);
-               this.setWornItem(var3, null);
+               this.setCurrentItemOrArmor(var3, null);
             }
          }
-      }catch (NullPointerException e){
-         e.printStackTrace();
-      }
-
-
    }
 
    protected void addRandomArmor() {

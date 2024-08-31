@@ -323,9 +323,15 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
 
    @Overwrite
    public float getHealthLimit() {
-      return (float)getHealthLimit(this.getExperienceLevel()) + this.getGemSumNumeric(GemModifierTypes.health);
+      return (float)getHealthLimit(this.getExperienceLevel()) + this.getGemSumNumeric(GemModifierTypes.health) + (float) this.getEnhanceLevel() * 2.0F;
    }
-
+   private int enhanceLevel = 0;
+   public int getEnhanceLevel(){
+      return this.enhanceLevel;
+   }
+   public void setEnhanceLevel(int towards){
+      this.enhanceLevel = towards;
+   }
 
    @Overwrite
    public static final int getHighestPossibleLevel() {
@@ -385,7 +391,7 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
 
       if (!this.isImmuneByGrace() && target.canAttackWithItem()) {
          boolean critical = this.willDeliverCriticalStrike();
-         float critBouns = 0.0F;
+         float critBonus = 0.0F;
          ItemStack heldItemStack = this.getHeldItemStack();
 
          //Check for crit enchantment
@@ -393,7 +399,7 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
             int critLevel = EnchantmentManager.getEnchantmentLevel(Enchantments.CRIT, heldItemStack);
             critical = this.rand.nextInt(10) < critLevel;
             if (critical) {
-               critBouns = (float)critLevel;
+               critBonus = (float)critLevel;
             }
          }
 
@@ -401,7 +407,7 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
          float indomitableAmp = 1;
          float healthPercent = this.getHealthFraction();
          if (healthPercent <= 0.5f){
-            ItemStack chestplate = this.getCurrentArmor(1);
+            ItemStack chestplate = this.getCuirass();
             if (chestplate != null){
                float value = ArmorModifierTypes.INDOMITABLE.getModifierValue(chestplate.getTagCompound());
                if (value != 0){
@@ -413,7 +419,7 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
          //Check for energetic modifier
          float energeticAmp = 1;
          if (healthPercent > 0.5f){
-            ItemStack leggings = this.getCurrentArmor(2);
+            ItemStack leggings = this.getLeggings();
             if (leggings != null){
                float value = ArmorModifierTypes.ENERGETIC.getModifierValue(leggings.getTagCompound());
                if (value != 0){
@@ -426,8 +432,18 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
          if (!target.getWorld().isOverworld() && heldItemStack != null){
             demonHunterAmp += ToolModifierTypes.DEMON_POWER.getModifierValue(heldItemStack.getTagCompound());
          }
-
-         float damage = (critBouns + this.calcRawMeleeDamageVs(target, critical, this.isSuspendedInLiquid() )) * energeticAmp * indomitableAmp * demonHunterAmp + (heldItemStack != null ? heldItemStack.getGemMaxNumeric(GemModifierTypes.damage) : 0f);
+         
+         float smiteAmp = 0;
+         if (target.isEntityUndead() && heldItemStack != null){
+            smiteAmp += ToolModifierTypes.SMITE.getModifierValue(heldItemStack.getTagCompound());
+         }
+         
+         float baneOfArthropodAmp = 0;
+         if (target.isEntityLivingBase() && target.getAsEntityLivingBase().getCreatureAttribute() == EnumMonsterType.ARTHROPOD && heldItemStack != null){
+            baneOfArthropodAmp += ToolModifierTypes.BANE_OF_ARTHROPOD.getModifierValue(heldItemStack.getTagCompound());
+         }
+         
+         float damage = (critBonus + this.calcRawMeleeDamageVs(target, critical, this.isSuspendedInLiquid()) + smiteAmp + baneOfArthropodAmp) * energeticAmp * indomitableAmp * demonHunterAmp + (heldItemStack != null ? heldItemStack.getGemMaxNumeric(GemModifierTypes.damage) : 0f);
          if (damage <= 0.0F) {
             return;
          }
@@ -439,6 +455,12 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
 
          if (this.isSprinting()) {
             ++knockback;
+         }
+         if (knockback > 0) {
+            target.addVelocity(-MathHelper.sin(this.rotationYaw * 3.1415927F / 180.0F) * (float)knockback * 0.5F, 0.1D, MathHelper.cos(this.rotationYaw * 3.1415927F / 180.0F) * (float)knockback * 0.5F);
+            this.motionX *= 0.6D;
+            this.motionZ *= 0.6D;
+            this.setSprinting(false);
          }
 
          boolean was_set_on_fire = false;
@@ -463,13 +485,6 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
                if(!(target instanceof EntityZombieBoss)) {
                   this.heal((float)EnchantmentManager.getVampiricTransfer(this, (EntityLiving)target, damage), EnumEntityFX.vampiric_gain);
                }
-            }
-
-            if (knockback > 0) {
-               target.addVelocity(-MathHelper.sin(this.rotationYaw * 3.1415927F / 180.0F) * (float)knockback * 0.5F, 0.1D, MathHelper.cos(this.rotationYaw * 3.1415927F / 180.0F) * (float)knockback * 0.5F);
-               this.motionX *= 0.6D;
-               this.motionZ *= 0.6D;
-               this.setSprinting(false);
             }
 
             if (critical) {
@@ -643,6 +658,7 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
       this.spawnStoneY = par1NBTTagCompound.getInteger("spawnStoneY");
       this.spawnStoneZ = par1NBTTagCompound.getInteger("spawnStoneZ");
       this.spawnStoneWorldId = par1NBTTagCompound.getInteger("spawnStoneWorldId");
+      this.enhanceLevel = par1NBTTagCompound.getInteger("enhanceLevel");
       if (par1NBTTagCompound.hasKey("bossResetDamageBoostCounter")) {
          this.bossResetDamageBoostCounter = par1NBTTagCompound.getInteger("bossResetDamageBoostCounter");
       }
@@ -931,6 +947,30 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
          return new int[]{x, 120, z};
       }
    }
+   @Overwrite
+   protected void jump() {
+      double levityLvl = 1.0D;
+      if(this.getLeggings() != null){
+         ItemStack Leggings = this.getLeggings();
+         levityLvl += ArmorModifierTypes.LEVITY.getModifierValue(Leggings.stackTagCompound);
+      }
+      this.motionY = 0.42100000381469727 * levityLvl;
+      if (this.isPotionActive(MobEffectList.jump)) {
+         this.motionY += (double)((float)(this.getActivePotionEffect(MobEffectList.jump).getAmplifier() + 1) * 0.1F);
+      }
+
+      if (this.isSprinting()) {
+         float var1 = this.rotationYaw * 0.017453292F;
+         this.motionX -= (double)(MathHelper.sin(var1) * 0.2F);
+         this.motionZ += (double)(MathHelper.cos(var1) * 0.2F);
+      }
+
+      this.isAirBorne = true;
+      this.addStat(StatisticList.jumpStat, 1);
+      if (ReflectHelper.dyCast(this) instanceof ClientPlayer) {
+         ((EntityPlayer)ReflectHelper.dyCast(this)).getAsEntityClientPlayerMP().sendPacket((new Packet85SimpleSignal(EnumSignal.increment_stat_for_this_world_only)).setInteger(StatisticList.jumpStat.statId));
+      }
+   }
 
    @Overwrite
    public ItemStack[] getWornItems() {
@@ -1066,6 +1106,7 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
          EntityLiving entityMonster = targets.get(i) instanceof EntityMonster || targets.get(i) instanceof EntityBat ? (EntityLiving) targets.get(i) : null;
          if(entityMonster != null && (!EntityEnderman.class.isInstance(entityMonster) && !EntitySilverfish.class.isInstance(entityMonster) && !EntityZombieBoss.class.isInstance(entityMonster))) {
             entityMonster.attackEntityFrom(new Damage(DamageSource.causePlayerDamage(this.getAsPlayer()), damage));
+            entityMonster.addVelocity(-MathHelper.sin(this.rotationYaw * 3.1415927F / 180.0F) * 0.75F * 0.5F, 0.1D, MathHelper.cos(this.rotationYaw * 3.1415927F / 180.0F) * 0.75F * 0.5F);
          }
       }
    }
@@ -1134,6 +1175,44 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
 
       // 服务端
       if (!this.worldObj.isRemote) {
+         switch (this.getEnhanceLevel()){
+            case 11:
+               this.triggerAchievement(Achievements.Achievement_x0);
+            case 10:
+               this.triggerAchievement(Achievements.Achievement_x9);
+            case 9:
+               this.triggerAchievement(Achievements.Achievement_x8);
+            case 8:
+               this.triggerAchievement(Achievements.Achievement_x7);
+            case 7:
+               this.triggerAchievement(Achievements.Achievement_x6);
+            case 6:
+               this.triggerAchievement(Achievements.Achievement_x5);
+            case 5:
+               this.triggerAchievement(Achievements.Achievement_x4);
+            case 4:
+               this.triggerAchievement(Achievements.Achievement_x3);
+            case 3:
+               this.triggerAchievement(Achievements.Achievement_x2);
+            case 2:
+               this.triggerAchievement(Achievements.Achievement_x1);
+            case 1:
+               this.triggerAchievement(Achievements.Achievement_zhujidan);
+            default:
+         }
+         
+         if(this.getCuirass() != null){
+            ItemStack Cuirass = this.getCuirass();
+            int bulldozeLvl = (int) ArmorModifierTypes.BULLDOZE.getModifierValue(Cuirass.stackTagCompound);
+            float range = bulldozeLvl * 3;
+            List <Entity>targets  = this.getNearbyEntities(range, range);
+            for(int i = 0; i< targets.size(); i++) {
+               EntityLiving entityMonster = targets.get(i) instanceof EntityMonster || targets.get(i) instanceof EntityBat ? (EntityLiving) targets.get(i) : null;
+               if(entityMonster != null && (!EntityZombieBoss.class.isInstance(entityMonster))) {
+                  entityMonster.addPotionEffect(new MobEffect(MobEffectList.weakness.id,20,1,true));
+               }
+            }
+         }
 
          if(this.isAttackByBossCounter > 0) {
             --this.isAttackByBossCounter;
@@ -1342,6 +1421,7 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
       par1NBTTagCompound.setInteger("bossResetDamageBoostCounter", this.bossResetDamageBoostCounter);
       par1NBTTagCompound.setInteger("resetAttackMapTimer", this.resetAttackMapTimer);
       par1NBTTagCompound.setInteger("isAttackByBossCounter", this.isAttackByBossCounter);
+      par1NBTTagCompound.setInteger("enhanceLevel",enhanceLevel);
 
       NBTTagList nbtTagList = new NBTTagList();
       for (Entry<Entity, Integer> integerEntry : this.attackCountMap.entrySet()) {
@@ -1372,7 +1452,23 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
    public void itemsSynced() {
       this.waitForItemSync = false;
    }
-
+   @Override
+   public void addVelocity(double par1, double par3, double par5)
+   {
+      ItemStack[] itemStacks = this.getWornItems();
+      int i = 0;
+      double reduction = 1.0D;
+      for(int itemStacksLength = itemStacks.length; i < itemStacksLength; ++i) {
+         ItemStack stack = itemStacks[i];
+         if (stack != null) {
+            reduction *= Math.max(1.0F / (1.0F + ArmorModifierTypes.STEADY_MODIFIER.getModifierValue(stack.stackTagCompound)), 0.0F);
+         }
+      }
+      this.motionX += par1 * reduction;
+      this.motionY += par3 * reduction;
+      this.motionZ += par5 * reduction;
+      this.isAirBorne = true;
+   }
    @Override
    public boolean knockBack(Entity attacker, float amount) {
       ItemStack[] itemStacks = this.getWornItems();
@@ -1381,7 +1477,7 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
       for(int itemStacksLength = itemStacks.length; i < itemStacksLength; ++i) {
          ItemStack stack = itemStacks[i];
          if (stack != null) {
-            amount *= Math.max(1.0F - ArmorModifierTypes.STEADY_MODIFIER.getModifierValue(stack.stackTagCompound), 0.0F);
+            amount *= Math.max(1.0F / (1.0F + ArmorModifierTypes.STEADY_MODIFIER.getModifierValue(stack.stackTagCompound)), 0.0F);
          }
       }
 

@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.Overwrite;
 import java.util.ArrayList;
 import java.util.List;
 
+import static net.minecraft.ItemArmor.getMatchingArmor;
 import static net.xiaoyu233.mitemod.miteite.util.ReflectHelper.createInstance;
 
 public class Items extends Item{
@@ -96,22 +97,32 @@ public class Items extends Item{
 
     public static final Item itemGuardCoreAdamantium = new ItemGuardCore(Constant.getNextItemID(), Materials.adamantium, 4).setUnlocalizedName("guard_core_adamantium");
     public static final Item itemGuardCoreVibranium = new ItemGuardCore(Constant.getNextItemID(), Materials.vibranium, 5).setUnlocalizedName("guard_core_vibranium");
-    public static final ItemFood buguDan = (new ItemFood(Constant.getNextItemID(), Materials.vegetable, 4, 4, 250, false, false, true, "bugu")).setPlantProduct().setAlwaysEdible();
-    public static final ItemFood demonPillRaw = (new ItemFood(Constant.getNextItemID(), Materials.cake, 2,2, -1000, false,false,false,"demonPill")).setAlwaysEdible();
-    public static final ItemFood demonPillCooked = (ItemFood) (new ItemFood(Constant.getNextItemID(), Materials.cake, 4,4, -2000, false,false,false,"demonPill")).setAlwaysEdible().setXPReward(2);
-    public static final ItemFood cubeSugar = (new ItemFood(Constant.getNextItemID(),Materials.sugar,3,3, 1000,false,false,false,"cubesugar")).setAlwaysEdible().setPotionEffect(MobEffectList.regeneration.id, 8, 0, 0.5F);
-    public static final Item powder_dark = createInstance(Item.class, new Class[]{int.class, Material.class, String.class}, Constant.getNextItemID(), Materials.invincible, "powder").setCreativeTab(CreativeModeTab.tabMisc);
-    public static final Item powder_freeze = createInstance(Item.class, new Class[]{int.class, Material.class, String.class}, Constant.getNextItemID(), Materials.invincible, "powder").setCreativeTab(CreativeModeTab.tabMisc);
-    public static final Item powder_wind = createInstance(Item.class, new Class[]{int.class, Material.class, String.class}, Constant.getNextItemID(), Materials.invincible, "powder").setCreativeTab(CreativeModeTab.tabMisc);
-    public static final Item powder_blaze = createInstance(Item.class, new Class[]{int.class, Material.class, String.class}, Constant.getNextItemID(), Materials.invincible, "powder").setCreativeTab(CreativeModeTab.tabMisc);
-    public static final Item powder_metal = createInstance(Item.class, new Class[]{int.class, Material.class, String.class}, Constant.getNextItemID(), Materials.invincible, "powder").setCreativeTab(CreativeModeTab.tabMisc);
-    public static final Item powder_thunder = createInstance(Item.class, new Class[]{int.class, Material.class, String.class}, Constant.getNextItemID(), Materials.invincible, "powder").setCreativeTab(CreativeModeTab.tabMisc);
-    public static final Item powder_wood = createInstance(Item.class, new Class[]{int.class, Material.class, String.class}, Constant.getNextItemID(), Materials.invincible, "powder").setCreativeTab(CreativeModeTab.tabMisc);
-    public static final Item powder_liquid = createInstance(Item.class, new Class[]{int.class, Material.class, String.class}, Constant.getNextItemID(), Materials.invincible, "powder").setCreativeTab(CreativeModeTab.tabMisc);
-    public static final Item powder_earth = createInstance(Item.class, new Class[]{int.class, Material.class, String.class}, Constant.getNextItemID(), Materials.invincible, "powder").setCreativeTab(CreativeModeTab.tabMisc);
+    public static final ItemFood buguDan = (new ItemGAFood(Constant.getNextItemID(), Materials.vegetable, 4, 4, 250, false, false, true, "bugu")).setPlantProduct().setAlwaysEdible();
+    public static final ItemFood demonPillRaw = (new ItemGAFood(Constant.getNextItemID(), Materials.cake, 2,2, -1000, false,false,false,"demonPill")).setAlwaysEdible();
+    public static final ItemFood demonPillCooked = (ItemFood) (new ItemGAFood(Constant.getNextItemID(), Materials.cake, 4,4, -2000, false,false,false,"demonPillCooked")).setAlwaysEdible().setXPReward(2);
+    public static final ItemFood cubeSugar = (new ItemGAFood(Constant.getNextItemID(),Materials.sugar,3,3, 1000,false,false,false,"cubeSugar")).setAlwaysEdible().setPotionEffect(MobEffectList.regeneration.id, 8, 0, 0.5F);
+    public static final Item powder_dark = new ItemElementPowder(Constant.getNextItemID(),"dark");
+    public static final Item powder_freeze = new ItemElementPowder(Constant.getNextItemID(),"freeze");
+    public static final Item powder_wind = new ItemElementPowder(Constant.getNextItemID(),"wind");
+    public static final Item powder_blaze = new ItemElementPowder(Constant.getNextItemID(),"blaze");
+    public static final Item powder_metal = new ItemElementPowder(Constant.getNextItemID(),"metal");
+    public static final Item powder_thunder = new ItemElementPowder(Constant.getNextItemID(),"thunder");
+    public static final Item powder_wood = new ItemElementPowder(Constant.getNextItemID(),"wood");
+    public static final Item powder_liquid = new ItemElementPowder(Constant.getNextItemID(),"liquid");
+    public static final Item powder_earth = new ItemElementPowder(Constant.getNextItemID(),"earth");
     public static final ItemColorBag colorBag = (ItemColorBag) new ItemColorBag(Constant.getNextItemID(), Material.dye, "colorbag").setCreativeTab(CreativeModeTab.tabTools);
-    public static final Item pants = createInstance(Item.class, new Class[]{int.class, Material.class, String.class}, Constant.getNextItemID(), Materials.invincible, "pants").setCreativeTab(CreativeModeTab.tabMisc);
-
+    public static final Item pants = new ItemGAMisc(Constant.getNextItemID(),"pants");
+    public static final ItemFood chikitan = new ItemGAFood(Constant.getNextItemID(),Materials.vegetable,20,0,0,false,false,false,"chikitan").setAlwaysEdible().setPlantProduct().setPotionEffect(MobEffectList.resistance.id, 10, 3, 0.25F);
+    public static final ItemFood spicyStrip = new ItemGAFood(Constant.getNextItemID(),Materials.dough,2,2,0,false,false,false,"spicy_strip").setPotionEffect(MobEffectList.hunger.id, 16, 1, 1.0F);
+    public static final ItemFood zombieBrain = new ItemGAFood(Constant.getNextItemID(),Materials.meat,1,2,0,true,false,false,"zombie_brain").setPotionEffect(MobEffectList.poison.id, 22, 0, 0.9F).setAnimalProduct();
+    public static final ItemFood riskyAgent = new ItemGAFood(Constant.getNextItemID(),Materials.meat,4,4,0,true,false,false,"risky_agent").setAlwaysEdible().setAnimalProduct();
+    public static final ItemFood suspiciousStew = new ItemGAFood(Constant.getNextItemID(),Material.vegetable,4,4,0,false,false,true,"suspicious_stew").setAlwaysEdible().setPlantProduct();
+    public static final ItemExplosion c4 = new ItemExplosion(Constant.getNextItemID(),Material.circuits,"c4");
+    public static final ItemFood zombieBrainCooked = new ItemGAFood(Constant.getNextItemID(),Material.meat,2,4,0,true,true,false,"zombie_brain_cooked").setPotionEffect(MobEffectList.nightVision.id, 60, 0, 0.9F).setAnimalProduct().setAlwaysEdible();
+    public static final ItemFood wuzhiDan = (new ItemGAFood(Constant.getNextItemID(), Materials.vegetable, 0, 20, 0, false, true, true, "wuzhi")).setPlantProduct().setAlwaysEdible();
+    public static final ItemFood hugeSpiderLeg = (new ItemGAFood(Constant.getNextItemID(), Material.meat, 4,4,0,true,true,false,"spider_leg")).setAlwaysEdible().setAnimalProduct().setPotionEffect(MobEffectList.poison.id, 12, 0, 0.9F);
+    public static final ItemFood coldSpiderLeg = (new ItemGAFood(Constant.getNextItemID(), Material.meat, 6,6,0,true,true,false,"cold_spider_leg")).setAlwaysEdible().setAnimalProduct().setPotionEffect(MobEffectList.moveSpeed.id, 240, 1, 1.0F);
+    public static final ItemGAMisc badApple = new ItemGAMisc(Constant.getNextItemID(),"bad_apple");
     private static Item register(String resourceLocation, Item item, CreativeModeTab tab) {
         item.setResourceLocation(item.getResourceLocationPrefix() + resourceLocation);
         item.setUnlocalizedName(resourceLocation);
@@ -209,10 +220,19 @@ public class Items extends Item{
         register("gem/enhance_gem_phase5", itemEnhanceGem5).setUnlocalizedName("enhance_gem_phase5").setLowestCraftingDifficultyToProduce(1.0F);
         register("gem/enhance_gem_phase5", itemEnhanceGem6).setUnlocalizedName("enhance_gem_phase6").setLowestCraftingDifficultyToProduce(1.0F);
 
+        register("drug_zj", chikitan);
         register("drug_bg", buguDan);
+        register("drug_bg_b",wuzhiDan);
         register("drug_yd", demonPillRaw);
         register("drug_yd_b", demonPillCooked);
         register("cubesugar", cubeSugar);
+        register("latiao",spicyStrip);
+        register("zombie_brain",zombieBrain);
+        register("zombie_drug",riskyAgent);
+        register("suspicious_stew",suspiciousStew);
+        register("zombie_brain_cooked",zombieBrainCooked);
+        register("spider_leg",hugeSpiderLeg);
+        register("spider_leg_b",coldSpiderLeg);
 
         register("powder_an", powder_dark);
         register("powder_bing", powder_freeze);
@@ -223,9 +243,11 @@ public class Items extends Item{
         register("powder_mu", powder_wood);
         register("powder_shui", powder_liquid);
         register("powder_tu", powder_earth);
-
+    
+        register("bad_apple",badApple);
         register("color_bag",colorBag);
         register("pants", pants);
+        register("c4",c4);
 
         Constant.initItemArray();
     }
@@ -237,7 +259,26 @@ public class Items extends Item{
                 register.registerShapedRecipe(new ItemStack(Items.powder_metal, 1), false, new Object[]{"###", "#*#","###", '#', Item.getMatchingItem(ItemNugget.class,materials[i]) , '*', getItem(id)});
             }
         }
+        
+        for(int flower_type = 0; flower_type <= 8; flower_type++){
+            if(flower_type != 3){
+                if(flower_type != 4){
+                    if(flower_type != 6){
+                        register.registerShapelessRecipe(new ItemStack(Items.chikitan,2),false,new Object[]{Item.emerald,Item.emerald,new ItemStack(Block.plantRed,1,flower_type),Item.egg});
+                        register.registerShapelessRecipe(new ItemStack(Items.riskyAgent,1),false,new Object[]{Items.zombieBrainCooked,Items.zombieBrainCooked,Items.zombieBrainCooked,new ItemStack(Block.plantRed,1,flower_type)});
+                        register.registerShapelessRecipe(new ItemStack(Items.suspiciousStew,1),false,new Object[]{Items.buguDan,Item.rottenFlesh,Item.spiderEye,new ItemStack(Item.dyePowder,1,15)});
+                    }
+                }
+            }
+        }
+        register.registerShapelessRecipe(new ItemStack(Items.wuzhiDan,1),false,new Object[]{Items.buguDan,Item.redstone,Block.plantYellow,new ItemStack(Block.plantRed,1,0),new ItemStack(Block.plantRed,1,1),new ItemStack(Block.plantRed,1,2),new ItemStack(Block.plantRed,1,5),new ItemStack(Block.plantRed,1,7),new ItemStack(Block.plantRed,1,8)});
+        register.registerShapelessRecipe(new ItemStack(Items.chikitan,2),false,new Object[]{Item.emerald,Item.emerald,Block.plantYellow,Item.egg});
         register.registerShapelessRecipe(new ItemStack(Items.cubeSugar,1),false,new Object[]{Item.sugar,Item.sugar,Item.sugar,Item.sugar});
+        register.registerShapelessRecipe(new ItemStack(Items.spicyStrip,8),false,new Object[]{Item.rottenFlesh,Item.rottenFlesh,Item.rottenFlesh,Item.rottenFlesh});
+        register.registerShapelessRecipe(new ItemStack(Items.riskyAgent,1),false,new Object[]{Items.zombieBrain,Items.zombieBrain,Items.zombieBrain,Block.plantYellow});
+        register.registerShapelessRecipe(new ItemStack(Items.c4,4),false,new Object[]{Block.tnt,Block.pressurePlatePlanks});
+        register.registerShapelessRecipe(new ItemStack(Items.badApple,1),false,new Object[]{new ItemStack(Block.leaves,1,0),new ItemStack(Block.leaves,1,1),new ItemStack(Block.leaves,1,2),new ItemStack(Block.leaves,1,3)});
+        
         for(int id = Items.itemEnhanceGem.itemID; id < Items.itemEnhanceGem6.itemID; id++){
             for(int sub = 0; sub < GemModifierTypes.values().length; sub++){
                 register.registerShapelessRecipe(new ItemStack(id,1,0),false,
@@ -355,32 +396,205 @@ public class Items extends Item{
                 VIBRANIUM_NUGGET,
                 VIBRANIUM_NUGGET,
                 VIBRANIUM_NUGGET);
-            register.registerShapedRecipe(new ItemStack(VIBRANIUM_HELMET),
-                    true,
-                    "###",
-                    "#A#",
-                    '#', VIBRANIUM_INGOT,
-                    'A', Item.helmetAdamantium).extendsNBT();
-            register.registerShapedRecipe(new ItemStack(VIBRANIUM_CHESTPLATE),
-                    true,
-                    "###",
-                    "#A#",
-                    "###",
-                    '#', VIBRANIUM_INGOT,
-                    'A', Item.plateAdamantium).extendsNBT();
-            register.registerShapedRecipe(new ItemStack(VIBRANIUM_LEGGINGS),
-                    true,
-                    "###",
-                    "#A#",
-                    "# #",
-                    '#', VIBRANIUM_INGOT,
-                    'A', Item.legsAdamantium).extendsNBT();
-            register.registerShapedRecipe(new ItemStack(VIBRANIUM_BOOTS),
-                    true,
-                    "#A#",
-                    "# #",
-                    '#', VIBRANIUM_INGOT,
-                    'A', Item.bootsAdamantium).extendsNBT();
+            
+            Material[] lowerTierLoop = new Material[]{Material.copper,Material.silver,Material.gold};
+            Material[] stdTierLoop = new Material[]{Material.iron,Material.ancient_metal,Material.mithril,Material.adamantium,Materials.vibranium};
+            
+            for (int i = 0; i < lowerTierLoop.length; i++){
+                Item upper_ingot = getMatchingItem(ItemIngot.class,Material.iron);
+                Item lower_equipment;
+                Item upper_equipment;
+                
+                lower_equipment = getMatchingArmor(ItemHelmet.class,lowerTierLoop[i],false);
+                upper_equipment = getMatchingArmor(ItemHelmet.class,Material.iron,false);
+                register.registerShapedRecipe(new ItemStack(upper_equipment),
+                        true,
+                        "###",
+                        "#A#",
+                        '#', upper_ingot,
+                        'A', lower_equipment).extendsNBT();
+                lower_equipment = getMatchingArmor(ItemCuirass.class,lowerTierLoop[i],false);
+                upper_equipment = getMatchingArmor(ItemCuirass.class,Material.iron,false);
+                register.registerShapedRecipe(new ItemStack(upper_equipment),
+                        true,
+                        "###",
+                        "#A#",
+                        "###",
+                        '#', upper_ingot,
+                        'A', lower_equipment).extendsNBT();
+                lower_equipment = getMatchingArmor(ItemLeggings.class,lowerTierLoop[i],false);
+                upper_equipment = getMatchingArmor(ItemLeggings.class,Material.iron,false);
+                register.registerShapedRecipe(new ItemStack(upper_equipment),
+                        true,
+                        "###",
+                        "#A#",
+                        "# #",
+                        '#', upper_ingot,
+                        'A', lower_equipment).extendsNBT();
+                lower_equipment = getMatchingArmor(ItemBoots.class,lowerTierLoop[i],false);
+                upper_equipment = getMatchingArmor(ItemBoots.class,Material.iron,false);
+                register.registerShapedRecipe(new ItemStack(upper_equipment),
+                        true,
+                        "# #",
+                        "#A#",
+                        '#', upper_ingot,
+                        'A', lower_equipment).extendsNBT();
+                
+            }
+
+        for (int i = 0; i + 1 < stdTierLoop.length; i++){
+            Item upper_ingot = getMatchingItem(ItemIngot.class,stdTierLoop[i + 1]);
+            Item upper_nugget = getMatchingItem(ItemNugget.class,stdTierLoop[i + 1]);
+            Item lower_equipment;
+            Item upper_equipment;
+
+            lower_equipment = getMatchingArmor(ItemHelmet.class,stdTierLoop[i],false);
+            upper_equipment = getMatchingArmor(ItemHelmet.class,stdTierLoop[i + 1],false);
+            if(lower_equipment != null && upper_equipment != null){
+                register.registerShapedRecipe(new ItemStack(upper_equipment),
+                        true,
+                        "###",
+                        "#A#",
+                        '#', upper_ingot,
+                        'A', lower_equipment).extendsNBT();
+            }
+            
+            lower_equipment = getMatchingArmor(ItemCuirass.class,stdTierLoop[i],false);
+            upper_equipment = getMatchingArmor(ItemCuirass.class,stdTierLoop[i + 1],false);
+            if(lower_equipment != null && upper_equipment != null){
+                register.registerShapedRecipe(new ItemStack(upper_equipment),
+                        true,
+                        "###",
+                        "#A#",
+                        "###",
+                        '#', upper_ingot,
+                        'A', lower_equipment).extendsNBT();
+            }
+            lower_equipment = getMatchingArmor(ItemLeggings.class,stdTierLoop[i],false);
+            upper_equipment = getMatchingArmor(ItemLeggings.class,stdTierLoop[i + 1],false);
+            if(lower_equipment != null && upper_equipment != null){
+                register.registerShapedRecipe(new ItemStack(upper_equipment),
+                        true,
+                        "###",
+                        "#A#",
+                        "# #",
+                        '#', upper_ingot,
+                        'A', lower_equipment).extendsNBT();
+            }
+            lower_equipment = getMatchingArmor(ItemBoots.class,stdTierLoop[i],false);
+            upper_equipment = getMatchingArmor(ItemBoots.class,stdTierLoop[i + 1],false);
+            if(lower_equipment != null && upper_equipment != null){
+                register.registerShapedRecipe(new ItemStack(upper_equipment),
+                        true,
+                        "# #",
+                        "#A#",
+                        '#', upper_ingot,
+                        'A', lower_equipment).extendsNBT();
+            }
+            lower_equipment = getMatchingItem(ItemPickaxe.class,stdTierLoop[i]);
+            upper_equipment = getMatchingItem(ItemPickaxe.class,stdTierLoop[i + 1]);
+            if(lower_equipment != null && upper_equipment != null) {
+                register.registerShapedRecipe(new ItemStack(upper_equipment),
+                        true,
+                        "###",
+                        " A ",
+                        " S ",
+                        '#', upper_ingot,
+                        'A', lower_equipment,
+                        'S', fetchingStickByMaterial(stdTierLoop[i + 1])).extendsNBT();
+            }
+            lower_equipment = getMatchingItem(ItemSword.class,stdTierLoop[i]);
+            upper_equipment = getMatchingItem(ItemSword.class,stdTierLoop[i + 1]);
+            if(lower_equipment != null && upper_equipment != null) {
+                register.registerShapedRecipe(new ItemStack(upper_equipment),
+                        true,
+                        "#",
+                        "#",
+                        "A",
+                        '#', upper_ingot,
+                        'A', lower_equipment).extendsNBT();
+            }
+            lower_equipment = getMatchingItem(ItemClubMetal.class,stdTierLoop[i]);
+            upper_equipment = getMatchingItem(ItemClubMetal.class,stdTierLoop[i + 1]);
+            if(lower_equipment != null && upper_equipment != null && stdTierLoop[i + 1] != Materials.vibranium) {
+                register.registerShapedRecipe(new ItemStack(upper_equipment),
+                        true,
+                        "NNN",
+                        "NIN",
+                        " A ",
+                        'N', upper_nugget,
+                        'I', upper_ingot,
+                        'A', lower_equipment).extendsNBT();
+            }
+            lower_equipment = getMatchingItem(ItemShovel.class,stdTierLoop[i]);
+            upper_equipment = getMatchingItem(ItemShovel.class,stdTierLoop[i + 1]);
+            if(lower_equipment != null && upper_equipment != null) {
+                register.registerShapedRecipe(new ItemStack(upper_equipment), 
+                        true,
+                        "#",
+                        "A",
+                        "S",
+                        '#', upper_ingot,
+                        'S', fetchingStickByMaterial(stdTierLoop[i + 1]),
+                        'A', lower_equipment).extendsNBT();
+            }
+            lower_equipment = getMatchingItem(ItemAxe.class,stdTierLoop[i]);
+            upper_equipment = getMatchingItem(ItemAxe.class,stdTierLoop[i + 1]);
+            if(lower_equipment != null && upper_equipment != null) {
+                register.registerShapedRecipe(new ItemStack(upper_equipment),
+                        true,
+                        "##",
+                        "A#",
+                        "S ",
+                        '#', upper_ingot,
+                        'S', fetchingStickByMaterial(stdTierLoop[i + 1]),
+                        'A', lower_equipment).extendsNBT();
+            }
+            lower_equipment = getMatchingItem(ItemDagger.class,stdTierLoop[i]);
+            upper_equipment = getMatchingItem(ItemDagger.class,stdTierLoop[i + 1]);
+            if(lower_equipment != null && upper_equipment != null) {
+                register.registerShapedRecipe(new ItemStack(upper_equipment),
+                        true,
+                        "I",
+                        "A",
+                        'I', upper_ingot,
+                        'A', lower_equipment).extendsNBT();
+            }
+            lower_equipment = getMatchingItem(ItemWarHammer.class,stdTierLoop[i]);
+            upper_equipment = getMatchingItem(ItemWarHammer.class,stdTierLoop[i + 1]);
+            if(lower_equipment != null && upper_equipment != null) {
+                register.registerShapedRecipe(new ItemStack(upper_equipment),
+                        true,
+                        "III",
+                        "IAI",
+                        " S ",
+                        'I', upper_ingot,
+                        'S', fetchingStickByMaterial(stdTierLoop[i + 1]),
+                        'A', lower_equipment);
+            }
+            lower_equipment = getMatchingItem(ItemBattleAxe.class,stdTierLoop[i]);
+            upper_equipment = getMatchingItem(ItemBattleAxe.class,stdTierLoop[i + 1]);
+            if(lower_equipment != null && upper_equipment != null) {
+                register.registerShapedRecipe(new ItemStack(upper_equipment),
+                        true,
+                        "I I",
+                        "IAI",
+                        " S ",
+                        'I', upper_ingot,
+                        'S', fetchingStickByMaterial(stdTierLoop[i + 1]),
+                        'A', lower_equipment);
+            }
+        }
+        register.registerShapedRecipe(new ItemStack(Items.clubVibranium),
+                true,
+                "NNN",
+                "NIN",
+                " AV",
+                'N',Items.VIBRANIUM_NUGGET,
+                'I',Items.VIBRANIUM_INGOT,
+                'A',Items.clubAdamantium,
+                'V',Items.voucherClubCore).extendsNBT();
+        
         register.registerShapedRecipe(new ItemStack(VIBRANIUM_PICKAXE),
                 true,
                 "###",
@@ -451,6 +665,7 @@ public class Items extends Item{
                 'C', Item.coal);
         RecipesFurnace.smelting().addSmelting(Block.coalBlock.blockID, new ItemStack(DIAMOND_CHUNK));
         RecipesFurnace.smelting().addSmelting(Items.demonPillRaw.itemID, new ItemStack(Items.demonPillCooked));
+        RecipesFurnace.smelting().addSmelting(Items.zombieBrain.itemID, new ItemStack(Items.zombieBrainCooked));
         register.registerShapedRecipe(new ItemStack(VIBRANIUM_BOW),
                 true,
                 "NSL",
@@ -503,7 +718,21 @@ public class Items extends Item{
                 'T', Item.ghastTear,
                 'B', Item.book,
                 'E', Item.enderPearl);
-
+        register.registerShapedRecipe(new ItemStack(coldSpiderLeg,6),
+                false,
+                "A A",
+                "ABA",
+                "APA",
+                'A',Items.hugeSpiderLeg,
+                'B',Item.snowball,
+                'P',Item.porkCooked);
+        register.registerShapedRecipe(new ItemStack(Item.appleGold, 1, 0),true,
+                "###",
+                "IXI",
+                "###",
+                '#', Item.goldNugget,
+                'I', Item.ingotGold,
+                'X', Items.badApple);
         register.registerShapedRecipe(new ItemStack(Block.planks, 4, 4), true, new Object[] {"#", '#', new ItemStack(Blocks.wood1, 1, 0)});
         register.registerShapedRecipe(new ItemStack(Block.planks, 4, 5), true, new Object[] {"#", '#', new ItemStack(Blocks.wood1, 1, 1)});
 
@@ -512,5 +741,8 @@ public class Items extends Item{
 
         register.registerShapedRecipe(new ItemStack(Block.woodSingleSlab, 6, 5), true, new Object[] {"###", '#', new ItemStack(Block.planks, 1, 5)});
         register.registerShapedRecipe(new ItemStack(Blocks.stairsCherry, 4), true,"#  ", "## ", "###", '#', new ItemStack(Block.planks, 1, 5));
+    }
+    public static Item fetchingStickByMaterial(Material material){
+        return material == Materials.vibranium ? OBSIDIAN_STICK : Item.stick;
     }
 }

@@ -48,6 +48,7 @@ public abstract class ItemTrans {
    public Map<Integer, Double> soldPriceArray = new HashMap<>();
 
    public Map<Integer, Double> buyPriceArray = new HashMap<>();
+   
 
    @ModifyConstant(method = {
            "<init>(ILjava/lang/String;I)V",
@@ -189,6 +190,12 @@ public abstract class ItemTrans {
          return this.getBurnTime(item_stack) > 0 ? 1 : 0;
       }
    }
+//   @ModifyConstant(method = {
+//           "getScaledDamage(F)I",
+//   }, constant = @Constant(floatValue = 100.0F))
+//   private static float reloaddamage(float value) {
+//      return 1600.0F;
+//   }
 
    @Shadow
    private Material getMaterialForRepairs() {

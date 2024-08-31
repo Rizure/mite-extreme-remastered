@@ -1,6 +1,7 @@
 package net.xiaoyu233.mitemod.miteite.trans.entity;
 
 import net.minecraft.*;
+import net.xiaoyu233.mitemod.miteite.item.Items;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
 import net.xiaoyu233.mitemod.miteite.util.Constant;
 import org.spongepowered.asm.mixin.Mixin;
@@ -80,13 +81,22 @@ public class EntityGiantZombieTrans extends EntityMonster {
 
    protected void dropFewItems(boolean recently_hit_by_player, DamageSource damage_source) {
       if (recently_hit_by_player) {
-         if (this.getWorld().getDayOfOverworld() < 128) {
-            this.dropItemStack(new ItemStack(Item.ancientMetalNugget, 4 + this.rand.nextInt(2)));
-         } else {
-            this.dropItemStack(new ItemStack(Item.ingotMithril, 1));
+         for(int i = 0; i < 4 + this.rand.nextInt(2); i++){
+            this.dropItem(Item.ancientMetalNugget);
+         }
+         if(this.getWorld().getDayOfOverworld() > 63){
+            this.dropItem(Item.ingotMithril);
+         }
+         for(int i = 0; i < 12 + this.rand.nextInt(5); i++){
+            this.dropItem(Item.rottenFlesh);
+         }
+         for(int i = 0; i < 2 + this.rand.nextInt(3); i++){
+            this.dropItem(Items.zombieBrain);
+         }
+         for(int i = 0; i < 8 + this.rand.nextInt(5); i++){
+            this.dropItem(Item.bone);
          }
       }
-
       super.dropFewItems(recently_hit_by_player, damage_source);
    }
 

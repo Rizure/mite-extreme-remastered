@@ -135,8 +135,8 @@ public class Configs {
         public static ConfigItem <Integer> netherAdamantiumMaxCountPerChunk = new ConfigItem("netherAdamantiumMaxCountPerChunk", 2, "地狱艾德曼每个区块最大生成数量", 0 ,8);
         public static ConfigItem <Integer> netherAdamantiumMaxCountPerVein = new ConfigItem("netherAdamantiumMaxCountPerVein", 1, "地狱艾德曼每个矿脉最大矿物生成数量", 0 ,10);
         public static ConfigItem <Boolean> logPlayersInteractWithPortal = new ConfigItem("logPlayersInteractWithPortal", true, "玩家通过传送门时发送警告(开关)");
-        public static ConfigItem <Integer> underworldGateOpenDay = new ConfigItem("underworldGateOpenDay", 32, "地下世界传送门多少天可以打开(主世界天数)", 32 ,64);
-        public static ConfigItem <Integer> netherGateOpenDay = new ConfigItem("netherGateOpenDay", 48, "地狱传送门多少天可以打开(主世界天数)", 48 ,96);
+        public static ConfigItem <Integer> underworldGateOpenDay = new ConfigItem("underworldGateOpenDay", 32, "地下世界传送门多少天可以打开(主世界天数)", 16 ,64);
+        public static ConfigItem <Integer> netherGateOpenDay = new ConfigItem("netherGateOpenDay", 48, "地狱传送门多少天可以打开(主世界天数)", 24 ,96);
         public static ConfigItem <Boolean> isAfterDeathKeep = new ConfigItem("isAfterDeathKeep", false, "是否死亡不掉落");
         public static ConfigItem <Boolean> isCloseShop = new ConfigItem("isCloseShop", false, "关闭商店系统");
         public static ConfigItem <Float> plantGrowthRate = new ConfigItem("plantGrowthRate_v0.0.9", 0.5F, "作物生长速度倍率",0f,1f);

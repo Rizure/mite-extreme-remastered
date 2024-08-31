@@ -22,6 +22,7 @@ public class EntityRevenantTrans extends EntityZombie {
          for (int i1 = 0; i1 < count; i1++) {
             this.dropItemStack(new ItemStack(Items.dyePowder, 1, 4));
          }
+         this.dropItem(Items.zombieBrain);
       }
    }
 

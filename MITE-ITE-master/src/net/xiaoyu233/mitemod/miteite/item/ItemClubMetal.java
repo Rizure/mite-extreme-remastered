@@ -25,4 +25,7 @@ public class ItemClubMetal extends ItemCudgel {
     public int getNumComponentsForDurability() {
         return 2;
     }
+    public boolean hasWoodenHandle() {
+        return false;
+    }
 }

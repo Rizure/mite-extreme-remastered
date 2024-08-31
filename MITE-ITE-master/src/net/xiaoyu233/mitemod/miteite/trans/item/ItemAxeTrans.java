@@ -13,7 +13,7 @@ public class ItemAxeTrans extends ItemToolTrans{
     @SoftOverride
     protected int getExpForBlockBreak(BlockBreakInfo blockBreakInfo) {
         if (blockBreakInfo.block instanceof BlockLog || blockBreakInfo.block instanceof BlockLog1){
-            return 8;
+            return 12;
         }
         return Math.max(super.getExpForBlockBreak(blockBreakInfo),1);
     }

@@ -185,8 +185,12 @@ public class EntityAnnihilationSkeleton extends EntitySkeleton {
             }else {
                 this.dropItem(Items.voucherMagic);
             }
-            this.dropItemStack(new ItemStack(Items.VIBRANIUM_NUGGET,2));
-            this.dropItemStack(new ItemStack(Item.diamond,2));
+            for(int i = 0;i < 2;i++){
+                this.dropItemStack(new ItemStack(Items.VIBRANIUM_NUGGET,1));
+            }
+            for(int i = 0;i < 2;i++){
+                this.dropItemStack(new ItemStack(Item.diamond,1));
+            }
         }
     }
 

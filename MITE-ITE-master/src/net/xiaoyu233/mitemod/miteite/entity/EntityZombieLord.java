@@ -48,6 +48,7 @@ public class EntityZombieLord extends EntityZombie {
             for (int i1 = 0; i1 < diamond_count; i1++) {
                 this.dropItem(Item.diamond);
             }
+            this.dropItem(Items.zombieBrain);
         }
     }
 

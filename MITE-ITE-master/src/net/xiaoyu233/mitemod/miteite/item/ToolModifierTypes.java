@@ -29,7 +29,9 @@ public enum ToolModifierTypes implements ItemModifierTypes{
     //Tool Modifiers
     EFFICIENCY_MODIFIER(0.2F,"急速",EnumChatFormat.WHITE,50, (ToolModifierTypes::isNotWeapon),10),
     DURABILITY_MODIFIER(0.15F,"耐久",EnumChatFormat.WHITE,50,(stack -> true),5),
-    DAMAGE_MODIFIER(1.0F,"锋利", EnumChatFormat.WHITE,50, (ToolModifierTypes::isWeapon),10),
+    DAMAGE_MODIFIER(1.0F,"锋利", EnumChatFormat.WHITE,50, stack -> hasNoOtherDamageModifier(stack,2) && isWeapon(stack),10),
+    SMITE(1.5F,"神圣",EnumChatFormat.AQUA,25,stack -> hasNoOtherDamageModifier(stack,0) && isWeapon(stack),10),
+    BANE_OF_ARTHROPOD(1.5F,"节肢杀手",EnumChatFormat.AQUA,25,stack -> hasNoOtherDamageModifier(stack,1) && isWeapon(stack),10),
     INVINCIBLE(1.0f,"不动如山",EnumChatFormat.AQUA,25,(stack -> true),4),
     SLOWDOWN_MODIFIER(1.0F,"织网",EnumChatFormat.LIGHT_PURPLE,10, ToolModifierTypes::isWeapon,5),
     UNNATURAL_MODIFIER(0.1f,"超自然",EnumChatFormat.LIGHT_PURPLE,10, ToolModifierTypes::isNotWeapon,5),
@@ -114,5 +116,20 @@ public enum ToolModifierTypes implements ItemModifierTypes{
                 return true;
         }
 
+    }
+    private static boolean hasNoOtherDamageModifier(ItemStack stack,int damageType){
+        switch (damageType){
+            //SMITE
+            case 0:
+                return !ItemModifierTypes.hasModifier(stack,DAMAGE_MODIFIER) && !ItemModifierTypes.hasModifier(stack,BANE_OF_ARTHROPOD);
+            //BANE_OF_ARTHROPOD
+            case 1:
+                return !ItemModifierTypes.hasModifier(stack,DAMAGE_MODIFIER) && !ItemModifierTypes.hasModifier(stack,SMITE);
+            //SHARPNESS
+            case 2:
+                return !ItemModifierTypes.hasModifier(stack,SMITE) && !ItemModifierTypes.hasModifier(stack,BANE_OF_ARTHROPOD);
+            default:
+                return true;
+        }
     }
 }

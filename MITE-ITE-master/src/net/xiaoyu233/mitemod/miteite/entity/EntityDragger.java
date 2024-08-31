@@ -64,11 +64,11 @@ public class EntityDragger extends EntitySkeleton{
             }
 
             if(this.entityToAttack == null) {
-                entityToAttack = this.getClosestVulnerablePlayer(16F);
+                this.entityToAttack = this.getClosestVulnerablePlayer(16F);
                 if (entityToAttack instanceof EntityPlayer) {
                     this.entityToAttack.entityFX(EnumEntityFX.curse_effect_learned);
                 }
-                this.dragStrength = 0;
+                this.dragStrength = 1000;
             } else {
                 if(entityToAttack.isDead || getDistanceToEntity(entityToAttack) > 16F) {
                     this.entityToAttack = null;
@@ -81,20 +81,19 @@ public class EntityDragger extends EntitySkeleton{
                             return;
                         }
                     }
-                    if(this.dragStrength >= 0 && this.dragStrength < 1000D){
-                        this.dragStrength ++;
-                        double dragpos = Math.min(dragStrength / 10000.0D, 0.025D);
-                        double dx = entityToAttack.posX - this.posX;
-                        double dy = entityToAttack.posY - this.posY;
-                        double dz = entityToAttack.posZ - this.posZ;
+                    if(this.dragStrength > 0 && this.dragStrength <= 1000D){
+                        this.dragStrength --;
+                        double dx = (entityToAttack.posX - this.posX);
+                        double dy = (entityToAttack.posY - this.posY);
+                        double dz = (entityToAttack.posZ - this.posZ);
                         double r = getDistanceToEntity(entityToAttack);
                         if(r < 4.0F && dy < 1.0F){
                             return;
                         }
-                        double destX = entityToAttack.posX - dx * dragpos;
-                        double destY = entityToAttack.posY - dy * dragpos;
-                        double destZ = entityToAttack.posZ - dz * dragpos;
-                        ((EntityPlayer) entityToAttack).setPositionAndUpdate(destX,destY,destZ);
+                        if(this.dragStrength % 100 == 0){
+                            this.entityToAttack.attackEntityFrom(new Damage(DamageSource.causeMobDamage(this),0.01F));
+                        }
+                        this.entityToAttack.addVelocity(-dx / r * 3D,0.0D,-dz / r * 3D);
                     }
                 }
             }

@@ -7,8 +7,8 @@ import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(EnchantmentWeaponDamage.class)
-public abstract class EnchantmentWeaponDamageXTrans extends Enchantment {
-   protected EnchantmentWeaponDamageXTrans(int id, yq rarity, int difficulty) {
+public abstract class EnchantmentWeaponDamageTrans extends Enchantment {
+   protected EnchantmentWeaponDamageTrans(int id, yq rarity, int difficulty) {
       super(id, rarity, difficulty);
    }
 

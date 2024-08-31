@@ -133,6 +133,12 @@ public class EntitySpiderQueen extends EntityArachnid {
                 this.dropItem(Item.emerald);
             }
             this.dropItem(Items.voucherSpider);
+            for(int i = 0;i< 8;i++){
+                this.dropItem(Items.hugeSpiderLeg);
+                if(this.rand.nextInt(4) == 0){
+                    i++;
+                }
+            }
         }
     }
     public int getExperienceValue() {

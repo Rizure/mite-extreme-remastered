@@ -106,6 +106,8 @@ public class SlotResultTrans {
                      this.thePlayer.triggerAchievement(Achievements.gemSettingBlock);
                   } else if (item == Items.itemDynamicCoreIron) {
                      this.thePlayer.triggerAchievement(Achievements.itemDynamicCoreIron);
+                  } else if (item == Items.coldSpiderLeg) {
+                     this.thePlayer.triggerAchievement(Achievements.coldSpiderLeg);
                   }
                } else {
                   this.thePlayer.addStat(AchievementList.enchantments, 1);

@@ -89,6 +89,32 @@ achievement.itemDynamicCoreIron=无惧黑暗
 achievement.itemDynamicCoreIron.desc=Gamma！OUT！
 achievement.killZombieBoss=立于不败之地
 achievement.killZombieBoss.desc=BOSS会掉落各种附魔书以及钻石
+achievement.razTime=炮爷出击
+achievement.razTime.desc=When ICU Again
+achievement.achievement_zhujidan=筑基
+achievement.achievement_zhujidan.desc=吃下一枚筑基丹尝试筑基
+achievement.achievement_x1=结丹
+achievement.achievement_x1.desc=摆脱五谷轮回
+achievement.achievement_x2=元婴
+achievement.achievement_x2.desc=行他人不行之道
+achievement.achievement_x3=化神
+achievement.achievement_x3.desc=五行相合，肉身不灭
+achievement.achievement_x4=炼虚
+achievement.achievement_x4.desc=身体与天地融为一体
+achievement.achievement_x5=合体
+achievement.achievement_x5.desc=借用天地法则之力
+achievement.achievement_x6=大乘
+achievement.achievement_x6.desc=肉身得到重铸
+achievement.achievement_x7=真仙
+achievement.achievement_x7.desc=躲避法体三衰
+achievement.achievement_x8=金仙
+achievement.achievement_x8.desc=用法则之力构建灵域
+achievement.achievement_x9=太乙
+achievement.achievement_x9.desc=演化小世界，形成最纯粹的法则本源
+achievement.achievement_x0=大罗
+achievement.achievement_x0.desc=身与界存，凝练法则本源，以身合道
+achievement.coldSpiderLeg=蛛猪
+achievement.coldSpiderLeg.desc=蛛突猛进！？
 
 commands.version.playing=你现在正在游玩
 commands.day.msg=今天是这个世界的第 %s 天
@@ -262,12 +288,22 @@ item.powder_bing.name=冰の寒
 item.powder_an.name=深の暗
 
 item.drug_bg.name=辟谷丹
+item.drug_bg_b.name=五芝丹
 item.drug_yd.name=妖丹
 item.drug_yd_b.name=忘尘丹
 item.cubesugar.name=方糖
+item.drug_zj.name=筑基丹
+item.latiao.name=辣条
+item.zombie_brain.name=僵尸脑子
+item.zombie_drug.name=三尸脑神丹
+item.suspicious_stew.name=腐肉汤
+item.zombie_brain_cooked.name=熟僵尸脑子
+item.spider_leg.name=很大的蜘蛛腿
+item.spider_leg_b.name=很冰的大猪腿
 
 item.color_bag.name=彩色喵爪
-
+item.c4.name=蹦蹦炸弹
+item.bad_apple.name=Bad Apple!!!
 item.pants.name=蓝白内裤
 
 tile.gem_setting.name=宝石镶嵌台

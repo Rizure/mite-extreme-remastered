@@ -3,7 +3,6 @@ package net.xiaoyu233.mitemod.miteite.trans.item;
 import com.google.common.collect.Multimap;
 import net.minecraft.*;
 import net.xiaoyu233.mitemod.miteite.item.*;
-import net.xiaoyu233.mitemod.miteite.item.enchantment.Enchantments;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
 import net.xiaoyu233.mitemod.miteite.util.ReflectHelper;
 import net.xiaoyu233.mitemod.miteite.util.StringUtil;
@@ -118,7 +117,7 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
 
    public Multimap<String, AttributeModifier> getAttrModifiers(ItemStack stack) {
       Multimap<String, AttributeModifier> var1 = super.getAttrModifiers(stack);
-      var1.put(GenericAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(Item.field_111210_e, "Tool modifier", (double)this.damageVsEntity + (double)this.getAttackDamageBounce(stack), 0));
+      var1.put(GenericAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(Item.field_111210_e, "Tool modifier", (double)this.damageVsEntity + (double)this.getAttackDamageBounce(stack) + this.getEnhancedDamage(stack), 0));
       return var1;
    }
 
@@ -144,7 +143,6 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
 //      return EnchantmentManager.hasEnchantment(par1ItemStack, Enchantments.DEFENCED) ? EnumItemInUseAction.BLOCK : null;
       return player.canDefense() ? EnumItemInUseAction.BLOCK : null;
    }
-
    @Overwrite
    public float getMaterialHarvestEfficiency() {
       if (this.effective_material == Material.wood) {
@@ -304,7 +302,7 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
    }
 
    protected int getExpForBlockBreak(BlockBreakInfo blockBreakInfo){
-      return (int) Math.pow(blockBreakInfo.block.getMinHarvestLevel(0),3);
+      return 2 * (int)Math.pow(blockBreakInfo.block.getMinHarvestLevel(0),2);
    }
 
    @Override
@@ -315,54 +313,70 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
    public void onItemLevelUp(NBTTagCompound tagCompound, EntityPlayer player, ItemStack stack) {
       NBTTagCompound modifiers = tagCompound.getCompoundTag("modifiers");
       ToolModifierTypes modifierType;
-      ToolModifierTypes[] all_modifiers = ModifierUtils.getAllToolModifiers(stack).toArray(new ToolModifierTypes[0]);
-      ToolModifierTypes[] available_modifiers = ModifierUtils.getAllCanBeAppliedToolModifiers(stack).toArray(new ToolModifierTypes[0]);
+      //全可附加属性
+      List<ToolModifierTypes> all_modifiers = ModifierUtils.getAllToolModifiers(stack);
+      //目前可附加属性
+      List<ToolModifierTypes> available_modifiers = ModifierUtils.getAllCanBeAppliedToolModifiers(stack);
+      //已拥有属性
+      List<ToolModifierTypes> obtained_modifiers = new ArrayList<>();
+      int modifierTypesCap = Math.min(all_modifiers.size(), 4 + (stack.getForgingGrade() / 5));
       if(tagCompound.getInteger("tool_level") == 1){
-         int i = itemRand.nextInt(4) == 0 ? 0 : 1;
-         while (i < 4){
-            modifierType = ModifierUtils.getModifierWithWeight(ModifierUtils.getAllCanBeAppliedToolModifiers(stack),player.getRNG());
+         int i = itemRand.nextInt(3) == 0 ? 0 : 1;
+         while (i < modifierTypesCap){
+            modifierType = ModifierUtils.getModifierWithWeight(available_modifiers,player.getRNG());
             if (modifierType != null) {
-               if (!modifiers.hasKey(modifierType.nbtName)) {
+               if (!modifiers.hasKey(modifierType.nbtName) && modifierType.canApplyTo(stack)) {
                   this.addModifierLevelFor(modifiers, modifierType);
                   player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "获得了" + modifierType.color.toString() + modifierType.displayName + "§r属性"));
                   i++;
+               }else {
+                  available_modifiers.remove(modifierType);
                }
             } else {
+               Minecraft.setErrorMessage("onItemLevelUp: No matching modifier to apply.");
                i++;
             }
          }
       }
       else {
-         int i = itemRand.nextInt(8) == 0 ? 2 : 1;
-         while (i > 0){
-            modifierType = ModifierUtils.getModifierWithWeight(ModifierUtils.getAllCanBeAppliedToolModifiers(stack),player.getRNG());
+         int upgradeCount = itemRand.nextInt(8) == 0 ? 2 : 1;
+         while (upgradeCount > 0){
+            modifierType = ModifierUtils.getModifierWithWeight(available_modifiers,player.getRNG());
             if(modifierType != null){
                if(modifiers.hasKey(modifierType.nbtName)){
-                  player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "的" + modifierType.color.toString() + modifierType.displayName + "§r属性已升级到" + this.addModifierLevelFor(modifiers, modifierType)+ "级"));
-                  i--;
+                  player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "的" + modifierType.color.toString() + modifierType.displayName + "§r属性已升级到" + 
+                          this.addModifierLevelFor(modifiers, modifierType)
+                          + "级"));
+                  upgradeCount--;
                }else {
-                  int m = 0;
-                  for (int n = 0; n < all_modifiers.length; n++) {
-                     if(modifiers.hasKey(all_modifiers[n].nbtName)){
-                        m++;
+                  //拥有副属性录入
+                  for (int n = 0; n < all_modifiers.size(); n++) {
+                     if(modifiers.hasKey(all_modifiers.get(n).nbtName)){
+                        obtained_modifiers.add(all_modifiers.get(n));
                      }
                   }
-                  if(m < 4){
+                  if(obtained_modifiers.size() < modifierTypesCap){
                      this.addModifierLevelFor(modifiers, modifierType);
                      player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "获得了" + modifierType.color.toString() + modifierType.displayName + "§r属性"));
-                     i--;
+                     upgradeCount--;
                   }else {
-                     int n;
-                     for(n = itemRand.nextInt(available_modifiers.length);n< available_modifiers.length;n++){
-                        if(modifiers.hasKey(available_modifiers[n].nbtName)){
-                           player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "的" + available_modifiers[n].color.toString() + available_modifiers[n].displayName + "§r属性已升级到" + this.addModifierLevelFor(modifiers, available_modifiers[n])+ "级"));
+                     //删除不能升级/升至满级的副属性
+                     for (int n = 0; n < obtained_modifiers.size(); n++) {
+                        if(!available_modifiers.contains(obtained_modifiers.get(n))){
+                           obtained_modifiers.remove(obtained_modifiers.get(n));
+                           n = 0;
                         }
                      }
-                     break;
+                     int n = itemRand.nextInt(obtained_modifiers.size());
+                     player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "的" + obtained_modifiers.get(n).color.toString() + obtained_modifiers.get(n).displayName + "§r属性已升级到" + 
+                             this.addModifierLevelFor(modifiers, obtained_modifiers.get(n))
+                             + "级"));
+                     upgradeCount--;
                   }
                }
             }else {
-               i--;
+               Minecraft.setErrorMessage("onItemLevelUp: No matching modifier to upgrade/apply.");
+               upgradeCount--;
             }
          }
       }
