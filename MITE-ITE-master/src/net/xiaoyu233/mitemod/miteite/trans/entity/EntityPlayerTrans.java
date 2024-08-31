@@ -323,6 +323,10 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
 
    @Overwrite
    public float getHealthLimit() {
+//      if(System.currentTimeMillis() % 1000 == 0){
+//         System.out.println("level " + this.getEnhanceLevel());
+//      }
+      
       return (float)getHealthLimit(this.getExperienceLevel()) + this.getGemSumNumeric(GemModifierTypes.health) + (float) this.getEnhanceLevel() * 2.0F;
    }
    private int enhanceLevel = 0;
@@ -443,7 +447,7 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
             baneOfArthropodAmp += ToolModifierTypes.BANE_OF_ARTHROPOD.getModifierValue(heldItemStack.getTagCompound());
          }
          
-         float damage = (critBonus + this.calcRawMeleeDamageVs(target, critical, this.isSuspendedInLiquid()) + smiteAmp + baneOfArthropodAmp) * energeticAmp * indomitableAmp * demonHunterAmp + (heldItemStack != null ? heldItemStack.getGemMaxNumeric(GemModifierTypes.damage) : 0f);
+         float damage = (critBonus + this.calcRawMeleeDamageVs(target, critical, this.isSuspendedInLiquid()) + smiteAmp + baneOfArthropodAmp + (heldItemStack != null ? heldItemStack.getGemMaxNumeric(GemModifierTypes.damage) : 0f)) * energeticAmp * indomitableAmp * demonHunterAmp;
          if (damage <= 0.0F) {
             return;
          }
@@ -1421,7 +1425,7 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
       par1NBTTagCompound.setInteger("bossResetDamageBoostCounter", this.bossResetDamageBoostCounter);
       par1NBTTagCompound.setInteger("resetAttackMapTimer", this.resetAttackMapTimer);
       par1NBTTagCompound.setInteger("isAttackByBossCounter", this.isAttackByBossCounter);
-      par1NBTTagCompound.setInteger("enhanceLevel",enhanceLevel);
+      par1NBTTagCompound.setInteger("enhanceLevel",this.enhanceLevel);
 
       NBTTagList nbtTagList = new NBTTagList();
       for (Entry<Entity, Integer> integerEntry : this.attackCountMap.entrySet()) {

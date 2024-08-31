@@ -61,7 +61,6 @@ public abstract class ItemArmorTrans extends Item implements IDamageableItem, IU
          if (damage_source == null || !damage_source.bypassesMundaneArmor()) {
             ItemStack[] var5 = armors;
             int var6 = armors.length;
-
             for(int var7 = 0; var7 < var6; ++var7) {
                ItemStack item_stack = var5[var7];
                if (item_stack != null) {
@@ -89,7 +88,18 @@ public abstract class ItemArmorTrans extends Item implements IDamageableItem, IU
             total_defense += EnchantmentProtection.getTotalProtectionOfEnchantments(armors, damage_source, owner);
          }
 
-         total_defense = MathHelper.tryFitToNearestInteger(total_defense, 1.0E-4F);
+          if (damage_source != null && damage_source.isFallDamage()) {
+              for (ItemStack item_stack : armors) {
+                  if (item_stack != null) {
+                      Item item = item_stack.getItem();
+                      if (item.isArmor()) {
+                          total_defense += ArmorModifierTypes.LEVITY.getModifierValue(item_stack.stackTagCompound) * 10.0F;
+                      }
+                  }
+              }
+          }
+
+          total_defense = MathHelper.tryFitToNearestInteger(total_defense, 1.0E-4F);
          return total_defense;
       }
    }

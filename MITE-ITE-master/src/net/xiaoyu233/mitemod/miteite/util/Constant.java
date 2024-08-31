@@ -22,6 +22,8 @@ public class Constant {
     public static ItemArmor[] LEGGINGS = null;
     public static ItemArmor[] BOOTS = null;
     public static Item[] SWORDS = null;
+    public static Item[] TOOLS = null;
+    public static Item[][] WEAPONS = null;
     public static ItemArmor[][] ARMORS = null;
     public static BlockBed [] bedBlockTypes= null;
     public static Random GARandom = new Random();
@@ -97,7 +99,9 @@ public class Constant {
         LEGGINGS = new ItemArmor[]{Item.legsLeather, Item.legsChainCopper, Item.legsChainIron, Item.legsChainAncientMetal, Item.legsRustedIron, Item.legsCopper, Item.legsIron, Item.legsAncientMetal, Item.legsChainMithril, Item.legsMithril, Item.legsAdamantium, Items.VIBRANIUM_LEGGINGS};
         BOOTS = new ItemArmor[]{Item.bootsLeather, Item.bootsChainCopper, Item.bootsChainIron, Item.bootsChainAncientMetal, Item.bootsRustedIron, Item.bootsCopper, Item.bootsIron, Item.bootsAncientMetal, Item.bootsChainMithril, Item.bootsMithril, Item.bootsAdamantium, Items.VIBRANIUM_BOOTS};
         ARMORS = new ItemArmor[][]{HELMETS, CHESTPLATES, LEGGINGS, BOOTS};
-        SWORDS = new Item[]{Item.swordRustedIron, Item.swordIron, Items.clubIron, Item.swordAncientMetal,Item.swordMithril,Item.swordAdamantium,Items.VIBRANIUM_SWORD};
+        SWORDS = new Item[]{Item.daggerRustedIron, Item.swordRustedIron, Item.swordCopper, Items.clubIron, Item.swordIron, Item.swordAncientMetal, Items.clubMithril, Item.swordMithril, Items.clubAdamantium, Item.swordAdamantium, Items.clubVibranium, Items.VIBRANIUM_SWORD};
+        TOOLS = new Item[]{Item.shovelRustedIron, Item.axeRustedIron, Item.battleAxeRustedIron, Item.shovelCopper, Item.battleAxeCopper, Item.shovelIron, Item.axeIron, Item.warHammerAncientMetal, Item.battleAxeMithril, Item.shovelMithril, Item.warHammerMithril, Items.VIBRANIUM_BATTLE_AXE};
+        WEAPONS = new Item[][]{SWORDS,TOOLS};
         bedBlockTypes = new BlockBed[] {Blocks.blackBed,
                 Blocks.redBed,Blocks.greenBed,Blocks.brownBed,Blocks.blueBed,Blocks.purpleBed,Blocks.cyanBed,Blocks.silverBed,Blocks.grayBed,Blocks.pinkBed,Blocks.limeBed,Blocks.yellowBed
                 ,Blocks.lightBlueBed,Blocks.magentaBed,Blocks.orangeBed, Blocks.bed};

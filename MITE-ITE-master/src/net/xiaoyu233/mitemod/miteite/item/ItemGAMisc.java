@@ -33,6 +33,34 @@ public class ItemGAMisc extends Item {
                     info.add(EnumChatFormat.BROWN + Translator.getFormatted("BAD APPLE ! !", new Object[0]));
                     info.add(EnumChatFormat.BROWN + Translator.getFormatted("Lotus Land Story", new Object[0]));
                     break;
+                case "gowther":
+                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("Goat's Sin of Lust", new Object[0]));
+                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("Gowther", new Object[0]));
+                    break;
+                case "merlin":
+                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("Boar's Sin of Gluttony", new Object[0]));
+                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("Merlin", new Object[0]));
+                    break;
+                case "ban":
+                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("Fox's Sin of Greed", new Object[0]));
+                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("Ban", new Object[0]));
+                    break;
+                case "king":
+                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("Grizzly's Sin of Sloth", new Object[0]));
+                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("King", new Object[0]));
+                    break;
+                case "meliodas":
+                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("Dragon's Sin of Wrath", new Object[0]));
+                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("Meliodas", new Object[0]));
+                    break;
+                case "diane":
+                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("Serpent's Sin of Envy", new Object[0]));
+                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("Diane", new Object[0]));
+                    break;
+                case "escanor":
+                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("Lion's Sin of Pride", new Object[0]));
+                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("Escanor", new Object[0]));
+                    break;
                 default:
                     break;
             }

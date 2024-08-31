@@ -121,7 +121,10 @@ public abstract class BlockGravelTrans extends BlockFalling implements IBlockWit
             if (info.wasHarvestedByPlayer() && (id_dropped == Item.chipFlint.itemID || id_dropped == Item.flint.itemID)) {
                 info.getResponsiblePlayer().triggerAchievement(AchievementList.flintFinder);
             }
-
+            
+            if (rand.nextInt(100) == 0){
+                id_dropped = Items.diane.itemID;
+            }
             return this.dropBlockAsEntityItem(info, id_dropped);
         } else {
             return super.dropBlockAsEntityItem(info);

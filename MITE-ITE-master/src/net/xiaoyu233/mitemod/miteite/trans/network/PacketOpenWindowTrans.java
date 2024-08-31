@@ -131,7 +131,8 @@ public class PacketOpenWindowTrans {
             player.displayGUIHopper(var3);
             player.openContainer.windowId = this.windowId;
          } else if (this.inventoryType == TYPE_FORGING_TABLE) {
-            player.displayGUIForgingTable(this.x, this.y, this.z, new ForgingTableSlots(new InventorySubcontainer(this.windowTitle, this.useProvidedWindowTitle, this.slotsCount)));
+//            System.out.println("this is the FT's size == " + this.slotsCount);
+            player.displayGUIForgingTable(this.x, this.y, this.z, new ForgingTableSlots(new InventorySubcontainer(this.windowTitle, this.useProvidedWindowTitle, ForgingTableSlots.slotSize)));
             player.openContainer.windowId = this.windowId;
          }  else if (this.inventoryType == 15) {
             TileEntityGemSetting var3x = (TileEntityGemSetting)tile_entity;

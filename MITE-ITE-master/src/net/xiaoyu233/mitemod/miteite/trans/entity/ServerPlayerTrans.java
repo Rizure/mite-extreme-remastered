@@ -53,6 +53,7 @@ public abstract class ServerPlayerTrans extends EntityPlayer implements ICraftin
    private int last_protein;
 
    private double last_money;
+   private int last_enhance_level;
    @Shadow
    private int last_satiation;
    @Shadow
@@ -162,6 +163,7 @@ public abstract class ServerPlayerTrans extends EntityPlayer implements ICraftin
             par1Packet.setPhytonutrients(this.phytonutrients);
             par1Packet.setProtein(this.protein);
             par1Packet.setMoney(this.money);
+            par1Packet.setEnhance_level(this.getEnhanceLevel());
             this.playerNetServerHandler.sendPacket(par1Packet);
             this.lastHealth = health;
             this.last_satiation = satiation;
@@ -170,6 +172,7 @@ public abstract class ServerPlayerTrans extends EntityPlayer implements ICraftin
             this.last_phytonutrients = phytonutrients;
             this.last_protein = protein;
             this.last_money = money;
+            this.last_enhance_level = this.getEnhanceLevel();
          }
 
          if (this.getHealth() + this.getAbsorptionAmount() != this.field_130068_bO) {

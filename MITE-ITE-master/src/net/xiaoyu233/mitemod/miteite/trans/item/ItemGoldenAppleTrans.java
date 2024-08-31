@@ -1,6 +1,7 @@
 package net.xiaoyu233.mitemod.miteite.trans.item;
 
 import net.minecraft.*;
+import net.xiaoyu233.mitemod.miteite.item.Items;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -24,6 +25,9 @@ public class ItemGoldenAppleTrans extends ItemFood {
     protected void onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
         if (par1ItemStack.getItemSubtype() > 0) {
             if (!par2World.isRemote) {
+                if(itemRand.nextInt(8) == 0){
+                    par3EntityPlayer.inventory.addItemStackToInventoryOrDropIt(Items.escanor.getItemStackForStatsIcon());
+                }
                 par3EntityPlayer.addPotionEffect(new MobEffect(MobEffectList.regeneration.id, 1200, 1));
                 par3EntityPlayer.addPotionEffect(new MobEffect(MobEffectList.resistance.id, 600, 1));
                 par3EntityPlayer.addPotionEffect(new MobEffect(MobEffectList.fireResistance.id, 1200, 0));

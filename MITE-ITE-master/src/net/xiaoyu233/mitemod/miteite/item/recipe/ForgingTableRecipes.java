@@ -29,6 +29,8 @@ public class ForgingTableRecipes {
             return Items.MITHRIL_ENHANCE_STONE;
         }else if(material == Material.adamantium){
             return Items.ADAMANTIUM_ENHANCE_STONE;
+        }else if(material == Materials.vibranium){
+            return Items.VIBRANIUM_ENHANCE_STONE;
         }else {
             return Items.UNIVERSAL_ENHANCE_STONE;
         }
@@ -45,17 +47,15 @@ public class ForgingTableRecipes {
                 addFaultFeedback(DurabilityFeedback.of(DurabilityFeedback.Type.ofPercentage(Math.max(upgrade_level * 10 - table_level.getLevel() * 5,0)))).
                 addMaterials(items).
                 build(regiseterer);
-
-
     }
 
     public static void registerAll(){
         registerForgingRecipe(Material.copper,Material.iron,0,ForgingTableLevel.IRON,
                 new ItemStack(Item.ingotCopper,1),
-                new ItemStack(Item.ingotSilver,1));
+                new ItemStack(Item.ingotGold,1));
         registerForgingRecipe(Material.copper,Material.iron,1,ForgingTableLevel.IRON,
                 new ItemStack(Item.ingotCopper,2),
-                new ItemStack(Item.ingotSilver,2));
+                new ItemStack(Item.ingotGold,1));
 
         registerForgingRecipe(Material.silver,Material.iron,0,ForgingTableLevel.IRON,
                 new ItemStack(Item.ingotSilver,1),
@@ -69,43 +69,40 @@ public class ForgingTableRecipes {
                 new ItemStack(Item.ingotSilver,1),
                 new ItemStack(Item.ingotGold,1));
         registerForgingRecipe(Material.gold,Material.iron,1,ForgingTableLevel.IRON,
-                new ItemStack(Item.ingotCopper,2),
-                new ItemStack(Item.ingotSilver,2),
-                new ItemStack(Item.ingotGold,1));
+                new ItemStack(Item.ingotCopper,1),
+                new ItemStack(Item.ingotSilver,1),
+                new ItemStack(Item.ingotGold,2));
 
         registerForgingRecipe(Material.iron,Material.iron,0,ForgingTableLevel.IRON,
-                new ItemStack(Item.ingotCopper,2),
-                new ItemStack(Item.ingotSilver,2),
+                new ItemStack(Item.ingotCopper,1),
+                new ItemStack(Item.ingotGold,1),
+                new ItemStack(Items.IRON_ENHANCE_STONE,1));
+        registerForgingRecipe(Material.iron,Material.iron,1,ForgingTableLevel.IRON,
+                new ItemStack(Item.ingotSilver,1),
                 new ItemStack(Item.ingotGold,1),
                 new ItemStack(Items.IRON_ENHANCE_STONE,2));
-        registerForgingRecipe(Material.iron,Material.iron,1,ForgingTableLevel.IRON,
-                new ItemStack(Item.ingotCopper,3),
-                new ItemStack(Item.ingotSilver,3),
+        registerForgingRecipe(Material.iron,Material.iron,2,ForgingTableLevel.IRON,
+                new ItemStack(Item.ingotCopper,1),
+                new ItemStack(Item.ingotSilver,1),
                 new ItemStack(Item.ingotGold,2),
                 new ItemStack(Items.IRON_ENHANCE_STONE,2));
-        registerForgingRecipe(Material.iron,Material.iron,2,ForgingTableLevel.IRON,
-                new ItemStack(Item.ingotCopper,4),
-                new ItemStack(Item.ingotSilver,4),
-                new ItemStack(Item.ingotIron,2),
-                new ItemStack(Item.ingotGold,2),
-                new ItemStack(Items.IRON_ENHANCE_STONE,3));
 
         registerForgingRecipe(Material.ancient_metal,Material.iron,0,ForgingTableLevel.MITHRIL,
+                new ItemStack(Item.ingotIron,1),
+                new ItemStack(Item.ingotGold,1),
+                new ItemStack(Items.IRON_ENHANCE_STONE,1));
+        registerForgingRecipe(Material.ancient_metal,Material.iron,1,ForgingTableLevel.MITHRIL,
+                new ItemStack(Item.ingotIron,2),
+                new ItemStack(Item.ingotGold,1),
+                new ItemStack(Items.IRON_ENHANCE_STONE,1));
+        registerForgingRecipe(Material.ancient_metal,Material.iron,2,ForgingTableLevel.MITHRIL,
+                new ItemStack(Item.ingotIron,2),
+                new ItemStack(Item.ingotGold,2),
+                new ItemStack(Items.IRON_ENHANCE_STONE,1));
+        registerForgingRecipe(Material.ancient_metal,Material.iron,3,ForgingTableLevel.MITHRIL,
                 new ItemStack(Item.ingotIron,2),
                 new ItemStack(Item.ingotGold,2),
                 new ItemStack(Items.IRON_ENHANCE_STONE,2));
-        registerForgingRecipe(Material.ancient_metal,Material.iron,1,ForgingTableLevel.MITHRIL,
-                new ItemStack(Item.ingotIron,3),
-                new ItemStack(Item.ingotGold,2),
-                new ItemStack(Items.IRON_ENHANCE_STONE,2));
-        registerForgingRecipe(Material.ancient_metal,Material.iron,2,ForgingTableLevel.MITHRIL,
-                new ItemStack(Item.ingotIron,3),
-                new ItemStack(Item.ingotGold,3),
-                new ItemStack(Items.IRON_ENHANCE_STONE,3));
-        registerForgingRecipe(Material.ancient_metal,Material.iron,3,ForgingTableLevel.MITHRIL,
-                new ItemStack(Item.ingotIron,4),
-                new ItemStack(Item.ingotGold,4),
-                new ItemStack(Items.IRON_ENHANCE_STONE,6));
 
         registerForgingRecipe(Material.mithril,Material.mithril,0,ForgingTableLevel.MITHRIL,
                 new ItemStack(Item.ingotIron,2),
@@ -113,35 +110,35 @@ public class ForgingTableRecipes {
                 new ItemStack(Item.ingotMithril,1),
                 new ItemStack(Items.IRON_ENHANCE_STONE,2));
         registerForgingRecipe(Material.mithril,Material.mithril,1,ForgingTableLevel.MITHRIL,
-                new ItemStack(Item.ingotIron,3),
-                new ItemStack(Item.ingotGold,3),
+                new ItemStack(Item.ingotIron,2),
+                new ItemStack(Item.ingotGold,2),
                 new ItemStack(Item.ingotMithril,1),
                 new ItemStack(Items.MITHRIL_ENHANCE_STONE,1));
         registerForgingRecipe(Material.mithril,Material.mithril,2,ForgingTableLevel.MITHRIL,
-                new ItemStack(Item.ingotIron,4),
-                new ItemStack(Item.ingotGold,4),
+                new ItemStack(Item.ingotAncientMetal,1),
+                new ItemStack(Item.ingotGold,2),
                 new ItemStack(Item.ingotMithril,1),
                 new ItemStack(Items.MITHRIL_ENHANCE_STONE,2));
         registerForgingRecipe(Material.mithril,Material.mithril,3,ForgingTableLevel.MITHRIL,
-                new ItemStack(Item.ingotIron,4),
-                new ItemStack(Item.ingotGold,4),
-                new ItemStack(Item.ingotMithril,2),
+                new ItemStack(Item.ingotAncientMetal,2),
+                new ItemStack(Item.ingotGold,2),
+                new ItemStack(Item.ingotMithril,1),
                 new ItemStack(Items.MITHRIL_ENHANCE_STONE,2));
         registerForgingRecipe(Material.mithril,Material.mithril,4,ForgingTableLevel.MITHRIL,
-                new ItemStack(Item.ingotIron,8),
-                new ItemStack(Item.ingotGold,8),
+                new ItemStack(Item.ingotIron,3),
+                new ItemStack(Item.ingotGold,3),
                 new ItemStack(Item.ingotMithril,2),
-                new ItemStack(Items.MITHRIL_ENHANCE_STONE,3));
+                new ItemStack(Items.MITHRIL_ENHANCE_STONE,2));
         registerForgingRecipe(Material.mithril,Material.mithril,5,ForgingTableLevel.MITHRIL,
-                new ItemStack(Item.ingotIron,8),
-                new ItemStack(Item.ingotGold,8),
+                new ItemStack(Item.ingotIron,4),
+                new ItemStack(Item.ingotGold,4),
+                new ItemStack(Item.ingotMithril,4),
+                new ItemStack(Items.MITHRIL_ENHANCE_STONE,3));
+        registerForgingRecipe(Material.mithril,Material.mithril,6,ForgingTableLevel.MITHRIL,
+                new ItemStack(Block.blockGold, 1),
+                new ItemStack(Block.blockIron,1),
                 new ItemStack(Item.ingotMithril,4),
                 new ItemStack(Items.MITHRIL_ENHANCE_STONE,4));
-        registerForgingRecipe(Material.mithril,Material.mithril,6,ForgingTableLevel.MITHRIL,
-                new ItemStack(Block.blockGold, 2),
-                new ItemStack(Block.blockIron,2),
-                new ItemStack(Item.ingotMithril,6),
-                new ItemStack(Items.MITHRIL_ENHANCE_STONE,6));
 
         registerForgingRecipe(Material.adamantium,Material.adamantium,0,ForgingTableLevel.ADAMANTIUM,
                 new ItemStack(Item.ingotMithril,1),
@@ -155,76 +152,71 @@ public class ForgingTableRecipes {
                 new ItemStack(Item.ingotAdamantium,1),
                 new ItemStack(Items.ADAMANTIUM_ENHANCE_STONE,1));
         registerForgingRecipe(Material.adamantium,Material.adamantium,3,ForgingTableLevel.ADAMANTIUM,
-                new ItemStack(Item.ingotMithril,3),
+                new ItemStack(Item.ingotMithril,2),
                 new ItemStack(Item.ingotAdamantium,2),
-                new ItemStack(Items.ADAMANTIUM_ENHANCE_STONE,2));
+                new ItemStack(Items.ADAMANTIUM_ENHANCE_STONE,1));
         registerForgingRecipe(Material.adamantium,Material.adamantium,4,ForgingTableLevel.ADAMANTIUM,
-                new ItemStack(Item.ingotMithril,4),
-                new ItemStack(Item.ingotAdamantium,2),
-                new ItemStack(Items.ADAMANTIUM_ENHANCE_STONE,2));
+                new ItemStack(Item.ingotMithril,3),
+                new ItemStack(Item.ingotAdamantium,3),
+                new ItemStack(Items.ADAMANTIUM_ENHANCE_STONE,1));
         registerForgingRecipe(Material.adamantium,Material.adamantium,5,ForgingTableLevel.ADAMANTIUM,
-                new ItemStack(Item.ingotMithril,6),
-                new ItemStack(Item.ingotAdamantium,4),
-                new ItemStack(Items.ADAMANTIUM_ENHANCE_STONE,4));
+                new ItemStack(Item.ingotMithril,4),
+                new ItemStack(Item.ingotAdamantium,3),
+                new ItemStack(Items.ADAMANTIUM_ENHANCE_STONE,2));
         registerForgingRecipe(Material.adamantium,Material.adamantium,6,ForgingTableLevel.ADAMANTIUM,
-                new ItemStack(Item.ingotMithril,8),
-                new ItemStack(Item.ingotAdamantium,6),
-                new ItemStack(Items.ADAMANTIUM_ENHANCE_STONE,4));
+                new ItemStack(Item.ingotMithril,4),
+                new ItemStack(Item.ingotAdamantium,4),
+                new ItemStack(Items.ADAMANTIUM_ENHANCE_STONE,3));
         registerForgingRecipe(Material.adamantium,Material.adamantium,7,ForgingTableLevel.ADAMANTIUM,
                 new ItemStack(Item.ingotMithril,8),
-                new ItemStack(Item.ingotAdamantium,6),
-                new ItemStack(Items.UNIVERSAL_ENHANCE_STONE,2),
-                new ItemStack(Items.ADAMANTIUM_ENHANCE_STONE,6));
+                new ItemStack(Item.ingotAdamantium,8),
+                new ItemStack(Items.ADAMANTIUM_ENHANCE_STONE,4));
 
         registerForgingRecipe(Materials.vibranium,Materials.vibranium,0,ForgingTableLevel.VIBRANIUM,
                 new ItemStack(Item.ingotMithril,2),
                 new ItemStack(Item.ingotAdamantium,2),
                 new ItemStack(Items.ADAMANTIUM_ENHANCE_STONE,1));
         registerForgingRecipe(Materials.vibranium,Materials.vibranium,1,ForgingTableLevel.VIBRANIUM,
-                new ItemStack(Item.ingotMithril,4),
-                new ItemStack(Item.ingotAdamantium,4),
+                new ItemStack(Item.ingotMithril,3),
+                new ItemStack(Item.ingotAdamantium,3),
                 new ItemStack(Items.ADAMANTIUM_ENHANCE_STONE,2));
         registerForgingRecipe(Materials.vibranium,Materials.vibranium,2,ForgingTableLevel.VIBRANIUM,
+                new ItemStack(Item.ingotMithril,5),
+                new ItemStack(Item.ingotAdamantium,5),
+                new ItemStack(Items.VIBRANIUM_ENHANCE_STONE,1));
+        registerForgingRecipe(Materials.vibranium,Materials.vibranium,3,ForgingTableLevel.VIBRANIUM,
                 new ItemStack(Item.ingotMithril,6),
                 new ItemStack(Item.ingotAdamantium,6),
-                new ItemStack(Items.UNIVERSAL_ENHANCE_STONE,1),
-                new ItemStack(Items.ADAMANTIUM_ENHANCE_STONE,3));
-        registerForgingRecipe(Materials.vibranium,Materials.vibranium,3,ForgingTableLevel.VIBRANIUM,
+                new ItemStack(Items.VIBRANIUM_ENHANCE_STONE,2));
+        registerForgingRecipe(Materials.vibranium,Materials.vibranium,4,ForgingTableLevel.VIBRANIUM,
                 new ItemStack(Item.ingotMithril,8),
                 new ItemStack(Item.ingotAdamantium,8),
-                new ItemStack(Items.UNIVERSAL_ENHANCE_STONE,2),
-                new ItemStack(Items.ADAMANTIUM_ENHANCE_STONE,4));
-        registerForgingRecipe(Materials.vibranium,Materials.vibranium,4,ForgingTableLevel.VIBRANIUM,
-                new ItemStack(Block.blockMithril,1),
-                new ItemStack(Block.blockAdamantium,1),
-                new ItemStack(Items.UNIVERSAL_ENHANCE_STONE,3),
-                new ItemStack(Items.ADAMANTIUM_ENHANCE_STONE,5));
+                new ItemStack(Items.VIBRANIUM_ENHANCE_STONE,2));
         registerForgingRecipe(Materials.vibranium,Materials.vibranium,5,ForgingTableLevel.VIBRANIUM,
-                new ItemStack(Block.blockMithril,2),
-                new ItemStack(Block.blockAdamantium,1),
-                new ItemStack(Items.UNIVERSAL_ENHANCE_STONE,4),
-                new ItemStack(Items.ADAMANTIUM_ENHANCE_STONE,6));
+                new ItemStack(Item.ingotMithril,8),
+                new ItemStack(Item.ingotAdamantium,4),
+                new ItemStack(Items.VIBRANIUM_INGOT,2),
+                new ItemStack(Items.VIBRANIUM_ENHANCE_STONE,2));
         registerForgingRecipe(Materials.vibranium,Materials.vibranium,6,ForgingTableLevel.VIBRANIUM,
-                new ItemStack(Block.blockMithril,2),
-                new ItemStack(Block.blockAdamantium,2),
-                new ItemStack(Items.UNIVERSAL_ENHANCE_STONE,5),
-                new ItemStack(Items.ADAMANTIUM_ENHANCE_STONE,8));
+                new ItemStack(Item.ingotMithril,8),
+                new ItemStack(Item.ingotAdamantium,6),
+                new ItemStack(Items.VIBRANIUM_INGOT,2),
+                new ItemStack(Items.VIBRANIUM_ENHANCE_STONE,2));
         registerForgingRecipe(Materials.vibranium,Materials.vibranium,7,ForgingTableLevel.VIBRANIUM,
-                new ItemStack(Block.blockMithril,3),
-                new ItemStack(Block.blockAdamantium,3),
-                new ItemStack(Items.UNIVERSAL_ENHANCE_STONE,6),
-                new ItemStack(Items.ADAMANTIUM_ENHANCE_STONE,12));
+                new ItemStack(Item.ingotMithril,8),
+                new ItemStack(Item.ingotAdamantium,8),
+                new ItemStack(Items.VIBRANIUM_INGOT,2),
+                new ItemStack(Items.VIBRANIUM_ENHANCE_STONE,2));
         registerForgingRecipe(Materials.vibranium,Materials.vibranium,8,ForgingTableLevel.VIBRANIUM,
-                new ItemStack(Block.blockMithril,4),
-                new ItemStack(Block.blockAdamantium,3),
-                new ItemStack(Items.UNIVERSAL_ENHANCE_STONE,8),
-                new ItemStack(Items.ADAMANTIUM_ENHANCE_STONE,16));
+                new ItemStack(Item.ingotMithril,8),
+                new ItemStack(Item.ingotAdamantium,4),
+                new ItemStack(Items.VIBRANIUM_INGOT,4),
+                new ItemStack(Items.VIBRANIUM_ENHANCE_STONE,2));
         registerForgingRecipe(Materials.vibranium,Materials.vibranium,9,ForgingTableLevel.VIBRANIUM,
                 new ItemStack(Block.blockMithril,4),
                 new ItemStack(Block.blockAdamantium,4),
                 new ItemStack(Blocks.blockVibranium,1),
-                new ItemStack(Items.UNIVERSAL_ENHANCE_STONE,8),
-                new ItemStack(Items.ADAMANTIUM_ENHANCE_STONE,16));
+                new ItemStack(Items.VIBRANIUM_ENHANCE_STONE,8));
 
     }
 

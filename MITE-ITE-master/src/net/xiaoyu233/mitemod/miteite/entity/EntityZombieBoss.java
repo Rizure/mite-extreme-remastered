@@ -107,6 +107,7 @@ public class EntityZombieBoss extends EntityZombie implements IBossbarEntity{
 
     protected void dropFewItems(boolean recently_hit_by_player, DamageSource damage_source) {
         if (recently_hit_by_player){
+            this.dropItem(Items.gemBlue);
             this.broadcastDamage("僵尸BOSS挑战成功");
             MinecraftServer server = MinecraftServer.F();
             Iterator var4 = server.getConfigurationManager().playerEntityList.iterator();

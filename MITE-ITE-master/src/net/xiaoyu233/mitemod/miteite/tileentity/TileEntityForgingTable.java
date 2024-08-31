@@ -80,8 +80,11 @@ public class TileEntityForgingTable extends TileEntity implements IInventory {
         this.slots.damageHammerAndAxe(currentRecipe.getHammerDurabilityCost() / 2, currentRecipe.getAxeDurabilityCost() / 2);
         this.slots.costItems(currentRecipe);
         ItemStack result = this.slots.getToolItem();
-        for (IFaultFeedback iFaultFeedback : currentRecipe.getFaultFeedback()) {
-            result = iFaultFeedback.accept(result);
+        if(!this.slots.hasUniversal()){
+            for (IFaultFeedback iFaultFeedback : currentRecipe.getFaultFeedback()) {
+                result = iFaultFeedback.accept(result);
+            }
+            this.slots.damageHammerAndAxe(currentRecipe.getHammerDurabilityCost() / 2, currentRecipe.getAxeDurabilityCost() / 2);
         }
         this.slots.setToolItem(result);
         this.slots.updateSlots();
@@ -120,6 +123,7 @@ public class TileEntityForgingTable extends TileEntity implements IInventory {
     @Override
     //getItemStack
     public ItemStack getStackInSlot(int var1) {
+//        System.out.println("items size: " + items.length);
         return this.items[var1];
     }
 

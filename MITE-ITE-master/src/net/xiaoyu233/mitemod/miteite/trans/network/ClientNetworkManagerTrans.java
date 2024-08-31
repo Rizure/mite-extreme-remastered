@@ -178,6 +178,7 @@ public class ClientNetworkManagerTrans extends NetworkManagerTrans{
       this.h.h.setPhytonutrients(par1Packet8UpdateHealth.phytonutrients);
       this.h.h.setProtein(par1Packet8UpdateHealth.protein);
       this.h.h.money = par1Packet8UpdateHealth.money;
+      this.h.h.setEnhanceLevel(par1Packet8UpdateHealth.enhance_level);
       if (this.h.h.vision_dimming < par1Packet8UpdateHealth.vision_dimming) {
          this.h.h.vision_dimming = par1Packet8UpdateHealth.vision_dimming;
       }

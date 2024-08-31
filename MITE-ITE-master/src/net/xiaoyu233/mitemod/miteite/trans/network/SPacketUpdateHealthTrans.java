@@ -29,6 +29,7 @@ public class SPacketUpdateHealthTrans extends Packet {
    public float vision_dimming;
 
    public double money;
+   public int enhance_level;
 
    public SPacketUpdateHealthTrans() {
    }
@@ -56,6 +57,7 @@ public class SPacketUpdateHealthTrans extends Packet {
       this.protein = par1DataInput.readInt();
       this.phytonutrients = par1DataInput.readInt();
       this.money = par1DataInput.readDouble();
+      this.enhance_level = par1DataInput.readInt();
    }
 
    @Inject(method = "writePacketData",
@@ -64,6 +66,7 @@ public class SPacketUpdateHealthTrans extends Packet {
       par1DataOutput.writeInt(this.protein);
       par1DataOutput.writeInt(this.phytonutrients);
       par1DataOutput.writeDouble(this.money);
+      par1DataOutput.writeInt(this.enhance_level);
    }
 
    @Shadow
@@ -92,6 +95,9 @@ public class SPacketUpdateHealthTrans extends Packet {
 
    public void setMoney(double money) {
       this.money = money;
+   }
+   public void setEnhance_level(int enhanceLevel){
+      this.enhance_level = enhanceLevel; 
    }
 
    @Override

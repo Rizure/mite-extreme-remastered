@@ -45,6 +45,7 @@ public class ItemGAFood extends ItemFood {
         if(Objects.equals(this.tag, "wuzhi")){
             //saturation
             par3EntityPlayer.addPotionEffect(new MobEffect(MobEffectList.field_76443_y.id, 1200 * 20, 4));
+            par3EntityPlayer.inventory.addItemStackToInventoryOrDropIt(Items.merlin.getItemStackForStatsIcon());
         }
         if(Objects.equals(this.tag, "chikitan")){
             int outcome = itemRand.nextInt(par3EntityPlayer.getEnhanceLevel() + 1);

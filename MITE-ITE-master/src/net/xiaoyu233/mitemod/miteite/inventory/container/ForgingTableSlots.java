@@ -2,6 +2,7 @@ package net.xiaoyu233.mitemod.miteite.inventory.container;
 
 import com.google.common.collect.Lists;
 import net.minecraft.*;
+import net.xiaoyu233.mitemod.miteite.item.Items;
 import net.xiaoyu233.mitemod.miteite.item.recipe.ForgingRecipe;
 import net.xiaoyu233.mitemod.miteite.item.recipe.ForgingTableRecipes;
 import net.xiaoyu233.mitemod.miteite.network.SPacketFinishForging;
@@ -13,7 +14,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class ForgingTableSlots extends InventorySubcontainer {
-    private final Slot up;
+    private final Slot upLeft;
+    private final Slot upRight;
     private final Slot downLeft;
     private final Slot downRight;
     private final Slot left;
@@ -24,22 +26,25 @@ public class ForgingTableSlots extends InventorySubcontainer {
     private final Slot output;
     private ContainerForgingTable container;
     private final TileEntityForgingTable tileEntityForgingTable;
-    public static final int slotSize = 9;
+    public static final int slotSize = 10;
 
     public int getSize(){
         return slotSize;
     }
-
-    public int getAxeSlotIndex(){
+    public int getToolItemSlotIndex(){
         return 6;
     }
 
-    public int getHammerSlotIndex(){
+    public int getAxeSlotIndex(){
         return 7;
     }
 
-    public int getOutputIndex(){
+    public int getHammerSlotIndex(){
         return 8;
+    }
+
+    public int getOutputIndex(){
+        return 9;
     }
 
     public ForgingTableSlots(IInventory forgingTable) {
@@ -49,11 +54,12 @@ public class ForgingTableSlots extends InventorySubcontainer {
         }else {
             this.tileEntityForgingTable = null;
         }
-        up = new Slot(forgingTable,0, 42,6);
-        left = new Slot(forgingTable,1, 15,31);
-        right = new Slot(forgingTable,2, 69,31);
-        downLeft = new Slot(forgingTable,3, 24,62);
-        downRight = new Slot(forgingTable,4, 60,62);
+        upLeft = new Slot(forgingTable,0, 27,6);
+        upRight = new Slot(forgingTable,1, 57,6);
+        left = new Slot(forgingTable,2, 15,34);
+        right = new Slot(forgingTable,3, 69,34);
+        downLeft = new Slot(forgingTable,4, 27,62);
+        downRight = new Slot(forgingTable,5, 57,62);
         tool = new SlotTool(forgingTable,this.getToolItemSlotIndex(),42,34);
         this.axe = new Slot(forgingTable, this.getAxeSlotIndex(), 137, 62) {
             public boolean isItemValid(ItemStack par1ItemStack) {
@@ -73,9 +79,8 @@ public class ForgingTableSlots extends InventorySubcontainer {
     }
 
     public void costItems(ForgingRecipe recipe) {
-        List<Slot> currentMaterials = Lists.newArrayList(this.up, this.left, this.right, this.downLeft, this.downRight);
+        List<Slot> currentMaterials = Lists.newArrayList(this.upLeft, this.upRight, this.left, this.right, this.downLeft, this.downRight);
         List<ItemStack> materialsRequired = Lists.newArrayList(recipe.getMaterialsToUpgrade());
-
         for (Slot current : currentMaterials) {
             for (ItemStack req : materialsRequired) {
                 if (current.getStack() != null && ItemStack.areItemStacksEqual(req, current.getStack(), true, false, false, true)) {
@@ -88,7 +93,23 @@ public class ForgingTableSlots extends InventorySubcontainer {
                 }
             }
         }
-
+    }
+    
+    public boolean hasUniversal(){
+        boolean result = false;
+        List<Slot> currentMaterials = Lists.newArrayList(this.upLeft, this.upRight, this.left, this.right, this.downLeft, this.downRight);
+        for (Slot current : currentMaterials) {
+            if (current.getStack() != null && ItemStack.areItemStacksEqual(Items.UNIVERSAL_ENHANCE_STONE.getItemStackForStatsIcon(), current.getStack(), true, false, false, true)) {
+                int resultSize = current.getStack().stackSize - 1;
+                if (resultSize > 0) {
+                    current.getStack().setStackSize(resultSize);
+                } else {
+                    current.putStack(null);
+                }
+                result = true;
+            }
+        }
+        return result;
     }
 
     public void damageHammerAndAxe(int hammerDurabilityCost, int axeDurabilityCost) {
@@ -108,7 +129,8 @@ public class ForgingTableSlots extends InventorySubcontainer {
     }
 
     public void writeToNBT(NBTTagCompound nbt) {
-       this.tryWriteSlotStack(nbt,this.up,"Up");
+       this.tryWriteSlotStack(nbt,this.upLeft,"UpLeft");
+       this.tryWriteSlotStack(nbt,this.upRight,"UpRight");
        this.tryWriteSlotStack(nbt,this.left,"Left");
        this.tryWriteSlotStack(nbt,this.right,"Right");
        this.tryWriteSlotStack(nbt,this.downLeft,"DownLeft");
@@ -131,10 +153,7 @@ public class ForgingTableSlots extends InventorySubcontainer {
         }
         return Math.max(Math.min(recipe.getChanceOfFailure() - bounceChanceFromTool, 100), 0);
     }
-
-    public int getToolItemSlotIndex(){
-        return 5;
-    }
+    
 
     public void dropItems(World world, int x, int y, int z) {
         for(int var2 = 0; var2 < this.tileEntityForgingTable.getSizeInventory(); ++var2) {
@@ -189,7 +208,7 @@ public class ForgingTableSlots extends InventorySubcontainer {
     }
 
     public List<ItemStack> getNeedItems(@Nonnull ForgingRecipe recipe) {
-        List<ItemStack> currentMaterials = Lists.newArrayList(this.up.getStack(), this.left.getStack(), this.right.getStack(), this.downLeft.getStack(), this.downRight.getStack());
+        List<ItemStack> currentMaterials = Lists.newArrayList(this.upLeft.getStack(), this.upRight.getStack(), this.left.getStack(), this.right.getStack(), this.downLeft.getStack(), this.downRight.getStack());
         List<ItemStack> materialsRequired = Lists.newArrayList(recipe.getMaterialsToUpgrade());
         materialsRequired.removeIf((req) -> currentMaterials.stream().anyMatch((current) -> ItemStack.areItemStacksEqual(req, current, true, false, false, true) && current.stackSize >= req.stackSize));
         return materialsRequired;
@@ -280,7 +299,8 @@ public class ForgingTableSlots extends InventorySubcontainer {
     }
 
     public void initSlots(ContainerForgingTable forgingTable){
-        forgingTable.addSlot(up);
+        forgingTable.addSlot(upLeft);
+        forgingTable.addSlot(upRight);
         forgingTable.addSlot(left);
         forgingTable.addSlot(right);
         forgingTable.addSlot(downLeft);
@@ -303,11 +323,12 @@ public class ForgingTableSlots extends InventorySubcontainer {
     }
 
     public void readFromNBT(NBTTagCompound nbt,TileEntityForgingTable tileEntityForgingTable){
-        tileEntityForgingTable.setItem(0, ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("Up")));
-        tileEntityForgingTable.setItem(1, ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("Left")));
-        tileEntityForgingTable.setItem(2, ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("Right")));
-        tileEntityForgingTable.setItem(3, ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("DownLeft")));
-        tileEntityForgingTable.setItem(4, ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("DownRight")));
+        tileEntityForgingTable.setItem(0, ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("UpLeft")));
+        tileEntityForgingTable.setItem(1, ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("UpRight")));
+        tileEntityForgingTable.setItem(2, ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("Left")));
+        tileEntityForgingTable.setItem(3, ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("Right")));
+        tileEntityForgingTable.setItem(4, ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("DownLeft")));
+        tileEntityForgingTable.setItem(5, ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("DownRight")));
         tileEntityForgingTable.setItem(this.getToolItemSlotIndex(), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("Tool")));
         tileEntityForgingTable.setItem(this.getAxeSlotIndex(), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("Axe")));
         tileEntityForgingTable.setItem(this.getHammerSlotIndex(), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("Hammer")));

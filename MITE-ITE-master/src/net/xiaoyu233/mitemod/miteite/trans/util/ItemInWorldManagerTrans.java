@@ -2,6 +2,7 @@ package net.xiaoyu233.mitemod.miteite.trans.util;
 
 import net.minecraft.*;
 import net.xiaoyu233.mitemod.miteite.block.Blocks;
+import net.xiaoyu233.mitemod.miteite.item.ItemEnhancedPickaxe;
 import net.xiaoyu233.mitemod.miteite.item.enchantment.Enchantments;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -98,6 +99,15 @@ public class ItemInWorldManagerTrans {
                                     this.startMining(this.theWorld,x,y,z,mining);
                                     this.mining_in_progress = false;
                                 }
+                                
+                                if (block instanceof BlockStone || block instanceof BlockBloodStone && !this.mining_in_progress){
+                                    if(this.thisPlayerMP.getHeldItem() instanceof ItemEnhancedPickaxe){
+                                        int tier = ((ItemEnhancedPickaxe) this.thisPlayerMP.getHeldItem()).tier;
+                                        this.mining_in_progress = true;
+                                        this.crackStone(this.theWorld,x,y,z,tier);
+                                        this.mining_in_progress = false;
+                                    }
+                                }
                             }
                         }
 
@@ -133,6 +143,34 @@ public class ItemInWorldManagerTrans {
                         return block_was_removed;
                     }
                 }
+            }
+        }
+    }
+    public void crackStone(World world, int pos_x, int pos_y, int pos_z, int tier){
+        int[] toBreak = {
+                0,-1,0,
+                
+                0,1,0,
+                
+                -1,0,0, 1,0,0, 0,0,-1, 0,0,1,
+                -1,-1,0,1,-1,0,0,-1,-1,0,-1,1,
+                -1,1,0,1,1,0,0,1,-1,0,1,1,
+                
+                -1,0,-1,1,0,1,1,0,-1,-1,0,1,
+                
+                -1,1,-1,1,1,1,1,1,-1,-1,1,1,
+                -1,-1,-1,1,-1,1,1,-1,-1,-1,-1,1,
+                };
+        int level = tier == 1 ? 3 : tier == 2 ? 6 : tier == 3 ? 42 : tier == 4 ? 54 : toBreak.length;
+        for(int i = 0; i + 2 < level; i += 3){
+            Block stone = world.getBlock(pos_x + toBreak[i],pos_y + toBreak[i+1], pos_z + toBreak[i+2]);
+            if(stone instanceof BlockStone || stone instanceof BlockBloodStone){
+                thisPlayerMP.inventory.addItemStackToInventoryOrDropIt(new ItemStack(Block.cobblestone));
+                world.setBlockToAir(pos_x + toBreak[i],pos_y + toBreak[i+1], pos_z + toBreak[i+2]);
+            }
+            if(stone instanceof BlockBloodStone){
+                thisPlayerMP.inventory.addItemStackToInventoryOrDropIt(new ItemStack(Block.netherrack));
+                world.setBlockToAir(pos_x + toBreak[i],pos_y + toBreak[i+1], pos_z + toBreak[i+2]);
             }
         }
     }

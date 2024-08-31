@@ -35,7 +35,7 @@ public class Items extends Item{
     public static final ItemWarHammer VIBRANIUM_WAR_HAMMER = createInstance(ItemWarHammer.class,new Class[]{int.class,Material.class},Constant.getNextItemID(),Materials.vibranium);
     public static final ItemEnhanceStone IRON_ENHANCE_STONE = (ItemEnhanceStone) new ItemEnhanceStone(ItemEnhanceStone.Types.iron).setCraftingDifficultyAsComponent(ItemRock.getCraftingDifficultyAsComponent(Material.iron) * 2f);
     public static final ItemEnhanceStone MITHRIL_ENHANCE_STONE = (ItemEnhanceStone) new ItemEnhanceStone(ItemEnhanceStone.Types.mithril).setCraftingDifficultyAsComponent(ItemRock.getCraftingDifficultyAsComponent(Material.mithril) * 2f);
-    public static final ItemEnhanceStone ADAMANTIUM_ENHANCE_STONE = (ItemEnhanceStone) new ItemEnhanceStone(ItemEnhanceStone.Types.adamantium).setCraftingDifficultyAsComponent(ItemRock.getCraftingDifficultyAsComponent(Material.diamond) * 2f);
+    public static final ItemEnhanceStone ADAMANTIUM_ENHANCE_STONE = (ItemEnhanceStone) new ItemEnhanceStone(ItemEnhanceStone.Types.adamantium).setCraftingDifficultyAsComponent(ItemRock.getCraftingDifficultyAsComponent(Material.adamantium) * 2f);
     public static final ItemEnhanceStone UNIVERSAL_ENHANCE_STONE = (ItemEnhanceStone) new ItemEnhanceStone(ItemEnhanceStone.Types.universal).setCraftingDifficultyAsComponent(ItemRock.getCraftingDifficultyAsComponent(Material.ender_pearl) * 2f);
 
     public static final Item lavaInPipes = new ItemLavaInPipes(Constant.getNextItemID(), Materials.lava);
@@ -123,6 +123,30 @@ public class Items extends Item{
     public static final ItemFood hugeSpiderLeg = (new ItemGAFood(Constant.getNextItemID(), Material.meat, 4,4,0,true,true,false,"spider_leg")).setAlwaysEdible().setAnimalProduct().setPotionEffect(MobEffectList.poison.id, 12, 0, 0.9F);
     public static final ItemFood coldSpiderLeg = (new ItemGAFood(Constant.getNextItemID(), Material.meat, 6,6,0,true,true,false,"cold_spider_leg")).setAlwaysEdible().setAnimalProduct().setPotionEffect(MobEffectList.moveSpeed.id, 240, 1, 1.0F);
     public static final ItemGAMisc badApple = new ItemGAMisc(Constant.getNextItemID(),"bad_apple");
+    public static final ItemEnhanceStone VIBRANIUM_ENHANCE_STONE = (ItemEnhanceStone) new ItemEnhanceStone(ItemEnhanceStone.Types.vibranium).setCraftingDifficultyAsComponent(ItemRock.getCraftingDifficultyAsComponent(Materials.vibranium) * 2f);
+    //淫欲
+    public static final ItemGAMisc gowther = new ItemGAMisc(Constant.getNextItemID(),"gowther");
+    //暴食
+    public static final ItemGAMisc merlin = new ItemGAMisc(Constant.getNextItemID(),"merlin");
+    //贪婪
+    public static final ItemGAMisc ban = new ItemGAMisc(Constant.getNextItemID(),"ban");
+    //懒惰
+    public static final ItemGAMisc king = new ItemGAMisc(Constant.getNextItemID(),"king");
+    //愤怒
+    public static final ItemGAMisc meliodas = new ItemGAMisc(Constant.getNextItemID(),"meliodas");
+    //嫉妒
+    public static final ItemGAMisc diane = new ItemGAMisc(Constant.getNextItemID(),"diane");
+    //傲慢
+    public static final ItemGAMisc escanor = new ItemGAMisc(Constant.getNextItemID(),"escanor");
+    public static final Item gemYellow = (ItemColorBag) new ItemColorBag(Constant.getNextItemID(), Material.gold, "gem_y").setCreativeTab(CreativeModeTab.tabTools);
+    public static final Item gemBlue = (ItemColorBag) new ItemColorBag(Constant.getNextItemID(), Material.diamond, "gem_b").setCreativeTab(CreativeModeTab.tabTools);
+    public static final ItemEnhancedPickaxe towards_Pickaxe = new ItemEnhancedPickaxe(Constant.getNextItemID(),Material.iron,1);
+    public static final ItemEnhancedPickaxe stairs_Pickaxe = new ItemEnhancedPickaxe(Constant.getNextItemID(),Material.ancient_metal,2);
+    public static final ItemEnhancedPickaxe star_Pickaxe = new ItemEnhancedPickaxe(Constant.getNextItemID(),Material.mithril,3);
+    public static final ItemEnhancedPickaxe plate_Pickaxe = new ItemEnhancedPickaxe(Constant.getNextItemID(),Materials.adamantium,4);
+    public static final ItemEnhancedPickaxe cube_Pickaxe = new ItemEnhancedPickaxe(Constant.getNextItemID(),Materials.vibranium,5);
+
+
     private static Item register(String resourceLocation, Item item, CreativeModeTab tab) {
         item.setResourceLocation(item.getResourceLocationPrefix() + resourceLocation);
         item.setUnlocalizedName(resourceLocation);
@@ -163,6 +187,7 @@ public class Items extends Item{
         register("enhance_stone/mithril",MITHRIL_ENHANCE_STONE , CreativeModeTab.tabMaterials);
         register("enhance_stone/adamantium",ADAMANTIUM_ENHANCE_STONE , CreativeModeTab.tabMaterials);
         register("enhance_stone/universal",UNIVERSAL_ENHANCE_STONE , CreativeModeTab.tabMaterials);
+        register("enhance_stone/vibranium",VIBRANIUM_ENHANCE_STONE , CreativeModeTab.tabMaterials);
 
         register("iron_club", clubIron).setUnlocalizedName("iron_club").setLowestCraftingDifficultyToProduce(1.0F);
         register("mithril_club", clubMithril).setUnlocalizedName("mithril_club").setLowestCraftingDifficultyToProduce(1.0F);
@@ -243,11 +268,27 @@ public class Items extends Item{
         register("powder_mu", powder_wood);
         register("powder_shui", powder_liquid);
         register("powder_tu", powder_earth);
+        
+        register("gowther",gowther);
+        register("merlin",merlin);
+        register("meliodas",meliodas);
+        register("king",king);
+        register("ban",ban);
+        register("diane",diane);
+        register("escanor",escanor);
     
         register("bad_apple",badApple);
         register("color_bag",colorBag);
         register("pants", pants);
         register("c4",c4);
+        register("gem_blue",gemBlue);
+        register("gem_yellow",gemYellow);
+        
+        register("towards_pickaxe",towards_Pickaxe);
+        register("stairs_pickaxe",stairs_Pickaxe);
+        register("star_pickaxe",star_Pickaxe);
+        register("plate_pickaxe",plate_Pickaxe);
+        register("cube_pickaxe",cube_Pickaxe);
 
         Constant.initItemArray();
     }
@@ -584,6 +625,24 @@ public class Items extends Item{
                         'S', fetchingStickByMaterial(stdTierLoop[i + 1]),
                         'A', lower_equipment);
             }
+            lower_equipment = getMatchingItem(ItemEnhancedPickaxe.class,stdTierLoop[i]);
+            upper_equipment = getMatchingItem(ItemEnhancedPickaxe.class,stdTierLoop[i + 1]);
+            if(lower_equipment != null && upper_equipment != null) {
+                register.registerShapedRecipe(new ItemStack(upper_equipment),
+                        true,
+                        "WXY",
+                        "VAZ",
+                        "UG#",
+                        'G', gemYellow,
+                        'U', gowther,
+                        'V', merlin,
+                        'W', ban,
+                        'X', king,
+                        'Y', meliodas,
+                        'Z', diane,
+                        '#', escanor,
+                        'A', lower_equipment).extendsNBT();
+            }
         }
         register.registerShapedRecipe(new ItemStack(Items.clubVibranium),
                 true,
@@ -707,6 +766,15 @@ public class Items extends Item{
                 'D', Item.diamond,
                 'M', Item.ingotMithril,
                 'A', Item.ingotAdamantium);
+        register.registerShapedRecipe(new ItemStack(VIBRANIUM_ENHANCE_STONE),
+                true,
+                "DAD",
+                "MVM",
+                "DAD",
+                'A', Item.ingotAdamantium,
+                'D', Item.diamond,
+                'M', Item.ingotMithril,
+                'V', Items.VIBRANIUM_INGOT);
         register.registerShapedRecipe(new ItemStack(UNIVERSAL_ENHANCE_STONE),
                 true,
                 "gDg",
@@ -733,6 +801,18 @@ public class Items extends Item{
                 '#', Item.goldNugget,
                 'I', Item.ingotGold,
                 'X', Items.badApple);
+        register.registerShapedRecipe(new ItemStack(Items.gemYellow, 1, 0),true,
+                "###",
+                "#X#",
+                "###",
+                '#', Item.ingotGold,
+                'X', Items.gemBlue);
+        register.registerShapedRecipe(new ItemStack(Items.towards_Pickaxe, 1, 0),true,
+                "###",
+                "#X#",
+                "###",
+                '#', Blocks.blockGotcha,
+                'X', Item.pickaxeIron);
         register.registerShapedRecipe(new ItemStack(Block.planks, 4, 4), true, new Object[] {"#", '#', new ItemStack(Blocks.wood1, 1, 0)});
         register.registerShapedRecipe(new ItemStack(Block.planks, 4, 5), true, new Object[] {"#", '#', new ItemStack(Blocks.wood1, 1, 1)});
 

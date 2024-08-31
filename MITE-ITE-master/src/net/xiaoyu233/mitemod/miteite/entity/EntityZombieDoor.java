@@ -16,7 +16,7 @@ public class EntityZombieDoor extends EntityZombie {
 
     public EntityZombieDoor(World par1World) {
         super(par1World);
-        this.danger_level = Constant.GARandom.nextInt(doorList.length - 1);
+        this.danger_level = Constant.GARandom.nextInt(doorList.length);
     }
 
     @Override
@@ -42,6 +42,9 @@ public class EntityZombieDoor extends EntityZombie {
     @Override
     protected void dropFewItems(boolean recently_hit_by_player, DamageSource damage_source) {
         if (recently_hit_by_player){
+            if(this.getHeldItem() == Item.doorAdamantium){
+                this.dropItem(Items.ban);
+            }
             this.dropItem(Items.voucherDestruction);
             int day = this.getWorld().getDayOfOverworld();
             int diamond_count = Math.min((day + 16) / 32, 3);

@@ -19,6 +19,7 @@ item.vibranium_bow.name=振金弓
 item.enhance_stone/iron.name=抛光石
 item.enhance_stone/mithril.name=精锻石
 item.enhance_stone/adamantium.name=淬炼石
+item.enhance_stone/vibranium.name=回火石
 item.enhance_stone/universal.name=精粹录
 
 item.iron_club.name=铁棒
@@ -113,6 +114,8 @@ achievement.achievement_x9=太乙
 achievement.achievement_x9.desc=演化小世界，形成最纯粹的法则本源
 achievement.achievement_x0=大罗
 achievement.achievement_x0.desc=身与界存，凝练法则本源，以身合道
+achievement.coldSpiderLeg=蛛猪
+achievement.coldSpiderLeg.desc=蛛突猛进！？
 
 commands.version.playing=你现在正在游玩
 commands.day.msg=今天是这个世界的第 %s 天
@@ -146,6 +149,7 @@ gui.forgingTable.succeed=强化成功!
 gui.forgingTable.time=锻造用时
 gui.forgingTable.chanceOfFailure=失败几率
 gui.forgingTable.ifFail=若失败
+gui.forgingTable.kept=保留物品等级
 gui.forgingTable.axeCost=斧子耐久消耗
 gui.forgingTable.hammerCost=战锤耐久消耗
 gui.forgingTable.needAxe=§l§o需要斧子
@@ -180,6 +184,7 @@ tile.block_spawn.name=复活传送阵
 item.bunch_torch.name=一捆火把
 item.stack_torch.name=火把堆
 item.gem_blue.name=蓝宝石
+item.gem_yellow.name=黄宝石
 item.lava_in_pipes.name=管道岩浆
 
 item.dynamic_core_iron.name=铁夜视饰品
@@ -285,6 +290,20 @@ item.powder_lei.name=雷の劫
 item.powder_bing.name=冰の寒
 item.powder_an.name=深の暗
 
+item.towards_pickaxe.name=古宝镐
+item.stairs_pickaxe.name=长阶镐
+item.star_pickaxe.name=摘星镐
+item.plate_pickaxe.name=拓荒镐
+item.cube_pickaxe.name=方阵镐
+
+item.gowther.name=色欲之罪
+item.merlin.name=暴食之罪
+item.ban.name=贪婪之罪
+item.king.name=怠惰之罪
+item.meliodas.name=愤怒之罪
+item.diane.name=嫉妒之罪
+item.escanor.name=傲慢之罪
+
 item.drug_bg.name=辟谷丹
 item.drug_bg_b.name=五芝丹
 item.drug_yd.name=妖丹
@@ -296,10 +315,12 @@ item.zombie_brain.name=僵尸脑子
 item.zombie_drug.name=三尸脑神丹
 item.suspicious_stew.name=腐肉汤
 item.zombie_brain_cooked.name=熟僵尸脑子
+item.spider_leg.name=很大的蜘蛛腿
+item.spider_leg_b.name=很冰的大猪腿
 
 item.color_bag.name=彩色喵爪
 item.c4.name=蹦蹦炸弹
-
+item.bad_apple.name=Bad Apple!!!
 item.pants.name=蓝白内裤
 
 tile.gem_setting.name=宝石镶嵌台

@@ -15,7 +15,7 @@ public class ItemExplosion extends Item{
     }
     public boolean onItemRightClick(EntityPlayer player, float partial_tick, boolean ctrl_is_down) {
         ItemStack totem = player.getHeldItemStack();
-        if(totem.getItem() instanceof ItemExplosion && player.getHealth() > 1.0F){
+        if(totem.getItem() == Items.c4 && player.getHealth() > 1.0F){
             player.addVelocity((double)(-MathHelper.sin(player.rotationYaw * 3.1415927F / 180.0F) * (float)8.0F * 0.5F), 0.75F, (double)(MathHelper.cos(player.rotationYaw * 3.1415927F / 180.0F) * (float)8.0F * 0.5F));
             player.attackEntityFrom(new Damage(DamageSource.absolute,1));
             player.heal(1.0F);

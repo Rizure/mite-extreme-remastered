@@ -10,6 +10,7 @@ public class ItemEnhanceStone extends Item {
         iron(48, Material.iron),
         mithril(72, Material.mithril),
         adamantium(96, Material.adamantium),
+        vibranium(120,Materials.vibranium),
         universal(120, Material.glowstone);
         private final int failChance;
         private IIcon iIcon;

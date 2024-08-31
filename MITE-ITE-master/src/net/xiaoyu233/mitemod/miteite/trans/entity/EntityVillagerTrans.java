@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.*;
 
@@ -49,6 +50,17 @@ public abstract class EntityVillagerTrans extends EntityAgeable implements IMerc
    @Inject(method = "<init>(Lnet/minecraft/World;I)V", at = @At("TAIL"))
    public void injectInitEnhanceBookList(CallbackInfo callbackInfo) {
       this.initEnhanceBookList();
+   }
+   @Inject(method = "createChild", at = @At("HEAD"))
+   public void injectSpecialItemDropsInMating(CallbackInfoReturnable callbackInfoReturnable) {
+      this.dropItem(Items.gowther);
+   }
+   @Inject(method = "onDeath(Lnet/minecraft/DamageSource;)V", at = @At("HEAD"))
+   public void injectSpecialItemDropsInDeath(DamageSource damageSource, CallbackInfo callbackInfo) {
+      Entity player = damageSource.getResponsibleEntity();
+      if(player instanceof EntityPlayer){
+         this.dropItem(Items.meliodas);
+      }
    }
 
    private void initEnhanceBookList() {
@@ -114,6 +126,9 @@ public abstract class EntityVillagerTrans extends EntityAgeable implements IMerc
             if (this.needsInitilization) {
                if(rand.nextInt(10) == 0) {
                   this.dropItemStack(new ItemStack(Items.voucherVillager, 1));
+               }
+               if(rand.nextInt(10) == 0) {
+                  this.dropItem(Items.king);
                }
                if (this.buyingList.size() > 1) {
                   Iterator var3 = this.buyingList.iterator();

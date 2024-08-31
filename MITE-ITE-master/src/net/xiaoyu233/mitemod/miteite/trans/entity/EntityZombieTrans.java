@@ -1,6 +1,7 @@
 package net.xiaoyu233.mitemod.miteite.trans.entity;
 
 import net.minecraft.*;
+import net.minecraft.server.MinecraftServer;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
 import net.xiaoyu233.mitemod.miteite.util.MonsterUtil;
 import org.spongepowered.asm.mixin.Final;
@@ -12,6 +13,7 @@ import net.xiaoyu233.mitemod.miteite.item.Items;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Arrays;
 
@@ -22,6 +24,16 @@ class EntityZombieTrans extends EntityAnimalWatcher {
    @Inject(method = "<init>",at = @At("RETURN"))
    public void injectCtor(CallbackInfo callbackInfo) {
       this.is_smart = true;
+   }
+   @Inject(method = "addRandomWeapon", at = @At("RETURN"))
+   private void extendsWeapon(CallbackInfo callbackInfo) {
+      int day_of_world = MinecraftServer.F().getOverworld().getDayOfOverworld();
+      if (day_of_world >= 64 && this.getHeldItem() == null) {
+         super.setCurrentItemOrArmor(0, (new ItemStack(this.getWeapon(day_of_world))).randomizeForMob(this, day_of_world >= 96));
+      }
+   }
+   private Item getWeapon(int day){
+      return this.rand.nextInt(4) == 0 ? Constant.TOOLS[Math.max(Math.min((day - 16 - this.rand.nextInt(32)) / 16,Constant.SWORDS.length - 1),0)] : Constant.SWORDS[Math.max(Math.min((day - 16 - this.rand.nextInt(32)) / 16,Constant.SWORDS.length - 1),0)];
    }
    @Shadow
    @Final
@@ -44,7 +56,6 @@ class EntityZombieTrans extends EntityAnimalWatcher {
       int var1 = 1;
       if (this.rand.nextFloat() < 0.01F) {
          int var2 = 0;
-
          for(int var3 = (int)this.posX - 4; var3 < (int)this.posX + 4 && var2 < 14; ++var3) {
             for(int var4 = (int)this.posY - 4; var4 < (int)this.posY + 4 && var2 < 14; ++var4) {
                for(int var5 = (int)this.posZ - 4; var5 < (int)this.posZ + 4 && var2 < 14; ++var5) {
