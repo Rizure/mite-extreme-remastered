@@ -544,10 +544,10 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
    }
 
    private float getIndomitableAmp(float healthPercent){
-      return 2.0F - healthPercent;
+      return 1.5F - healthPercent;
    }
    private float getEnergeticAmp(float healthPercent){
-      return 1.0F + healthPercent;
+      return 0.5F + healthPercent;
    }
 
    @Override

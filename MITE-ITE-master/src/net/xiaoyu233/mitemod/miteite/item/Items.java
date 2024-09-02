@@ -110,7 +110,7 @@ public class Items extends Item{
     public static final Item powder_wood = new ItemElementPowder(Constant.getNextItemID(),"wood");
     public static final Item powder_liquid = new ItemElementPowder(Constant.getNextItemID(),"liquid");
     public static final Item powder_earth = new ItemElementPowder(Constant.getNextItemID(),"earth");
-    public static final ItemColorBag colorBag = (ItemColorBag) new ItemColorBag(Constant.getNextItemID(), Material.dye, "colorbag").setCreativeTab(CreativeModeTab.tabTools);
+    public static final ItemColorBag colorBag = (ItemColorBag) new ItemColorBag(Constant.getNextItemID(), Material.dye, "color_bag").setCreativeTab(CreativeModeTab.tabTools);
     public static final Item pants = new ItemGAMisc(Constant.getNextItemID(),"pants");
     public static final ItemFood chikitan = new ItemGAFood(Constant.getNextItemID(),Materials.vegetable,20,0,0,false,false,false,"chikitan").setAlwaysEdible().setPlantProduct().setPotionEffect(MobEffectList.resistance.id, 10, 3, 0.25F);
     public static final ItemFood spicyStrip = new ItemGAFood(Constant.getNextItemID(),Materials.dough,2,2,0,false,false,false,"spicy_strip").setPotionEffect(MobEffectList.hunger.id, 16, 1, 1.0F);
@@ -145,7 +145,7 @@ public class Items extends Item{
     public static final ItemEnhancedPickaxe star_Pickaxe = new ItemEnhancedPickaxe(Constant.getNextItemID(),Material.mithril,3);
     public static final ItemEnhancedPickaxe plate_Pickaxe = new ItemEnhancedPickaxe(Constant.getNextItemID(),Materials.adamantium,4);
     public static final ItemEnhancedPickaxe cube_Pickaxe = new ItemEnhancedPickaxe(Constant.getNextItemID(),Materials.vibranium,5);
-
+    public static final ItemColorBag final_key = new ItemColorBag(Constant.getNextItemID(),Materials.vibranium,"final_key");
 
     private static Item register(String resourceLocation, Item item, CreativeModeTab tab) {
         item.setResourceLocation(item.getResourceLocationPrefix() + resourceLocation);
@@ -283,6 +283,7 @@ public class Items extends Item{
         register("c4",c4);
         register("gem_blue",gemBlue);
         register("gem_yellow",gemYellow);
+        register("final_key",final_key);
         
         register("towards_pickaxe",towards_Pickaxe);
         register("stairs_pickaxe",stairs_Pickaxe);

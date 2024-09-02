@@ -137,6 +137,7 @@ entity.EntityWanderingWitch.name=流浪女巫
 entity.EntityZombieDoor.name=僵尸盗贼
 entity.EntityExchanger.name=转移骷髅
 entity.EntityZombieBoss.name=僵尸BOSS
+entity.EntityFinalZombieBoss.name=僵尸BOSS·强化
 entity.EntityClusterSpider.name=集群蜘蛛
 entity.EntitySpiderKing.name=国王蜘蛛
 entity.EntitySpiderQueen.name=蛛后
@@ -185,6 +186,7 @@ item.bunch_torch.name=一捆火把
 item.stack_torch.name=火把堆
 item.gem_blue.name=蓝宝石
 item.gem_yellow.name=黄宝石
+item.final_key.name=终结之钥
 item.lava_in_pipes.name=管道岩浆
 
 item.dynamic_core_iron.name=铁夜视饰品

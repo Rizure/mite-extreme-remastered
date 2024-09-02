@@ -1,7 +1,9 @@
 package net.xiaoyu233.mitemod.miteite.trans.block;
 
 import net.minecraft.*;
+import net.xiaoyu233.mitemod.miteite.entity.EntityFinalZombieBoss;
 import net.xiaoyu233.mitemod.miteite.entity.EntityZombieBoss;
+import net.xiaoyu233.mitemod.miteite.item.Items;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -17,7 +19,14 @@ public class BlockMobSpawnerTrans extends BlockContainer {
     public int dropBlockAsEntityItem(BlockBreakInfo info) {
         this.dropXpOnBlockBreak(info.world, info.x, info.y, info.z, 15 + info.world.rand.nextInt(15) + info.world.rand.nextInt(15));
         if(info.world.isUnderworld() && info.world.rand.nextFloat() < Configs.wenscConfig.zombieBossSpawnPercent.ConfigValue) {
-            EntityZombieBoss entityZombieBoss = new EntityZombieBoss(info.world);
+            boolean needsEnhance = info.getResponsiblePlayer().inventory.getInventorySlotContainItem(Items.final_key.itemID,true) != -1;
+            
+            EntityZombieBoss entityZombieBoss;
+            if(needsEnhance){
+                entityZombieBoss = new EntityFinalZombieBoss(info.world);
+            }else {
+                entityZombieBoss = new EntityZombieBoss(info.world);
+            }
             entityZombieBoss.setPosition(info.x, info.y, info.z);
             entityZombieBoss.refreshDespawnCounter(-9600);
             if(info.getResponsiblePlayer() != null) {

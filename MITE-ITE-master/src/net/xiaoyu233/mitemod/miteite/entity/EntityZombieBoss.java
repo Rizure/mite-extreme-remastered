@@ -4,10 +4,13 @@ import javafx.beans.binding.MapExpression;
 import net.minecraft.*;
 import net.minecraft.server.MinecraftServer;
 import net.xiaoyu233.mitemod.miteite.achievement.Achievements;
+import net.xiaoyu233.mitemod.miteite.item.GemModifierTypes;
+import net.xiaoyu233.mitemod.miteite.item.ItemRegenerationCore;
 import net.xiaoyu233.mitemod.miteite.item.Items;
 import net.xiaoyu233.mitemod.miteite.item.enchantment.Enchantments;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
 import net.xiaoyu233.mitemod.miteite.util.Constant;
+import net.xiaoyu233.mitemod.miteite.util.ReflectHelper;
 
 import java.util.*;
 
@@ -86,24 +89,24 @@ public class EntityZombieBoss extends EntityZombie implements IBossbarEntity{
         }
     }
 
-    public void getEnchantBookDependsOnDamageRate(EntityPlayer entityPlayer, int rate) {
-        ItemStack var11 = null;
-        Enchantment dropEnchantment = Enchantment.enchantmentsList[rand.nextInt(Enchantment.enchantmentsList.length)];
-        if(dropEnchantment != null) {
-            if(dropEnchantment.getNumLevelsForVibranium() > 1) {
-                var11 = Item.enchantedBook.getEnchantedItemStack(new EnchantmentInstance(dropEnchantment, Math.min(rate, dropEnchantment.getNumLevelsForVibranium())));
-            } else {
-                if(rate >= 7) {
-                    var11 = Item.enchantedBook.getEnchantedItemStack(new EnchantmentInstance(dropEnchantment, 1));
-                } else {
-                    getEnchantBookDependsOnDamageRate(entityPlayer, rate);
-                }
-            }
-        } else {
-            getEnchantBookDependsOnDamageRate(entityPlayer, rate);
-        }
-        entityPlayer.inventory.addItemStackToInventoryOrDropIt(var11);
-    }
+//    public void getEnchantBookDependsOnDamageRate(EntityPlayer entityPlayer, int rate) {
+//        ItemStack var11 = null;
+//        Enchantment dropEnchantment = Enchantment.enchantmentsList[rand.nextInt(Enchantment.enchantmentsList.length)];
+//        if(dropEnchantment != null) {
+//            if(dropEnchantment.getNumLevelsForVibranium() > 1) {
+//                var11 = Item.enchantedBook.getEnchantedItemStack(new EnchantmentInstance(dropEnchantment, Math.min(rate, dropEnchantment.getNumLevelsForVibranium())));
+//            } else {
+//                if(rate >= 7) {
+//                    var11 = Item.enchantedBook.getEnchantedItemStack(new EnchantmentInstance(dropEnchantment, 1));
+//                } else {
+//                    getEnchantBookDependsOnDamageRate(entityPlayer, rate);
+//                }
+//            }
+//        } else {
+//            getEnchantBookDependsOnDamageRate(entityPlayer, rate);
+//        }
+//        entityPlayer.inventory.addItemStackToInventoryOrDropIt(var11);
+//    }
 
     protected void dropFewItems(boolean recently_hit_by_player, DamageSource damage_source) {
         if (recently_hit_by_player){
@@ -120,8 +123,10 @@ public class EntityZombieBoss extends EntityZombie implements IBossbarEntity{
                     float damage = attackDamageMap.get(player.getEntityName());
                     int nums = Math.round(damage) / 25;
                     while (nums-- > 0) {
-                        player.inventory.addItemStackToInventoryOrDropIt(new ItemStack(drops[this.rand.nextInt(drops.length)], 1));
-                        player.triggerAchievement(Achievements.killZombieBoss);
+                        player.inventory.addItemStackToInventoryOrDropIt(new ItemStack(drops[this.rand.nextInt(drops.length)], this.isFinal() ? 2 : 1));
+                        if(this.isFinal()){
+                            player.triggerAchievement(Achievements.killZombieBoss);
+                        }
                     }
                 }
             }
@@ -131,12 +136,22 @@ public class EntityZombieBoss extends EntityZombie implements IBossbarEntity{
             stack = Item.enchantedBook.getEnchantedItemStack(new EnchantmentInstance(dropEnchantment, dropEnchantment.getNumLevelsForVibranium()));
             if(this.rand.nextInt(4) == 0){
                 this.dropItemStack(stack);
-                return;
+                if(!this.isFinal()){
+                    return;
+                }
             }
             dropEnchantment = this.enhanceSpecialBookList[this.rand.nextInt(this.enhanceSpecialBookList.length)];
             stack = Item.enchantedBook.getEnchantedItemStack(new EnchantmentInstance(dropEnchantment, dropEnchantment.getNumLevelsForVibranium()));
             this.dropItemStack(stack);
+            if(!this.isFinal()){
+                this.dropItem(Items.final_key);
+            }else {
+                this.dropItemStack(new ItemStack(Items.itemEnhanceGem5,1,this.rand.nextInt(GemModifierTypes.values().length)));
+            }
         }
+    }
+    protected boolean isFinal(){
+        return false;
     }
 
     protected void applyEntityAttributes() {
@@ -200,8 +215,8 @@ public class EntityZombieBoss extends EntityZombie implements IBossbarEntity{
                 player.removePotionEffect(MobEffectList.damageBoost.id);
                 player.bossResetDamageBoostCounter = 200;
                 this.attackedCounter = 200;
+                damage.setAmount(damage.getAmount() * (this.isFinal() ? 0.25F : 1.0F));
                 EntityDamageResult originDamage = super.attackEntityFrom(damage);
-                damage.setAmount(damage.getAmount() * 1.5F);
                 try {
                     if(attackDamageMap.containsKey(player.getEntityName())) {
                         attackDamageMap.put(player.getEntityName(), attackDamageMap.get(player.getEntityName()) + originDamage.getAmountOfHealthLost());
@@ -280,6 +295,10 @@ public class EntityZombieBoss extends EntityZombie implements IBossbarEntity{
             }
         }
     }
+    @Override
+    public boolean isImmuneTo(DamageSource damage_source) {
+        return super.isImmuneTo(damage_source) && damage_source.isExplosion();
+    }
 
     public void addThunderAttack(EntityPlayer player, float damage) {
         if(player != null) {
@@ -300,6 +319,18 @@ public class EntityZombieBoss extends EntityZombie implements IBossbarEntity{
         }
         return false;
     }
+    public boolean shockSurroundingPlayers() {
+        boolean succeed = false;
+        List <Entity>targets  = this.getNearbyEntities(16.0F,8.0F);
+        for(int i = 0; i < targets.size(); i++){
+            if(targets.get(i) instanceof EntityPlayer){
+                EntityPlayer player = (EntityPlayer) targets.get(i);
+                this.addThunderAttack(player,4.0F);
+                succeed = true;
+            }
+        }
+        return succeed;
+    }
 
     public void healAndBroadcast() {
         if(this.getHealth() < this.getMaxHealth()) {
@@ -307,6 +338,19 @@ public class EntityZombieBoss extends EntityZombie implements IBossbarEntity{
             this.broadcastDamage("僵尸BOSS挑战失败");
             this.attackDamageMap.clear();
         }
+        if(this.isFinal()){
+            this.setDead();
+        }
+    }
+    public void enhance(){
+        EntityZombieBoss entityZombieBoss = new EntityFinalZombieBoss(this.worldObj);
+        entityZombieBoss.setPosition(this.posX, this.posY, this.posZ);
+        entityZombieBoss.refreshDespawnCounter(-9600);
+        entityZombieBoss.setAttackTarget(this.getTarget());
+        entityZombieBoss.entityFX(EnumEntityFX.summoned);
+        entityZombieBoss.onSpawnWithEgg(null);
+        this.worldObj.spawnEntityInWorld(entityZombieBoss);
+        this.setDead();
     }
 
     public void onUpdate() {
@@ -325,10 +369,21 @@ public class EntityZombieBoss extends EntityZombie implements IBossbarEntity{
             if(thunderTick % 40 == 0) {
                 if(target != null && target instanceof EntityPlayer) {
                     if(((EntityPlayer) target).isAttackByBossCounter <= 0) {
-                        addThunderAttack((EntityPlayer)target, 6f);
+                        if(this.isFinal()){
+                            double currentX = this.posX;
+                            double currentY = this.posY;
+                            double currentZ = this.posZ;
+                            target.setPositionAndUpdate(currentX, currentY, currentZ);
+                            target.worldObj.createExplosion(this,currentX,currentY + (double)(this.height / 4.0F),currentZ,0.0F,2.75F,true);
+                        }else {
+                            addThunderAttack((EntityPlayer)target, 6f);
+                        }
                     }
                 }
                 if(thunderTick == 60) {
+                    if(this.isFinal()){
+                        this.shockSurroundingPlayers();
+                    }
                     this.setSurroundingPlayersAsTarget();
                     thunderTick = 0;
                 }
