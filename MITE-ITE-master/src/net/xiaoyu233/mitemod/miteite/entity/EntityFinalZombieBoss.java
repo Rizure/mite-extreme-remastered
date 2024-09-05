@@ -16,6 +16,7 @@ public class EntityFinalZombieBoss extends EntityZombieBoss{
         ItemStack Weapon = new ItemStack(Items.VIBRANIUM_BATTLE_AXE);
         Weapon.addEnchantment(Enchantment.sharpness,9);
         Weapon.addEnchantment(Enchantment.unbreaking,5);
+        Weapon.addEnchantment(Enchantment.piercing,7);
         Weapon.setItemDamage(0);
         this.setCurrentItemOrArmor(0, Weapon);
         this.setHelmet(new ItemStack(Items.VIBRANIUM_HELMET).setItemDamage(0));
