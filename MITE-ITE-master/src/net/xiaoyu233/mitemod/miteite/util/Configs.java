@@ -54,6 +54,7 @@ public class Configs {
         public static ConfigItem <Integer> playerDefenseCooldown = new ConfigItem("playerDefenseCooldown", 160, "玩家格挡冷却(tick)", 0 ,320);
         public static ConfigItem <Integer> playerDefenceMaxTime = new ConfigItem("playerDefenceMaxTime", 80, "玩家格挡最大时间(tick)", 0 ,160);
         public static ConfigItem <Boolean> playerDisarmPlayer = new ConfigItem("playerDisarmPlayer", true, "玩家缴械玩家");
+        public static ConfigItem <Boolean> boostEnhance = new ConfigItem("boostEnhance",true,"怪物强化速度翻倍");
         public static ConfigItem <Boolean> annihilationSkeletonSpawnInLight = new ConfigItem("annihilationSkeletonSpawnInLight", false, "主世界湮灭骷髅在光照处生成");
         public static ConfigItem <Integer> ancientBoneLordSpawnLimitDay = new ConfigItem("ancientBoneLordSpawnLimitDay", 192, "主世界生成远古骷髅公爵所需天数(整数)", 0 ,384);
         public static ConfigItem <Integer> wanderingWitchSpawnChanceOverworld = new ConfigItem("wanderingWitchSpawnChanceOverworld", 25, "主世界流浪女巫生成成功概率百分比(整数)", 0 ,50);
@@ -271,6 +272,7 @@ public class Configs {
         wenscMap.put("creeperFuseTime", wenscConfig.creeperFuseTime);
         wenscMap.put("FlyingSkeletonSpawningWeight",wenscConfig.FlyingSkeletonSpawningWeight);
         wenscMap.put("EnhanceMobsArmor",wenscConfig.enhanceMobsArmor);
+        wenscMap.put("boostEnhance",wenscConfig.boostEnhance);
 
 //        wenscMap.put("md5", wenscConfig.md5String);
 

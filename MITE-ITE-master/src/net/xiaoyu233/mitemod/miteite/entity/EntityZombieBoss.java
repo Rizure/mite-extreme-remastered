@@ -220,7 +220,7 @@ public class EntityZombieBoss extends EntityZombie implements IBossbarEntity{
                 player.removePotionEffect(MobEffectList.damageBoost.id);
                 player.bossResetDamageBoostCounter = 200;
                 this.attackedCounter = 200;
-                damage.setAmount(damage.getAmount() * (this.isFinal() ? 0.4F : 0.7F));
+                damage.setAmount(damage.getAmount() * (this.isFinal() ? 0.25F : 0.7F));
                 EntityDamageResult originDamage = super.attackEntityFrom(damage);
                 try {
                     if(attackDamageMap.containsKey(player.getEntityName())) {

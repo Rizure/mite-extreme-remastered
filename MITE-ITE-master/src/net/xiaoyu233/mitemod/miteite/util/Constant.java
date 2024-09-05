@@ -35,33 +35,33 @@ public class Constant {
     }
     public static float getNormalMobModifier(String method, int day, boolean isOverworld){
         if(Objects.equals(method, "Health")){
-            return (isOverworld ? 1.0F : 1.25F) + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 128.0F;
+            return (isOverworld ? 1.0F : 1.25F) + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 128.0F * (Configs.wenscConfig.boostEnhance.ConfigValue ? 2.0F : 1.0F);
         }else if(Objects.equals(method, "Damage")){
-            return (isOverworld ? 1.0F : 1.5F) + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 256.0F;
+            return (isOverworld ? 1.0F : 1.5F) + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 256.0F * (Configs.wenscConfig.boostEnhance.ConfigValue ? 2.0F : 1.0F);
         }else if(Objects.equals(method, "Speed")){
-            return 1.0F + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 2048.0F;
+            return 1.0F + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 2048.0F * (Configs.wenscConfig.boostEnhance.ConfigValue ? 2.0F : 1.0F);
         }else {
             return 1.0F;
         }
     }
     public static float getEliteMobModifier(String method,int day, boolean isOverworld){
         if(Objects.equals(method, "Health")){
-            return (isOverworld ? 1.0F : 1.25F) + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 96.0F;
+            return (isOverworld ? 1.0F : 1.25F) + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 96.0F * (Configs.wenscConfig.boostEnhance.ConfigValue ? 2.0F : 1.0F);
         }else if(Objects.equals(method, "Damage")){
-            return (isOverworld ? 1.0F : 1.75F) + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 192.0F;
+            return (isOverworld ? 1.0F : 1.75F) + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 192.0F * (Configs.wenscConfig.boostEnhance.ConfigValue ? 2.0F : 1.0F);
         }else if(Objects.equals(method, "Speed")){
-            return 1.0F + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 2048.0F;
+            return 1.0F + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 2048.0F * (Configs.wenscConfig.boostEnhance.ConfigValue ? 2.0F : 1.0F);
         }else {
             return 1.0F;
         }
     }
     public static float getBossMobModifier(String method,int day){
         if(Objects.equals(method, "Health")){
-            return 1.0F + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 80.0F;
+            return 1.0F + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 80.0F * (Configs.wenscConfig.boostEnhance.ConfigValue ? 2.0F : 1.0F);
         }else if(Objects.equals(method, "Damage")){
-            return 1.0F + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 160.0F;
+            return 1.0F + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 160.0F * (Configs.wenscConfig.boostEnhance.ConfigValue ? 2.0F : 1.0F);
         }else if(Objects.equals(method, "Speed")){
-            return 1.0F + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 2048.0F;
+            return 1.0F + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 2048.0F * (Configs.wenscConfig.boostEnhance.ConfigValue ? 2.0F : 1.0F);
         }else {
             return 1.0F;
         }
