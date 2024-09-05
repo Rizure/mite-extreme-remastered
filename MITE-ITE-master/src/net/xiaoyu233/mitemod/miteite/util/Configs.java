@@ -76,6 +76,7 @@ public class Configs {
         public static ConfigItem <Integer> quartzExp = new ConfigItem("quartzExp", 50, "石英经验", 25 ,100);
         public static ConfigItem <Integer> goldenAppleEatTime = new ConfigItem("goldenAppleEatTime", 32, "金苹果使用耗时（tick）", 16 ,32);
         public static ConfigItem <Integer> enchantedGoldenAppleEatTime = new ConfigItem("enchantedGoldenAppleEatTime", 16, "附魔金苹果使用耗时（tick）", 8 ,32);
+        public static ConfigItem <Integer> chikitanEatTime = new ConfigItem("chikitanEatTime", 16, "筑基丹使用耗时（tick）", 8 ,32);
         public static ConfigItem <Double> allProtectionVDefenceFraction = new ConfigItem("allProtectionVDefenceFraction", 0.2d, "全套保护5伤害减免", 0d ,0.4d);
         public static ConfigItem <Boolean> mobSpawnerSpeedUpWithPlayers = new ConfigItem("mobSpawnerSpeedUpWithPlayers", true, "刷怪笼在旁边有玩家时加速生怪");
         public static ConfigItem <Boolean> isSpawnDragger = new ConfigItem("isSpawnDragger", true, "部分怪物是否生成伴随的拖曳骷髅");
@@ -143,7 +144,7 @@ public class Configs {
         public static ConfigItem <Integer> whichDayGenVillage = new ConfigItem("whichDayGenVillage", 24, "多少天生成村庄", 1 ,96);
         public static ConfigItem <Integer> maxLevelLimit = new ConfigItem("maxLevelLimit", 300, "玩家最大限制等级", 0 ,1000);
         public static ConfigItem <Integer> enhancePerLvlCostExp = new ConfigItem("enhancePerLvlCostExp", 100, "附魔书附魔每增加一级消耗多少经验", 100 ,400);
-        public static ConfigItem <Float> zombieBossSpawnPercent = new ConfigItem("zombieBossSpawnPercent", 0.5f, "挖掘刷怪笼多大几率刷出僵尸BOSS", 0f,1f);
+        public static ConfigItem <Float> zombieBossSpawnPercent = new ConfigItem("zombieBossSpawnPercent", 1.0f, "挖掘刷怪笼多大几率刷出僵尸BOSS", 0f,1f);
         public static ConfigItem <Integer> creeperFuseTime = new ConfigItem("creeperFuseTime", 30, "苦力怕蓄力时间(tick)", 20,100);
         public static ConfigItem <Integer> FlyingSkeletonSpawningWeight = new ConfigItem("FlyingSkeletonSpawningWeight",5,"飞行骷髅生成权重",0,100);
         public static ConfigItem <Boolean> enhanceMobsArmor = new ConfigItem("EnhanceMobsArmor",true,"怪物穿着护甲强化");
@@ -195,6 +196,7 @@ public class Configs {
         wenscMap.put("quartzExp", wenscConfig.quartzExp);
         wenscMap.put("goldenAppleEatTime", wenscConfig.goldenAppleEatTime);
         wenscMap.put("enchantedGoldenAppleEatTime", wenscConfig.enchantedGoldenAppleEatTime);
+        wenscMap.put("chikitanEatTime",wenscConfig.chikitanEatTime);
         wenscMap.put("allProtectionVDefenceFraction", wenscConfig.allProtectionVDefenceFraction);
         wenscMap.put("mobSpawnerSpeedUpWithPlayers", wenscConfig.mobSpawnerSpeedUpWithPlayers);
         wenscMap.put("isSpawnExchanger", wenscConfig.isSpawnDragger);

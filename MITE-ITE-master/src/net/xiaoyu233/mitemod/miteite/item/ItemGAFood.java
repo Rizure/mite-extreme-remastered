@@ -12,6 +12,9 @@ public class ItemGAFood extends ItemFood {
         super(id,material,satiation,nutrition,sugar_content,has_protein,has_essential_fats,has_phytonutrients,"foodItem");
         this.tag = tag;
     }
+    public int getMaxItemUseDuration(ItemStack par1ItemStack) {
+        return par1ItemStack.getItem() == Items.chikitan ? Configs.wenscConfig.chikitanEatTime.ConfigValue : 32;
+    }
     protected void onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
         super.onEaten(par1ItemStack,par2World,par3EntityPlayer);
         if(Objects.equals(this.tag, "risky_agent")){

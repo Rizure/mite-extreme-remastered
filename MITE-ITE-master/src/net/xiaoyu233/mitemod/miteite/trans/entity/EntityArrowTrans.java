@@ -2,6 +2,7 @@ package net.xiaoyu233.mitemod.miteite.trans.entity;
 
 import net.minecraft.*;
 import net.xiaoyu233.mitemod.miteite.item.Items;
+import net.xiaoyu233.mitemod.miteite.util.Constant;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -74,9 +75,8 @@ public class EntityArrowTrans extends Entity {
 
    @Redirect(method = "onUpdate",at = @At(ordinal = 0, value = "INVOKE",target = "Lnet/minecraft/ItemArrow;getDamage()F"))
    public float skeletonAddExtraDamage(ItemArrow itemArrow) {
-      // 32天 -> 最大200天
-      int day = Math.max(Math.min(this.worldObj.getDayOfOverworld() - 32, 168), 0);
-      return (itemArrow.getDamage() + day * 0.025f );
+      int day = this.worldObj.getDayOfOverworld();
+      return (itemArrow.getDamage() * 2.0F * Constant.getEliteMobModifier("Damage",day));
    }
 
 }

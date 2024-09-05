@@ -186,6 +186,7 @@ item.bunch_torch.name=一捆火把
 item.stack_torch.name=火把堆
 item.gem_blue.name=蓝宝石
 item.gem_yellow.name=黄宝石
+item.cracked_key.name=破碎之钥
 item.final_key.name=终结之钥
 item.lava_in_pipes.name=管道岩浆
 

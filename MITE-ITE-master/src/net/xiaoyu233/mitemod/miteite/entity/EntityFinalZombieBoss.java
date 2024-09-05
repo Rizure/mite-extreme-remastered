@@ -14,9 +14,7 @@ public class EntityFinalZombieBoss extends EntityZombieBoss{
     @Override
     protected void addRandomEquipment() {
         ItemStack Weapon = new ItemStack(Items.VIBRANIUM_BATTLE_AXE);
-        Weapon.setForgingGrade(10);
         Weapon.addEnchantment(Enchantment.sharpness,9);
-        Weapon.addEnchantment(Enchantment.piercing,7);
         Weapon.addEnchantment(Enchantment.unbreaking,5);
         Weapon.setItemDamage(0);
         this.setCurrentItemOrArmor(0, Weapon);
@@ -48,8 +46,6 @@ public class EntityFinalZombieBoss extends EntityZombieBoss{
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        int day = this.worldObj.getDayOfOverworld();
-        this.setEntityAttribute(GenericAttributes.attackDamage, 20 * Constant.getBossMobModifier("Damage",day));
         this.setEntityAttribute(GenericAttributes.maxHealth, 1250);
     }
 }

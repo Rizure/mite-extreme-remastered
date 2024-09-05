@@ -10,7 +10,7 @@ import java.util.Random;
 public class Constant {
     public static final double[] ENHANCE_FACTORS;
     public static final bjo icons_ite = new bjo("textures/gui/icons_ite.png");
-    public static final String MITE_ITE_VERSION = "v1.4";
+    public static final String MITE_ITE_VERSION = "v1.4-patch2";
     public static final int MITE_ITE_VER_NUM = 77;
     public static final bjo RES_VIBRANIUM_SINGLE = new bjo("textures/entity/chest/vibranium_single.png");
     public static int nextItemID = 2024;
@@ -28,21 +28,27 @@ public class Constant {
     public static BlockBed [] bedBlockTypes= null;
     public static Random GARandom = new Random();
     public static float getNormalMobModifier(String method,int day){
+        return getNormalMobModifier(method,day,true);
+    }
+    public static float getEliteMobModifier(String method,int day){
+        return getEliteMobModifier(method,day,true);
+    }
+    public static float getNormalMobModifier(String method, int day, boolean isOverworld){
         if(Objects.equals(method, "Health")){
-            return 1.0F + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 128.0F;
+            return (isOverworld ? 1.0F : 1.25F) + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 128.0F;
         }else if(Objects.equals(method, "Damage")){
-            return 1.0F + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 256.0F;
+            return (isOverworld ? 1.0F : 1.5F) + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 256.0F;
         }else if(Objects.equals(method, "Speed")){
             return 1.0F + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 2048.0F;
         }else {
             return 1.0F;
         }
     }
-    public static float getEliteMobModifier(String method,int day){
+    public static float getEliteMobModifier(String method,int day, boolean isOverworld){
         if(Objects.equals(method, "Health")){
-            return 1.0F + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 96.0F;
+            return (isOverworld ? 1.0F : 1.25F) + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 96.0F;
         }else if(Objects.equals(method, "Damage")){
-            return 1.0F + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 192.0F;
+            return (isOverworld ? 1.0F : 1.75F) + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 192.0F;
         }else if(Objects.equals(method, "Speed")){
             return 1.0F + Math.min(day,Configs.wenscConfig.EnhanceLimit.ConfigValue) / 2048.0F;
         }else {

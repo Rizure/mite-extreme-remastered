@@ -56,6 +56,11 @@ public class ItemColorBag extends Item{
                         int y = rc.block_hit_y;
                         int z = rc.block_hit_z;
                         player.worldObj.setBlockToAir(x,y,z);
+                        player.inventory.addItemStackToInventoryOrDropIt(new ItemStack(Items.itemEnhanceGem2,1,player.worldObj.rand.nextInt(GemModifierTypes.values().length)));
+                        Item[] drops = {Item.netherQuartz,Item.netherQuartz,Item.emerald,Item.emerald,Item.diamond,Item.blazePowder,Item.ghastTear};
+                        for(int i = 0; i < player.worldObj.getDayOfOverworld(); i += 12){
+                            player.inventory.addItemStackToInventoryOrDropIt(new ItemStack(drops[player.worldObj.rand.nextInt(drops.length)]));
+                        }
                         return true;
                     }
                 }

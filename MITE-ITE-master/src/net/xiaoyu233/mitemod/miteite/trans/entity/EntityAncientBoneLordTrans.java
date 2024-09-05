@@ -49,9 +49,9 @@ public class EntityAncientBoneLordTrans extends EntityBoneLordTrans {
       boolean boneLordTweak = Configs.wenscConfig.boneLordTweak.ConfigValue;
       int day = this.getWorld() != null ? this.getWorld().getDayOfOverworld() : 0;
       this.setEntityAttribute(GenericAttributes.followRange, 48.0D);
-      this.setEntityAttribute(GenericAttributes.attackDamage, (boneLordTweak ? 15 : 10) * Constant.getEliteMobModifier("Damage",day));
-      this.setEntityAttribute(GenericAttributes.maxHealth, (boneLordTweak ? 60 : 30) * Constant.getEliteMobModifier("Health",day));
-      this.setEntityAttribute(GenericAttributes.movementSpeed, 0.3D * Constant.getEliteMobModifier("Speed",day));
+      this.setEntityAttribute(GenericAttributes.attackDamage, (boneLordTweak ? 15 : 10) * Constant.getEliteMobModifier("Damage",day,this.worldObj.isOverworld()));
+      this.setEntityAttribute(GenericAttributes.maxHealth, (boneLordTweak ? 60 : 30) * Constant.getEliteMobModifier("Health",day,this.worldObj.isOverworld()));
+      this.setEntityAttribute(GenericAttributes.movementSpeed, 0.3D * Constant.getEliteMobModifier("Speed",day,this.worldObj.isOverworld()));
    }
 
    protected void enchantEquipment(ItemStack item_stack) {

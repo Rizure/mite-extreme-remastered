@@ -319,7 +319,9 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
       List<ToolModifierTypes> available_modifiers = ModifierUtils.getAllCanBeAppliedToolModifiers(stack);
       //已拥有属性
       List<ToolModifierTypes> obtained_modifiers = new ArrayList<>();
+      //确认副属性条目上限
       int modifierTypesCap = Math.min(all_modifiers.size(), 4 + (stack.getForgingGrade() / 5));
+      //首次升级（目前没问题）
       if(tagCompound.getInteger("tool_level") == 1){
          int i = itemRand.nextInt(3) == 0 ? 0 : 1;
          while (i < modifierTypesCap){
@@ -338,34 +340,47 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
             }
          }
       }
+      //之后的升级（仍然有问题）
       else {
          int upgradeCount = itemRand.nextInt(8) == 0 ? 2 : 1;
          while (upgradeCount > 0){
+            //不管了先找一个能上的副属性
             modifierType = ModifierUtils.getModifierWithWeight(available_modifiers,player.getRNG());
             if(modifierType != null){
+               //如果武器有直接升级
                if(modifiers.hasKey(modifierType.nbtName)){
                   player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "的" + modifierType.color.toString() + modifierType.displayName + "§r属性已升级到" + 
                           this.addModifierLevelFor(modifiers, modifierType)
                           + "级"));
                   upgradeCount--;
-               }else {
-                  //拥有副属性录入
+               }
+               //如果没有
+               else {
+                  //录入拥有的副属性
                   for (int n = 0; n < all_modifiers.size(); n++) {
                      if(modifiers.hasKey(all_modifiers.get(n).nbtName)){
                         obtained_modifiers.add(all_modifiers.get(n));
                      }
                   }
+                  //副属性拥有上限未到达则附加这个属性
                   if(obtained_modifiers.size() < modifierTypesCap){
                      this.addModifierLevelFor(modifiers, modifierType);
                      player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "获得了" + modifierType.color.toString() + modifierType.displayName + "§r属性"));
                      upgradeCount--;
-                  }else {
-                     //删除不能升级/升至满级的副属性
+                  }
+                  //如果到达上限
+                  else {
                      for (int n = 0; n < obtained_modifiers.size(); n++) {
+                        //删除不能附加的副属性
                         if(!available_modifiers.contains(obtained_modifiers.get(n))){
                            obtained_modifiers.remove(obtained_modifiers.get(n));
                            n = 0;
                         }
+                        //删除已经满级的副属性（WIP）
+//                        if(obtained_modifiers.get(n).getMaxLevel() <= modifiers.getInteger(obtained_modifiers.get(n).getNbtName())){
+//                           obtained_modifiers.remove(obtained_modifiers.get(n));
+//                           n = 0;
+//                        }
                      }
                      int n = itemRand.nextInt(obtained_modifiers.size());
                      player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "的" + obtained_modifiers.get(n).color.toString() + obtained_modifiers.get(n).displayName + "§r属性已升级到" + 

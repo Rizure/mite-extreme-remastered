@@ -114,8 +114,8 @@ public class EntityZombieBoss extends EntityZombie implements IBossbarEntity{
             this.broadcastDamage("僵尸BOSS挑战成功");
             MinecraftServer server = MinecraftServer.F();
             Iterator var4 = server.getConfigurationManager().playerEntityList.iterator();
-
-            Item[] drops = {Item.diamond,Item.diamond,Item.diamond,Item.diamond,Items.fancyRed,Item.blazePowder,Item.ghastTear};
+            Item[] drops = {Item.netherQuartz,Item.netherQuartz,Item.emerald,Item.emerald,Item.diamond,Item.blazePowder,Item.ghastTear};
+            Item[] final_drops = {Item.diamond,Item.diamond,Item.diamond,Item.diamond,Item.diamond,Items.fancyRed,Items.fancyRed};
             while (var4.hasNext()) {
                 Object o = var4.next();
                 EntityPlayer player = (EntityPlayer)o;
@@ -123,8 +123,9 @@ public class EntityZombieBoss extends EntityZombie implements IBossbarEntity{
                     float damage = attackDamageMap.get(player.getEntityName());
                     int nums = Math.round(damage) / 25;
                     while (nums-- > 0) {
-                        player.inventory.addItemStackToInventoryOrDropIt(new ItemStack(drops[this.rand.nextInt(drops.length)], this.isFinal() ? 2 : 1));
+                        player.inventory.addItemStackToInventoryOrDropIt(new ItemStack(drops[this.rand.nextInt(drops.length)],1));
                         if(this.isFinal()){
+                            player.inventory.addItemStackToInventoryOrDropIt(new ItemStack(final_drops[this.rand.nextInt(final_drops.length)],1));
                             player.triggerAchievement(Achievements.killZombieBoss);
                         }
                     }
@@ -144,8 +145,12 @@ public class EntityZombieBoss extends EntityZombie implements IBossbarEntity{
             stack = Item.enchantedBook.getEnchantedItemStack(new EnchantmentInstance(dropEnchantment, dropEnchantment.getNumLevelsForVibranium()));
             this.dropItemStack(stack);
             if(!this.isFinal()){
-                this.dropItem(Items.final_key);
+                this.dropItem(Items.cracked_key);
+                this.dropItemStack(new ItemStack(Items.itemEnhanceGem3,1,this.rand.nextInt(GemModifierTypes.values().length)));
             }else {
+                for(int i = 0; i < 3; i++){
+                    this.dropItem(Items.voucherCore);
+                }
                 this.dropItemStack(new ItemStack(Items.itemEnhanceGem5,1,this.rand.nextInt(GemModifierTypes.values().length)));
             }
         }
@@ -215,7 +220,7 @@ public class EntityZombieBoss extends EntityZombie implements IBossbarEntity{
                 player.removePotionEffect(MobEffectList.damageBoost.id);
                 player.bossResetDamageBoostCounter = 200;
                 this.attackedCounter = 200;
-                damage.setAmount(damage.getAmount() * (this.isFinal() ? 0.25F : 1.0F));
+                damage.setAmount(damage.getAmount() * (this.isFinal() ? 0.4F : 0.7F));
                 EntityDamageResult originDamage = super.attackEntityFrom(damage);
                 try {
                     if(attackDamageMap.containsKey(player.getEntityName())) {

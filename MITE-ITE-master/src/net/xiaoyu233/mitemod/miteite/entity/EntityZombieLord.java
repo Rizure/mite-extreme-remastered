@@ -29,9 +29,9 @@ public class EntityZombieLord extends EntityZombie {
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         int day = this.getWorld().getDayOfOverworld();
-        this.setEntityAttribute(GenericAttributes.attackDamage, (15) * Constant.getEliteMobModifier("Damage",day));
-        this.setEntityAttribute(GenericAttributes.maxHealth, (40) * Constant.getEliteMobModifier("Health",day));
-        this.setEntityAttribute(GenericAttributes.movementSpeed, 0.27D * Constant.getEliteMobModifier("Speed",day));
+        this.setEntityAttribute(GenericAttributes.attackDamage, (15) * Constant.getEliteMobModifier("Damage",day,this.worldObj.isOverworld()));
+        this.setEntityAttribute(GenericAttributes.maxHealth, (40) * Constant.getEliteMobModifier("Health",day,this.worldObj.isOverworld()));
+        this.setEntityAttribute(GenericAttributes.movementSpeed, 0.27D * Constant.getEliteMobModifier("Speed",day,this.worldObj.isOverworld()));
     }
 
     @Override

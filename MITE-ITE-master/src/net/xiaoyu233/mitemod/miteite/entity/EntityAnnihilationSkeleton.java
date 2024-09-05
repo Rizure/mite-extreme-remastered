@@ -149,7 +149,7 @@ public class EntityAnnihilationSkeleton extends EntitySkeleton {
     }
     @Override
     public EntityDamageResult attackEntityAsMob(Entity target) {
-        target.getAsEntityLivingBase().attackEntityFrom(new Damage(DamageSource.magic, ((EntityLiving) target).getMaxHealth() / 4));
+        target.getAsEntityLivingBase().attackEntityFrom(new Damage(DamageSource.absolute, ((EntityLiving) target).getMaxHealth() / 4));
         return super.attackEntityAsMob(target);
     }
     @Override

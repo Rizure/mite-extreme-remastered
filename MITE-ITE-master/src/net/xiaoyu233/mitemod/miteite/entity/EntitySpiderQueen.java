@@ -42,8 +42,8 @@ public class EntitySpiderQueen extends EntityArachnid {
         super.applyEntityAttributes();
         this.setEntityAttribute(GenericAttributes.followRange, 96.0);
         this.setEntityAttribute(GenericAttributes.movementSpeed, 0.92);
-        this.setEntityAttribute(GenericAttributes.maxHealth, 48 * Constant.getEliteMobModifier("Health",day));
-        this.setEntityAttribute(GenericAttributes.attackDamage, 8 * Constant.getEliteMobModifier("Damage",day));
+        this.setEntityAttribute(GenericAttributes.maxHealth, 48 * Constant.getEliteMobModifier("Health",day,this.worldObj.isOverworld()));
+        this.setEntityAttribute(GenericAttributes.attackDamage, 8 * Constant.getEliteMobModifier("Damage",day,this.worldObj.isOverworld()));
     }
     public EntityDamageResult attackEntityAsMob(Entity target) {
         EntityDamageResult result = super.attackEntityAsMob(target);

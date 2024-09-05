@@ -192,7 +192,7 @@ public class EntityWanderingWitch extends EntityWitch {
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         int day = this.worldObj.getDayOfOverworld();
-        this.setEntityAttribute(GenericAttributes.maxHealth,32d * Constant.getEliteMobModifier("Health",day));
+        this.setEntityAttribute(GenericAttributes.maxHealth,40d * Constant.getEliteMobModifier("Health",day,this.worldObj.isOverworld()));
         this.setEntityAttribute(GenericAttributes.movementSpeed,0.27d);
     }
 

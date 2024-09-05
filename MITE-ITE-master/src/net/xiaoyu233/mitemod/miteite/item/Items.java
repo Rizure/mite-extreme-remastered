@@ -146,6 +146,7 @@ public class Items extends Item{
     public static final ItemEnhancedPickaxe plate_Pickaxe = new ItemEnhancedPickaxe(Constant.getNextItemID(),Materials.adamantium,4);
     public static final ItemEnhancedPickaxe cube_Pickaxe = new ItemEnhancedPickaxe(Constant.getNextItemID(),Materials.vibranium,5);
     public static final ItemColorBag final_key = new ItemColorBag(Constant.getNextItemID(),Materials.vibranium,"final_key");
+    public static final ItemGAMisc cracked_key = new ItemGAMisc(Constant.getNextItemID(),"cracked_key");
 
     private static Item register(String resourceLocation, Item item, CreativeModeTab tab) {
         item.setResourceLocation(item.getResourceLocationPrefix() + resourceLocation);
@@ -284,6 +285,7 @@ public class Items extends Item{
         register("gem_blue",gemBlue);
         register("gem_yellow",gemYellow);
         register("final_key",final_key);
+        register("cracked_key",cracked_key);
         
         register("towards_pickaxe",towards_Pickaxe);
         register("stairs_pickaxe",stairs_Pickaxe);
@@ -368,6 +370,8 @@ public class Items extends Item{
 
         register.registerShapelessRecipe(new ItemStack(Items.voucherClubCore, 1), true, Items.voucherFishing, Items.voucherVillager, Items.voucherPlanting);
 
+        register.registerShapelessRecipe(new ItemStack(Items.final_key,1),false,Items.cracked_key,Items.VIBRANIUM_NUGGET,Items.VIBRANIUM_NUGGET,Items.VIBRANIUM_NUGGET);
+        
         if(Configs.wenscConfig.isRecipeGATorch.ConfigValue) {
             Block[] woods = {Block.wood, Blocks.wood1};
             Item[] yarns = {Item.sinew, Item.silk};
