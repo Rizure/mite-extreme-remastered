@@ -15,5 +15,6 @@ public class RecipeRegister{
         RegisterHelper.shapelessRecipe.add(e);
         return e;
     }
+    
 }
 

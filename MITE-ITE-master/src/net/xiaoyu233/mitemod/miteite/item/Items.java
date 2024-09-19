@@ -110,7 +110,7 @@ public class Items extends Item{
     public static final Item powder_wood = new ItemElementPowder(Constant.getNextItemID(),"wood");
     public static final Item powder_liquid = new ItemElementPowder(Constant.getNextItemID(),"liquid");
     public static final Item powder_earth = new ItemElementPowder(Constant.getNextItemID(),"earth");
-    public static final ItemColorBag colorBag = (ItemColorBag) new ItemColorBag(Constant.getNextItemID(), Material.dye, "color_bag").setCreativeTab(CreativeModeTab.tabTools);
+    public static final ItemConsumables colorBag = (ItemConsumables) new ItemConsumables(Constant.getNextItemID(), Material.dye, "color_bag").setCreativeTab(CreativeModeTab.tabTools);
     public static final Item pants = new ItemGAMisc(Constant.getNextItemID(),"pants");
     public static final ItemFood chikitan = new ItemGAFood(Constant.getNextItemID(),Materials.vegetable,20,0,0,false,false,false,"chikitan").setAlwaysEdible().setPlantProduct().setPotionEffect(MobEffectList.resistance.id, 10, 3, 0.25F);
     public static final ItemFood spicyStrip = new ItemGAFood(Constant.getNextItemID(),Materials.dough,2,2,0,false,false,false,"spicy_strip").setPotionEffect(MobEffectList.hunger.id, 16, 1, 1.0F);
@@ -138,15 +138,16 @@ public class Items extends Item{
     public static final ItemGAMisc diane = new ItemGAMisc(Constant.getNextItemID(),"diane");
     //傲慢
     public static final ItemGAMisc escanor = new ItemGAMisc(Constant.getNextItemID(),"escanor");
-    public static final Item gemYellow = (ItemColorBag) new ItemColorBag(Constant.getNextItemID(), Material.gold, "gem_y").setCreativeTab(CreativeModeTab.tabTools);
-    public static final Item gemBlue = (ItemColorBag) new ItemColorBag(Constant.getNextItemID(), Material.diamond, "gem_b").setCreativeTab(CreativeModeTab.tabTools);
+    public static final Item gemYellow = (ItemConsumables) new ItemConsumables(Constant.getNextItemID(), Material.gold, "gem_y").setCreativeTab(CreativeModeTab.tabTools);
+    public static final Item gemBlue = (ItemConsumables) new ItemConsumables(Constant.getNextItemID(), Material.diamond, "gem_b").setCreativeTab(CreativeModeTab.tabTools);
     public static final ItemEnhancedPickaxe towards_Pickaxe = new ItemEnhancedPickaxe(Constant.getNextItemID(),Material.iron,1);
     public static final ItemEnhancedPickaxe stairs_Pickaxe = new ItemEnhancedPickaxe(Constant.getNextItemID(),Material.ancient_metal,2);
     public static final ItemEnhancedPickaxe star_Pickaxe = new ItemEnhancedPickaxe(Constant.getNextItemID(),Material.mithril,3);
     public static final ItemEnhancedPickaxe plate_Pickaxe = new ItemEnhancedPickaxe(Constant.getNextItemID(),Materials.adamantium,4);
     public static final ItemEnhancedPickaxe cube_Pickaxe = new ItemEnhancedPickaxe(Constant.getNextItemID(),Materials.vibranium,5);
-    public static final ItemColorBag final_key = new ItemColorBag(Constant.getNextItemID(),Materials.vibranium,"final_key");
+    public static final ItemConsumables final_key = new ItemConsumables(Constant.getNextItemID(),Materials.vibranium,"final_key");
     public static final ItemGAMisc cracked_key = new ItemGAMisc(Constant.getNextItemID(),"cracked_key");
+    public static final ItemConsumables endScroll = new ItemConsumables(Constant.getNextItemID(),Material.paper,"end_scroll");
 
     private static Item register(String resourceLocation, Item item, CreativeModeTab tab) {
         item.setResourceLocation(item.getResourceLocationPrefix() + resourceLocation);
@@ -286,6 +287,7 @@ public class Items extends Item{
         register("gem_yellow",gemYellow);
         register("final_key",final_key);
         register("cracked_key",cracked_key);
+        register("end_scroll",endScroll);
         
         register("towards_pickaxe",towards_Pickaxe);
         register("stairs_pickaxe",stairs_Pickaxe);
@@ -395,6 +397,14 @@ public class Items extends Item{
             }
         }
 
+        register.registerShapedRecipe(new ItemStack(endScroll),
+                true,
+                "#S#",
+                "SAS",
+                "#S#",
+                '#', Item.paper,
+                'A', Item.eyeOfEnder,
+                'S', Item.shardObsidian);
 
         if(Configs.wenscConfig.isRecipeRingKiller.ConfigValue) {
             register.registerShapedRecipe(new ItemStack(ringKillerCopper, 1), true, new Object[]{"###", "#*#","###", '#', Items.swordCopper , '*', Items.emerald});

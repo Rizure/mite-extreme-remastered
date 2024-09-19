@@ -415,7 +415,7 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
             if (chestplate != null){
                float value = ArmorModifierTypes.INDOMITABLE.getModifierValue(chestplate.getTagCompound());
                if (value != 0){
-                  indomitableAmp = this.getIndomitableAmp(healthPercent) * (1 + value);
+                  indomitableAmp += this.getIndomitableAmp(healthPercent) * (1 + value);
                }
             }
          }
@@ -427,7 +427,7 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
             if (leggings != null){
                float value = ArmorModifierTypes.ENERGETIC.getModifierValue(leggings.getTagCompound());
                if (value != 0){
-                  energeticAmp = this.getEnergeticAmp(healthPercent) * (1 + value);
+                  energeticAmp += this.getEnergeticAmp(healthPercent) * (1 + value);
                }
             }
          }
@@ -544,10 +544,10 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
    }
 
    private float getIndomitableAmp(float healthPercent){
-      return 1.5F - healthPercent;
+      return (0.5F - healthPercent);
    }
    private float getEnergeticAmp(float healthPercent){
-      return 0.5F + healthPercent;
+      return (healthPercent - 0.5F);
    }
 
    @Override

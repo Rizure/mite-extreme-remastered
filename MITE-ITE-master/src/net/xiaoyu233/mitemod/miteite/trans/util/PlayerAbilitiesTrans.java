@@ -5,15 +5,21 @@ import net.xiaoyu233.mitemod.miteite.item.ArmorModifierTypes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.List;
 
 @Mixin(PlayerAbilities.class)
 public class PlayerAbilitiesTrans {
     @Shadow
-    private float walkSpeed = 0.1F;
-    @Shadow
     public EntityPlayer player;
-    @Overwrite
-    public float getWalkSpeed() {
+    @Inject(method = "getWalkSpeed()F",at = @At(value = "RETURN"), cancellable = true)
+    private void modifierBoost(CallbackInfoReturnable<Float> callbackInfoReturnable){
         int hour_of_day = this.player.worldObj.getHourOfDay();
         float modifier_factor = 1.0F;
         if(this.player.worldObj.isOverworld()){
@@ -29,7 +35,6 @@ public class PlayerAbilitiesTrans {
                 }
             }
         }
-        float speed_boost_or_slow_down_factor = this.player.getSpeedBoostOrSlowDownFactor() * modifier_factor;
-        return (this.player.hasFoodEnergy() ? this.walkSpeed : this.walkSpeed * 0.75F) * EnchantmentManager.getSpeedModifier(this.player) * speed_boost_or_slow_down_factor;
+        callbackInfoReturnable.setReturnValue(modifier_factor * callbackInfoReturnable.getReturnValue());
     }
 }
