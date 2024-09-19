@@ -247,7 +247,7 @@ public class Blocks extends Block{
                 "ABA",
                 "BCB",
                 "ABA",
-                'A', Item.enderPearl,
+                'A', Item.eyeOfEnder,
                 'B', Items.diamond,
                 'C', Items.voucherSpider);
         register.registerShapedRecipe(new ItemStack(anvilVibranium),true,

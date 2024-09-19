@@ -1084,6 +1084,7 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
             this.setPositionAndUpdate(this.spawnStoneX, this.spawnStoneY, this.spawnStoneZ);
             this.getWorld().setBlockToAir(this.spawnStoneX, this.spawnStoneY - 1, this.spawnStoneZ);
             this.experience = this.experience / 3 + ItemRock.getExperienceValueWhenSacrificed(new ItemStack(Item.diamond)) * 4;
+            this.inventory.addItemStackToInventoryOrDropIt(new ItemStack(Items.enderPearl,4));
             this.spawnStoneWorldId = -999;
          }
       }
