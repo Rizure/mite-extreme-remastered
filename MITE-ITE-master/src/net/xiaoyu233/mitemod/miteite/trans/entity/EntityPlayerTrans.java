@@ -408,26 +408,27 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
          }
 
          //Check for indomitable modifier
-         float indomitableAmp = 1;
+         float indomitableAmp = 1.0F;
          float healthPercent = this.getHealthFraction();
-         if (healthPercent <= 0.5f){
+         //WIP
+         if (true){
             ItemStack chestplate = this.getCuirass();
             if (chestplate != null){
                float value = ArmorModifierTypes.INDOMITABLE.getModifierValue(chestplate.getTagCompound());
                if (value != 0){
-                  indomitableAmp += this.getIndomitableAmp(healthPercent) * (1 + value);
+                  indomitableAmp += (this.getIndomitableAmp(healthPercent) * value);
                }
             }
          }
 
          //Check for energetic modifier
-         float energeticAmp = 1;
-         if (healthPercent > 0.5f){
+         float energeticAmp = 1.0F;
+         if (true){
             ItemStack leggings = this.getLeggings();
             if (leggings != null){
                float value = ArmorModifierTypes.ENERGETIC.getModifierValue(leggings.getTagCompound());
                if (value != 0){
-                  energeticAmp += this.getEnergeticAmp(healthPercent) * (1 + value);
+                  energeticAmp += (this.getEnergeticAmp() * value);
                }
             }
          }
@@ -544,10 +545,10 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
    }
 
    private float getIndomitableAmp(float healthPercent){
-      return (0.5F - healthPercent);
+      return 1.0F - healthPercent;
    }
-   private float getEnergeticAmp(float healthPercent){
-      return (healthPercent - 0.5F);
+   private float getEnergeticAmp(){
+      return this.attackCountMap.size();
    }
 
    @Override
@@ -1047,7 +1048,7 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
 
       EntityDamageResult entityDamageResult = super.attackEntityFrom(damage);
 
-      if (entityDamageResult != null && (double)this.getHealthFraction() <= 0.1D && !entityDamageResult.entityWasDestroyed()) {
+      if (entityDamageResult != null && this.getHealth() <= 2 && !entityDamageResult.entityWasDestroyed()) {
          ItemStack[] var5 = this.getWornItems();
 
          List<ItemStack> readyEmergencyItems = new ArrayList<>();
@@ -1126,11 +1127,11 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
       if(this.storeTorchTick <= 0) {
          ItemStack currentItemStack = this.inventory.getDynamicCore();
          if(currentItemStack != null) {
-            if(currentItemStack.getItemDamage() < currentItemStack.getMaxDamage() - 30) {
+            if(currentItemStack.getItemDamage() < currentItemStack.getMaxDamage() - 40) {
 
                this.dynamicCoreLevel = ((ItemDynamicCore)currentItemStack.getItem()).level;
                if (!this.worldObj.isRemote){
-                  currentItemStack.tryDamageItem(DamageSource.causePlayerDamage(ReflectHelper.dyCast(this)), 30, ReflectHelper.dyCast(this));
+                  currentItemStack.tryDamageItem(DamageSource.causePlayerDamage(ReflectHelper.dyCast(this)), 40, ReflectHelper.dyCast(this));
                }
             } else {
                this.dynamicCoreLevel = 0;
@@ -1138,7 +1139,7 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
          } else {
             this.dynamicCoreLevel = 0;
          }
-         this.storeTorchTick = 6;
+         this.storeTorchTick = 10;
       } else {
          this.storeTorchTick --;
       }
@@ -1154,7 +1155,7 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
                   int heal_amount = (int) Math.max(player.getMaxHealth() / 200.0F * level,1);
                   if(player.getHealthFraction() < 1.0F && currentItemStack.getItemDamage() < (currentItemStack.getMaxDamage() - (player.getMaxHealth() * 20))) {
                      player.heal(heal_amount);
-                     currentItemStack.tryDamageItem(DamageSource.causePlayerDamage(ReflectHelper.dyCast(this)), (int)player.getMaxHealth(), ReflectHelper.dyCast(this));
+                     currentItemStack.tryDamageItem(DamageSource.causePlayerDamage(ReflectHelper.dyCast(this)), (int)player.getMaxHealth() * 20, ReflectHelper.dyCast(this));
                   }
                }
             }

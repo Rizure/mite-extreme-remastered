@@ -38,6 +38,7 @@ public class Achievements {
     public static Achievement Achievement_x9;
     public static Achievement Achievement_x0;
     public static Achievement coldSpiderLeg;
+    public static Achievement spicyStrip;
     public static void registerAchievements(){
         vibraniumIngot = new Achievement(getNextAchievementID(),"vibraniumIngot",-2,17, Items.VIBRANIUM_INGOT, AchievementList.adamantiumIngot).registerAchievement();
         wearAllVibraniumPlateArmor = new Achievement(getNextAchievementID(),"vibraniumArmor",12,1,Items.VIBRANIUM_CHESTPLATE,AchievementList.wearAllAdamantiumPlateArmor).setSpecial().registerAchievement();
@@ -63,8 +64,8 @@ public class Achievements {
         Achievement_x8 = (new Achievement(getNextAchievementID(), "achievement_x8", -6, -5, Items.chikitan, Achievement_x7)).registerAchievement();
         Achievement_x9 = (new Achievement(getNextAchievementID(), "achievement_x9", -7, -5, Items.chikitan, Achievement_x8)).registerAchievement();
         Achievement_x0 = (new Achievement(getNextAchievementID(), "achievement_x0", -8, -5, Items.chikitan, Achievement_x9)).setSpecial().registerAchievement();
-        coldSpiderLeg = (new Achievement(getNextAchievementID(), "coldSpiderLeg", -8, 2, new ItemStack(Items.coldSpiderLeg, 1, 1), Achievements.razTime)).setIndependent().registerAchievement();
-        
+        coldSpiderLeg = (new Achievement(getNextAchievementID(), "coldSpiderLeg", -8, 4, new ItemStack(Items.coldSpiderLeg, 1, 1), Achievements.razTime)).setIndependent().registerAchievement();
+        spicyStrip = new Achievement(getNextAchievementID(), "spicyStrip", -8, 2, new ItemStack(Items.spicyStrip,1),Achievements.razTime).setIndependent().registerAchievement();
     }
     private static int getNextAchievementID(){
         return Constant.nextAchievementID++;

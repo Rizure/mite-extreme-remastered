@@ -220,7 +220,7 @@ public class EntityZombieBoss extends EntityZombie implements IBossbarEntity{
                 player.removePotionEffect(MobEffectList.damageBoost.id);
                 player.bossResetDamageBoostCounter = 200;
                 this.attackedCounter = 200;
-                damage.setAmount(damage.getAmount() * (this.isFinal() ? 0.25F : 0.7F));
+                damage.setAmount(damage.getAmount() * (this.isFinal() ? 0.3F : 0.75F));
                 EntityDamageResult originDamage = super.attackEntityFrom(damage);
                 try {
                     if(attackDamageMap.containsKey(player.getEntityName())) {
@@ -314,11 +314,13 @@ public class EntityZombieBoss extends EntityZombie implements IBossbarEntity{
     }
 
     public boolean setSurroundingPlayersAsTarget() {
-        List entities = Arrays.asList(this.getNearbyEntities(16, 16).stream().filter(entity -> entity instanceof EntityPlayer && !((EntityPlayer) entity).isPlayerInCreative()).toArray());
-        if(entities.size() > 0) {
-            Object targetPlayer = entities.get(rand.nextInt(entities.size()));
-            if(targetPlayer instanceof EntityPlayer) {
-                this.setTarget((EntityPlayer)targetPlayer);
+        this.setTarget(null);
+        List <Entity>targets  = this.getNearbyEntities(16.0F,8.0F);
+        if(!targets.isEmpty()){
+            int i = this.rand.nextInt(targets.size());
+            if(targets.get(i) instanceof EntityPlayer){
+                EntityPlayer player = (EntityPlayer) targets.get(i);
+                this.setRevengeTarget(player);
                 return true;
             }
         }

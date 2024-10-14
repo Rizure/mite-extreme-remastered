@@ -100,7 +100,7 @@ public class Items extends Item{
     public static final ItemFood buguDan = (new ItemGAFood(Constant.getNextItemID(), Materials.vegetable, 4, 4, 250, false, false, true, "bugu")).setPlantProduct().setAlwaysEdible();
     public static final ItemFood demonPillRaw = (new ItemGAFood(Constant.getNextItemID(), Materials.cake, 2,2, -1000, false,false,false,"demonPill")).setAlwaysEdible();
     public static final ItemFood demonPillCooked = (ItemFood) (new ItemGAFood(Constant.getNextItemID(), Materials.cake, 4,4, -2000, false,false,false,"demonPillCooked")).setAlwaysEdible().setXPReward(2);
-    public static final ItemFood cubeSugar = (new ItemGAFood(Constant.getNextItemID(),Materials.sugar,3,3, 1000,false,false,false,"cubeSugar")).setAlwaysEdible().setPotionEffect(MobEffectList.regeneration.id, 8, 0, 0.5F);
+    public static final ItemFood cubeSugar = (new ItemGAFood(Constant.getNextItemID(),Materials.sugar,3,3, 1000,false,false,false,"cubeSugar")).setAlwaysEdible().setPotionEffect(MobEffectList.regeneration.id, 8, 0, 1.0F);
     public static final Item powder_dark = new ItemElementPowder(Constant.getNextItemID(),"dark");
     public static final Item powder_freeze = new ItemElementPowder(Constant.getNextItemID(),"freeze");
     public static final Item powder_wind = new ItemElementPowder(Constant.getNextItemID(),"wind");
@@ -112,7 +112,7 @@ public class Items extends Item{
     public static final Item powder_earth = new ItemElementPowder(Constant.getNextItemID(),"earth");
     public static final ItemConsumables colorBag = (ItemConsumables) new ItemConsumables(Constant.getNextItemID(), Material.dye, "color_bag").setCreativeTab(CreativeModeTab.tabTools);
     public static final Item pants = new ItemGAMisc(Constant.getNextItemID(),"pants");
-    public static final ItemFood chikitan = new ItemGAFood(Constant.getNextItemID(),Materials.vegetable,20,0,0,false,false,false,"chikitan").setAlwaysEdible().setPlantProduct().setPotionEffect(MobEffectList.resistance.id, 10, 3, 0.25F);
+    public static final ItemFood chikitan = new ItemGAFood(Constant.getNextItemID(),Materials.vegetable,20,0,0,false,false,false,"chikitan").setAlwaysEdible().setPlantProduct().setPotionEffect(MobEffectList.resistance.id, 10, 3, 0.33F);
     public static final ItemFood spicyStrip = new ItemGAFood(Constant.getNextItemID(),Materials.dough,2,2,0,false,false,false,"spicy_strip").setPotionEffect(MobEffectList.hunger.id, 16, 1, 1.0F);
     public static final ItemFood zombieBrain = new ItemGAFood(Constant.getNextItemID(),Materials.meat,1,2,0,true,false,false,"zombie_brain").setPotionEffect(MobEffectList.poison.id, 22, 0, 0.9F).setAnimalProduct();
     public static final ItemFood riskyAgent = new ItemGAFood(Constant.getNextItemID(),Materials.meat,4,4,0,true,false,false,"risky_agent").setAlwaysEdible().setAnimalProduct();

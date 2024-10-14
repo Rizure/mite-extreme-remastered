@@ -93,7 +93,7 @@ public abstract class ItemArmorTrans extends Item implements IDamageableItem, IU
                   if (item_stack != null) {
                       Item item = item_stack.getItem();
                       if (item.isArmor()) {
-                          total_defense += ArmorModifierTypes.LEVITY.getModifierValue(item_stack.stackTagCompound) * 10.0F;
+                          total_defense += ArmorModifierTypes.LEVITY.getModifierValue(item_stack.stackTagCompound) * 50.0F;
                       }
                   }
               }
@@ -361,17 +361,26 @@ public abstract class ItemArmorTrans extends Item implements IDamageableItem, IU
                      player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "获得了" + modifierType.color.toString() + modifierType.displayName + "§r属性"));
                      upgradeCount--;
                   }else {
-                     //删除不能升级/升至满级的副属性
                      for (int n = 0; n < obtained_modifiers.size(); n++) {
+                        //删除不能附加的副属性
                         if(!available_modifiers.contains(obtained_modifiers.get(n))){
                            obtained_modifiers.remove(obtained_modifiers.get(n));
                            n = 0;
                         }
+                        //删除已经满级的副属性（WIP）
+                        if(!Configs.wenscConfig.allowInfLeveling.ConfigValue){
+                           if(obtained_modifiers.get(n).getMaxLevel() <= modifiers.getInteger(obtained_modifiers.get(n).getNbtName())){
+                              obtained_modifiers.remove(obtained_modifiers.get(n));
+                              n = 0;
+                           }
+                        }
                      }
-                     int n = itemRand.nextInt(obtained_modifiers.size());
-                     player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "的" + obtained_modifiers.get(n).color.toString() + obtained_modifiers.get(n).displayName + "§r属性已升级到" +
-                             this.addModifierLevelFor(modifiers, obtained_modifiers.get(n))
-                             + "级"));
+                     if(!obtained_modifiers.isEmpty()){
+                        int n = itemRand.nextInt(obtained_modifiers.size());
+                        player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "的" + obtained_modifiers.get(n).color.toString() + obtained_modifiers.get(n).displayName + "§r属性已升级到" +
+                                this.addModifierLevelFor(modifiers, obtained_modifiers.get(n))
+                                + "级"));
+                     }
                      upgradeCount--;
                   }
                }

@@ -377,15 +377,19 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
                            n = 0;
                         }
                         //删除已经满级的副属性（WIP）
-//                        if(obtained_modifiers.get(n).getMaxLevel() <= modifiers.getInteger(obtained_modifiers.get(n).getNbtName())){
-//                           obtained_modifiers.remove(obtained_modifiers.get(n));
-//                           n = 0;
-//                        }
+                        if(!Configs.wenscConfig.allowInfLeveling.ConfigValue){
+                           if(obtained_modifiers.get(n).getMaxLevel() <= modifiers.getInteger(obtained_modifiers.get(n).getNbtName())){
+                              obtained_modifiers.remove(obtained_modifiers.get(n));
+                              n = 0;
+                           }
+                        }
                      }
-                     int n = itemRand.nextInt(obtained_modifiers.size());
-                     player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "的" + obtained_modifiers.get(n).color.toString() + obtained_modifiers.get(n).displayName + "§r属性已升级到" + 
-                             this.addModifierLevelFor(modifiers, obtained_modifiers.get(n))
-                             + "级"));
+                     if(!obtained_modifiers.isEmpty()){
+                        int n = itemRand.nextInt(obtained_modifiers.size());
+                        player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "的" + obtained_modifiers.get(n).color.toString() + obtained_modifiers.get(n).displayName + "§r属性已升级到" +
+                                this.addModifierLevelFor(modifiers, obtained_modifiers.get(n))
+                                + "级"));
+                     }
                      upgradeCount--;
                   }
                }

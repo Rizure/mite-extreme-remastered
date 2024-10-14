@@ -39,7 +39,7 @@ public class Configs {
     }
 
     public static class wenscConfig {
-        public static ConfigItem <Integer> EnhanceLimit = new ConfigItem("EnhanceLimit", 512, "怪物属性增强天数上限",0,89478);
+        public static ConfigItem <Integer> EnhanceLimit = new ConfigItem("EnhanceLimit", 384, "怪物属性增强天数上限",0,512);
         public static ConfigItem <Boolean> BlnGravel = new ConfigItem("BlnGravel", true, "是否增加燧石概率");
         public static ConfigItem <Boolean> isOpenStrongBoxBreakRecord = new ConfigItem("isOpenStrongBoxBreakRecord", true, "是否开启私人箱子破坏记录");
         public static ConfigItem <Boolean> isRecipeGATorch = new ConfigItem("isRecipeGATorch", true, "是否有一捆火把配方");
@@ -149,6 +149,7 @@ public class Configs {
         public static ConfigItem <Integer> creeperFuseTime = new ConfigItem("creeperFuseTime", 30, "苦力怕蓄力时间(tick)", 20,100);
         public static ConfigItem <Integer> FlyingSkeletonSpawningWeight = new ConfigItem("FlyingSkeletonSpawningWeight",5,"飞行骷髅生成权重",0,100);
         public static ConfigItem <Boolean> enhanceMobsArmor = new ConfigItem("EnhanceMobsArmor",true,"怪物穿着护甲强化");
+        public static ConfigItem <Boolean> allowInfLeveling = new ConfigItem<>("allowInfLeveling",false,"保留副属性无限升级特性");
 
 //        public static ConfigItem <String> md5String = new ConfigItem("md5String", new lh("wensc").a("busy"), "MD5");
 
@@ -273,6 +274,7 @@ public class Configs {
         wenscMap.put("FlyingSkeletonSpawningWeight",wenscConfig.FlyingSkeletonSpawningWeight);
         wenscMap.put("EnhanceMobsArmor",wenscConfig.enhanceMobsArmor);
         wenscMap.put("boostEnhance",wenscConfig.boostEnhance);
+        wenscMap.put("allowInfLeveling",wenscConfig.allowInfLeveling);
 
 //        wenscMap.put("md5", wenscConfig.md5String);
 

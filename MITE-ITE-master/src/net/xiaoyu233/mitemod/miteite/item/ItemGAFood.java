@@ -1,6 +1,7 @@
 package net.xiaoyu233.mitemod.miteite.item;
 
 import net.minecraft.*;
+import net.xiaoyu233.mitemod.miteite.achievement.Achievements;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
 
 import java.util.List;
@@ -31,7 +32,7 @@ public class ItemGAFood extends ItemFood {
                     par3EntityPlayer.addPotionEffect(new MobEffect(MobEffectList.regeneration.id, 22 * 20, 0));
                 }
                 if(outcome % 17 == 0){
-                    par3EntityPlayer.attackEntityFrom(new Damage(DamageSource.poison,Math.max(0F, par3EntityPlayer.getHealth() - 2.0F)));
+                    par3EntityPlayer.attackEntityFrom(new Damage(DamageSource.poison,Math.max(0F, par3EntityPlayer.getHealth() - 5.0F)));
                 }
                 if(outcome % 13 == 0){
                     par3EntityPlayer.getFoodStats().addNutrition(20);
@@ -42,6 +43,10 @@ public class ItemGAFood extends ItemFood {
         if(Objects.equals(this.tag, "suspicious_stew")){
             int outcome = 8 + itemRand.nextInt(24);
             par3EntityPlayer.addPotionEffect(new MobEffect(MobEffectList.regeneration.id, outcome * 20, 4));
+        }if(Objects.equals(this.tag, "spicy_strip")){
+            par3EntityPlayer.triggerAchievement(Achievements.spicyStrip);
+            par3EntityPlayer.attackEntityFrom(new Damage(DamageSource.poison,6.0F));
+            par3EntityPlayer.addPotionEffect(new MobEffect(MobEffectList.regeneration.id, 320, 0));
         }if(Objects.equals(this.tag, "spider_leg")){
             par3EntityPlayer.addPotionEffect(new MobEffect(MobEffectList.poison.id, 12 * 20, 4));
         }

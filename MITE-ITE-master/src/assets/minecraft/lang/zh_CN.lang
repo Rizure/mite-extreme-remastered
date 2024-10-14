@@ -116,6 +116,8 @@ achievement.achievement_x0=大罗
 achievement.achievement_x0.desc=身与界存，凝练法则本源，以身合道
 achievement.coldSpiderLeg=蛛猪
 achievement.coldSpiderLeg.desc=蛛突猛进！？
+achievement.spicyStrip=苦肉计
+achievement.spicyStrip.desc=有人给桃打蒸发，没人给桃下一把
 
 commands.version.playing=你现在正在游玩
 commands.day.msg=今天是这个世界的第 %s 天
