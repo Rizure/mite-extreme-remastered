@@ -29,6 +29,6 @@ public class ItemHoeTrans extends ItemToolTrans{
             target = "Lnet/minecraft/EntityPlayer;tryDamageHeldItem(Lnet/minecraft/DamageSource;I)Lnet/minecraft/ItemDamageResult;",
             shift = At.Shift.AFTER))
     private static void injectAddExpForTilling(World world, int x, int y, int z, EnumFace face, EntityPlayer player, ItemStack item_stack, CallbackInfoReturnable<Boolean> callbackInfo){
-        item_stack.getItem().addExpForTool(item_stack,player,1);
+        item_stack.getItem().addExpForTool(item_stack,player,5);
     }
 }

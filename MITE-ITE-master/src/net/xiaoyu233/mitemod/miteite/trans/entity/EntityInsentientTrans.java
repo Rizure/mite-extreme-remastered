@@ -195,6 +195,7 @@ public abstract class EntityInsentientTrans extends EntityLiving {
                float discordLvl = ToolModifierTypes.DISCORD.getModifierValue(stack.getTagCompound());
                float slowMdfLvl = ToolModifierTypes.SLOWDOWN_MODIFIER.getModifierValue(stack.getTagCompound());
                float witherLvl = ToolModifierTypes.APOCALYPSE.getModifierValue(stack.getTagCompound());
+//               float plunderLvl = ToolModifierTypes.PLUNDER.getModifierValue(stack.getTagCompound());
                if (result.entity instanceof EntityLiving && slowMdfLvl >= 1.0F) {
                   ((EntityLiving)result.entity).addPotionEffect(new MobEffect(MobEffectList.moveSlowdown.id, (int)(slowMdfLvl * 20.0F), (int)(slowMdfLvl / 2.0F)));
                }

@@ -133,26 +133,24 @@ public class BiomeBaseTrans {
 
    @Overwrite
    public WorldGenerator getRandomWorldGenForTrees(Random par1Random) {
-      int percent = par1Random.nextInt(3);
+      int percent = par1Random.nextInt(10);
       if(par1Random.nextInt(10) == 0) {
          switch (percent) {
-            default:
             case 0:
-               return new WorldGenBigTreeWithIDAndMeta(false, Blocks.wood.blockID, 0, Blocks.leaves.blockID, 0);
-            case 1:
                return new WorldGenBigTreeWithIDAndMeta(false, Blocks.wood1.blockID, 0, Blocks.leaves1.blockID, 0);
-            case 2:
+            case 1:
                return new WorldGenBigTreeWithIDAndMeta(false, Blocks.wood1.blockID, 1, Blocks.leaves1.blockID, 1);
+            default:
+               return new WorldGenBigTreeWithIDAndMeta(false, Blocks.wood.blockID, 0, Blocks.leaves.blockID, 0);
          }
       }
       switch (percent) {
-         default:
          case 0:
-            return new WorldGenTreesWithTreeId(false, 4, Blocks.wood, 0, Blocks.leaves, 0, false);
-         case 1:
             return new WorldGenTreesWithTreeId(false, 4, Blocks.wood1, 0, Blocks.leaves1, 0, false);
-         case 2:
+         case 1:
             return new WorldGenTreesWithTreeId(false, 4, Blocks.wood1, 1, Blocks.leaves1, 1, false);
+         default:
+            return new WorldGenTreesWithTreeId(false, 4, Blocks.wood, 0, Blocks.leaves, 0, false);
       }
    }
 

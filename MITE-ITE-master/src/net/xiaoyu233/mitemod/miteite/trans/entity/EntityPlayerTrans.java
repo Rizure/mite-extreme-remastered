@@ -262,7 +262,7 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
    public boolean onEntityRightClicked(EntityPlayer player, ItemStack item_stack) {
       if (super.onEntityRightClicked(player, item_stack)) {
          return true;
-      } else if (this.riddenByEntity == null && player.riddenByEntity == null && player.ridingEntity == null && this.ridingEntity == null && item_stack == null) {
+      } else if (this.riddenByEntity == null && player.riddenByEntity == null && player.ridingEntity == null && this.ridingEntity == null && item_stack == null && player.isSneaking()) {
          if (player.onServer()) {
             player.mountEntity(this);
          }

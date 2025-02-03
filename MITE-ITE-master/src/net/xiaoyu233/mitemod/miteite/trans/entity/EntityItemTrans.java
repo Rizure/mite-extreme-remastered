@@ -89,7 +89,6 @@ public abstract class EntityItemTrans extends Entity {
                   }
                }
             }
-
          }
       }
    }

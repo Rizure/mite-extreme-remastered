@@ -47,13 +47,15 @@ public abstract class EntityVillagerTrans extends EntityAgeable implements IMerc
       super(par1World);
    }
 
-   @Inject(method = "<init>(Lnet/minecraft/World;I)V", at = @At("TAIL"))
-   public void injectInitEnhanceBookList(CallbackInfo callbackInfo) {
-      this.initEnhanceBookList();
-   }
-   @Inject(method = "createChild", at = @At("HEAD"))
-   public void injectSpecialItemDropsInMating(CallbackInfoReturnable callbackInfoReturnable) {
-      this.dropItem(Items.gowther);
+//   @Inject(method = "<init>(Lnet/minecraft/World;I)V", at = @At("TAIL"))
+//   public void injectInitEnhanceBookList(CallbackInfo callbackInfo) {
+//      this.initEnhanceBookList();
+//   }
+   @Inject(method = "setMating(Z)V", at = @At("TAIL"))
+   public void injectSpecialItemDropsInMating(CallbackInfo callbackInfo) {
+      if(this.isMating && this.rand.nextInt(8) == 0){
+         this.dropItem(Items.gowther);
+      }
    }
    @Inject(method = "onDeath(Lnet/minecraft/DamageSource;)V", at = @At("HEAD"))
    public void injectSpecialItemDropsInDeath(DamageSource damageSource, CallbackInfo callbackInfo) {
@@ -194,6 +196,7 @@ public abstract class EntityVillagerTrans extends EntityAgeable implements IMerc
 //         addBlacksmithItem(var2, Block.glass.blockID, this.rand, this.adjustProbability(0.8F));
 //         addBlacksmithItem(var2, Item.compass.itemID, this.rand, this.adjustProbability(0.8F));
 //         addBlacksmithItem(var2, Item.pocketSundial.itemID, this.rand, this.adjustProbability(0.8F));
+         this.initEnhanceBookList();
          if (this.rand.nextFloat() < this.adjustProbability(0.5F)) {
             var2.add(new MerchantRecipe(new ItemStack(Item.emerald, 4), new ItemStack(Item.diamond, 3)));
          }
@@ -209,7 +212,7 @@ public abstract class EntityVillagerTrans extends EntityAgeable implements IMerc
          ItemStack var11 = Item.enchantedBook.getEnchantedItemStack(new EnchantmentInstance(var8, var10));
          var6 = var10 * 5 + this.rand.nextInt(10);
          if(var6 > 32) {
-            var2.add(new MerchantRecipe(new ItemStack(Item.emerald, 32), new ItemStack(Item.emerald, (var6 - 32 > 32 ? 32 : var6 - 32)), var11));
+            var2.add(new MerchantRecipe(new ItemStack(Item.emerald, 32), new ItemStack(Item.emerald, (Math.min(var6 - 32, 32))), var11));
          } else {
             var2.add(new MerchantRecipe(new ItemStack(Item.emerald, var6), var11));
          }

@@ -51,7 +51,7 @@ public class BlockGrassTrans extends Block{
             if (info.world.rand.nextInt(16 - fortune) == 0) {
                 this.dropBlockAsEntityItem(info, Item.wormRaw);
             }
-            if (info.world.rand.nextInt(16 - fortune) == 1 && info.world.isInRain(info.x, info.y + 1, info.z)) {
+            if (info.world.rand.nextInt(128 - fortune) == 0 && info.world.isInRain(info.x, info.y + 1, info.z)) {
                 this.dropBlockAsEntityItem(info, Items.powder_earth);
             }
         }

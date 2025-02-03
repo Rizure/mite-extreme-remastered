@@ -381,7 +381,7 @@ public class EntityZombieBoss extends EntityZombie implements IBossbarEntity{
                             double currentY = this.posY;
                             double currentZ = this.posZ;
                             target.setPositionAndUpdate(currentX, currentY, currentZ);
-                            target.worldObj.createExplosion(this,currentX,currentY + (double)(this.height / 4.0F),currentZ,0.0F,2.75F,true);
+                            target.worldObj.createExplosion(this,target.posX,target.posY + (double)(target.height / 4.0F),target.posZ,0.0F,2.75F,true);
                         }else {
                             addThunderAttack((EntityPlayer)target, 6f);
                         }

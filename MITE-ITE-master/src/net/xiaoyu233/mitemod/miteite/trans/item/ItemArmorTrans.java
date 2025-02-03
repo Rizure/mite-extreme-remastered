@@ -362,11 +362,13 @@ public abstract class ItemArmorTrans extends Item implements IDamageableItem, IU
                      upgradeCount--;
                   }else {
                      for (int n = 0; n < obtained_modifiers.size(); n++) {
+                        System.out.println("已有副属性：" + obtained_modifiers);
                         //删除不能附加的副属性
                         if(!available_modifiers.contains(obtained_modifiers.get(n))){
                            obtained_modifiers.remove(obtained_modifiers.get(n));
                            n = 0;
                         }
+                        System.out.println("仍可附加副属性：" + obtained_modifiers);
                         //删除已经满级的副属性（WIP）
                         if(!Configs.wenscConfig.allowInfLeveling.ConfigValue){
                            if(obtained_modifiers.get(n).getMaxLevel() <= modifiers.getInteger(obtained_modifiers.get(n).getNbtName())){
@@ -374,6 +376,7 @@ public abstract class ItemArmorTrans extends Item implements IDamageableItem, IU
                               n = 0;
                            }
                         }
+                        System.out.println("未满级副属性：" + obtained_modifiers);
                      }
                      if(!obtained_modifiers.isEmpty()){
                         int n = itemRand.nextInt(obtained_modifiers.size());

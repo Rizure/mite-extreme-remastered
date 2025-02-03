@@ -41,7 +41,10 @@ public enum ToolModifierTypes implements ItemModifierTypes{
     DISCORD(6.0f,"混沌",EnumChatFormat.RED,5,ToolModifierTypes::isWeapon,4),
     GEOLOGY(0.25f,"地质学",EnumChatFormat.YELLOW,2,itemStack -> itemStack.getItem() instanceof ItemPickaxe && WithoutMiningModifier(itemStack,0),4),
     BLESS_OF_NATURE(0.05f,"自然祝福",EnumChatFormat.YELLOW,2,(stack -> true),4),
-    MELTING(0.25f,"自动冶炼",EnumChatFormat.YELLOW,2,itemStack -> itemStack.getItem() instanceof ItemPickaxe && WithoutMiningModifier(itemStack,1),4);
+    MELTING(0.25f,"自动冶炼",EnumChatFormat.YELLOW,2,itemStack -> itemStack.getItem() instanceof ItemPickaxe && WithoutMiningModifier(itemStack,1),4),
+//    PLUNDER(0.02f,"劫掠",EnumChatFormat.YELLOW,2, ToolModifierTypes::isWeapon, 4)
+    ;
+    
 
 //    BEHEADING_MODIFIER(0.02f, "斩首" , EnumChatFormats.DEAR_GREEN,1, ToolModifierTypes::isWeapon, 5);
     public final String nbtName;
