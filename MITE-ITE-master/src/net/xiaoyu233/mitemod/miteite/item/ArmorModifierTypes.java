@@ -15,13 +15,13 @@ public enum ArmorModifierTypes implements ItemModifierTypes{
     BLESSED_MODIFIER(0.5F,"神圣",EnumChatFormat.AQUA,25,5,(stack -> true)),
     STEADY_MODIFIER(0.25F,"稳定",EnumChatFormat.LIGHT_PURPLE,10,4,(stack -> true)),
     SUN_AFFINITY(0.05f,"领航",EnumChatFormat.LIGHT_PURPLE,10,4,itemStack -> itemStack.getItem() instanceof ItemBoots),
-    INDOMITABLE(0.25f,"坚毅不倒",EnumChatFormat.LIGHT_PURPLE,10,4,itemStack -> itemStack.getItem() instanceof ItemCuirass),
-    ENERGETIC(0.08f,"海纳百川",EnumChatFormat.LIGHT_PURPLE,10,4,itemStack -> itemStack.getItem() instanceof ItemLeggings),
+    INDOMITABLE(0.125f,"坚毅不倒",EnumChatFormat.LIGHT_PURPLE,10,4,itemStack -> itemStack.getItem() instanceof ItemCuirass),
+    LEVITY(0.0425f,"轻盈",EnumChatFormat.LIGHT_PURPLE,10,4,itemStack -> itemStack.getItem() instanceof ItemLeggings),
     NIGHT_AFFINITY(0.05f,"夜行",EnumChatFormat.LIGHT_PURPLE,10,4,itemStack -> itemStack.getItem() instanceof ItemHelmet),
     IMMUNITY(0.2f,"免疫",EnumChatFormat.RED,5,4,itemStack -> itemStack.getItem() instanceof ItemHelmet),
     BULLDOZE(1.0f,"威吓",EnumChatFormat.RED,5,4,itemStack -> itemStack.getItem() instanceof ItemCuirass),
-    LEVITY(0.0425f,"轻盈",EnumChatFormat.RED,5,4,itemStack -> itemStack.getItem() instanceof ItemLeggings),
-    SWIFTNESS(0.05f,"灵敏",EnumChatFormat.RED,5,4,itemStack -> itemStack.getItem() instanceof ItemBoots);
+    ENERGETIC(0.08f,"海纳百川",EnumChatFormat.RED,5,4,itemStack -> itemStack.getItem() instanceof ItemLeggings),
+    SWIFTNESS(0.1f,"灵敏",EnumChatFormat.RED,5,4,itemStack -> itemStack.getItem() instanceof ItemBoots);
     public final String nbtName;
     public final float levelAddition;
     public final String displayName;

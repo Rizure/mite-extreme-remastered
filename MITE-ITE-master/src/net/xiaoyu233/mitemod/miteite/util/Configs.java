@@ -45,8 +45,8 @@ public class Configs {
         public static ConfigItem <Boolean> isRecipeGATorch = new ConfigItem("isRecipeGATorch", true, "是否有一捆火把配方");
         public static ConfigItem <Boolean> isRecipeRingKiller = new ConfigItem("isRecipeRingKiller", true, "是否有魔灵刃配方");
         public static ConfigItem <Double> steppedMobDamageFactor = new ConfigItem("steppedMobDamageFactor", 1d, "渐进伤害每次增幅点数基础值(小数)", 0d ,100d);
-        public static ConfigItem <Double> steppedMobDamageProgressMax = new ConfigItem("steppedMobDamageProgressMax", 4d, "怪物渐进伤害最大加成倍率", 0d,9d);
-        public static ConfigItem <Integer> steppedMobDamageProgressIncreaseDay = new ConfigItem("steppedMobDamageProgressIncreaseDay_v0.1.0", 64, "渐进伤害每次增幅每提升100%所需天数(整数)", 32 ,512);
+        public static ConfigItem <Double> steppedMobDamageProgressMax = new ConfigItem("steppedMobDamageProgressMax", 4d, "怪物单次渐进伤害最大加成", 0d,9d);
+        public static ConfigItem <Integer> steppedMobDamageProgressIncreaseDay = new ConfigItem("steppedMobDamageProgressIncreaseDay_v0.1.0", 64, "单次渐进伤害增幅每提升1点所需天数(整数)", 32 ,512);
         public static ConfigItem <Integer> fishingXp = new ConfigItem("fishingXp", 5, "钓鱼经验(整数)", 1 ,10);
         public static ConfigItem <Integer> inRainDebuffTime = new ConfigItem("inRainDebuffTime", 3600, "雨中获得负面效果所需时长(整数)", 0 ,1000000);
         public static ConfigItem <Float> timeSpeedInDay = new ConfigItem("timeSpeedInDay", 1.0F, "白天时间流速(小数)", 0.25f ,2.0f);

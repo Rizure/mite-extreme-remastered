@@ -16,11 +16,6 @@ public class EntityRideMarker extends EntityInsentient implements IAnimal {
         if (this.riddenByEntity == null) {
             this.setDead();
         }
-
-        if (!(super.worldObj.getBlock(super.getBlockPosX(), super.getBlockPosY(), super.getBlockPosZ()) instanceof BlockStairs)) {
-            this.setDead();
-        }
-
     }
 
     @Override

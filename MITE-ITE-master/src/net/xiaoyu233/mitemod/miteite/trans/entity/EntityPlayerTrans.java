@@ -6,6 +6,7 @@ import net.xiaoyu233.fml.relaunch.server.Main;
 import net.xiaoyu233.mitemod.miteite.achievement.Achievements;
 import net.xiaoyu233.mitemod.miteite.block.BlockSpawn;
 import net.xiaoyu233.mitemod.miteite.block.Blocks;
+import net.xiaoyu233.mitemod.miteite.entity.EntityRideMarker;
 import net.xiaoyu233.mitemod.miteite.entity.EntityZombieBoss;
 import net.xiaoyu233.mitemod.miteite.inventory.container.ForgingTableSlots;
 import net.xiaoyu233.mitemod.miteite.item.*;
@@ -262,11 +263,16 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
    public boolean onEntityRightClicked(EntityPlayer player, ItemStack item_stack) {
       if (super.onEntityRightClicked(player, item_stack)) {
          return true;
-      } else if (this.riddenByEntity == null && player.riddenByEntity == null && player.ridingEntity == null && this.ridingEntity == null && item_stack == null && player.isSneaking()) {
+      } else if (this.riddenByEntity == null && player.riddenByEntity == null && player.ridingEntity == null && this.ridingEntity == null && item_stack == null) {
          if (player.onServer()) {
-            player.mountEntity(this);
+            EntityRideMarker rideMarker = new EntityRideMarker(this.worldObj);
+            rideMarker.setPosition(this.posX,this.posY,this.posZ);
+            rideMarker.rotationYaw = this.rotationYaw;
+            this.worldObj.spawnEntityInWorld(rideMarker);
+            rideMarker.forceSpawn = true;
+            rideMarker.mountEntity(this);
+            player.mountEntity(rideMarker);
          }
-
          return true;
       } else {
          return false;

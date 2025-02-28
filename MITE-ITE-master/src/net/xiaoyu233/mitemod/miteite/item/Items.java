@@ -148,6 +148,7 @@ public class Items extends Item{
     public static final ItemConsumables final_key = new ItemConsumables(Constant.getNextItemID(),Materials.vibranium,"final_key");
     public static final ItemGAMisc cracked_key = new ItemGAMisc(Constant.getNextItemID(),"cracked_key");
     public static final ItemConsumables endScroll = new ItemConsumables(Constant.getNextItemID(),Material.paper,"end_scroll");
+    public static final ItemGrenade grenade = new ItemGrenade(Constant.getNextItemID(),Material.circuits);
 
     private static Item register(String resourceLocation, Item item, CreativeModeTab tab) {
         item.setResourceLocation(item.getResourceLocationPrefix() + resourceLocation);
@@ -288,6 +289,7 @@ public class Items extends Item{
         register("final_key",final_key);
         register("cracked_key",cracked_key);
         register("end_scroll",endScroll);
+        register("t13",grenade);
         
         register("towards_pickaxe",towards_Pickaxe);
         register("stairs_pickaxe",stairs_Pickaxe);
@@ -323,6 +325,7 @@ public class Items extends Item{
         register.registerShapelessRecipe(new ItemStack(Items.spicyStrip,8),false,new Object[]{Item.rottenFlesh,Item.rottenFlesh,Item.rottenFlesh,Item.rottenFlesh});
         register.registerShapelessRecipe(new ItemStack(Items.riskyAgent,1),false,new Object[]{Items.zombieBrain,Items.zombieBrain,Items.zombieBrain,Block.plantYellow});
         register.registerShapelessRecipe(new ItemStack(Items.c4,4),false,new Object[]{Block.tnt,Block.pressurePlatePlanks});
+        register.registerShapelessRecipe(new ItemStack(Items.grenade,5),false,new Object[]{Block.tnt,Block.woodenButton});
         register.registerShapelessRecipe(new ItemStack(Items.badApple,1),false,new Object[]{new ItemStack(Block.leaves,1,0),new ItemStack(Block.leaves,1,1),new ItemStack(Block.leaves,1,2),new ItemStack(Block.leaves,1,3)});
         
         for(int id = Items.itemEnhanceGem.itemID; id < Items.itemEnhanceGem6.itemID; id++){

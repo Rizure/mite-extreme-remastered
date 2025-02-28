@@ -3,6 +3,7 @@ package net.xiaoyu233.mitemod.miteite.trans.render;
 import net.minecraft.*;
 import net.xiaoyu233.mitemod.miteite.entity.*;
 //import net.xiaoyu233.mitemod.miteite.entity.EntityThunderMan;
+import net.xiaoyu233.mitemod.miteite.item.Items;
 import net.xiaoyu233.mitemod.miteite.render.entity.*;
 //import net.xiaoyu233.mitemod.miteite.render.entity.RenderEntityThunderMan;
 import net.xiaoyu233.mitemod.miteite.util.ReflectHelper;
@@ -34,6 +35,7 @@ public class RenderManagerTrans {
       this.q.put(EntitySpiderKing.class, new RenderSpiderKing(1.45F));
       this.q.put(EntitySpiderQueen.class, new RenderSpiderQueen(1.45F));
       this.q.put(EntityClusterSpider.class, new RenderClusterSpider(0.5F));
+      this.q.put(EntityGrenade.class, new bgx(Items.grenade));
       for (bgm o : this.q.values()) {
          o.a(ReflectHelper.dyCast(bgl.class, this));
       }

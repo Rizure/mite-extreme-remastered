@@ -1,6 +1,7 @@
 package net.xiaoyu233.mitemod.miteite.trans.world;
 
 import net.minecraft.*;
+import net.xiaoyu233.mitemod.miteite.entity.EntityGrenade;
 import net.xiaoyu233.mitemod.miteite.entity.EntityRideMarker;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -55,7 +56,13 @@ public class EntityTrackerTrans {
          this.trackEntity(par1Entity, 64, 10, true);
       } else if (par1Entity instanceof EntityGelatinousSphere) {
          this.trackEntity(par1Entity, 64, 10, true);
-      } else if (par1Entity instanceof EntityPotion) {
+      }
+      
+      else if (par1Entity instanceof EntityGrenade) {
+         this.trackEntity(par1Entity, 64, 10, true);
+      }
+      
+      else if (par1Entity instanceof EntityPotion) {
          this.trackEntity(par1Entity, 64, 10, true);
       } else if (par1Entity instanceof EntityThrownExpBottle) {
          this.trackEntity(par1Entity, 64, 10, true);

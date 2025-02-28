@@ -53,12 +53,15 @@ public class DamageTrans {
          float total_protection = target.getTotalProtection(this.getSource());
          ItemStack[] wornItems = target.getWornItems();
          int delta;
+         
+         
          float protection_fraction = 0.0F;
+         
+         
          if (wornItems.length >= 4) {
             boolean allProtectionV = true;
             ItemStack[] var6 = wornItems;
             int var7 = wornItems.length;
-
             for(delta = 0; delta < var7; ++delta) {
                ItemStack armor = var6[delta];
                if (armor == null) {
@@ -67,18 +70,38 @@ public class DamageTrans {
                   allProtectionV = armor.getEnchantmentLevel(Enchantment.protection) >= 5 && allProtectionV;
                }
             }
-
             if (allProtectionV) {
                protection_fraction += Configs.wenscConfig.allProtectionVDefenceFraction.ConfigValue;
             }
          }
-
+         protection_fraction = MathHelper.clamp_float(protection_fraction,0.0F,1.0F);
+         this.amount *= 1.0F - protection_fraction;
+         
+         
+         
          if(target instanceof EntityPlayer) {
-            protection_fraction += (float) ((EntityPlayer) target).getGemSumNumeric(GemModifierTypes.protection);
+            protection_fraction = ((EntityPlayer)target).getGemSumNumeric(GemModifierTypes.protection);
          }
          protection_fraction = MathHelper.clamp_float(protection_fraction,0.0F,1.0F);
          this.amount *= 1.0F - protection_fraction;
-
+         
+         
+         
+         if (target instanceof EntityPlayer){
+            float healthPercent = target.getHealthFraction();
+            ItemStack chestplate = target.getCuirass();
+            if (chestplate != null){
+               float value = ArmorModifierTypes.INDOMITABLE.getModifierValue(chestplate.getTagCompound());
+               if (value != 0){
+                  protection_fraction = value * (1.0F - healthPercent);
+               }
+            }
+         }
+         protection_fraction = MathHelper.clamp_float(protection_fraction,0.0F,1.0F);
+         this.amount *= 1.0F - protection_fraction;
+         
+         
+         
          DebugAttack.setTargetProtection(total_protection);
          float amount_dealt_to_armor = Math.min(target.getProtectionFromArmor(this.getSource(), false), this.amount);
          target.tryDamageArmorP(this.getSource(), amount_dealt_to_armor, result);

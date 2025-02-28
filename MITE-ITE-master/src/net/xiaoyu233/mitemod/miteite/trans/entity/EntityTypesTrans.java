@@ -50,6 +50,7 @@ public class EntityTypesTrans {
       addMapping(EntityClusterSpider.class, "EntityClusterSpider", 213);
       addMapping(EntityDragger.class, "EntityDragger",214);
       addMapping(EntityFinalZombieBoss.class,"EntityFinalZombieBoss",215);
+      addMapping(EntityGrenade.class,"EntityGrenade",216);
 //      addMapping(EntityThunderMan.class, "EntityThunderMan", 209);
 
    }
