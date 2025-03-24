@@ -2,6 +2,8 @@ package net.xiaoyu233.mitemod.miteite.trans.entity;
 
 import net.minecraft.*;
 import net.minecraft.server.MinecraftServer;
+import net.xiaoyu233.mitemod.miteite.entity.EntityDragger;
+import net.xiaoyu233.mitemod.miteite.entity.EntityWanderingWitch;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
 import net.xiaoyu233.mitemod.miteite.util.MonsterUtil;
 import org.spongepowered.asm.mixin.Final;
@@ -21,6 +23,7 @@ import java.util.Arrays;
 class EntityZombieTrans extends EntityAnimalWatcher {
    @Shadow
    private boolean is_smart;
+   private boolean haveTriedToSpawnBat = false;
    @Inject(method = "<init>",at = @At("RETURN"))
    public void injectCtor(CallbackInfo callbackInfo) {
       this.is_smart = true;
@@ -30,6 +33,32 @@ class EntityZombieTrans extends EntityAnimalWatcher {
       int day_of_world = MinecraftServer.F().getOverworld().getDayOfOverworld();
       if (day_of_world >= 64 && this.getHeldItem() == null) {
          super.setCurrentItemOrArmor(0, (new ItemStack(this.getWeapon(day_of_world))).randomizeForMob(this, day_of_world >= 96));
+      }
+   }
+   @Inject(method = "readEntityFromNBT",at = @At("RETURN"))
+   private void injectReadNBT(NBTTagCompound par1NBTTagCompound, CallbackInfo callbackInfo){
+      par1NBTTagCompound.setBoolean("haveTriedToSpawnBat", this.haveTriedToSpawnBat);
+   }
+
+   @Inject(method = "writeEntityToNBT",at = @At("RETURN"))
+   private void injectWriteNBT(NBTTagCompound par1NBTTagCompound, CallbackInfo callbackInfo){
+      this.haveTriedToSpawnBat = par1NBTTagCompound.getBoolean("haveTriedToSpawnBat");
+   }
+   @Inject(method = "onUpdate", at = @At("RETURN"))
+   private void extraBat(CallbackInfo callbackInfo) {
+      if(!this.haveTriedToSpawnBat) {
+         if(this.posY <= 40 && !this.isOutdoors() && this.getTarget() != null){
+            if(this.rand.nextInt(64) > 64 - this.worldObj.getDayOfOverworld()){
+               EntityVampireBat bat = new EntityVampireBat(this.worldObj);
+               bat.setPosition(this.posX, this.posY, this.posZ);
+               bat.refreshDespawnCounter(-9600);
+               this.worldObj.spawnEntityInWorld(bat);
+               bat.onSpawnWithEgg(null);
+               bat.setAttackTarget(this.getTarget());
+               bat.entityFX(EnumEntityFX.summoned);
+            }
+            this.haveTriedToSpawnBat = true;
+         }
       }
    }
    private Item getWeapon(int day){

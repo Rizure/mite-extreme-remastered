@@ -38,6 +38,9 @@ public class EntityZombieLord extends EntityZombie {
     public boolean canBeDisarmed() {
         return false;
     }
+    public int getMaxSpawnedInChunk() {
+        return 1;
+    }
 
     @Override
     protected void dropFewItems(boolean recently_hit_by_player, DamageSource damage_source) {
@@ -50,6 +53,17 @@ public class EntityZombieLord extends EntityZombie {
             }
             this.dropItem(Items.zombieBrain);
         }
+    }
+    public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
+        super.writeEntityToNBT(par1NBTTagCompound);
+        par1NBTTagCompound.setShort("spawnCounter", (short) this.spawnCounter);
+        par1NBTTagCompound.setByte("spawnSums", (byte) this.spawnSums);
+    }
+
+    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
+        super.readEntityFromNBT(par1NBTTagCompound);
+        this.spawnCounter = par1NBTTagCompound.getShort("spawnCounter");
+        this.spawnSums = par1NBTTagCompound.getByte("spawnSums");
     }
 
     @Override
@@ -71,7 +85,7 @@ public class EntityZombieLord extends EntityZombie {
                 EntityLiving target = this.getAttackTarget();
                 if(target instanceof EntityPlayer) {
                     if (spawnSums < 4) {
-                        if (this.spawnCounter < 200) {
+                        if (this.spawnCounter < 20) {
                             ++this.spawnCounter;
                         } else {
                             EntityRevenant zombie = new EntityRevenant(this.worldObj);

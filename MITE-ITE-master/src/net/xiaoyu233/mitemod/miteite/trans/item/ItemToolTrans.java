@@ -48,6 +48,7 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
       }else {
          this.expForLevel = this.createExpForLevel(450,150,75);
       }
+//      this.expForLevel = this.createExpForLevel(1,1,0);
    }
 
    private BiFunction<Integer, Boolean, Integer> createExpForLevel(int start, int base, int increase){
@@ -317,9 +318,9 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
       List<ToolModifierTypes> all_modifiers = ModifierUtils.getAllToolModifiers(stack);
       //目前可附加属性：检查可附加，检查等级
       List<ToolModifierTypes> available_modifiers = ModifierUtils.getAllCanBeAppliedToolModifiers(stack);
-      //已拥有属性
+      //已拥有属性：未初始化
       List<ToolModifierTypes> obtained_modifiers = new ArrayList<>();
-      //确认副属性条目上限
+      //确认副属性条目数上限
       int modifierTypesCap = Math.min(all_modifiers.size(), 4 + (stack.getForgingGrade() / 5));
       //首次升级（目前没问题）
       if(tagCompound.getInteger("tool_level") == 1){
@@ -342,8 +343,13 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
       }
       //之后的升级（仍然有问题）
       else {
-         int upgradeCount = itemRand.nextInt(8) == 0 ? 2 : 1;
+         int upgradeCount = itemRand.nextInt(5) == 0 ? 2 : 1;
          while (upgradeCount > 0){
+            //初始化
+            available_modifiers = ModifierUtils.getAllCanBeAppliedToolModifiers(stack);
+            obtained_modifiers.clear();
+            
+            
             //录入拥有的副属性
             for (int n = 0; n < all_modifiers.size(); n++) {
                if(modifiers.hasKey(all_modifiers.get(n).nbtName)){
@@ -351,6 +357,8 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
                }
             }
             System.out.println("检查：已有属性obtained_modifiers:" + obtained_modifiers);
+            
+            
             //词条数目不够直接附加新属性
             if(obtained_modifiers.size() < modifierTypesCap){
                for (int n = 0; n < obtained_modifiers.size(); n++) {
@@ -359,17 +367,18 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
                      available_modifiers.remove(obtained_modifiers.get(n));
                      n = 0;
                   }
-                  System.out.println("检查：保证全新的属性available_modifiers:" + obtained_modifiers);
                }
+               System.out.println("检查：保证全新的属性available_modifiers:" + available_modifiers);
                modifierType = ModifierUtils.getModifierWithWeight(available_modifiers,player.getRNG());
                this.addModifierLevelFor(modifiers, modifierType);
                player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "获得了" + modifierType.color.toString() + modifierType.displayName + "§r属性"));
-               break;
+               return;
             }
-            System.out.println("检查：已有属性obtained_modifiers:" + obtained_modifiers);
+            
+            //其他情况
             for (int n = 0; n < obtained_modifiers.size(); n++) {
                //删除已有的不兼容/已满级的副属性
-               if(!available_modifiers.contains(obtained_modifiers.get(n))){
+               if(!(available_modifiers.contains(obtained_modifiers.get(n)))){
                   obtained_modifiers.remove(obtained_modifiers.get(n));
                   n = 0;
                }

@@ -46,6 +46,7 @@ public abstract class ItemArmorTrans extends Item implements IDamageableItem, IU
       }else {
          this.expForLevel = this.createExpForLevel(40,16,4);
       }
+//      this.expForLevel = this.createExpForLevel(1,1,0);
    }
 
    private Function<Integer, Integer> createExpForLevel(int start, int base,int increase){
@@ -93,7 +94,7 @@ public abstract class ItemArmorTrans extends Item implements IDamageableItem, IU
                   if (item_stack != null) {
                       Item item = item_stack.getItem();
                       if (item.isArmor()) {
-                          total_defense += ArmorModifierTypes.LEVITY.getModifierValue(item_stack.stackTagCompound) * 50.0F;
+                          total_defense += ArmorModifierTypes.LEVITY.getModifierValue(item_stack.stackTagCompound) * 3F;
                       }
                   }
               }
@@ -183,7 +184,7 @@ public abstract class ItemArmorTrans extends Item implements IDamageableItem, IU
    }
 
    private float getEnhancedProtection(ItemStack itemStack) {
-      return (float)(itemStack.getEnhanceFactor() * (double)this.getRawProtection() * 0.68f + (double)((float)itemStack.getForgingGrade() / 2.0F)) * (0.2f);
+      return (float)(itemStack.getEnhanceFactor() * (double)this.getRawProtection() * 0.489700376987457275390625F);
    }
 
    public int getExpReqForLevel(int i, boolean weapon) {
@@ -340,57 +341,56 @@ public abstract class ItemArmorTrans extends Item implements IDamageableItem, IU
          }
       }
       else {
-         int upgradeCount = itemRand.nextInt(8) == 0 ? 2 : 1;
+         int upgradeCount = itemRand.nextInt(5) == 0 ? 2 : 1;
          while (upgradeCount > 0){
-            modifierType = ModifierUtils.getModifierWithWeight(available_modifiers,player.getRNG());
-            if(modifierType != null){
-               if(modifiers.hasKey(modifierType.nbtName)){
-                  player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "的" + modifierType.color.toString() + modifierType.displayName + "§r属性已升级到" +
-                          this.addModifierLevelFor(modifiers, modifierType)
+            available_modifiers = ModifierUtils.getAllCanBeAppliedArmorModifiers(stack);
+            obtained_modifiers.clear();
+
+            //录入拥有的副属性
+            for (int n = 0; n < all_modifiers.size(); n++) {
+               if(modifiers.hasKey(all_modifiers.get(n).nbtName)){
+                  obtained_modifiers.add(all_modifiers.get(n));
+               }
+            }
+            System.out.println("检查：已有属性obtained_modifiers:" + obtained_modifiers);
+
+            //词条数目不够直接附加新属性
+            if(obtained_modifiers.size() < modifierTypesCap){
+               for (int n = 0; n < obtained_modifiers.size(); n++) {
+                  //保证取一个新属性
+                  if(available_modifiers.contains(obtained_modifiers.get(n))){
+                     available_modifiers.remove(obtained_modifiers.get(n));
+                     n = 0;
+                  }
+               }
+               System.out.println("检查：保证全新的属性available_modifiers:" + available_modifiers);
+               modifierType = ModifierUtils.getModifierWithWeight(available_modifiers,player.getRNG());
+               this.addModifierLevelFor(modifiers, modifierType);
+               player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "获得了" + modifierType.color.toString() + modifierType.displayName + "§r属性"));
+               return;
+            }
+
+            //其他情况
+            for (int n = 0; n < obtained_modifiers.size(); n++) {
+               //删除已有的不兼容/已满级的副属性
+               if(!(available_modifiers.contains(obtained_modifiers.get(n)))){
+                  obtained_modifiers.remove(obtained_modifiers.get(n));
+                  n = 0;
+               }
+            }
+            System.out.println("检查：可升级属性obtained_modifiers:" + obtained_modifiers);
+            //升级已有的
+            if(!obtained_modifiers.isEmpty()){
+               int n = itemRand.nextInt(obtained_modifiers.size());
+               if(Configs.wenscConfig.allowInfLeveling.ConfigValue || (obtained_modifiers.get(n).getMaxLevel() > modifiers.getInteger(obtained_modifiers.get(n).getNbtName()))){
+                  player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "的" + obtained_modifiers.get(n).color.toString() + obtained_modifiers.get(n).displayName + "§r属性已升级到" +
+                          this.addModifierLevelFor(modifiers, obtained_modifiers.get(n))
                           + "级"));
-                  upgradeCount--;
-               }else {
-                  //拥有副属性录入
-                  for (int n = 0; n < all_modifiers.size(); n++) {
-                     if(modifiers.hasKey(all_modifiers.get(n).nbtName)){
-                        obtained_modifiers.add(all_modifiers.get(n));
-                     }
-                  }
-                  if(obtained_modifiers.size() < modifierTypesCap){
-                     this.addModifierLevelFor(modifiers, modifierType);
-                     player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "获得了" + modifierType.color.toString() + modifierType.displayName + "§r属性"));
-                     upgradeCount--;
-                  }else {
-                     for (int n = 0; n < obtained_modifiers.size(); n++) {
-                        System.out.println("已有副属性：" + obtained_modifiers);
-                        //删除不能附加的副属性
-                        if(!available_modifiers.contains(obtained_modifiers.get(n))){
-                           obtained_modifiers.remove(obtained_modifiers.get(n));
-                           n = 0;
-                        }
-                        System.out.println("仍可附加副属性：" + obtained_modifiers);
-                        //删除已经满级的副属性（WIP）
-                        if(!Configs.wenscConfig.allowInfLeveling.ConfigValue){
-                           if(obtained_modifiers.get(n).getMaxLevel() <= modifiers.getInteger(obtained_modifiers.get(n).getNbtName())){
-                              obtained_modifiers.remove(obtained_modifiers.get(n));
-                              n = 0;
-                           }
-                        }
-                        System.out.println("未满级副属性：" + obtained_modifiers);
-                     }
-                     if(!obtained_modifiers.isEmpty()){
-                        int n = itemRand.nextInt(obtained_modifiers.size());
-                        player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "的" + obtained_modifiers.get(n).color.toString() + obtained_modifiers.get(n).displayName + "§r属性已升级到" +
-                                this.addModifierLevelFor(modifiers, obtained_modifiers.get(n))
-                                + "级"));
-                     }
-                     upgradeCount--;
-                  }
                }
             }else {
                Minecraft.setErrorMessage("onItemLevelUp: No matching modifier to upgrade/apply.");
-               upgradeCount--;
             }
+            upgradeCount--;
          }
       }
       player.suppressNextStatIncrement();

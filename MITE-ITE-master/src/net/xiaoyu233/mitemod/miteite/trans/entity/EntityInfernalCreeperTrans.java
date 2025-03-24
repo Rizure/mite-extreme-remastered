@@ -21,18 +21,6 @@ public class EntityInfernalCreeperTrans extends EntityCreeperTrans {
 
    @Overwrite
    public float getNaturalDefense(DamageSource damage_source) {
-      if (Configs.wenscConfig.infernalCreeperBoost.ConfigValue) {
-         if (damage_source.bypassesMundaneArmor()) {
-            if (this.getWorld() != null) {
-               return super.getNaturalDefense(damage_source) + (float) this.getWorld().getDayOfOverworld() * 0.075F;
-            }
-            return super.getNaturalDefense(damage_source);
-         }
-         if (this.getWorld() != null) {
-            return super.getNaturalDefense(damage_source) + 2.0F + (float) this.getWorld().getDayOfOverworld() * 0.075F;
-         }
-         return super.getNaturalDefense(damage_source) + 2.0F;
-      }
       return super.getNaturalDefense(damage_source) + (damage_source.bypassesMundaneArmor() ? 0F : 2.0F);
    }
 
@@ -63,7 +51,8 @@ public class EntityInfernalCreeperTrans extends EntityCreeperTrans {
    @Inject(method = "<init>",at = @At("RETURN"))
    private void injectCtorModifyExplosion(CallbackInfo callbackInfo){
       if (Configs.wenscConfig.infernalCreeperBoost.ConfigValue) {
-         this.explosionRadius *= 2.0F;
+         this.explosionRadius *= 2.5F;
       }
    }
+   
 }

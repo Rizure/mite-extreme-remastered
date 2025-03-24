@@ -19,7 +19,7 @@ public class RenderEarthElementalTrans extends bgu {
       if (type == EntityEarthElemental.CLAY_NORMAL) {
          return super.textures[8];
       } else {
-         return type == EntityEarthElemental.CLAY_HARDENED ? super.textures[10] : super.textures[type == EntityEarthElemental.STONE_NORMAL ? 0 : (type == EntityEarthElemental.STONE_MAGMA ? 1 : (type == EntityEarthElemental.OBSIDIAN_NORMAL ? 2 : (type == EntityEarthElemental.OBSIDIAN_MAGMA ? 3 : (type == EntityEarthElemental.NETHERRACK_NORMAL ? 4 : (type == EntityEarthElemental.NETHERRACK_MAGMA ? 5 : (type == EntityEarthElemental.END_STONE_NORMAL ? 6 : (type == 5 ? 10 : 7)))))))];
+         return type == EntityEarthElemental.CLAY_HARDENED ? super.textures[9] : super.textures[type == EntityEarthElemental.STONE_NORMAL ? 0 : (type == EntityEarthElemental.STONE_MAGMA ? 1 : (type == EntityEarthElemental.OBSIDIAN_NORMAL ? 2 : (type == EntityEarthElemental.OBSIDIAN_MAGMA ? 3 : (type == EntityEarthElemental.NETHERRACK_NORMAL ? 4 : (type == EntityEarthElemental.NETHERRACK_MAGMA ? 5 : (type == EntityEarthElemental.END_STONE_NORMAL ? 6 : (type == 5 ? 10 : 7)))))))];
       }
    }
 

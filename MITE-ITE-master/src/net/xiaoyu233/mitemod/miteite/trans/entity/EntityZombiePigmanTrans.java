@@ -58,7 +58,9 @@ protected void applyEntityAttributes() {
         if(this.angerLevel < 1){
             this.dropItem(Items.voucherGuard);
         }else {
-            this.dropItem(Items.voucherCluster);
+            if(this.rand.nextBoolean()){
+                this.dropItem(Items.voucherCluster);
+            }
         }
         if (this.rand.nextFloat() < (recently_hit_by_player ? 0.5F : 0.25F)) {
             this.dropItem(Item.rottenFlesh);

@@ -23,6 +23,7 @@ item.enhance_stone/vibranium.name=回火石
 item.enhance_stone/universal.name=精粹录
 
 item.iron_club.name=铁棒
+item.ancient_metal_club.name=远古金属棒
 item.mithril_club.name=秘银棒
 item.adamantium_club.name=艾德曼棒
 item.vibranium_club.name=振金棒
@@ -144,6 +145,7 @@ entity.EntityClusterSpider.name=集群蜘蛛
 entity.EntitySpiderKing.name=国王蜘蛛
 entity.EntitySpiderQueen.name=蛛后
 entity.EntityDragger.name=拖曳骷髅
+entity.EntityOreElemental.name=大地元素
 
 gui.forgingTable.start=开始锻造
 gui.forgingTable.item_req=锻造需要

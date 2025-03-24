@@ -45,7 +45,10 @@ public class EntityZombieDoor extends EntityZombie {
             if(this.getHeldItem() == Item.doorAdamantium){
                 this.dropItem(Items.ban);
             }
-            this.dropItem(Items.voucherDestruction);
+            boolean shouldDropItem = this.danger_level > 3 || this.rand.nextBoolean();
+            if(shouldDropItem){
+                this.dropItem(Items.voucherDestruction);
+            }
             int day = this.getWorld().getDayOfOverworld();
             int diamond_count = Math.min((day + 16) / 32, 3);
             for (int i1 = 0; i1 < diamond_count; i1++) {
@@ -54,7 +57,21 @@ public class EntityZombieDoor extends EntityZombie {
             this.dropItem(Items.zombieBrain);
         }
     }
+    public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
+        super.writeEntityToNBT(par1NBTTagCompound);
+        par1NBTTagCompound.setByte("danger_level", (byte) this.danger_level);
+        par1NBTTagCompound.setShort("spawnCounter", (short) this.spawnCounter);
+        par1NBTTagCompound.setByte("spawnSums", (byte) this.spawnSums);
+        par1NBTTagCompound.setBoolean("modifiedAttribute", this.modifiedAttribute);
+    }
 
+    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
+        super.readEntityFromNBT(par1NBTTagCompound);
+        this.spawnCounter = par1NBTTagCompound.getShort("spawnCounter");
+        this.spawnSums = par1NBTTagCompound.getByte("spawnSums");
+        this.danger_level = par1NBTTagCompound.getByte("danger_level");
+        this.modifiedAttribute = par1NBTTagCompound.getBoolean(" modifiedAttribute");
+    }
     @Override
     public boolean canCatchFire() {
         return false;
@@ -64,7 +81,7 @@ public class EntityZombieDoor extends EntityZombie {
     public void onUpdate() {
         super.onUpdate();
         if (!this.getWorld().isRemote){
-            if(this.modifiedAttribute == false){
+            if(!this.modifiedAttribute){
                 this.getEntityAttribute(GenericAttributes.maxHealth).setAttribute(this.getMaxHealth() + danger_level * 4);
                 this.heal(danger_level * 4);
                 this.getEntityAttribute(GenericAttributes.attackDamage).setAttribute(this.getEntityAttributeValue(GenericAttributes.attackDamage) + danger_level);
@@ -74,7 +91,7 @@ public class EntityZombieDoor extends EntityZombie {
             EntityLiving target = this.getAttackTarget();
             if(target instanceof EntityPlayer) {
                 if (spawnSums < 10) {
-                    if (this.spawnCounter < 200) {
+                    if (this.spawnCounter < 20) {
                         ++this.spawnCounter;
                     } else {
                         EntityZombie zombie = new EntityZombie(this.worldObj);
@@ -89,11 +106,11 @@ public class EntityZombieDoor extends EntityZombie {
                         zombie.setAttackTarget(this.getTarget());
                         zombie.entityFX(EnumEntityFX.summoned);
                         this.spawnCounter = 0;
-                        ++spawnSums;
+                        spawnSums += 2;
                     }
                 }
                 if(Configs.wenscConfig.isSpawnDragger.ConfigValue) {
-                    if(haveTryToSpawnExchanger == false) {
+                    if(!this.haveTryToSpawnExchanger) {
                         if( rand.nextInt(10) == 0) {
                             EntityDragger entityExchanger = new EntityDragger(this.worldObj);
                             entityExchanger.setPosition(this.posX, this.posY, this.posZ);

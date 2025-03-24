@@ -1,6 +1,7 @@
 package net.xiaoyu233.mitemod.miteite.item;
 
 import net.minecraft.*;
+import net.xiaoyu233.mitemod.miteite.util.Configs;
 
 import java.util.function.Predicate;
 
@@ -27,22 +28,22 @@ import java.util.function.Predicate;
 
 public enum ToolModifierTypes implements ItemModifierTypes{
     //Tool Modifiers
-    EFFICIENCY_MODIFIER(0.2F,"急速",EnumChatFormat.WHITE,50, (ToolModifierTypes::isNotWeapon),10),
-    DURABILITY_MODIFIER(0.15F,"耐久",EnumChatFormat.WHITE,50,(stack -> true),5),
-    DAMAGE_MODIFIER(1.0F,"锋利", EnumChatFormat.WHITE,50, stack -> hasNoOtherDamageModifier(stack,2) && isWeapon(stack),10),
-    SMITE(1.5F,"神圣",EnumChatFormat.AQUA,25,stack -> hasNoOtherDamageModifier(stack,0) && isWeapon(stack),10),
-    BANE_OF_ARTHROPOD(1.5F,"节肢杀手",EnumChatFormat.AQUA,25,stack -> hasNoOtherDamageModifier(stack,1) && isWeapon(stack),10),
-    INVINCIBLE(1.0f,"不动如山",EnumChatFormat.AQUA,25,(stack -> true),5),
-    SLOWDOWN_MODIFIER(1.0F,"织网",EnumChatFormat.LIGHT_PURPLE,10, ToolModifierTypes::isWeapon,5),
-    UNNATURAL_MODIFIER(0.1f,"超自然",EnumChatFormat.LIGHT_PURPLE,10, ToolModifierTypes::isNotWeapon,5),
-    APOCALYPSE(1.0f,"启示录",EnumChatFormat.LIGHT_PURPLE,10,(ToolModifierTypes::isWeapon),5),
-    AQUADYNAMIC_MODIFIER(0.3F,"喜水",EnumChatFormat.LIGHT_PURPLE,10, (ToolModifierTypes::isNotWeapon),5),
-    DEMON_POWER(0.25f,"恶魔之力",EnumChatFormat.RED,5, ToolModifierTypes::isWeapon, 1),
-    DISCORD(6.0f,"混沌",EnumChatFormat.RED,5,ToolModifierTypes::isWeapon,4),
-    GEOLOGY(0.25f,"地质学",EnumChatFormat.YELLOW,2,itemStack -> itemStack.getItem() instanceof ItemPickaxe && WithoutMiningModifier(itemStack,0),4),
-    BLESS_OF_NATURE(0.05f,"自然祝福",EnumChatFormat.YELLOW,2,(stack -> true),4),
-    MELTING(0.25f,"自动冶炼",EnumChatFormat.YELLOW,2,itemStack -> itemStack.getItem() instanceof ItemPickaxe && WithoutMiningModifier(itemStack,1),4),
-//    PLUNDER(0.02f,"劫掠",EnumChatFormat.YELLOW,2, ToolModifierTypes::isWeapon, 4)
+    EFFICIENCY_MODIFIER(0.2F,"急速",EnumModifierQuality.Common, (ToolModifierTypes::isNotWeapon),12),
+    DURABILITY_MODIFIER(0.15F,"耐久",EnumModifierQuality.Common,(stack -> true),5),
+    DAMAGE_MODIFIER(1.0F,"锋利", EnumModifierQuality.Common, stack -> hasNoOtherDamageModifier(stack,2) && isWeapon(stack),12),
+    SMITE(2.0F,"神圣",EnumModifierQuality.Uncommon,stack -> hasNoOtherDamageModifier(stack,0) && isWeapon(stack),12),
+    BANE_OF_ARTHROPOD(2.0F,"节肢杀手",EnumModifierQuality.Uncommon,stack -> hasNoOtherDamageModifier(stack,1) && isWeapon(stack),12),
+    INVINCIBLE(1.25f,"不动如山",EnumModifierQuality.Uncommon,(stack -> true),4),
+    SLOWDOWN_MODIFIER(1.25F,"织网",EnumModifierQuality.Rare, ToolModifierTypes::isWeapon,4),
+    UNNATURAL_MODIFIER(0.125f,"超自然",EnumModifierQuality.Rare, ToolModifierTypes::isNotWeapon,4),
+    APOCALYPSE(1.25f,"启示录",EnumModifierQuality.Rare,(ToolModifierTypes::isWeapon),4),
+    AQUADYNAMIC_MODIFIER(0.375F,"喜水",EnumModifierQuality.Rare, (ToolModifierTypes::isNotWeapon),4),
+    DEMON_POWER(0.15f,"恶魔之力",EnumModifierQuality.Epic, ToolModifierTypes::isWeapon, 4),
+    DISCORD(6.0f,"混沌",EnumModifierQuality.Epic,ToolModifierTypes::isWeapon,4),
+    GEOLOGY(0.25f,"地质学",EnumModifierQuality.Legend,itemStack -> itemStack.getItem() instanceof ItemPickaxe && WithoutMiningModifier(itemStack,0),4),
+    BLESS_OF_NATURE(0.05f,"自然祝福",EnumModifierQuality.Legend,(stack -> true),4),
+    MELTING(0.25f,"自动冶炼",EnumModifierQuality.Legend,itemStack -> itemStack.getItem() instanceof ItemPickaxe && WithoutMiningModifier(itemStack,1),4),
+//    PLUNDER(0.02f,"劫掠",EnumModifierQuality.Legend, ToolModifierTypes::isWeapon, 4)
     ;
     
 
@@ -54,12 +55,12 @@ public enum ToolModifierTypes implements ItemModifierTypes{
     public final int weight;
     private final Predicate<ItemStack> canApplyTo;
     private final int maxLevel;
-    ToolModifierTypes(float levelAddition, String displayName, EnumChatFormat color, int weight, Predicate<ItemStack> canApplyTo,int maxLevel){
+    ToolModifierTypes(float levelAddition, String displayName, EnumModifierQuality quality, Predicate<ItemStack> canApplyTo,int maxLevel){
         this.nbtName = this.name().toLowerCase();
         this.levelAddition = levelAddition;
         this.displayName = displayName;
-        this.color = color;
-        this.weight = weight;
+        this.color = quality.color;
+        this.weight = quality.standard_weight;
         this.canApplyTo = canApplyTo;
         this.maxLevel = maxLevel;
     }
@@ -74,7 +75,7 @@ public enum ToolModifierTypes implements ItemModifierTypes{
     }
     @Override
     public float getModifierValue(NBTTagCompound itemTag){
-        return this.levelAddition * getModifierLevel(itemTag);
+        return this.levelAddition * getModifierLevel(itemTag) * (float) (Math.pow(getModifierLevel(itemTag), Configs.wenscConfig.modifierCurveDisturbance.ConfigValue) / Math.pow(this.maxLevel,Configs.wenscConfig.modifierCurveDisturbance.ConfigValue));
     }
 
     @Override
@@ -86,7 +87,6 @@ public enum ToolModifierTypes implements ItemModifierTypes{
                 lvl = modifiers.getInteger(this.nbtName);
             }
         }
-
         return lvl;
     }
 

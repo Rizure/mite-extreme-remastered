@@ -35,8 +35,6 @@ public class EntitySkeletonTrans extends EntityMonster implements IRangedEntity 
    @Shadow
    private int data_object_id_is_frenzied_by_bone_lord;
    protected ItemStack stowed_item_stack;
-   @Final
-   private boolean forceMeleeAttack;
    private boolean willChangeWeapon;
    public boolean haveTrySpawnBat = false;
 
@@ -132,7 +130,7 @@ public class EntitySkeletonTrans extends EntityMonster implements IRangedEntity 
 
    @Inject(method = "<init>",at = @At("RETURN"))
    private void injectInit(World world,CallbackInfo callbackInfo){
-      this.forceMeleeAttack = (Configs.wenscConfig.skeletonForceMeleeAttack.ConfigValue) && this.rand.nextInt(100) < 15;
+      this.tasks.addTask(5, new PathfinderGoalMoveTowardsRestriction(this, 1.0));
    }
 
    @Inject(method = "onLivingUpdate",at = @At("RETURN"))
@@ -407,7 +405,7 @@ public class EntitySkeletonTrans extends EntityMonster implements IRangedEntity 
       this.tasks.removeTask(this.aiArrowAttack);
       ItemStack var1 = this.getHeldItemStack();
 
-      if (var1 != null && var1.getItem() instanceof ItemBow && !forceMeleeAttack) {
+      if (var1 != null && var1.getItem() instanceof ItemBow) {
          this.tasks.addTask(4, this.aiArrowAttack);
          this.tasks.addTask(1, new EntityAISeekFiringPosition(this, 1.0F, true));
       } else {

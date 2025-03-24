@@ -120,10 +120,8 @@ public abstract class EntityEarthElementalTrans extends EntityAnimalWatcher {
          ItemStack item_stack = damage_source.getItemAttackedWith();
          if (item_stack != null && item_stack.getItem() instanceof ItemTool && item_stack.getItemAsTool().isEffectiveAgainstBlock(this.getBlock(), 0)) {
             return false;
-         } else if (!this.isWood()) {
-            return !damage_source.isExplosion();
          } else {
-            return !damage_source.isLavaDamage() && !damage_source.isFireDamage();
+            return !damage_source.isExplosion() && !damage_source.isLavaDamage() && !damage_source.isFireDamage();
          }
       }
    }

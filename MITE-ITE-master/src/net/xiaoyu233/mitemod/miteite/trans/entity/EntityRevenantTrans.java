@@ -19,6 +19,9 @@ public class EntityRevenantTrans extends EntityZombie {
       if (recently_hit_by_player){
          int day = this.getWorld().getDayOfOverworld();
          int count = Math.min(day / 8, 6);
+         if(this.rand.nextInt(4) == 0){
+            this.dropItem(Items.voucherOverlord);
+         }
          for (int i1 = 0; i1 < count; i1++) {
             this.dropItemStack(new ItemStack(Items.dyePowder, 1, 4));
          }
@@ -30,13 +33,13 @@ public class EntityRevenantTrans extends EntityZombie {
    protected void addRandomEquipment() {
       this.addRandomWeapon();
       int day = this.getWorld().getDayOfOverworld();
-      if (day < 64) {
+      if (day < 48) {
          this.setBoots((new ItemStack(Item.bootsRustedIron)).randomizeForMob(this, true));
          this.setLeggings((new ItemStack(Item.legsRustedIron)).randomizeForMob(this, true));
          this.setCuirass((new ItemStack(Item.plateRustedIron)).randomizeForMob(this, true));
          this.setHelmet((new ItemStack(Item.helmetRustedIron)).randomizeForMob(this, true));
       } else {
-         MonsterUtil.addDefaultArmor(day, this, true);
+         MonsterUtil.addDefaultArmor(day + 16, this, true);
       }
    }
 

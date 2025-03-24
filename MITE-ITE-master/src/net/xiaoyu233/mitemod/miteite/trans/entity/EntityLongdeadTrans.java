@@ -36,10 +36,10 @@ public class EntityLongdeadTrans extends EntitySkeletonTrans {
 
    }
 
-   @Override
-   protected boolean willChangeWeapon() {
-      return Configs.wenscConfig.boneLordAndLongdeadChangeWeaponChance.ConfigValue > this.rand.nextFloat();
-   }
+//   @Override
+//   protected boolean willChangeWeapon() {
+//      return Configs.wenscConfig.boneLordAndLongdeadChangeWeaponChance.ConfigValue > this.rand.nextFloat();
+//   }
 
    @Overwrite
    protected void applyEntityAttributes() {

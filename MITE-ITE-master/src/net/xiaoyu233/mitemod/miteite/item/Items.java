@@ -149,7 +149,7 @@ public class Items extends Item{
     public static final ItemGAMisc cracked_key = new ItemGAMisc(Constant.getNextItemID(),"cracked_key");
     public static final ItemConsumables endScroll = new ItemConsumables(Constant.getNextItemID(),Material.paper,"end_scroll");
     public static final ItemGrenade grenade = new ItemGrenade(Constant.getNextItemID(),Material.circuits);
-
+    public static final Item clubAncientMetal = new ItemClubMetal(Constant.getNextItemID(), Material.ancient_metal);
     private static Item register(String resourceLocation, Item item, CreativeModeTab tab) {
         item.setResourceLocation(item.getResourceLocationPrefix() + resourceLocation);
         item.setUnlocalizedName(resourceLocation);
@@ -192,10 +192,11 @@ public class Items extends Item{
         register("enhance_stone/universal",UNIVERSAL_ENHANCE_STONE , CreativeModeTab.tabMaterials);
         register("enhance_stone/vibranium",VIBRANIUM_ENHANCE_STONE , CreativeModeTab.tabMaterials);
 
-        register("iron_club", clubIron).setUnlocalizedName("iron_club").setLowestCraftingDifficultyToProduce(1.0F);
-        register("mithril_club", clubMithril).setUnlocalizedName("mithril_club").setLowestCraftingDifficultyToProduce(1.0F);
-        register("adamantium_club", clubAdamantium).setUnlocalizedName("adamantium_club").setLowestCraftingDifficultyToProduce(1.0F);
-        register("vibranium_club", clubVibranium).setUnlocalizedName("vibranium_club").setLowestCraftingDifficultyToProduce(1.0F);
+        register("clubs/iron", clubIron).setUnlocalizedName("iron_club").setLowestCraftingDifficultyToProduce(1.0F);
+        register("clubs/ancient_metal", clubAncientMetal).setUnlocalizedName("ancient_metal_club").setLowestCraftingDifficultyToProduce(1.0F);
+        register("clubs/mithril", clubMithril).setUnlocalizedName("mithril_club").setLowestCraftingDifficultyToProduce(1.0F);
+        register("clubs/adamantium", clubAdamantium).setUnlocalizedName("adamantium_club").setLowestCraftingDifficultyToProduce(1.0F);
+        register("clubs/vibranium", clubVibranium).setUnlocalizedName("vibranium_club").setLowestCraftingDifficultyToProduce(1.0F);
 
         register("stack_torch", Stack_Torch).setUnlocalizedName("stack_torch").setMaxStackSize(16).setCraftingDifficultyAsComponent(1.0E-9F);
         register("bunch_torch", Bunch_Torch).setUnlocalizedName("bunch_torch").setMaxStackSize(64).setCraftingDifficultyAsComponent(1.0E-9F);
@@ -319,7 +320,8 @@ public class Items extends Item{
                 }
             }
         }
-        register.registerShapelessRecipe(new ItemStack(Items.wuzhiDan,1),false,new Object[]{Items.buguDan,Item.redstone,Block.plantYellow,new ItemStack(Block.plantRed,1,0),new ItemStack(Block.plantRed,1,1),new ItemStack(Block.plantRed,1,2),new ItemStack(Block.plantRed,1,5),new ItemStack(Block.plantRed,1,7),new ItemStack(Block.plantRed,1,8)});
+        register.registerShapelessRecipe(new ItemStack(Items.wuzhiDan,8),false,new Object[]{Items.buguDan,Item.redstone,Block.plantYellow,new ItemStack(Block.plantRed,1,0),new ItemStack(Block.plantRed,1,1),new ItemStack(Block.plantRed,1,2),new ItemStack(Block.plantRed,1,5),new ItemStack(Block.plantRed,1,7),new ItemStack(Block.plantRed,1,8)});
+        register.registerShapelessRecipe(new ItemStack(Items.wuzhiDan,1),false,new Object[]{Items.buguDan,Item.redstone,Item.potato,Item.carrot,Item.onion,Block.mushroomBrown});
         register.registerShapelessRecipe(new ItemStack(Items.chikitan,2),false,new Object[]{Item.emerald,Item.emerald,Block.plantYellow,Item.egg});
         register.registerShapelessRecipe(new ItemStack(Items.cubeSugar,1),false,new Object[]{Item.sugar,Item.sugar,Item.sugar,Item.sugar});
         register.registerShapelessRecipe(new ItemStack(Items.spicyStrip,8),false,new Object[]{Item.rottenFlesh,Item.rottenFlesh,Item.rottenFlesh,Item.rottenFlesh});
@@ -350,6 +352,7 @@ public class Items extends Item{
         register.registerShapelessRecipe(new ItemStack(Blocks.blockLantern, 1), true,Blocks.torchWood, ironNugget, ironNugget, ironNugget, ironNugget, ironNugget, ironNugget, ironNugget, ironNugget);
         register.registerShapelessRecipe(new ItemStack(Items.voucherCore, 1), true, Items.voucherStrike, Items.voucherDestruction, Items.voucherPhase, Items.voucherCluster, Items.voucherOverlord, Items.voucherMagic);
         register.registerShapedRecipe(new ItemStack(clubIron, 1), true, new Object[]{"###", "#*#"," # ", '#', Items.ironNugget , '*', Items.ingotIron});
+        register.registerShapedRecipe(new ItemStack(clubAncientMetal, 1), true, new Object[]{"###", "#*#"," # ", '#', Items.ancientMetalNugget , '*', Items.ingotAncientMetal});
         register.registerShapedRecipe(new ItemStack(clubMithril, 1), true, new Object[]{"###", "#*#"," # ", '#', Items.mithrilNugget , '*', Items.ingotMithril});
         register.registerShapedRecipe(new ItemStack(clubAdamantium, 1), true, new Object[]{"###", "#*#"," # ", '#', Items.adamantiumNugget , '*', Items.ingotAdamantium});
         register.registerShapedRecipe(new ItemStack(clubVibranium, 1), true, new Object[]{"###", "#*#"," A ", '#', Items.VIBRANIUM_NUGGET , '*', Items.VIBRANIUM_INGOT, 'A', Items.voucherClubCore});
@@ -629,7 +632,7 @@ public class Items extends Item{
                         " S ",
                         'I', upper_ingot,
                         'S', fetchingStickByMaterial(stdTierLoop[i + 1]),
-                        'A', lower_equipment);
+                        'A', lower_equipment).extendsNBT();
             }
             lower_equipment = getMatchingItem(ItemBattleAxe.class,stdTierLoop[i]);
             upper_equipment = getMatchingItem(ItemBattleAxe.class,stdTierLoop[i + 1]);
@@ -641,7 +644,7 @@ public class Items extends Item{
                         " S ",
                         'I', upper_ingot,
                         'S', fetchingStickByMaterial(stdTierLoop[i + 1]),
-                        'A', lower_equipment);
+                        'A', lower_equipment).extendsNBT();
             }
             lower_equipment = getMatchingItem(ItemEnhancedPickaxe.class,stdTierLoop[i]);
             upper_equipment = getMatchingItem(ItemEnhancedPickaxe.class,stdTierLoop[i + 1]);

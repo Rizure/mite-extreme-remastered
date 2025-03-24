@@ -193,6 +193,13 @@ public abstract class WorldServerTrans extends World {
                }
             } else if (entity_class == EntityEarthElemental.class) {
                if (!check_depth || y <= 40) {
+                  if(this.rand.nextInt(10) == 0) {
+                     return EntityOreElemental.class;
+                  }
+                  return entity_class;
+               }
+            } else if (entity_class == EntityOreElemental.class) {
+               if (!check_depth || y <= 40) {
                   return entity_class;
                }
             } else if (entity_class == EntityBlob.class) {

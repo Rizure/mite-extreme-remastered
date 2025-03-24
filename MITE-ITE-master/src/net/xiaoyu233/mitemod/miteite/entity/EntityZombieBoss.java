@@ -332,7 +332,7 @@ public class EntityZombieBoss extends EntityZombie implements IBossbarEntity{
         for(int i = 0; i < targets.size(); i++){
             if(targets.get(i) instanceof EntityPlayer){
                 EntityPlayer player = (EntityPlayer) targets.get(i);
-                this.addThunderAttack(player,4.0F);
+                this.addThunderAttack(player,2.0F);
                 succeed = true;
             }
         }
@@ -373,7 +373,7 @@ public class EntityZombieBoss extends EntityZombie implements IBossbarEntity{
             if(!(target instanceof EntityPlayer)) {
                 this.healAndBroadcast();
             }
-            if(thunderTick % 40 == 0) {
+            if(thunderTick % 60 == 0) {
                 if(target != null && target instanceof EntityPlayer) {
                     if(((EntityPlayer) target).isAttackByBossCounter <= 0) {
                         if(this.isFinal()){
@@ -383,11 +383,11 @@ public class EntityZombieBoss extends EntityZombie implements IBossbarEntity{
                             target.setPositionAndUpdate(currentX, currentY, currentZ);
                             target.worldObj.createExplosion(this,target.posX,target.posY + (double)(target.height / 4.0F),target.posZ,0.0F,1.75F,true);
                         }else {
-                            addThunderAttack((EntityPlayer)target, 6f);
+                            addThunderAttack((EntityPlayer)target, 8f);
                         }
                     }
                 }
-                if(thunderTick == 80) {
+                if(thunderTick == 120) {
                     if(this.isFinal()){
                         this.shockSurroundingPlayers();
                     }

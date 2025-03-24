@@ -36,6 +36,33 @@ public class SpawnerCreatureTrans {
    private float tryHangBatFromCeiling(World world, EntityBat bat, int x, int y, int z, float pos_x, float pos_y, float pos_z) {
       return 0.0F;
    }
+   @Overwrite
+   public float calcEffectiveHostileMobSpawningRateModifier(WorldServer world) {
+      if (world.provider.dimensionId != 0) {
+         return 0.5F;
+      } else {
+         float hostile_mob_spawning_rate_modifier;
+         hostile_mob_spawning_rate_modifier = Math.abs((float)world.getTimeOfDay() - 12000.0F) / 6000.0F + 1.0F;
+         if (world.decreased_hostile_mob_spawning_counter > 0) {
+            --world.decreased_hostile_mob_spawning_counter;
+            hostile_mob_spawning_rate_modifier *= 0.5F;
+         } else if (this.random.nextInt(24000) == 0) {
+            world.decreased_hostile_mob_spawning_counter = this.random.nextInt(4000) + 1;
+         }
+
+         if (world.increased_hostile_mob_spawning_counter > 0) {
+            --world.increased_hostile_mob_spawning_counter;
+            hostile_mob_spawning_rate_modifier *= 2.0F;
+         } else if (this.random.nextInt(24000) == 0) {
+            world.increased_hostile_mob_spawning_counter = this.random.nextInt(2000);
+         }
+
+         if (hostile_mob_spawning_rate_modifier < 1.0F && (world.isBloodMoon(false) || world.isThundering(true))) {
+            hostile_mob_spawning_rate_modifier = 1.0F;
+         }
+         return hostile_mob_spawning_rate_modifier;
+      }
+   }
 
    @Overwrite
    public int trySpawningHostileMobs(WorldServer world, boolean deep_only) {
@@ -48,7 +75,7 @@ public class SpawnerCreatureTrans {
       boolean is_daytime = world.isDaytime();
       int creature_limit = Math.min(4096 , Math.max(32 , world.getDayOfOverworld() * 2) + creature_type.getMaxNumberOfCreature() * this.eligibleChunksForSpawning.size() / 64);
       if (deep_only) {
-         creature_limit *= 2;
+         creature_limit *= 4;
       }
 
       if (deep_only) {

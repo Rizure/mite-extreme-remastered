@@ -90,7 +90,7 @@ public class EntityDragger extends EntitySkeleton{
                         if(r < 4.0F && dy < 1.0F){
                             return;
                         }
-                        if(this.dragStrength % 100 == 0){
+                        if(this.dragStrength % 125 == 0){
                             this.entityToAttack.attackEntityFrom(new Damage(DamageSource.causeMobDamage(this),0.01F));
                         }
                         this.entityToAttack.addVelocity(-dx / r * 3D,0.0D,-dz / r * 3D);

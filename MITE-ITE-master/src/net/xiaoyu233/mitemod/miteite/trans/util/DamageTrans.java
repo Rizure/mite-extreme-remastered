@@ -111,9 +111,8 @@ public class DamageTrans {
          DebugAttack.setPiercing(piercing);
          if (target instanceof EntityPlayer && effective_protection >= this.amount) {
             delta = (int)(effective_protection - this.amount);
-
             for(int i = -1; i < delta; ++i) {
-               if (target.getRNG().nextFloat() < 0.2F) {
+               if (target.getRNG().nextFloat() < 0.1F) {
                   return 0.0F;
                }
             }

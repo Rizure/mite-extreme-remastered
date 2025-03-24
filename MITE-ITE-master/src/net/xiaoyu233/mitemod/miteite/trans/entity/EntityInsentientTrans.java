@@ -185,13 +185,9 @@ public abstract class EntityInsentientTrans extends EntityLiving {
                   amp = 2;
                }
                if (!item.isMaxToolLevel(stack)) {
-                  if (item.isWeapon(item) || amp != 1) {
-                     item.addExpForTool(stack, (EntityPlayer) attacker, (int) Math.min(this.getMaxHealth(), result.getAmountOfHealthLost() * amp));
-                  } else {
-                     item.addExpForTool(stack, (EntityPlayer) attacker, 1);
-                  }
+                  item.addExpForTool(stack, (EntityPlayer) attacker, (int) Math.min(this.getMaxHealth(), result.getAmountOfHealthLost() * amp / 2.0F));
                }
-               boolean performDiscord = ToolModifierTypes.DISCORD.getModifierLevel(stack.getTagCompound()) != 0;
+               boolean performDiscord = ToolModifierTypes.DISCORD.getModifierValue(stack.getTagCompound()) != 0;
                float discordLvl = ToolModifierTypes.DISCORD.getModifierValue(stack.getTagCompound());
                float slowMdfLvl = ToolModifierTypes.SLOWDOWN_MODIFIER.getModifierValue(stack.getTagCompound());
                float witherLvl = ToolModifierTypes.APOCALYPSE.getModifierValue(stack.getTagCompound());

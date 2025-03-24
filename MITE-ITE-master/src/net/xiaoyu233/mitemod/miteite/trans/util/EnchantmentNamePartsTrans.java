@@ -5,5 +5,6 @@ import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(axq.class)
 public class EnchantmentNamePartsTrans {
-    private String[] c = "niko simple xantares zywoo frozen shiro flit jame sunpayus monesy spinx fame ropz yuurih axile nawwk electronic broky hunter hallzerk woxic grim jkaem magisk wonderful flamez xertion mezii rain elige kscerato bit jl hobbit norberl magixx saffee floppy im torzsi styko maden perfecto nexa siren boombla chopper snappi mir art ".split(" ");
+    private String[] c = "zywoo donk childking kyousuke lihang blamef monesy norbert somebody moseyuh niko lake bit ropz decenty try kscerato makazze senzu rez wicadia im twistzz device hallzerk jamyoung jl regali yekindar jba sonic summer elige jame callmesue insani hunter jabbi wonderful xertion torzsi woxic nexa mezii jee flit spinx blitz broky ".split(" ");
 }
+

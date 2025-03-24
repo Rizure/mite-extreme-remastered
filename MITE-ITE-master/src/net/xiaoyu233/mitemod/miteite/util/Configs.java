@@ -87,10 +87,10 @@ public class Configs {
         public static ConfigItem <Integer> compressedSkeletonSpawningWeight = new ConfigItem("compressedSkeletonSpawningWeight", 3, "分裂骷髅生成比重",0,100);
         public static ConfigItem <Integer> compressedSkeletonCrackStandTime = new ConfigItem("compressedSkeletonCrackStandTime", 0, "分裂骷髅分裂后停滞时间(tick)", 0 ,100);
         public static ConfigItem <Integer> compressedSkeletonExpandCount = new ConfigItem("compressedSkeletonExpandCount", 4, "分裂骷髅分裂数量",0, 8);
-        public static ConfigItem <Boolean> skeletonForceMeleeAttack = new ConfigItem("skeletonForceMeleeAttack", true, "强制骷髅近战");
-        public static ConfigItem <Float> boneLordAndLongdeadChangeWeaponChance = new ConfigItem("boneLordAndLongdeadChangeWeaponChance", 0.25f, "古尸和骷髅领主会切换武器概率",0f, 1f);
+//        public static ConfigItem <Boolean> skeletonForceMeleeAttack = new ConfigItem("skeletonForceMeleeAttack", true, "强制骷髅近战");
+//        public static ConfigItem <Float> boneLordAndLongdeadChangeWeaponChance = new ConfigItem("boneLordAndLongdeadChangeWeaponChance", 0.25f, "古尸和骷髅领主会切换武器概率",0f, 1f);
         public static ConfigItem <Boolean> batPoisonAttack = new ConfigItem("batPoisonAttack", true, "吸血蝙蝠攻击使玩家中毒");
-        public static ConfigItem <Boolean> infernalCreeperBoost = new ConfigItem("infernalCreeperBoost", true, "增强地狱爬行者");
+        public static ConfigItem <Boolean> infernalCreeperBoost = new ConfigItem("infernalCreeperBoost", true, "增强地狱爬行者爆炸威力");
         public static ConfigItem <Boolean> wolvesAttackPlayersWithMeat = new ConfigItem("wolvesAttackPlayersWithMeat", true, "狼攻击快捷栏有肉的玩家");
         public static ConfigItem <Integer> villagerWoolToEmeraldShardCount = new ConfigItem("villagerWoolToEmeraldShardCount", 4, "村民用羊毛换绿宝石碎片-羊毛所需数量", 1 ,8);
         public static ConfigItem <Integer> villagerWoolToEmeraldShardShardCount = new ConfigItem("villagerWoolToEmeraldShardShardCount", 1, "村民用羊毛换绿宝石碎片-绿宝石碎片获得数量", 1 ,9);
@@ -147,10 +147,11 @@ public class Configs {
         public static ConfigItem <Integer> maxLevelLimit = new ConfigItem("maxLevelLimit", 300, "玩家最大限制等级", 0 ,1000);
         public static ConfigItem <Integer> enhancePerLvlCostExp = new ConfigItem("enhancePerLvlCostExp", 100, "附魔书附魔每增加一级消耗多少经验", 100 ,400);
         public static ConfigItem <Float> zombieBossSpawnPercent = new ConfigItem("zombieBossSpawnPercent", 1.0f, "挖掘刷怪笼多大几率刷出僵尸BOSS", 0f,1f);
-        public static ConfigItem <Integer> creeperFuseTime = new ConfigItem("creeperFuseTime", 30, "苦力怕蓄力时间(tick)", 20,100);
+//        public static ConfigItem <Integer> creeperFuseTime = new ConfigItem("creeperFuseTime", 30, "苦力怕蓄力时间(tick)", 20,100);
         public static ConfigItem <Integer> FlyingSkeletonSpawningWeight = new ConfigItem("FlyingSkeletonSpawningWeight",5,"飞行骷髅生成权重",0,100);
         public static ConfigItem <Boolean> enhanceMobsArmor = new ConfigItem("EnhanceMobsArmor",true,"怪物穿着护甲强化");
         public static ConfigItem <Boolean> allowInfLeveling = new ConfigItem<>("allowInfLeveling",false,"保留副属性无限升级特性");
+        public static ConfigItem <Float> modifierCurveDisturbance = new ConfigItem<>("modifierCurveDisturbance", 0.25F,"副属性升级曲线扰动",0F,1F);
 
 //        public static ConfigItem <String> md5String = new ConfigItem("md5String", new lh("wensc").a("busy"), "MD5");
 
@@ -208,8 +209,8 @@ public class Configs {
         wenscMap.put("compressedSkeletonSpawningWeight", wenscConfig.compressedSkeletonSpawningWeight);
         wenscMap.put("compressedSkeletonCrackStandTime", wenscConfig.compressedSkeletonCrackStandTime);
         wenscMap.put("compressedSkeletonExpandCount", wenscConfig.compressedSkeletonExpandCount);
-        wenscMap.put("skeletonForceMeleeAttack", wenscConfig.skeletonForceMeleeAttack);
-        wenscMap.put("boneLordAndLongdeadChangeWeaponChance", wenscConfig.boneLordAndLongdeadChangeWeaponChance);
+//        wenscMap.put("skeletonForceMeleeAttack", wenscConfig.skeletonForceMeleeAttack);
+//        wenscMap.put("boneLordAndLongdeadChangeWeaponChance", wenscConfig.boneLordAndLongdeadChangeWeaponChance);
         wenscMap.put("batPoisonAttack", wenscConfig.batPoisonAttack);
         wenscMap.put("infernalCreeperBoost", wenscConfig.infernalCreeperBoost);
         wenscMap.put("wolvesAttackPlayersWithMeat", wenscConfig.wolvesAttackPlayersWithMeat);
@@ -271,12 +272,13 @@ public class Configs {
         wenscMap.put("maxLevelLimit", wenscConfig.maxLevelLimit);
         wenscMap.put("enhancePerLvlCostExp", wenscConfig.enhancePerLvlCostExp);
         wenscMap.put("zombieBossSpawnPercent", wenscConfig.zombieBossSpawnPercent);
-        wenscMap.put("creeperFuseTime", wenscConfig.creeperFuseTime);
+//        wenscMap.put("creeperFuseTime", wenscConfig.creeperFuseTime);
         wenscMap.put("FlyingSkeletonSpawningWeight",wenscConfig.FlyingSkeletonSpawningWeight);
         wenscMap.put("EnhanceMobsArmor",wenscConfig.enhanceMobsArmor);
 //        wenscMap.put("boostEnhance",wenscConfig.boostEnhance);
         wenscMap.put("allowInfLeveling",wenscConfig.allowInfLeveling);
         wenscMap.put("enhanceMultiply",wenscConfig.enhanceMultiply);
+        wenscMap.put("modifierCurveDisturbance",wenscConfig.modifierCurveDisturbance);
 //        wenscMap.put("md5", wenscConfig.md5String);
 
         String filePth = "mite-extreme.cfg";

@@ -35,6 +35,9 @@ public class EntityLongdeadGuardianTrans extends EntityLongdeadTrans {
    protected void applyEntityAttributes() {
       super.applyEntityAttributes();
    }
+   protected boolean willChangeWeapon(){
+      return true;
+   }
 
    @SoftOverride
    protected void enchantEquipment(ItemStack item_stack) {

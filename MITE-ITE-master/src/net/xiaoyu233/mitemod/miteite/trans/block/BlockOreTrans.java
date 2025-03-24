@@ -48,7 +48,7 @@ public class BlockOreTrans extends Block {
             EntityPlayer player = info.getResponsiblePlayer();
             float melting = 0.0f;
             boolean melt_enabled = false;
-            if (player.getHeldItemStack() != null) {
+            if (player != null && player.getHeldItemStack() != null) {
                 melting = (ToolModifierTypes.MELTING.getModifierValue(player.getHeldItemStack().getTagCompound()));
                 melting *= info.responsible_item_stack.getItemAsTool().getMaterialHarvestLevel() - this.getMinHarvestLevel(0);
             }
@@ -80,8 +80,7 @@ public class BlockOreTrans extends Block {
                 id_dropped = Item.ingotAdamantium.itemID;
             } else if (this == oreNetherQuartz) {
                 id_dropped = Item.netherQuartz.itemID;
-            }
-            else if(this == Blocks.fancyRed){
+            } else if(this == Blocks.fancyRed){
                 id_dropped = Items.fancyRed.itemID;
             } else {
                 id_dropped = this.blockID;

@@ -29,22 +29,22 @@ public class EntityBoneLordTrans extends EntitySkeletonTrans {
    protected void addRandomEquipment() {
       this.addRandomWeapon();
       int day = this.getWorld() != null ? Math.max(this.getWorld().getDayOfOverworld(), 0) : 0;
-      if (day < 64) {
+      if (day < 48) {
          this.setBoots((new ItemStack(Item.bootsRustedIron)).randomizeForMob(this, true));
          this.setLeggings((new ItemStack(Item.legsRustedIron)).randomizeForMob(this, true));
          this.setCuirass((new ItemStack(Item.plateRustedIron)).randomizeForMob(this, true));
          this.setHelmet((new ItemStack(Item.helmetRustedIron)).randomizeForMob(this, true));
       } else {
-         MonsterUtil.addDefaultArmor(day, this, true);
+         MonsterUtil.addDefaultArmor(day + 16, this, true);
       }
       this.initStockedWeapon();
 
    }
 
-   @Override
-   protected boolean willChangeWeapon() {
-      return Configs.wenscConfig.boneLordAndLongdeadChangeWeaponChance.ConfigValue > this.rand.nextFloat();
-   }
+//   @Override
+//   protected boolean willChangeWeapon() {
+//      return Configs.wenscConfig.boneLordAndLongdeadChangeWeaponChance.ConfigValue > this.rand.nextFloat();
+//   }
 
    @Overwrite
    protected void applyEntityAttributes() {

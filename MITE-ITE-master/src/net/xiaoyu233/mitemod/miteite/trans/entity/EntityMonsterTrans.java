@@ -56,7 +56,8 @@ public abstract class EntityMonsterTrans extends EntityInsentient implements IMo
    public void attackEntityFrom(Damage damage, CallbackInfoReturnable<EntityDamageResult> c) {
       if ((Configs.wenscConfig.mobDefense.ConfigValue)
               && damage.getResponsibleEntityP() != null
-              && this.getHeldItem() instanceof ItemTool && this.rand.nextInt(2) > 0) {
+              && this.getHeldItem() instanceof ItemTool && this.rand.nextInt(2) > 0
+              && !damage.bypassesMundaneArmor()) {
          damage.scaleAmount(0.5F);
          if (Configs.wenscConfig.mobDisarmWhenDefence.ConfigValue){
             this.tryDisarmTarget(damage.getResponsibleEntityP());
@@ -227,6 +228,9 @@ public abstract class EntityMonsterTrans extends EntityInsentient implements IMo
 
    @Inject(method = "onLivingUpdate",at = @At("RETURN"))
    public void onLivingUpdate(CallbackInfo callbackInfo) {
+      if(this.getTarget() != null && !(this.getTarget() instanceof EntityPlayer) && this.getTicksExistedWithOffset() % 300 == 0){
+         this.setTarget((EntityLiving) null);
+      }
       if (this.fireParticleTick > 0){
          this.fireParticleTick--;
       }

@@ -82,9 +82,29 @@ public class GuiPlayerOverlayTrans extends avk {
    }
 
    @Redirect(method = "a(II)V",
-           at = @At(value = "INVOKE",target = "Lnet/minecraft/AttributeInstance;getAttributeValue()D"))
+           at = @At(value = "INVOKE",target = "Lnet/minecraft/MathHelper;ceiling_float_int(F)I", ordinal = 0))
+   private int redirectCurrentHealth(float par1){
+      return MathHelper.ceiling_float_int(this.g.h.getHealthFraction() * this.fractionHealth());
+   }
+   @Redirect(method = "a(II)V",
+           at = @At(value = "INVOKE",target = "Lnet/minecraft/MathHelper;ceiling_float_int(F)I", ordinal = 1))
+   private int redirectPrevHealth(float par1){
+      return MathHelper.ceiling_float_int((this.g.h.prevHealth / this.g.h.getHealthLimit()) * this.fractionHealth());
+   }
+   @Redirect(method = "a(II)V",
+           at = @At(value = "INVOKE",target = "Lnet/minecraft/AttributeInstance;getAttributeValue(Lnet/mincraft/GenericAttributes;)D"))
    private double redirectHealthLimit(AttributeInstance att){
-      return this.g.h.getHealthLimit();
+      return this.fractionHealth();
+//      return 20;
+   }
+   private float fractionHealth(){
+      return Math.min(this.g.h.getHealthLimit(), 20.0F);
+   }
+   @Redirect(method = "a(II)V",
+           at = @At(value = "INVOKE",target = "Lnet/minecraft/EntityLiving;getAbsorptionAmount()F"))
+   private float redirectAbsorptionAmount(){
+//      return this.g.h.getHealthLimit();
+      return this.g.h.getAbsorptionAmount() / this.g.h.getHealthLimit() * this.fractionHealth();
    }
 
    public void setOverlayMsg(String overlayMsg, int displayTime, int color) {

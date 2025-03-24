@@ -420,7 +420,7 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
          if (true){
             ItemStack chestplate = this.getCuirass();
             if (chestplate != null){
-               float value = ArmorModifierTypes.INDOMITABLE.getModifierValue(chestplate.getTagCompound());
+               float value = ArmorModifierTypes.INDOMITABLE.getModifierValue(chestplate.getTagCompound()) * 2.0F;
                if (value != 0){
                   indomitableAmp += (this.getIndomitableAmp(healthPercent) * value);
                }
@@ -958,30 +958,33 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
          return new int[]{x, 120, z};
       }
    }
-   @Overwrite
-   protected void jump() {
-      double levityLvl = 1.0D;
-      if(this.getLeggings() != null){
-         ItemStack Leggings = this.getLeggings();
-         levityLvl += ArmorModifierTypes.LEVITY.getModifierValue(Leggings.stackTagCompound);
-      }
-      this.motionY = 0.42100000381469727 * levityLvl;
-      if (this.isPotionActive(MobEffectList.jump)) {
-         this.motionY += (double)((float)(this.getActivePotionEffect(MobEffectList.jump).getAmplifier() + 1) * 0.1F);
-      }
-
-      if (this.isSprinting()) {
-         float var1 = this.rotationYaw * 0.017453292F;
-         this.motionX -= (double)(MathHelper.sin(var1) * 0.2F);
-         this.motionZ += (double)(MathHelper.cos(var1) * 0.2F);
-      }
-
-      this.isAirBorne = true;
-      this.addStat(StatisticList.jumpStat, 1);
-      if (ReflectHelper.dyCast(this) instanceof ClientPlayer) {
-         ((EntityPlayer)ReflectHelper.dyCast(this)).getAsEntityClientPlayerMP().sendPacket((new Packet85SimpleSignal(EnumSignal.increment_stat_for_this_world_only)).setInteger(StatisticList.jumpStat.statId));
-      }
-   }
+//   @Overwrite
+//   protected void jump() {
+//      this.motionY = 0.42100000381469727;
+//      
+//      double levityLvl = 0.0D;
+//      if(this.getLeggings() != null){
+//         ItemStack Leggings = this.getLeggings();
+//         levityLvl += ArmorModifierTypes.LEVITY.getModifierValue(Leggings.stackTagCompound);
+//      }
+//      this.motionY += 0.05 * levityLvl;
+//      
+//      if (this.isPotionActive(MobEffectList.jump)) {
+//         this.motionY += (double)((float)(this.getActivePotionEffect(MobEffectList.jump).getAmplifier() + 1) * 0.1F);
+//      }
+//
+//      if (this.isSprinting()) {
+//         float var1 = this.rotationYaw * 0.017453292F;
+//         this.motionX -= (double)(MathHelper.sin(var1) * 0.2F);
+//         this.motionZ += (double)(MathHelper.cos(var1) * 0.2F);
+//      }
+//
+//      this.isAirBorne = true;
+//      this.addStat(StatisticList.jumpStat, 1);
+//      if (ReflectHelper.dyCast(this) instanceof ClientPlayer) {
+//         ((EntityPlayer)ReflectHelper.dyCast(this)).getAsEntityClientPlayerMP().sendPacket((new Packet85SimpleSignal(EnumSignal.increment_stat_for_this_world_only)).setInteger(StatisticList.jumpStat.statId));
+//      }
+//   }
 
    @Overwrite
    public ItemStack[] getWornItems() {
@@ -1006,7 +1009,7 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
    @Redirect(method = "getCurrentPlayerStrVsBlock",at = @At(value = "INVOKE",target = "Lnet/minecraft/EnchantmentManager;getAquaAffinityModifier(Lnet/minecraft/EntityLiving;)Z"))
    private boolean redirectCheckAquaEnchantment(EntityLiving player){
       boolean aquaAffinityModifier = EnchantmentManager.getAquaAffinityModifier(this);
-      boolean waterLike = this.getHeldItemStack() != null && ToolModifierTypes.AQUADYNAMIC_MODIFIER.getModifierLevel(this.getHeldItemStack().getTagCompound()) != 0;
+      boolean waterLike = this.getHeldItemStack() != null && ToolModifierTypes.AQUADYNAMIC_MODIFIER.getModifierValue(this.getHeldItemStack().getTagCompound()) != 0;
       return aquaAffinityModifier || waterLike;
    }
 
@@ -1033,16 +1036,6 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
                this.attackCountMap.put(responsibleEntity, this.attackCountMap.get(responsibleEntity) + 1);
             } else {
                this.attackCountMap.put(responsibleEntity, 1);
-            }
-
-            // 去掉附魔金苹果的保护值
-            float protection = this.getProtection(damage.getSource(), true, true, true, false);
-            // 如果伤害低于当前总防御力，如果高于总防御按照正常计算
-            if(damage.getAmount() < protection) {
-               int trueHurtPercent = (int)(protection / 10); // 护甲值倍率数0,1,2,3,4,5 真伤概率60%,50%,40%,30%,20%,10%
-               if(rand.nextInt(10) < Math.max(6 - trueHurtPercent, 0)) {
-                  damage.setAmount(this.getTotalProtection(damage.getSource()) + damage.getAmount() / 10);
-               }
             }
          }
       }
@@ -1117,7 +1110,7 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
       for(int i = 0; i< targets.size(); i++) {
          EntityLiving entityMonster = targets.get(i) instanceof EntityMonster || targets.get(i) instanceof EntityBat ? (EntityLiving) targets.get(i) : null;
          if(entityMonster != null && (!EntityEnderman.class.isInstance(entityMonster) && !EntitySilverfish.class.isInstance(entityMonster) && !EntityZombieBoss.class.isInstance(entityMonster))) {
-            entityMonster.attackEntityFrom(new Damage(DamageSource.causePlayerDamage(this.getAsPlayer()), damage));
+            entityMonster.attackEntityFrom(new Damage(DamageSource.causeIndirectMagicDamage(entityMonster,this.getAsPlayer()), damage));
             entityMonster.addVelocity(-MathHelper.sin(this.rotationYaw * 3.1415927F / 180.0F) * 0.75F * 0.5F, 0.1D, MathHelper.cos(this.rotationYaw * 3.1415927F / 180.0F) * 0.75F * 0.5F);
          }
       }
@@ -1134,7 +1127,6 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
          ItemStack currentItemStack = this.inventory.getDynamicCore();
          if(currentItemStack != null) {
             if(currentItemStack.getItemDamage() < currentItemStack.getMaxDamage() - 40) {
-
                this.dynamicCoreLevel = ((ItemDynamicCore)currentItemStack.getItem()).level;
                if (!this.worldObj.isRemote){
                   currentItemStack.tryDamageItem(DamageSource.causePlayerDamage(ReflectHelper.dyCast(this)), 40, ReflectHelper.dyCast(this));
@@ -1182,6 +1174,18 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
                this.addPotionEffect(new MobEffect(MobEffectList.field_76444_x.id, 600, amplifier - 1));
                currentItemStack.tryDamageItem(DamageSource.causePlayerDamage(ReflectHelper.dyCast(this)), (int)this.getMaxHealth() * 20, ReflectHelper.dyCast(this));
             }
+         }
+      }
+      
+      if(this.motionY < 0.0F && !this.onGround){
+         double levityLvl = 0.0D;
+         if(this.getLeggings() != null){
+            ItemStack Leggings = this.getLeggings();
+            levityLvl += ArmorModifierTypes.LEVITY.getModifierValue(Leggings.stackTagCompound);
+         }
+         this.motionY *= 1 - (0.05 * levityLvl);
+         if (this.isPotionActive(MobEffectList.jump)) {
+            this.motionY += (double)((float)(this.getActivePotionEffect(MobEffectList.jump).getAmplifier() + 1) * 0.1F);
          }
       }
 
