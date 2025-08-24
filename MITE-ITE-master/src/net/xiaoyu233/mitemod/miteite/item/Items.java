@@ -2,6 +2,7 @@ package net.xiaoyu233.mitemod.miteite.item;
 
 import net.minecraft.*;
 import net.xiaoyu233.mitemod.miteite.block.Blocks;
+import net.xiaoyu233.mitemod.miteite.inventory.container.ContainerShop;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
 import net.xiaoyu233.mitemod.miteite.util.Constant;
 import net.xiaoyu233.mitemod.miteite.util.RecipeRegister;
@@ -68,9 +69,9 @@ public class Items extends Item{
     public static final Item itemDynamicCoreIron = new ItemDynamicCore(Constant.getNextItemID(), Materials.iron, 1).setUnlocalizedName("dynamic_core_iron");
     public static final Item itemDynamicCoreAncient_metal = new ItemDynamicCore(Constant.getNextItemID(), Materials.ancient_metal, 2).setUnlocalizedName("dynamic_core_ancient_metal");
     public static final Item itemDynamicCoreMithril = new ItemDynamicCore(Constant.getNextItemID(), Materials.mithril, 3).setUnlocalizedName("dynamic_core_mithril");
-
     public static final Item itemDynamicCoreAdamantium = new ItemDynamicCore(Constant.getNextItemID(), Materials.adamantium, 4).setUnlocalizedName("dynamic_core_adamantium");
     public static final Item itemDynamicCoreVibranium = new ItemDynamicCore(Constant.getNextItemID(), Materials.vibranium, 5).setUnlocalizedName("dynamic_core_vibranium");
+
     public static final Item fancyRed = (new ItemFancyRed(Constant.getNextItemID(), Material.diamond, "fancy_red"));
 
     public static ItemEnhanceGem itemEnhanceGem = (ItemEnhanceGem)(new ItemEnhanceGem(Constant.getNextItemID(), 1)).setUnlocalizedName("enhance_gem_phase1");
@@ -140,16 +141,21 @@ public class Items extends Item{
     public static final ItemGAMisc escanor = new ItemGAMisc(Constant.getNextItemID(),"escanor");
     public static final Item gemYellow = (ItemConsumables) new ItemConsumables(Constant.getNextItemID(), Material.gold, "gem_y").setCreativeTab(CreativeModeTab.tabTools);
     public static final Item gemBlue = (ItemConsumables) new ItemConsumables(Constant.getNextItemID(), Material.diamond, "gem_b").setCreativeTab(CreativeModeTab.tabTools);
+
     public static final ItemEnhancedPickaxe towards_Pickaxe = new ItemEnhancedPickaxe(Constant.getNextItemID(),Material.iron,1);
     public static final ItemEnhancedPickaxe stairs_Pickaxe = new ItemEnhancedPickaxe(Constant.getNextItemID(),Material.ancient_metal,2);
     public static final ItemEnhancedPickaxe star_Pickaxe = new ItemEnhancedPickaxe(Constant.getNextItemID(),Material.mithril,3);
     public static final ItemEnhancedPickaxe plate_Pickaxe = new ItemEnhancedPickaxe(Constant.getNextItemID(),Materials.adamantium,4);
     public static final ItemEnhancedPickaxe cube_Pickaxe = new ItemEnhancedPickaxe(Constant.getNextItemID(),Materials.vibranium,5);
+
     public static final ItemConsumables final_key = new ItemConsumables(Constant.getNextItemID(),Materials.vibranium,"final_key");
     public static final ItemGAMisc cracked_key = new ItemGAMisc(Constant.getNextItemID(),"cracked_key");
     public static final ItemConsumables endScroll = new ItemConsumables(Constant.getNextItemID(),Material.paper,"end_scroll");
     public static final ItemGrenade grenade = new ItemGrenade(Constant.getNextItemID(),Material.circuits);
     public static final Item clubAncientMetal = new ItemClubMetal(Constant.getNextItemID(), Material.ancient_metal);
+
+    public static final ItemShard shardFancyRed = new ItemShardExtend(Constant.getNextItemID(), Material.diamond);
+    public static final ItemGAMisc headstone_bag = new ItemGAMisc(Constant.getNextItemID(),"headstone_bag");
     private static Item register(String resourceLocation, Item item, CreativeModeTab tab) {
         item.setResourceLocation(item.getResourceLocationPrefix() + resourceLocation);
         item.setUnlocalizedName(resourceLocation);
@@ -242,6 +248,7 @@ public class Items extends Item{
         register("guard_core/5", itemGuardCoreVibranium).setUnlocalizedName("guard_core_vibranium").setLowestCraftingDifficultyToProduce(1.0F);
 
         register("fancy_red", fancyRed).setUnlocalizedName("fancy_red").setLowestCraftingDifficultyToProduce(1.0F);
+        register("fancy_red_shard",shardFancyRed).setUnlocalizedName("shardFancyRed");
         register("gem/enhance_gem_phase1", itemEnhanceGem).setUnlocalizedName("enhance_gem_phase1").setLowestCraftingDifficultyToProduce(1.0F);
         register("gem/enhance_gem_phase2", itemEnhanceGem2).setUnlocalizedName("enhance_gem_phase2").setLowestCraftingDifficultyToProduce(1.0F);
         register("gem/enhance_gem_phase3", itemEnhanceGem3).setUnlocalizedName("enhance_gem_phase3").setLowestCraftingDifficultyToProduce(1.0F);
@@ -291,6 +298,7 @@ public class Items extends Item{
         register("cracked_key",cracked_key);
         register("end_scroll",endScroll);
         register("t13",grenade);
+        register("headstone_bag",headstone_bag);
         
         register("towards_pickaxe",towards_Pickaxe);
         register("stairs_pickaxe",stairs_Pickaxe);
@@ -363,6 +371,8 @@ public class Items extends Item{
         register.registerShapedRecipe(new ItemStack(itemDynamicCoreAdamantium, 1), true, new Object[]{"ABA", "BCB","DBD", 'A', Items.ingotAdamantium, 'D', Blocks.blockAdamantium , 'B', Blocks.glass, 'C', Items.itemDynamicCoreMithril});
         register.registerShapedRecipe(new ItemStack(itemDynamicCoreVibranium, 1), true, new Object[]{"ABA", "BCB","DBD", 'A', Items.VIBRANIUM_INGOT, 'D', Blocks.blockVibranium , 'B', Blocks.glass, 'C', Items.itemDynamicCoreAdamantium});
 
+        register.registerShapedRecipe(new ItemStack(headstone_bag,1),true,new Object[]{"ABA", "BCB","ABA", 'A', Item.ingotIron, 'B', Blocks.obsidian, 'C', Item.emerald});
+
         register.registerShapedRecipe(new ItemStack(itemRegenerationCoreIron, 1), true, new Object[]{"ABA", "BCB","DBD", 'A', Items.ingotIron, 'D', Blocks.blockIron , 'B', Blocks.glass, 'C', Items.voucherSpider});
         register.registerShapedRecipe(new ItemStack(itemRegenerationCoreAncient_metal, 1), true, new Object[]{"ABA", "BCB","DBD",'A', Items.ingotAncientMetal, 'D', Blocks.blockAncientMetal , 'B', Blocks.glass, 'C', Items.itemRegenerationCoreIron});
         register.registerShapedRecipe(new ItemStack(itemRegenerationCoreMithril, 1), true, new Object[]{"ABA", "BCB","DBD",'A', Items.ingotMithril, 'D', Blocks.blockMithril , 'B', Blocks.glass, 'C', Items.itemRegenerationCoreAncient_metal});
@@ -413,12 +423,29 @@ public class Items extends Item{
                 'S', Item.shardObsidian);
 
         if(Configs.wenscConfig.isRecipeRingKiller.ConfigValue) {
-            register.registerShapedRecipe(new ItemStack(ringKillerCopper, 1), true, new Object[]{"###", "#*#","###", '#', Items.swordCopper , '*', Items.emerald});
-            register.registerShapedRecipe(new ItemStack(ringKillerIron, 1), true, new Object[]{"###", "#*#","###", '#', Items.swordIron , '*', Items.ringKillerCopper});
-            register.registerShapedRecipe(new ItemStack(ringKillerAncient, 1), true, new Object[]{"###", "#*#","###", '#', Items.swordAncientMetal , '*', Items.ringKillerIron});
-            register.registerShapedRecipe(new ItemStack(ringKillerMithril, 1), true, new Object[]{"###", "#*#","###", '#', Items.swordMithril , '*', Items.ringKillerAncient});
-            register.registerShapedRecipe(new ItemStack(ringKillerAdamantium, 1), true, new Object[]{"###", "#*#","###", '#', Items.swordAdamantium , '*', Items.ringKillerMithril});
-            register.registerShapedRecipe(new ItemStack(ringKillerVibranium, 1), true, new Object[]{"###", "#*#","###", '#', VIBRANIUM_SWORD , '*', Items.ringKillerAdamantium});
+            for(int i = 0; i <= 2; ++i) {
+                register.registerShapedRecipe(new ItemStack(ringKillerCopper, 1, i), true, new Object[]{"###", "#*#","###", '#', Items.swordCopper , '*', Items.emerald});
+                register.registerShapedRecipe(new ItemStack(ringKillerIron, 1, i), true, new Object[]{"###", "#*#","###", '#', Items.swordIron , '*',  new ItemStack(ringKillerCopper, 1, i)});
+                register.registerShapedRecipe(new ItemStack(ringKillerAncient, 1, i), true, new Object[]{"###", "#*#","###", '#', Items.swordAncientMetal , '*', new ItemStack(ringKillerIron, 1, i)});
+                register.registerShapedRecipe(new ItemStack(ringKillerMithril, 1, i), true, new Object[]{"###", "#*#","###", '#', Items.swordMithril , '*', new ItemStack(ringKillerAncient, 1, i)});
+                register.registerShapedRecipe(new ItemStack(ringKillerAdamantium, 1, i), true, new Object[]{"###", "#*#","###", '#', Items.swordAdamantium , '*', new ItemStack(ringKillerMithril, 1, i)});
+                register.registerShapedRecipe(new ItemStack(ringKillerVibranium, 1, i), true, new Object[]{"###", "#*#","###", '#', VIBRANIUM_SWORD , '*', new ItemStack(ringKillerAdamantium, 1, i)});
+                if (i == 2) {
+                    register.registerShapelessRecipe(new ItemStack(ringKillerCopper, 1, i), true, new Object[]{new ItemStack(ringKillerCopper, 1, 0)});
+                    register.registerShapelessRecipe(new ItemStack(ringKillerIron, 1, i), true, new Object[]{new ItemStack(ringKillerIron, 1, 0)});
+                    register.registerShapelessRecipe(new ItemStack(ringKillerAncient, 1, i), true, new Object[]{new ItemStack(ringKillerAncient, 1, 0)});
+                    register.registerShapelessRecipe(new ItemStack(ringKillerMithril, 1, i), true, new Object[]{new ItemStack(ringKillerMithril, 1, 0)});
+                    register.registerShapelessRecipe(new ItemStack(ringKillerAdamantium, 1, i), true, new Object[]{new ItemStack(ringKillerAdamantium, 1, 0)});
+                    register.registerShapelessRecipe(new ItemStack(ringKillerVibranium, 1, i), true, new Object[]{new ItemStack(ringKillerVibranium, 1, 0)});
+                } else {
+                    register.registerShapelessRecipe(new ItemStack(ringKillerCopper, 1, i), true, new Object[]{new ItemStack(ringKillerCopper, 1, i + 1)});
+                    register.registerShapelessRecipe(new ItemStack(ringKillerIron, 1, i), true, new Object[]{new ItemStack(ringKillerIron, 1, i + 1)});
+                    register.registerShapelessRecipe(new ItemStack(ringKillerAncient, 1, i), true, new Object[]{new ItemStack(ringKillerAncient, 1, i + 1)});
+                    register.registerShapelessRecipe(new ItemStack(ringKillerMithril, 1, i), true, new Object[]{new ItemStack(ringKillerMithril, 1, i + 1)});
+                    register.registerShapelessRecipe(new ItemStack(ringKillerAdamantium, 1, i), true, new Object[]{new ItemStack(ringKillerAdamantium, 1, i + 1)});
+                    register.registerShapelessRecipe(new ItemStack(ringKillerVibranium, 1, i), true, new Object[]{new ItemStack(ringKillerVibranium, 1, i + 1)});
+                }
+            }
         }
 
         for(int i =0; i < GemModifierTypes.values().length; i++) {
@@ -447,19 +474,13 @@ public class Items extends Item{
                 'D',
                 Items.voucherCore);
         register.registerShapelessRecipe(new ItemStack(VIBRANIUM_NUGGET, 9), true, VIBRANIUM_INGOT);
-        register.registerShapelessRecipe(new ItemStack(VIBRANIUM_INGOT),
-                true,
-                VIBRANIUM_NUGGET,
-                VIBRANIUM_NUGGET,
-                VIBRANIUM_NUGGET,
-                VIBRANIUM_NUGGET,
-                VIBRANIUM_NUGGET,
-                VIBRANIUM_NUGGET,
-                VIBRANIUM_NUGGET,
-                VIBRANIUM_NUGGET,
-                VIBRANIUM_NUGGET);
-            
-            Material[] lowerTierLoop = new Material[]{Material.copper,Material.silver,Material.gold};
+        register.registerShapelessRecipe(new ItemStack(VIBRANIUM_INGOT), true,new ItemStack(VIBRANIUM_NUGGET,9));
+
+        register.registerShapelessRecipe(new ItemStack(fancyRed),true,new ItemStack(shardFancyRed,9));
+        register.registerShapelessRecipe(new ItemStack(shardFancyRed,9),true,new ItemStack(fancyRed));
+        register.registerShapelessRecipe(new ItemStack(fancyRed,9),true,new ItemStack(Blocks.blockFancyRed,1));
+
+        Material[] lowerTierLoop = new Material[]{Material.copper,Material.silver,Material.gold};
             Material[] stdTierLoop = new Material[]{Material.iron,Material.ancient_metal,Material.mithril,Material.adamantium,Materials.vibranium};
             
             for (int i = 0; i < lowerTierLoop.length; i++){

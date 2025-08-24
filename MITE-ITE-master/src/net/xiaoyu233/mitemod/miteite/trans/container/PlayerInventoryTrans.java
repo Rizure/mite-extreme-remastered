@@ -64,7 +64,14 @@ public class PlayerInventoryTrans {
       }
       return itemStack;
    }
-
+   public boolean containsHeadstone() {
+       for(int i = 0; i < this.jewelryInventory.length; ++i) {
+           if (this.jewelryInventory[i] != null && (this.jewelryInventory[i].getItem() == Items.headstone_bag)) {
+               return true;
+           }
+       }
+       return false;
+   }
    public ItemStack getDynamicCore() {
       for(int i = 0; i < this.jewelryInventory.length; ++i) {
          if (this.jewelryInventory[i] != null && (this.jewelryInventory[i].getItem() instanceof ItemDynamicCore)) {

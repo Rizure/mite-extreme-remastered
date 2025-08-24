@@ -16,10 +16,6 @@ public final class BlockLeaves1 extends BlockTransparant {
     private int e;
     private IIcon[][] iconArray = new IIcon[2][];
     int[] adjacentTreeBlocks;
-    public static final int OAK = 0;
-    public static final int SPRUCE = 1;
-    public static final int BIRCH = 2;
-    public static final int JUNGLE = 3;
 
     protected BlockLeaves1(int par1) {
         super(par1, Material.tree_leaves, false);

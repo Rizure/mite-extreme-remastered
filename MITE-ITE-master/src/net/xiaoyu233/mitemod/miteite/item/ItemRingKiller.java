@@ -13,6 +13,11 @@ public class ItemRingKiller extends Item{
         this.setCreativeTab(CreativeModeTab.tabCombat);
         this.setCraftingDifficultyAsComponent(1.0E-9F);
     }
+    public void a(int par1, CreativeModeTab par2CreativeTabs, List par3List) {
+        par3List.add(new ItemStack(par1, 1, 0));
+        par3List.add(new ItemStack(par1, 1, 1));
+        par3List.add(new ItemStack(par1, 1, 2));
+    }
 
     public int getLevel() {
         return this.level;
@@ -47,25 +52,50 @@ public class ItemRingKiller extends Item{
         return "ringKiller";
     }
 
-    public int getRingKillerSkillCoolDownTime() {
-        return (13 - this.level * 2) * 20;
+    public int getRingKillerSkillCoolDownTime(ItemStack itemStack) {
+        switch (itemStack.getItemSubtype()) {
+            case 0:
+                return (13 - this.level * 2) * 20;
+            case 1:
+                return (7 - this.level) * 10;
+            case 2:
+            default:
+                return (13 - this.level * 2) * 20;
+        }
     }
 
-    public float getRingKillerSkillRange() {
-        return 4F;
+    public float getRingKillerSkillRange(ItemStack itemStack) {
+        switch (itemStack.getItemSubtype()) {
+            case 0:
+                return 4.0F;
+            case 1:
+                return 2.5F;
+            case 2:
+            default:
+                return 6.0F;
+        }
     }
 
-    public float getRingKillerSkillDamage() {
-        return (float) this.level + 4F;
+    public float getRingKillerSkillDamage(ItemStack itemStack) {
+        switch (itemStack.getItemSubtype()) {
+            case 0:
+                return this.level + 4.0F;
+            case 1:
+                return this.level + 1.0F;
+            case 2:
+            default:
+                return this.level + 2.0F;
+        }
     }
 
     public void addInformation(ItemStack item_stack, EntityPlayer player, List info, boolean extended_info, Slot slot) {
         if (extended_info) {
             info.add(" ");
             info.add(EnumChatFormat.BROWN + Translator.getFormatted("自动范围群体伤害", new Object[0]));
-            info.add(EnumChatFormat.BLUE + Translator.getFormatted("范围" + this.getRingKillerSkillRange(), new Object[0]));
-            info.add(EnumChatFormat.RED + Translator.getFormatted("伤害" + this.getRingKillerSkillDamage(), new Object[0]));
-            info.add(EnumChatFormat.LIGHT_PURPLE + Translator.getFormatted("冷却" + (float)this.getRingKillerSkillCoolDownTime() / 20F + 'S', new Object[0]));
+            info.add(EnumChatFormat.BLUE + Translator.getFormatted("范围:" + this.getRingKillerSkillRange(item_stack), new Object[0]));
+            info.add(EnumChatFormat.RED + Translator.getFormatted("伤害:" + this.getRingKillerSkillDamage(item_stack), new Object[0]));
+            info.add(EnumChatFormat.LIGHT_PURPLE + Translator.getFormatted("冷却:" + (float)this.getRingKillerSkillCoolDownTime(item_stack) / 20F + 'S', new Object[0]));
+            info.add(EnumChatFormat.BLUE + Translator.getFormatted("模式:" + item_stack.getItemSubtype(), new Object[0]));
         }
     }
 }

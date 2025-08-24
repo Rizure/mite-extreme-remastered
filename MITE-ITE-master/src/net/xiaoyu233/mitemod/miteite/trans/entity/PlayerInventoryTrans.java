@@ -39,7 +39,7 @@ public class PlayerInventoryTrans {
       if (damage_source != null && damage_source.getResponsibleEntity() != null
               && !item.isMaxToolLevel(item_stack) && this.player.hurtTime == 10
       ) {
-         item.addExpForTool(item_stack, this.player, (int) Math.max(this.player.getTotalProtection(damage_source),result.getAmountOfHealthLost()));
+         item.addExpForTool(item_stack, this.player, (int) Math.max(this.player.getTotalProtection(damage_source),result.getAmountOfHealthLost()) * 3);
       }
    }
 

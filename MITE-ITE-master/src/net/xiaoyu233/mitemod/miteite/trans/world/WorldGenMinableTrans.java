@@ -123,13 +123,13 @@ public class WorldGenMinableTrans {
       } else if (block == Block.oreCoal) {
          return 16;
       } else if (block == Block.oreCopper) {
-         return 0;
+         return 24;
       } else if (block == Block.oreSilver) {
-         return 0;
+         return 24;
       } else if (block == Block.oreGold) {
          return 0;
       } else if (block == Block.oreIron) {
-         return 0;
+         return 16;
       } else if (block == Block.oreMithril) {
          return 0;
       } else if (block == Block.oreAdamantium || block == Block.silverfish) {
@@ -162,7 +162,16 @@ public class WorldGenMinableTrans {
    public int getMaxVeinHeight(World world) {
       Block block = Block.blocksList[this.minableBlockId];
       if (world.isUnderworld()) {
-         return 225;
+          if (block == Block.oreCopper) {
+              return 144;
+          } else if (block == Block.oreSilver) {
+              return 144;
+          } else if (block == Block.oreGold) {
+              return 144;
+          } else if (block == Block.oreIron) {
+              return 144;
+          }
+         return 224;
       } else if (world.isTheNether()){
          return 115;
       }else if (block == Block.dirt) {

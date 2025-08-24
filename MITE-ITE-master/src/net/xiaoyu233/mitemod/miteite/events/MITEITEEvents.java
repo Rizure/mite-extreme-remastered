@@ -158,6 +158,35 @@ public class MITEITEEvents {
 
                 event.setExecuteSuccess(true);
             }
+            if (par2Str.startsWith("replaceblock")) {
+                String[] subs = par2Str.split(" ");
+                if(subs.length == 6){
+                    int dx = Integer.parseInt(subs[1]);
+                    int dy = Integer.parseInt(subs[2]);
+                    int dz = Integer.parseInt(subs[3]);
+                    int from_block_id = Integer.parseInt(subs[4]);
+                    int towards_block_id = Integer.parseInt(subs[5]);
+                    int complete = 0;
+                    if(dx*dy*dz <= 1000000){
+                        for(int x = player.getBlockPosX() - dx; (x <= player.getBlockPosX() + dx); x++){
+                            for(int y = player.getBlockPosY() - dy; (y <= player.getBlockPosY()); y++){
+                                for(int z = player.getBlockPosZ() - dz; (z <= player.getBlockPosZ() + dz); z++){
+                                    if(world.getBlockId(x,y,z) == from_block_id){
+                                        world.setBlock(x,y,z,towards_block_id);
+                                        complete++;
+                                    }
+                                }
+                            }
+                        }
+                        commandListener.sendChatToPlayer(ChatMessage.createFromText("替换了 " + complete + "个方块").setColor(EnumChatFormat.LIGHT_GRAY));
+                    }else {
+                        commandListener.sendChatToPlayer(ChatMessage.createFromText("即将替换 " + (4*dx*dy*dz) + "个方块，上限为4000000个").setColor(EnumChatFormat.RED));
+                    }
+                }else {
+                    commandListener.sendChatToPlayer(ChatMessage.createFromText("用法：/replaceblock (x) (y) (z) (from_block_id) (towards_block_id)").setColor(EnumChatFormat.RED));
+                }
+                event.setExecuteSuccess(true);
+            }
 
             if (par2Str.startsWith("forging_grade set")) {
                 itemStack = player.getHeldItemStack();

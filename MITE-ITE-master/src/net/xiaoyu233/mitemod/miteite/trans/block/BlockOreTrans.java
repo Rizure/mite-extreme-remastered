@@ -30,6 +30,8 @@ public class BlockOreTrans extends Block {
                 id_dropped = Item.shardEmerald.itemID;
             } else if (this == oreDiamond) {
                 id_dropped = Item.shardDiamond.itemID;
+            } else if (this == Blocks.fancyRed) {
+                id_dropped = Items.shardFancyRed.itemID;
             } else if (this == oreLapis) {
                 id_dropped = Item.dyePowder.itemID;
                 metadata_dropped = 4;

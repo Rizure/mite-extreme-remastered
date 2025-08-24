@@ -2,6 +2,7 @@ package net.xiaoyu233.mitemod.miteite.trans.entity;
 
 import net.minecraft.*;
 import net.xiaoyu233.mitemod.miteite.item.Items;
+import net.xiaoyu233.mitemod.miteite.item.ToolModifierTypes;
 import net.xiaoyu233.mitemod.miteite.item.enchantment.Enchantments;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
 import net.xiaoyu233.mitemod.miteite.util.Constant;
@@ -33,7 +34,7 @@ public class EntityPhaseSpiderTrans extends EntityWoodSpider {
         boolean has_phasedefend = false;
         if(damage_source != null){
             ItemStack item_stack = damage_source.getItemAttackedWith();
-            if (item_stack != null && item_stack.hasEnchantment(Enchantments.enchantmentPhaseDefend, true)) {
+            if (item_stack != null  && this.rand.nextFloat() < ToolModifierTypes.URBAN_LEGEND.getModifierValue(item_stack.getTagCompound())) {
                 has_phasedefend = true;
             }
         }

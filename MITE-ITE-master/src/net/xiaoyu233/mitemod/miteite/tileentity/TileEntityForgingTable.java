@@ -20,6 +20,10 @@ public class TileEntityForgingTable extends TileEntity implements IInventory {
     private int maxTime;
     private boolean isForging;
     private boolean isUsing;
+    private int forging_mode = 0;
+    public static int mode_Experiencing = 1;
+    public static int mode_Upgrading = 0;
+
 
     public void setItem(int index,ItemStack itemStack) {
         this.items[index] = itemStack;
@@ -31,16 +35,33 @@ public class TileEntityForgingTable extends TileEntity implements IInventory {
         this.finishForging();
         this.isUsing = false;
     }
+    public int getForging_mode(){
+        return this.forging_mode;
+    }
+    public void setForging_mode(int mode){
+        this.forging_mode = mode == 1 ? 1 : 0;
+    }
 
     private void completeForging() {
         ForgingRecipe currentRecipe = this.usedRecipe;
         ItemStack toolItem = this.slots.getToolItem();
-        toolItem.setForgingGrade(currentRecipe.getLevelToUpgrade() + 1);
+        if(currentRecipe.getShouldUpgradeForgingLevel()){
+            toolItem.setForgingGrade(currentRecipe.getLevelToUpgrade() + 1);
+        }else {
+            if (toolItem.stackTagCompound != null) {
+                NBTTagCompound compound;
+                compound = toolItem.stackTagCompound;
+                if (compound.hasKey("tool_exp")) {
+                    int currentExp = compound.getInteger("tool_exp");
+                    compound.setInteger("tool_exp", currentExp + (int) Math.pow(3,toolItem.getMaterialForRepairs().getMinHarvestLevel() - 1) * 25);
+                }
+            }
+        }
         EnumQuality qualityReward = currentRecipe.getQualityReward();
         if (qualityReward != null){
             toolItem.setQuality(qualityReward);
         }
-        this.getWorldObj().playSoundAtBlock(this.xCoord, this.yCoord, this.zCoord, "random.levelup", 1.0F, 1.0F);
+        this.getWorldObj().playSoundAtBlock(this.xCoord, this.yCoord, this.zCoord, "random.levelup", 1.0F, 0.5F);
         this.slots.setOutput(toolItem);
         this.slots.onFinishForging(SPacketFinishForging.Status.COMPLETED);
         this.slots.damageHammerAndAxe(currentRecipe.getHammerDurabilityCost(), currentRecipe.getAxeDurabilityCost());
@@ -62,7 +83,6 @@ public class TileEntityForgingTable extends TileEntity implements IInventory {
                     this.items[index] = null;
                 }
             }
-
             return var3;
         } else {
             return null;
@@ -209,8 +229,8 @@ public class TileEntityForgingTable extends TileEntity implements IInventory {
         if (!this.getWorldObj().isRemote && this.isForging) {
             ++this.forgingTime;
             this.slots.updateTime(this.forgingTime);
-            if (this.getWorldObj().rand.nextInt(100) < 1) {
-                this.getWorldObj().getAsWorldServer().playSoundAtBlock(this.xCoord, this.yCoord, this.zCoord, "random.anvil_land", 1.0F, 1.0F);
+            if (this.forgingTime % 20 == 0 && this.getWorldObj().rand.nextInt(10) != 0) {
+                this.getWorldObj().getAsWorldServer().playSoundAtBlock(this.xCoord, this.yCoord, this.zCoord, "random.anvil_land", 1.0F, 0.75F + MathHelper.clamp_float((float)this.forgingTime / (float)this.currentFailCheckTime, 0.0F, 1.0F) * 0.25F);
             }
 
             if (this.forgingTime == this.currentFailCheckTime) {
@@ -230,6 +250,7 @@ public class TileEntityForgingTable extends TileEntity implements IInventory {
         super.writeToNBT(par1NBTTagCompound);
         if (this.b()) {
             par1NBTTagCompound.setString("CustomName", this.customName);
+            par1NBTTagCompound.setInteger("Forging_mode", this.forging_mode);
         }
 
         this.slots.writeToNBT(par1NBTTagCompound);

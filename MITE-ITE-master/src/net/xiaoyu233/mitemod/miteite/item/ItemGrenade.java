@@ -33,7 +33,7 @@ public class ItemGrenade extends Item {
     public void addInformation(ItemStack item_stack, EntityPlayer player, List info, boolean extended_info, Slot slot) {
         if (extended_info) {
             info.add("");
-            info.add(EnumChatFormat.BROWN + Translator.getFormatted("800分大礼包", new Object[0]));
+            info.add(EnumChatFormat.BROWN + Translator.getFormatted("限时万能钥匙", new Object[0]));
         }
 
     }

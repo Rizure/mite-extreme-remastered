@@ -62,7 +62,7 @@ public class Blocks extends Block{
 
     public static final BlockSpawn blockSpawn = (new BlockSpawn(192, Material.stone));
 
-    public static final Block fancyRed = (new BlockFancyRed(193, Material.diamond, 4)).setCreativeTab(CreativeModeTab.tabBlock);
+    public static final Block fancyRed = (new BlockFancyRed(193, Material.diamond, 5)).setCreativeTab(CreativeModeTab.tabBlock);
 
     public static final Block gemSetting = (new BlockGemSetting(194, Material.stone, (new BlockConstants()).setNeverHidesAdjacentFaces())).setUnlocalizedName("gem_setting").setCreativeTab(CreativeModeTab.tabDecorations);
 
@@ -93,7 +93,8 @@ public class Blocks extends Block{
     public static final BlockColorfulDoubleSlab blockColorfulDoubleSlabGroup1 = (BlockColorfulDoubleSlab) new BlockColorfulDoubleSlab(282, blockColorfulSingleSlabGroup1).setStepSound_(soundStoneFootstep);
     public static final BlockSlabGroup5 blockColorfulSingleSlabGroup2 = (BlockSlabGroup5) new BlockSlabGroup5(285, Material.stone).setStepSound_(soundStoneFootstep);
     public static final BlockColorfulDoubleSlab blockColorfulDoubleSlabGroup2 = (BlockColorfulDoubleSlab) new BlockColorfulDoubleSlab(284, blockColorfulSingleSlabGroup2).setStepSound_(soundStoneFootstep);
-
+    public static final BlockOreBlock blockFancyRed = new BlockOreBlock(287,Material.diamond);
+    public static final BlockHeadStone blockHeadStone = new BlockHeadStone(288,Material.obsidian);
     static {
         try {
             Field field = Block.class.getDeclaredField("is_normal_cube_lookup");
@@ -173,6 +174,8 @@ public class Blocks extends Block{
         registerItemBlock(blockStairsColorful13, "colorful_stair");
         registerItemBlock(blockStairsColorful14, "colorful_stair");
         registerItemBlock(blockStairsColorful15, "colorful_stair");
+        registerItemBlock(blockFancyRed,"fancy_red_block");
+        registerItemBlock(blockHeadStone,"headstone");
 
         registerItemBlock(blackBed, (Item) null);
         registerItemBlock(redBed, (Item) null);
@@ -264,6 +267,8 @@ public class Blocks extends Block{
                 VIBRANIUM_INGOT, VIBRANIUM_INGOT, VIBRANIUM_INGOT,
                 VIBRANIUM_INGOT, VIBRANIUM_INGOT, VIBRANIUM_INGOT
         );
+        register.registerShapelessRecipe(new ItemStack(blockFancyRed),true,
+                new ItemStack(Items.fancyRed,9));
         register.registerShapedRecipe(new ItemStack(Blocks.furnaceVibraniumIdle),true,
                 "VOA",
                 "DND",
@@ -304,8 +309,8 @@ public class Blocks extends Block{
         registerForgingTableUpgradeRecipes(register,ForgingTableLevel.IRON,Item.ingotMithril);
         registerForgingTableUpgradeRecipes(register,ForgingTableLevel.MITHRIL,Item.ingotAdamantium);
         registerForgingTableUpgradeRecipes(register,ForgingTableLevel.ADAMANTIUM, VIBRANIUM_INGOT);
-        RecipesFurnace.smelting().addSmelting(Blocks.netherAdamantiumOre.blockID, new ItemStack(Item.ingotAdamantium));
 
+        RecipesFurnace.smelting().addSmelting(Blocks.netherAdamantiumOre.blockID, new ItemStack(Item.ingotAdamantium));
         RecipesFurnace.smelting().addSmelting(Blocks.blockCopper.blockID, new ItemStack(Items.itemEnhanceGemBox));
         RecipesFurnace.smelting().addSmelting(Blocks.blockSilver.blockID, new ItemStack(Items.itemEnhanceGemBox));
         RecipesFurnace.smelting().addSmelting(Blocks.blockIron.blockID, new ItemStack(Items.itemEnhanceGemBox,2,0));

@@ -273,8 +273,9 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
 
       Block block = info.block;
       ItemStack item_stack = info.getHarvesterItemStack();
+      float expReward;
       if (!(block instanceof BlockOre && info.getMetadata() == 1) && block != Block.oreDiamond && block != Block.oreCoal && block != Block.oreEmerald && block != Block.oreRedstone && block != Block.oreLapis && block != Block.oreNetherQuartz){
-         float expReward = ToolModifierTypes.GEOLOGY.getModifierValue(info.getHarvesterItemStack().getTagCompound());
+         expReward = ToolModifierTypes.GEOLOGY.getModifierValue(info.getHarvesterItemStack().getTagCompound());
          if (expReward != 0){
             ItemStack dropItemStack = new ItemStack(info.block);
             ItemStack smeltingResult = RecipesFurnace.smelting().getSmeltingResult(dropItemStack, 5);
@@ -283,6 +284,13 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
             }
          }
       }
+      if(item_stack != null){
+          expReward = ToolModifierTypes.STEADY.getModifierValue(item_stack.getTagCompound());
+          if(itemRand.nextFloat() < expReward * 0.1F){
+              info.world.spawnEntityInWorld(new EntityExperienceOrb(info.world, info.drop_x, info.drop_y + 0.5D, info.drop_z, 1));
+          }
+      }
+
       if(itemRand.nextFloat() < ToolModifierTypes.BLESS_OF_NATURE.getModifierValue(info.getHarvesterItemStack().getTagCompound())){
          info.getResponsiblePlayer().getFoodStats().addSatiation(1);
          info.getResponsiblePlayer().getFoodStats().addNutrition(2);
@@ -303,7 +311,7 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
    }
 
    protected int getExpForBlockBreak(BlockBreakInfo blockBreakInfo){
-      return 2 * (int)Math.pow(blockBreakInfo.block.getMinHarvestLevel(0),2);
+      return (int) (blockBreakInfo.block.getBlockHardness(0) * Math.pow(blockBreakInfo.block.getMinHarvestLevel(0),2));
    }
 
    @Override

@@ -11,6 +11,7 @@ public class BlockColorfulDoubleSlab extends BlockDoubleSlab {
         this.setMaxStackSize(64);
         this.setCushioning(1000.0F);
         this.setLightValue(0.75F);
+        this.setResistance(20F);
     }
     public boolean isValidMetadata(int metadata) {
         return metadata < 16 && this.getSingleSlab().isValidMetadata(metadata);
@@ -64,7 +65,7 @@ public class BlockColorfulDoubleSlab extends BlockDoubleSlab {
     }
 
     public float getBlockHardness(int metadata) {
-        return this.single_slab.getBlockHardness(metadata) * 2.0F;
+        return this.single_slab.getBlockHardness(metadata);
     }
 
     public int getMinHarvestLevel(int metadata) {

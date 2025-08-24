@@ -22,7 +22,7 @@ public class EntityOreElemental extends EntityEarthElemental {
     private boolean haveTryToSpawnExchanger = false;
     private boolean modifiedAttribute = false;
     private int danger_level;
-    private final Block[] available_ore = {Block.oreCoal,Block.oreCopper,Block.oreSilver,Block.oreGold,Block.oreLapis,Block.oreIron,Block.oreRedstone,Block.oreEmerald,Block.oreMithril,Block.oreDiamond, Blocks.fancyRed,Block.oreAdamantium};
+    private final Block[] available_ore = {Block.oreCoal,Block.oreCopper,Block.oreSilver,Block.oreGold,Block.oreLapis,Block.oreIron,Block.oreRedstone,Block.oreEmerald,Block.oreMithril,Block.oreDiamond,Block.oreAdamantium,Blocks.fancyRed};
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
         super.writeEntityToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setByte("danger_level", (byte) this.danger_level);

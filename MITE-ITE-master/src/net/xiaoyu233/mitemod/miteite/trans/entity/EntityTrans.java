@@ -4,13 +4,10 @@ import net.minecraft.*;
 import net.xiaoyu233.mitemod.miteite.block.BlockLeaves1;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
 import net.xiaoyu233.mitemod.miteite.util.ReflectHelper;
-import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 
 import java.util.List;
 
@@ -29,6 +26,8 @@ public abstract class EntityTrans {
    @Shadow
    public double posZ;
    @Shadow
+   private int fire;
+   @Shadow
    public boolean send_position_update_immediately;
    @Shadow
    public double motionX;
@@ -41,6 +40,9 @@ public abstract class EntityTrans {
 
    @Shadow
    protected void entityInit() {
+   }
+   public int getFireTick(){
+       return this.fire;
    }
    @Overwrite
    public boolean isInFire() {

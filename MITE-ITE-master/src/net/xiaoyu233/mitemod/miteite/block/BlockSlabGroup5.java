@@ -10,6 +10,7 @@ public class BlockSlabGroup5 extends BlockSlab {
         this.setMaxStackSize(64);
         this.setCushioning(1000.0F);
         this.setLightValue(0.5F);
+        this.setResistance(20F);
     }
 
     public int getGroup() {
@@ -29,7 +30,7 @@ public class BlockSlabGroup5 extends BlockSlab {
     }
     public float getBlockHardness(int metadata)
     {
-        return this.getModelBlock(metadata + 8).getBlockHardness(metadata + 8);
+        return this.getModelBlock(metadata + 8).getBlockHardness(metadata + 8) * 0.5F;
     }
 
     public Block getModelBlock(int metadata) {

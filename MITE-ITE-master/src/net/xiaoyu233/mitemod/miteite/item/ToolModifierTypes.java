@@ -7,23 +7,13 @@ import java.util.function.Predicate;
 
 
 //TODO Weapon Modifiers{
-//  自然祝福 - 每一个怪物被杀死都有概率恢复饱食度.有时在杀死一群怪物后,有概率对玩家进行治疗。
 //  自然之力 - 攻击一个怪物：20%概率燃烧目标.20%概率给予玩家速度效果.20%概率给予玩家力量效果。
-//  启示录 - 你的受害者将会变得奄奄一息,并且会受到越来越多凋零效果的折磨。
-//  恶魔之力 - 对非主世界的怪物造成额外的伤害。
-//  百折不挠 - 当你的生命值越低，造成的伤害也就越高。
-//  海纳百川 - 你的生命值越高，造成的伤害也就越高。
-//  不动如山 - 格挡时可以减少更多的伤害
 //  可燃 - 火焰附加
 //  剧毒 - 给予目标中毒效果
 // }
 // Tool Modifiers{
 //  震击 - 挖掘方块时充能,到达一定层数后提供一段时间的急迫和速度
-//  老成 - 挖掘方块时有几率掉落经验
-//  自然祝福 - 每挖掘一个方块都有概率恢复饱食度.有时在挖掘一定数量的方块后,有概率对玩家进行治疗。
 //  圣盾 - 当这个工具在你手中时,你将被赋予抗火效果.此外,损害减少,但耐久也会随之减低。
-//  不动如山 - 格挡时可以减少更多的伤害
-//  自动冶炼 - 自动烧制挖掘等级比此属性级数小的目标方块
 // }
 
 public enum ToolModifierTypes implements ItemModifierTypes{
@@ -38,8 +28,12 @@ public enum ToolModifierTypes implements ItemModifierTypes{
     UNNATURAL_MODIFIER(0.125f,"超自然",EnumModifierQuality.Rare, ToolModifierTypes::isNotWeapon,4),
     APOCALYPSE(1.25f,"启示录",EnumModifierQuality.Rare,(ToolModifierTypes::isWeapon),4),
     AQUADYNAMIC_MODIFIER(0.375F,"喜水",EnumModifierQuality.Rare, (ToolModifierTypes::isNotWeapon),4),
+    STEADY(1.0F,"老成",EnumModifierQuality.Rare, (ToolModifierTypes::isNotWeapon),4),
     DEMON_POWER(0.15f,"恶魔之力",EnumModifierQuality.Epic, ToolModifierTypes::isWeapon, 4),
+    PURGATORY(0.15f,"炼狱",EnumModifierQuality.Epic, ToolModifierTypes::isWeapon, 4),
+    OVERHEAT(0.15f,"过热",EnumModifierQuality.Epic, ToolModifierTypes::isWeapon, 4),
     DISCORD(6.0f,"混沌",EnumModifierQuality.Epic,ToolModifierTypes::isWeapon,4),
+    URBAN_LEGEND(0.25f,"都市传说",EnumModifierQuality.Legend,ToolModifierTypes::isWeapon,4),
     GEOLOGY(0.25f,"地质学",EnumModifierQuality.Legend,itemStack -> itemStack.getItem() instanceof ItemPickaxe && WithoutMiningModifier(itemStack,0),4),
     BLESS_OF_NATURE(0.05f,"自然祝福",EnumModifierQuality.Legend,(stack -> true),4),
     MELTING(0.25f,"自动冶炼",EnumModifierQuality.Legend,itemStack -> itemStack.getItem() instanceof ItemPickaxe && WithoutMiningModifier(itemStack,1),4),

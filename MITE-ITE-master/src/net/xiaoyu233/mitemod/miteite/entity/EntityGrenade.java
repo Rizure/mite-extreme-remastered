@@ -24,7 +24,7 @@ public class EntityGrenade extends EntityProjectile {
             this.worldObj.spawnParticle(EnumParticle.largesmoke, this.posX, this.posY, this.posZ, this.rand.nextDouble() - 0.5D, this.rand.nextDouble() - 0.5D, this.rand.nextDouble() - 0.5D);
         }
         if(this.ticksExisted > 60){
-            this.worldObj.createExplosion(this,this.posX,this.posY,this.posZ,0.05F,2.0F,true);
+            this.worldObj.createExplosion(this,this.posX,this.posY,this.posZ,4.0F,2.0F,false);
             for(int var3 = 0; var3 < 24; ++var3) {
                 this.worldObj.spawnParticle(EnumParticle.explode, this.posX, this.posY, this.posZ, 4.0D * (this.rand.nextDouble() - 0.5D), 4.0D * (this.rand.nextDouble() - 0.5D), 4.0D * (this.rand.nextDouble() - 0.5D));
             }
@@ -37,7 +37,7 @@ public class EntityGrenade extends EntityProjectile {
     @Override
     protected void onImpact(RaycastCollision rc) {
         if (!this.worldObj.isRemote) {
-            this.worldObj.createExplosion(this,this.posX,this.posY,this.posZ,0.05F,2.0F,true);
+            this.worldObj.createExplosion(this,this.posX,this.posY,this.posZ,4.0F,2.0F,false);
         }
         for(int var3 = 0; var3 < 24; ++var3) {
             this.worldObj.spawnParticle(EnumParticle.explode, this.posX, this.posY, this.posZ, 4.0D * (this.rand.nextDouble() - 0.5D), 4.0D * (this.rand.nextDouble() - 0.5D), 4.0D * (this.rand.nextDouble() - 0.5D));

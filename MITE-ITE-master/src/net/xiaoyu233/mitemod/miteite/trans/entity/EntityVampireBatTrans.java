@@ -16,8 +16,8 @@ public class EntityVampireBatTrans extends EntityBat {
       super(par1World);
    }
 
-   @Inject(method = "collideWithEntity(Lnet/minecraft/Entity;)V",
-           at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/EntityLiving;heal()V"))
+   @Inject(method = "collideWithEntity",
+           at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "heal"))
    private void injectAttack(Entity entity,CallbackInfo callbackInfo){
       if (Configs.wenscConfig.batPoisonAttack.ConfigValue) {
          entity.getAsEntityLivingBase().addPotionEffect(new MobEffect(MobEffectList.poison.id, 480, 0));

@@ -29,7 +29,7 @@ public class EnchantmentFixed extends Enchantment {
 
     @Override
     public boolean canEnchantItem(Item item) {
-        return item instanceof ItemCuirass;
+        return item instanceof ItemArmor;
     }
 
     @Override

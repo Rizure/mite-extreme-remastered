@@ -32,19 +32,19 @@ public abstract class ItemArmorTrans extends Item implements IDamageableItem, IU
    @Inject(method = "<init>",at = @At("RETURN"))
    private void injectInitExpForLevel(int par1, Material material,int par2,boolean is_chain_mail, CallbackInfo callbackInfo){
       if (material == Material.copper || material == Material.silver || material == Material.gold){
-         this.expForLevel = this.createExpForLevel(20,8,2);
-      }else if (material == Material.iron){
-         this.expForLevel = this.createExpForLevel(30,12,3);
-      }else if (material == Material.ancient_metal){
-         this.expForLevel = this.createExpForLevel(40,16,4);
-      } else if (material == Material.mithril) {
          this.expForLevel = this.createExpForLevel(60,24,6);
-      }else if (material == Material.adamantium){
-         this.expForLevel = this.createExpForLevel(80,32,8);
-      }else if (material == Materials.vibranium){
+      }else if (material == Material.iron){
+         this.expForLevel = this.createExpForLevel(90,36,9);
+      }else if (material == Material.ancient_metal){
          this.expForLevel = this.createExpForLevel(120,48,12);
+      } else if (material == Material.mithril) {
+         this.expForLevel = this.createExpForLevel(180,72,18);
+      }else if (material == Material.adamantium){
+         this.expForLevel = this.createExpForLevel(240,96,24);
+      }else if (material == Materials.vibranium){
+         this.expForLevel = this.createExpForLevel(360,144,36);
       }else {
-         this.expForLevel = this.createExpForLevel(40,16,4);
+         this.expForLevel = this.createExpForLevel(120,48,12);
       }
 //      this.expForLevel = this.createExpForLevel(1,1,0);
    }
@@ -258,6 +258,10 @@ public abstract class ItemArmorTrans extends Item implements IDamageableItem, IU
          float protection_modifier = ArmorModifierTypes.PROTECTION_MODIFIER.getModifierValue(item_stack.stackTagCompound);
          if (protection_modifier > 0.0F) {
             multiplied_protection *= (1 + protection_modifier);
+         }
+         float dense_modifier = ArmorModifierTypes.DENSE.getModifierValue(item_stack.stackTagCompound);
+         if (dense_modifier > 0.0F){
+            multiplied_protection *= 1 + ((float) item_stack.getItemDamage() / item_stack.getMaxDamage()) * dense_modifier;
          }
       }
 

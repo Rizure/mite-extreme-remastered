@@ -15,6 +15,7 @@ import net.xiaoyu233.mitemod.miteite.network.CPacketSyncItems;
 import net.xiaoyu233.mitemod.miteite.network.SPacketCraftingBoost;
 import net.xiaoyu233.mitemod.miteite.network.SPacketOverlayMessage;
 import net.xiaoyu233.mitemod.miteite.tileentity.TileEntityGemSetting;
+import net.xiaoyu233.mitemod.miteite.tileentity.TileEntityHeadStone;
 import net.xiaoyu233.mitemod.miteite.util.BlockPos;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
 import net.xiaoyu233.mitemod.miteite.util.Constant;
@@ -426,23 +427,6 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
                }
             }
          }
-
-         //Check for energetic modifier
-         float energeticAmp = 1.0F;
-         if (true){
-            ItemStack leggings = this.getLeggings();
-            if (leggings != null){
-               float value = ArmorModifierTypes.ENERGETIC.getModifierValue(leggings.getTagCompound());
-               if (value != 0){
-                  energeticAmp += (this.getEnergeticAmp() * value);
-               }
-            }
-         }
-
-         float demonHunterAmp = 1;
-         if (!target.getWorld().isOverworld() && heldItemStack != null){
-            demonHunterAmp += ToolModifierTypes.DEMON_POWER.getModifierValue(heldItemStack.getTagCompound());
-         }
          
          float smiteAmp = 0;
          if (target.isEntityUndead() && heldItemStack != null){
@@ -454,7 +438,45 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
             baneOfArthropodAmp += ToolModifierTypes.BANE_OF_ARTHROPOD.getModifierValue(heldItemStack.getTagCompound());
          }
          
-         float damage = (critBonus + this.calcRawMeleeDamageVs(target, critical, this.isSuspendedInLiquid()) + smiteAmp + baneOfArthropodAmp + (heldItemStack != null ? heldItemStack.getGemMaxNumeric(GemModifierTypes.damage) : 0f)) * energeticAmp * indomitableAmp * demonHunterAmp;
+         float damage = (critBonus + this.calcRawMeleeDamageVs(target, critical, this.isSuspendedInLiquid()) + smiteAmp + baneOfArthropodAmp + (heldItemStack != null ? heldItemStack.getGemMaxNumeric(GemModifierTypes.damage) : 0f));
+
+         float urbanLegendAmp = 80.0F;
+         if (target != null && target instanceof EntityEnderman){
+             urbanLegendAmp *= ToolModifierTypes.URBAN_LEGEND.getModifierValue(heldItemStack.getTagCompound());
+             damage += urbanLegendAmp;
+         }
+
+         //Check for energetic modifier
+          float energeticAmp = 1.0F;
+          if (true){
+              ItemStack leggings = this.getLeggings();
+              if (leggings != null){
+                  float value = ArmorModifierTypes.ENERGETIC.getModifierValue(leggings.getTagCompound());
+                  if (value != 0){
+                      energeticAmp += (this.getEnergeticAmp() * value);
+                  }
+              }
+          }
+          damage *= energeticAmp;
+
+          float demonHunterAmp = 1;
+          if (!target.getWorld().isOverworld() && heldItemStack != null){
+              demonHunterAmp += ToolModifierTypes.DEMON_POWER.getModifierValue(heldItemStack.getTagCompound());
+          }
+          damage *= demonHunterAmp;
+
+          float purgatoryAmp = 1;
+          if (!target.getWorld().isTheNether() && heldItemStack != null){
+              purgatoryAmp += ToolModifierTypes.PURGATORY.getModifierValue(heldItemStack.getTagCompound());
+          }
+          damage *= purgatoryAmp;
+
+          float overheatAmp = 1;
+          if (target.getFireTick() > 0 && heldItemStack != null){
+              overheatAmp += ToolModifierTypes.OVERHEAT.getModifierValue(heldItemStack.getTagCompound());
+          }
+          damage *= overheatAmp;
+
          if (damage <= 0.0F) {
             return;
          }
@@ -621,6 +643,41 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
             this.getWorld().setBlockToAir(this.spawnStoneX, this.spawnStoneY - 1, this.spawnStoneZ);
             this.experience = this.experience / 3 + 4 * Configs.wenscConfig.diamondExp.ConfigValue;
             this.spawnStoneWorldId = -999;
+         }else if(this.inventory.containsHeadstone()){
+             int place_x = this.getBlockPosX();
+             int place_y = this.getBlockPosY();
+             int place_z = this.getBlockPosZ();
+             this.worldObj.setBlock(place_x,place_y,place_z,Blocks.blockHeadStone.blockID);
+             TileEntityHeadStone headStone = (TileEntityHeadStone) this.worldObj.getBlockTileEntity(place_x,place_y,place_z);
+             headStone.setContainingExp(this.experience / 6);
+             int var003 = 0;
+             for(int i = 0; i < this.inventory.mainInventory.length;i++){
+                 headStone.setInventoryWithIndex(this.inventory.mainInventory[i],var003);
+                 this.inventory.mainInventory[i] = null;
+                 var003 ++;
+             }
+             for(int i = 0; i < this.inventory.armorInventory.length;i++){
+                 headStone.setInventoryWithIndex(this.inventory.armorInventory[i],var003);
+                 this.inventory.armorInventory[i] = null;
+                 var003 ++;
+             }
+             boolean consumed = false;
+             for(int i = 0; i < this.inventory.jewelryInventory.length;i++){
+                 if(this.inventory.jewelryInventory[i] != null && this.inventory.jewelryInventory[i].getItem() == Items.headstone_bag){
+                     if(!consumed){
+                         int size = this.inventory.jewelryInventory[i].stackSize;
+                         if(size > 1){
+                             this.inventory.jewelryInventory[i].setStackSize(size - 1);
+                         }else{
+                             this.inventory.jewelryInventory[i] = null;
+                         }
+                         consumed = true;
+                     }
+                 }
+                 headStone.setInventoryWithIndex(this.inventory.jewelryInventory[i],var003);
+                 this.inventory.jewelryInventory[i] = null;
+                 var003 ++;
+             }
          }
       }
    }
@@ -1106,7 +1163,7 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
       }
    }
    public void attackMonsters(List <Entity>targets) {
-      float damage = ((ItemRingKiller)itemRingKiller.getItem()).getRingKillerSkillDamage();
+      float damage = ((ItemRingKiller)itemRingKiller.getItem()).getRingKillerSkillDamage(itemRingKiller);
       for(int i = 0; i< targets.size(); i++) {
          EntityLiving entityMonster = targets.get(i) instanceof EntityMonster || targets.get(i) instanceof EntityBat ? (EntityLiving) targets.get(i) : null;
          if(entityMonster != null && (!EntityEnderman.class.isInstance(entityMonster) && !EntitySilverfish.class.isInstance(entityMonster) && !EntityZombieBoss.class.isInstance(entityMonster))) {
@@ -1216,6 +1273,9 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
                this.triggerAchievement(Achievements.Achievement_zhujidan);
             default:
          }
+         if(this.getEnhanceLevel() >= 12){
+             this.addPotionEffect(new MobEffect(MobEffectList.field_76443_y.id, 1200 * 20, 4));
+         }
          
          if(this.getCuirass() != null){
             ItemStack Cuirass = this.getCuirass();
@@ -1246,8 +1306,8 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
          }
          this.itemRingKiller = this.inventory.getRingKiller();
          if(this.itemRingKiller != null) {
-            float range = ((ItemRingKiller)this.itemRingKiller.getItem()).getRingKillerSkillRange();
-            int cooldownTime = ((ItemRingKiller)this.itemRingKiller.getItem()).getRingKillerSkillCoolDownTime();
+            float range = ((ItemRingKiller)this.itemRingKiller.getItem()).getRingKillerSkillRange(this.itemRingKiller);
+            int cooldownTime = ((ItemRingKiller)this.itemRingKiller.getItem()).getRingKillerSkillCoolDownTime(this.itemRingKiller);
             List <Entity>targets  = this.getNearbyEntities(range, range);
             if(targets.size() > 0) {
                if(this.surroundHurtCollDown == cooldownTime) {

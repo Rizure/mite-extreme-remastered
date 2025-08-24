@@ -21,8 +21,9 @@ public class ForgingRecipe {
     private final EnumQuality qualityReward;
     //Out of 100
     private final int chanceOfFailure;
+    private final boolean shouldUpgradeForgingLevel;
 
-    public ForgingRecipe(List<IFaultFeedback> faultFeedback, List<ItemStack> materialsToUpgrade, Material material, int levelToUpgrade, int timeReq, int hammerDurabilityCost, int axeDurabilityCost, int chanceOfFailure, ForgingTableLevel forgingTableLevelReq, EnumQuality qualityReward) {
+    public ForgingRecipe(List<IFaultFeedback> faultFeedback, List<ItemStack> materialsToUpgrade, Material material, int levelToUpgrade, int timeReq, int hammerDurabilityCost, int axeDurabilityCost, int chanceOfFailure, ForgingTableLevel forgingTableLevelReq, EnumQuality qualityReward, boolean shouldUpgradeForgingLevel) {
         this.faultFeedback = faultFeedback;
         this.materialsToUpgrade = materialsToUpgrade;
         this.material = material;
@@ -33,6 +34,7 @@ public class ForgingRecipe {
         this.chanceOfFailure = chanceOfFailure;
         this.forgingTableLevelReq = forgingTableLevelReq;
         this.qualityReward = qualityReward;
+        this.shouldUpgradeForgingLevel = shouldUpgradeForgingLevel;
     }
 
     public EnumQuality getQualityReward() {
@@ -42,7 +44,6 @@ public class ForgingRecipe {
     public int getAxeDurabilityCost() {
         return axeDurabilityCost;
     }
-
     public int getHammerDurabilityCost() {
         return hammerDurabilityCost;
     }
@@ -74,6 +75,9 @@ public class ForgingRecipe {
     public ForgingTableLevel getForgingTableLevelReq() {
         return forgingTableLevelReq;
     }
+    public boolean getShouldUpgradeForgingLevel() {
+        return shouldUpgradeForgingLevel;
+    }
 
     public static class Builder{
         private List<IFaultFeedback> faultFeedback = new ArrayList<>();
@@ -86,6 +90,7 @@ public class ForgingRecipe {
         private int axeDurabilityCost;
         private int chanceOfFailure;
         private EnumQuality qualityReward = null;
+        private boolean shouldUpgradeForgingLevel;
 
         private Builder(Material material, int levelToUpgrade,ForgingTableLevel forgingTableLevelReq) {
             this.material = material;
@@ -117,6 +122,11 @@ public class ForgingRecipe {
             return this;
         }
 
+        public Builder setShouldUpgradeForgingLevel(boolean shouldUpgradeForgingLevel){
+            this.shouldUpgradeForgingLevel = shouldUpgradeForgingLevel;
+            return this;
+        }
+
         public Builder addMaterials(ItemStack... itemStacks){
             this.materialsToUpgrade.addAll(Lists.newArrayList(itemStacks));
             if (this.materialsToUpgrade.size() > 5){
@@ -136,7 +146,7 @@ public class ForgingRecipe {
         }
 
         public void build(Consumer<ForgingRecipe> registerer){
-            registerer.accept(new ForgingRecipe(faultFeedback, materialsToUpgrade, material,levelToUpgrade,timeReq,hammerDurabilityCost,axeDurabilityCost,chanceOfFailure, forgingTableLevelReq, qualityReward));
+            registerer.accept(new ForgingRecipe(faultFeedback, materialsToUpgrade, material,levelToUpgrade,timeReq,hammerDurabilityCost,axeDurabilityCost,chanceOfFailure, forgingTableLevelReq, qualityReward, shouldUpgradeForgingLevel));
         }
     }
 

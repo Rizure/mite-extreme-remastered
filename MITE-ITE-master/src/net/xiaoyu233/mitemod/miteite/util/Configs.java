@@ -114,26 +114,26 @@ public class Configs {
         public static ConfigItem <Integer> breedXpCow = new ConfigItem("breedXpCow", 5, "牛繁殖获得经验", 1 ,10);
         public static ConfigItem <Integer> emeraldFrequencyBigHills = new ConfigItem("emeraldFrequencyBigHills", 6, "山地绿宝石矿每区块最少生成个数", 0 ,12);
         public static ConfigItem <Boolean> overworldAdamantiteOre = new ConfigItem("overworldAdamantiteOre", false, "主世界生成艾德曼");
-        public static ConfigItem <Integer> copperFrequencyOverworld = new ConfigItem("copperFrequencyOverworld_v0.0.5", 40, "主世界铜矿生成频率", 0 ,60);
-        public static ConfigItem <Integer> silverFrequencyOverworld = new ConfigItem("silverFrequencyOverworld_v0.0.5", 10, "主世界银矿生成频率", 0 ,60);
-        public static ConfigItem <Integer> ironFrequencyOverworld = new ConfigItem("ironFrequencyOverworld_v0.0.5", 60, "主世界铁矿生成频率", 0 ,90);
-        public static ConfigItem <Integer> goldFrequencyOverworld = new ConfigItem("goldFrequencyOverworld_v0.0.5.3", 20, "主世界金矿生成频率", 0 ,30);
-        public static ConfigItem <Integer> mithrilFrequencyOverworld = new ConfigItem("mithrilFrequencyOverworld_v0.0.5", 0, "主世界秘银矿生成频率", 0 ,7);
-        public static ConfigItem <Integer> lapisFrequencyOverworld = new ConfigItem("lapisFrequencyOverworld", 5, "主世界青金石矿生成频率", 0 ,7);
-        public static ConfigItem <Integer> diamondFrequencyOverworld = new ConfigItem("diamondFrequencyOverworld_v0.0.5", 0, "主世界钻石矿生成频率", 0 ,7);
+        public static ConfigItem <Integer> copperFrequencyOverworld = new ConfigItem("copperFrequencyOverworld_v0.0.5", 40, "主世界铜矿生成频率", 0 ,80);
+        public static ConfigItem <Integer> silverFrequencyOverworld = new ConfigItem("silverFrequencyOverworld_v0.0.5", 10, "主世界银矿生成频率", 0 ,20);
+        public static ConfigItem <Integer> ironFrequencyOverworld = new ConfigItem("ironFrequencyOverworld_v0.0.5", 60, "主世界铁矿生成频率", 0 ,120);
+        public static ConfigItem <Integer> goldFrequencyOverworld = new ConfigItem("goldFrequencyOverworld_v0.0.5.3", 20, "主世界金矿生成频率", 0 ,40);
+        public static ConfigItem <Integer> mithrilFrequencyOverworld = new ConfigItem("mithrilFrequencyOverworld_v0.0.5", 0, "主世界秘银矿生成频率", 0 ,20);
+        public static ConfigItem <Integer> lapisFrequencyOverworld = new ConfigItem("lapisFrequencyOverworld", 5, "主世界青金石矿生成频率", 0 ,10);
+        public static ConfigItem <Integer> diamondFrequencyOverworld = new ConfigItem("diamondFrequencyOverworld_v0.0.5", 0, "主世界钻石矿生成频率", 0 ,10);
         public static ConfigItem <Integer> adamantiumFrequencyOverworld = new ConfigItem("adamantiumFrequencyOverworld", 0, "主世界艾德曼矿生成频率", 0 ,5);
-        public static ConfigItem <Integer> redstoneFrequencyOverworld = new ConfigItem("redstoneFrequencyOverworld", 10, "主世界红石矿生成频率", 0 ,15);
-        public static ConfigItem <Integer> coalFrequencyOverworld = new ConfigItem("coalFrequencyOverworld", 50, "主世界煤炭生成频率", 25 ,75);
-        public static ConfigItem <Integer> copperFrequencyUnderworld = new ConfigItem("copperFrequencyUnderworld_v0.0.5", 0, "地下世界铜矿生成频率", 0 ,120);
-        public static ConfigItem <Integer> silverFrequencyUnderworld = new ConfigItem("silverFrequencyUnderworld_v0.0.5", 0, "地下世界银矿生成频率", 0 ,120);
-        public static ConfigItem <Integer> ironFrequencyUnderworld = new ConfigItem("ironFrequencyUnderworld_v0.0.5", 0, "地下世界铁矿生成频率", 0 ,120);
-        public static ConfigItem <Integer> goldFrequencyUnderworld = new ConfigItem("goldFrequencyUnderworld_v0.0.5", 0, "地下世界金矿生成频率", 0 ,60);
+        public static ConfigItem <Integer> redstoneFrequencyOverworld = new ConfigItem("redstoneFrequencyOverworld", 10, "主世界红石矿生成频率", 0 ,20);
+        public static ConfigItem <Integer> coalFrequencyOverworld = new ConfigItem("coalFrequencyOverworld", 50, "主世界煤炭生成频率", 0 ,100);
+        public static ConfigItem <Integer> copperFrequencyUnderworld = new ConfigItem("copperFrequencyUnderworld_v0.0.5", 40, "地下世界铜矿生成频率", 0 ,80);
+        public static ConfigItem <Integer> silverFrequencyUnderworld = new ConfigItem("silverFrequencyUnderworld_v0.0.5", 10, "地下世界银矿生成频率", 0 ,20);
+        public static ConfigItem <Integer> ironFrequencyUnderworld = new ConfigItem("ironFrequencyUnderworld_v0.0.5", 60, "地下世界铁矿生成频率", 0 ,120);
+        public static ConfigItem <Integer> goldFrequencyUnderworld = new ConfigItem("goldFrequencyUnderworld_v0.0.5", 20, "地下世界金矿生成频率", 0 ,40);
         public static ConfigItem <Integer> mithrilFrequencyUnderworld = new ConfigItem("mithrilFrequencyUnderworld_v0.0.5", 10, "地下世界秘银矿生成频率", 0 ,20);
-        public static ConfigItem <Integer> lapisFrequencyUnderworld = new ConfigItem("lapisFrequencyUnderworld_v0.0.5", 0, "地下世界青金石矿生成频率", 0 ,10);
+        public static ConfigItem <Integer> lapisFrequencyUnderworld = new ConfigItem("lapisFrequencyUnderworld_v0.0.5", 5, "地下世界青金石矿生成频率", 0 ,10);
         public static ConfigItem <Integer> diamondFrequencyUnderworld = new ConfigItem("diamondFrequencyUnderworld_v0.0.5", 5, "地下世界钻石矿生成频率", 0 ,10);
         public static ConfigItem <Integer> fancyRedFrequencyUnderworld = new ConfigItem("fancyRedFrequencyUnderworld", 5, "地下世界红钻矿生成频率", 0 ,10);
         public static ConfigItem <Integer> adamantiumFrequencyUnderworld = new ConfigItem("adamantiumFrequencyUnderworld_v0.0.9", 5, "地下世界艾德曼矿生成频率", 0 ,20);
-        public static ConfigItem <Integer> redstoneFrequencyUnderworld = new ConfigItem("redstoneFrequencyUnderworld", 5, "地下世界红石矿生成频率", 0 ,20);
+        public static ConfigItem <Integer> redstoneFrequencyUnderworld = new ConfigItem("redstoneFrequencyUnderworld", 10, "地下世界红石矿生成频率", 0 ,20);
         public static ConfigItem <Integer> underworldMantleBlockOffset = new ConfigItem("underworldMantleBlockOffset_v0.0.2", 0, "地下世界地幔位置向上偏移", 0 ,70);
         public static ConfigItem <Integer> netherAdamantiumMaxCountPerChunk = new ConfigItem("netherAdamantiumMaxCountPerChunk", 2, "地狱艾德曼每个区块最大生成数量", 0 ,8);
         public static ConfigItem <Integer> netherAdamantiumMaxCountPerVein = new ConfigItem("netherAdamantiumMaxCountPerVein", 1, "地狱艾德曼每个矿脉最大矿物生成数量", 0 ,10);
@@ -142,7 +142,7 @@ public class Configs {
         public static ConfigItem <Integer> netherGateOpenDay = new ConfigItem("netherGateOpenDay", 48, "地狱传送门多少天可以打开(主世界天数)", 24 ,96);
         public static ConfigItem <Boolean> isAfterDeathKeep = new ConfigItem("isAfterDeathKeep", false, "是否死亡不掉落");
         public static ConfigItem <Boolean> isCloseShop = new ConfigItem("isCloseShop", false, "关闭商店系统");
-        public static ConfigItem <Float> plantGrowthRate = new ConfigItem("plantGrowthRate_v0.0.9", 0.5F, "作物生长速度倍率",0f,1f);
+        public static ConfigItem <Float> plantGrowthRate = new ConfigItem("plantGrowthRate_v0.0.9", 0.5F, "作物生长速度倍率",0f,4f);
         public static ConfigItem <Integer> whichDayGenVillage = new ConfigItem("whichDayGenVillage", 24, "多少天生成村庄", 1 ,96);
         public static ConfigItem <Integer> maxLevelLimit = new ConfigItem("maxLevelLimit", 300, "玩家最大限制等级", 0 ,1000);
         public static ConfigItem <Integer> enhancePerLvlCostExp = new ConfigItem("enhancePerLvlCostExp", 100, "附魔书附魔每增加一级消耗多少经验", 100 ,400);
@@ -152,7 +152,8 @@ public class Configs {
         public static ConfigItem <Boolean> enhanceMobsArmor = new ConfigItem("EnhanceMobsArmor",true,"怪物穿着护甲强化");
         public static ConfigItem <Boolean> allowInfLeveling = new ConfigItem<>("allowInfLeveling",false,"保留副属性无限升级特性");
         public static ConfigItem <Float> modifierCurveDisturbance = new ConfigItem<>("modifierCurveDisturbance", 0.25F,"副属性升级曲线扰动",0F,1F);
-
+        public static ConfigItem <Float> mobSpawningOffset = new ConfigItem<>("mobSpawningOffset",0.0F,"怪物生成速率加成",0.0F,3.0F);
+        public static ConfigItem <Boolean> mobSpawningEvent = new ConfigItem<>("mobSpawningEvent",false,"启用怪物休战期/进攻期设定");
 //        public static ConfigItem <String> md5String = new ConfigItem("md5String", new lh("wensc").a("busy"), "MD5");
 
     }
@@ -279,6 +280,8 @@ public class Configs {
         wenscMap.put("allowInfLeveling",wenscConfig.allowInfLeveling);
         wenscMap.put("enhanceMultiply",wenscConfig.enhanceMultiply);
         wenscMap.put("modifierCurveDisturbance",wenscConfig.modifierCurveDisturbance);
+        wenscMap.put("mobSpawningOffset",wenscConfig.mobSpawningOffset);
+        wenscMap.put("mobSpawningEvent",wenscConfig.mobSpawningEvent);
 //        wenscMap.put("md5", wenscConfig.md5String);
 
         String filePth = "mite-extreme.cfg";

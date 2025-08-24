@@ -30,7 +30,7 @@ public class EnchantmentPhaseDefend extends Enchantment {
 
     @Override
     public boolean canEnchantItem(Item item) {
-        return item instanceof ItemArmor || item instanceof ItemSword;
+        return item instanceof ItemArmor;
     }
 
     @Override

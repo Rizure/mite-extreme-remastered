@@ -1,12 +1,11 @@
 package net.xiaoyu233.mitemod.miteite.trans.entity;
 
-import net.minecraft.Entity;
-import net.minecraft.EntityExperienceOrb;
-import net.minecraft.NBTTagCompound;
-import net.minecraft.World;
+import net.minecraft.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(EntityExperienceOrb.class)
 public class EntityExperienceOrbTrans extends Entity{
@@ -23,11 +22,22 @@ public class EntityExperienceOrbTrans extends Entity{
    public EntityExperienceOrbTrans(World par1World) {
       super(par1World);
    }
-
    @Overwrite
    public static int getXPSplit(int par0) {
-      return par0 / 3 > 0 ? par0 / 3 : 1;
+       return par0 / 3 > 0 ? par0 / 3 : (par0 == 2 ? 2 : 1);
    }
+
+    @Redirect(
+            method = {"onUpdate"},
+            at = @At(
+                    ordinal = 0,
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/EntityPlayer;getEyeHeight()F"
+            )
+    )
+    public float modifyOrbAdsorptionCenter(EntityPlayer entityPlayer) {
+        return -0.67F;
+    }
    @Overwrite
    public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
       par1NBTTagCompound.setShort("Health", (short)((byte)this.xpOrbHealth));

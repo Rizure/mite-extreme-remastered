@@ -390,6 +390,10 @@ public class EntitySkeletonTrans extends EntityMonster implements IRangedEntity 
 
       return par1EntityLivingData;
    }
+   @Override
+    public boolean requiresLineOfSightToTargets() {
+       return !this.isOutdoors();
+    }
 
    private boolean isCompressed() {
       return this.dataWatcher.getWatchableObjectByte(this.DATA_OBJ_ID_COMPRESSED) != 0;

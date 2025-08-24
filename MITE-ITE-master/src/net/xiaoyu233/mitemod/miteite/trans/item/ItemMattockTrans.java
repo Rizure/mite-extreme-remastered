@@ -2,11 +2,16 @@ package net.xiaoyu233.mitemod.miteite.trans.item;
 
 import net.minecraft.BlockBreakInfo;
 import net.minecraft.ItemMattock;
+import net.minecraft.Material;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.SoftOverride;
 
 @Mixin(ItemMattock.class)
-public class ItemMattockTrans extends ItemShovelTrans{
+public abstract class ItemMattockTrans extends ItemShovelTrans{
+    protected ItemMattockTrans(int par1, Material material) {
+        super(par1, material);
+    }
+
     @Override
     @SoftOverride
     protected int getExpForBlockBreak(BlockBreakInfo blockBreakInfo) {

@@ -11,6 +11,8 @@ import net.xiaoyu233.mitemod.miteite.tileentity.TileEntityForgingTable;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class ForgingTableSlots extends InventorySubcontainer {
@@ -79,10 +81,11 @@ public class ForgingTableSlots extends InventorySubcontainer {
     }
 
     public void costItems(ForgingRecipe recipe) {
-        List<Slot> currentMaterials = Lists.newArrayList(this.upLeft, this.upRight, this.left, this.right, this.downLeft, this.downRight);
-        List<ItemStack> materialsRequired = Lists.newArrayList(recipe.getMaterialsToUpgrade());
+        ArrayList<Slot> currentMaterials = Lists.newArrayList(this.upLeft, this.upRight, this.left, this.right, this.downLeft, this.downRight);
+        ArrayList<ItemStack> materialsRequired = Lists.newArrayList(recipe.getMaterialsToUpgrade());
         for (Slot current : currentMaterials) {
-            for (ItemStack req : materialsRequired) {
+            for (int j = 0; j < materialsRequired.size(); j++) {
+                ItemStack req = materialsRequired.get(j);
                 if (current.getStack() != null && ItemStack.areItemStacksEqual(req, current.getStack(), true, false, false, true)) {
                     int resultSize = current.getStack().stackSize - req.stackSize;
                     if (resultSize > 0) {
@@ -90,6 +93,7 @@ public class ForgingTableSlots extends InventorySubcontainer {
                     } else {
                         current.putStack(null);
                     }
+                    materialsRequired.set(j,null);
                 }
             }
         }
@@ -235,7 +239,11 @@ public class ForgingTableSlots extends InventorySubcontainer {
 
     @Nullable
     public ForgingRecipe getRecipeFromTool(@Nonnull ItemStack toolStack) {
-        return ForgingTableRecipes.getRecipe(toolStack.getItem().getMaterialForRepairs(), toolStack.getForgingGrade());
+        return ForgingTableRecipes.getRecipe(
+                toolStack.getItem().getMaterialForRepairs(),
+                toolStack.getForgingGrade(),
+                (this.axe.getStack() != null && this.axe.getStack().getItem() instanceof ItemBattleAxe)
+        );
     }
 
     public void updateInfo(@Nullable ForgingRecipe recipe){

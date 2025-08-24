@@ -67,6 +67,9 @@ tile.forging_table.vibranium.name=振金锻造台
 tile.nether_adamantium_ore.name=地狱艾德曼矿
 tile.vibranium_chest.name=振金箱子
 
+
+tile.headstone.name=墓碑
+
 achievement.vibraniumIngot=那我岂不是要无敌了?
 achievement.vibraniumIngot.desc=制作出一个振金锭
 achievement.vibraniumAnvil=亿年后
@@ -223,11 +226,13 @@ item.voucher_club_core.name=振金棒核心
 item.voucher_fishing.name=恬静凭证
 item.voucher_planting.name=丰饶凭证
 item.voucher_villager.name=交易凭证
-item.voucher_spider.name=繁育凭证
+item.voucher_spider.name=复生凭证
 item.voucher_guard.name=戍卫凭证
 
+tile.fancy_red_block.name=红钻块
 tile.fancy_red.name=红钻矿石
 item.fancy_red.name=红钻
+item.shardFancyRed.name=红钻碎片
 
 item.enhance_gem_phase1.damage.name=三角攻击宝石
 item.enhance_gem_phase1.protection.name=三角保护宝石
@@ -331,6 +336,7 @@ item.c4.name=蹦蹦炸弹
 item.t13.name=TB
 item.bad_apple.name=Bad Apple!!!
 item.pants.name=蓝白内裤
+item.headstone_bag.name=黑曜石棺材
 
 tile.gem_setting.name=宝石镶嵌台
 container.crafting.needsRemoveGems=请先移除宝石
