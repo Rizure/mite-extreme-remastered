@@ -381,7 +381,7 @@ public class EntitySkeletonTrans extends EntityMonster implements IRangedEntity 
       }
 
       this.setCombatTask();
-      if(rand.nextInt(100) < Configs.wenscConfig.FlyingSkeletonSpawningWeight.ConfigValue && this.isLongdead() && this.getSkeletonType() == MELEE_ATTACK_SKELETON_ID){
+      if(rand.nextInt(100) < Configs.wenscConfig.RidingSkeletonSpawningWeight.ConfigValue && this.isLongdead() && this.getSkeletonType() == MELEE_ATTACK_SKELETON_ID){
           EntityHostileSkeletonHorse horse;
           horse = new EntityHostileSkeletonHorse(this.worldObj);
           horse.setPosition(this.posX, this.posY, this.posZ);
