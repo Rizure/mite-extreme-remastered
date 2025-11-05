@@ -36,7 +36,7 @@ public class EntityOreElemental extends EntityEarthElemental {
         this.spawnCounter = par1NBTTagCompound.getShort("spawnCounter");
         this.spawnSums = par1NBTTagCompound.getByte("spawnSums");
         this.danger_level = par1NBTTagCompound.getByte("danger_level");
-        this.modifiedAttribute = par1NBTTagCompound.getBoolean(" modifiedAttribute");
+        this.modifiedAttribute = par1NBTTagCompound.getBoolean("modifiedAttribute");
     }
     @Override
     public void setTypeForBlock(Block block, boolean heated) {

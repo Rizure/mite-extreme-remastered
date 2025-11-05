@@ -3,8 +3,8 @@ package net.xiaoyu233.mitemod.miteite.item;
 import net.minecraft.EnumChatFormat;
 
 public enum EnumModifierQuality {
-    Common(EnumChatFormat.WHITE, "Common", 225),
-    Uncommon(EnumChatFormat.AQUA, "Uncommon", 75),
+    Common(EnumChatFormat.WHITE, "Common", 150),
+    Uncommon(EnumChatFormat.AQUA, "Uncommon", 50),
     Rare(EnumChatFormat.BLUE, "Rare", 25),
     Epic(EnumChatFormat.DARK_PURPLE, "Epic", 5),
     Legend(EnumChatFormat.LIGHT_PURPLE, "Legend", 2),

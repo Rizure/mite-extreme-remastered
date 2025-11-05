@@ -36,17 +36,17 @@ public class DamageTrans {
          if (target instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer)target;
             if (!this.bypassesMundaneArmor() && player.isBlocking()) {
-               ItemStack item_stack = player.getHeldItemStack();
-               float invincible_modifier = 0.0F;
-               if (item_stack != null && item_stack.getItem() instanceof ItemTool) {
-                  ItemTool item_tool = (ItemTool)item_stack.getItem();
-                  result.applyHeldItemDamageResult(item_stack.tryDamageItem(DamageSource.generic, (int)(this.amount * (float)item_tool.getToolDecayFromAttackingEntity(item_stack, null)), target));
-                  invincible_modifier = ToolModifierTypes.INVINCIBLE.getModifierValue(item_stack.getTagCompound());
-               }
-               this.amount /= 2.0F + invincible_modifier;
-               if (this.amount < 1.0F) {
-                  this.amount = 1.0F;
-               }
+                ItemStack item_stack = player.getHeldItemStack();
+                float invincible_modifier = 0.0F;
+                if (item_stack != null && item_stack.getItem() instanceof ItemTool) {
+                    ItemTool item_tool = (ItemTool)item_stack.getItem();
+                    result.applyHeldItemDamageResult(item_stack.tryDamageItem(DamageSource.generic, (int)(this.amount * (float)item_tool.getToolDecayFromAttackingEntity(item_stack, null)), target));
+                    invincible_modifier = ToolModifierTypes.INVINCIBLE.getModifierValue(item_stack.getTagCompound());
+                }
+                this.amount /= 2.0F + invincible_modifier;
+                if (this.amount < 1.0F) {
+                    this.amount = 1.0F;
+                }
             }
          }
 
@@ -77,29 +77,39 @@ public class DamageTrans {
          protection_fraction = MathHelper.clamp_float(protection_fraction,0.0F,1.0F);
          this.amount *= 1.0F - protection_fraction;
          
-         
-         
          if(target instanceof EntityPlayer) {
             protection_fraction = ((EntityPlayer)target).getGemSumNumeric(GemModifierTypes.protection);
          }
          protection_fraction = MathHelper.clamp_float(protection_fraction,0.0F,1.0F);
          this.amount *= 1.0F - protection_fraction;
-         
-         
-         
-         if (target instanceof EntityPlayer){
-            float healthPercent = target.getHealthFraction();
-            ItemStack chestplate = target.getCuirass();
-            if (chestplate != null){
-               float value = ArmorModifierTypes.INDOMITABLE.getModifierValue(chestplate.getTagCompound());
-               if (value != 0){
-                  protection_fraction = value * (1.0F - healthPercent);
-               }
-            }
-         }
-         protection_fraction = MathHelper.clamp_float(protection_fraction,0.0F,1.0F);
-         this.amount *= 1.0F - protection_fraction;
-         
+
+          if (target instanceof EntityPlayer){
+              float healthPercent = target.getHealthFraction();
+              ItemStack chestplate = target.getCuirass();
+              if (chestplate != null){
+                  float value = ArmorModifierTypes.INDOMITABLE.getModifierValue(chestplate.getTagCompound());
+                  if (value != 0){
+                      protection_fraction = value * (1.0F - healthPercent);
+                  }
+              }
+          }
+          protection_fraction = MathHelper.clamp_float(protection_fraction,0.0F,1.0F);
+          this.amount *= 1.0F - protection_fraction;
+
+          float immunity_fraction = target instanceof EntityPlayer ? 70.0F : 35.0F;
+          float dense_modifier = 0.0F;
+          if(target instanceof EntityPlayer){
+             ItemStack[] var6 = wornItems;
+             int var7 = wornItems.length;
+
+             for(delta = 0; delta < var7; ++delta) {
+                 ItemStack armor = var6[delta];
+                 if (armor != null) {
+                     dense_modifier += ArmorModifierTypes.DENSE.getModifierValue(armor.stackTagCompound);
+                 }
+             }
+          }
+          this.amount *= 1.0F - (total_protection / (total_protection + (immunity_fraction * (1.0F - dense_modifier))));
          
          
          DebugAttack.setTargetProtection(total_protection);

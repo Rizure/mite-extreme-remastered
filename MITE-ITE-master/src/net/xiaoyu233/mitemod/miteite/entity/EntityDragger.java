@@ -90,6 +90,19 @@ public class EntityDragger extends EntitySkeleton{
                         if(r < 4.0F && dy < 1.0F){
                             return;
                         }
+                        if(this.dragStrength % 20 == 0){
+                            EntityLiving target = this.getTarget();
+                            if(target != null) {
+                                int range = (int) getDistanceToEntity(target);
+                                double div = 1.0D / (double) range;
+                                for (int delta = 0; delta < range; delta++) {
+                                    EntityRideMarker rideMarker = new EntityRideMarker(this.worldObj);
+                                    rideMarker.setPosition(this.posX + dx * div * delta, this.posY + dy * div * delta, this.posZ + dz * div * delta);
+                                    this.worldObj.spawnEntityInWorld(rideMarker);
+                                    rideMarker.entityFX(EnumEntityFX.curse_effect_learned);
+                                }
+                            }
+                        }
                         if(this.dragStrength % 125 == 0){
                             this.entityToAttack.attackEntityFrom(new Damage(DamageSource.causeMobDamage(this),0.01F));
                         }

@@ -285,16 +285,20 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
          }
       }
       if(item_stack != null){
-          expReward = ToolModifierTypes.STEADY.getModifierValue(item_stack.getTagCompound());
-          if(itemRand.nextFloat() < expReward * 0.1F){
+          expReward = ToolModifierTypes.STEADY.getModifierValue(item_stack.getTagCompound()) * block.getBlockHardness(0);
+          int expReward_int = (int)expReward;
+          for (int var1 = 0; var1 < expReward_int; var1++){
+              info.world.spawnEntityInWorld(new EntityExperienceOrb(info.world, info.drop_x, info.drop_y + 0.5D, info.drop_z, 1));
+          }
+          if(itemRand.nextFloat() < expReward - expReward_int){
               info.world.spawnEntityInWorld(new EntityExperienceOrb(info.world, info.drop_x, info.drop_y + 0.5D, info.drop_z, 1));
           }
       }
 
-      if(itemRand.nextFloat() < ToolModifierTypes.BLESS_OF_NATURE.getModifierValue(info.getHarvesterItemStack().getTagCompound())){
+      if(itemRand.nextFloat() < 2.0F * ToolModifierTypes.BLESS_OF_NATURE.getModifierValue(info.getHarvesterItemStack().getTagCompound())){
          info.getResponsiblePlayer().getFoodStats().addSatiation(1);
          info.getResponsiblePlayer().getFoodStats().addNutrition(2);
-         if(itemRand.nextFloat() < ToolModifierTypes.BLESS_OF_NATURE.getModifierValue(info.getHarvesterItemStack().getTagCompound())){
+         if(itemRand.nextFloat() < 2.0F * ToolModifierTypes.BLESS_OF_NATURE.getModifierValue(info.getHarvesterItemStack().getTagCompound())){
             info.getResponsiblePlayer().heal(1);
          }
       }

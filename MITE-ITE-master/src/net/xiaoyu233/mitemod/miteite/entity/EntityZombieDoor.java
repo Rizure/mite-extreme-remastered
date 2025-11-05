@@ -11,12 +11,17 @@ public class EntityZombieDoor extends EntityZombie {
     private boolean haveTryToSpawnExchanger = false;
 
     private boolean modifiedAttribute = false;
-    private final Item [] doorList = new Item[] {Items.doorWood, Items.doorGold, Items.doorCopper, Items.doorSilver, Items.doorIron,Items.doorAncientMetal ,Items.doorMithril, Items.doorAdamantium };
+    private final Item [] doorList = new Item[] {Items.doorWood, Items.doorGold, Items.doorCopper, Items.doorSilver, Items.doorIron,Items.doorAncientMetal ,Items.doorMithril, Items.doorAdamantium};
     private int danger_level;
 
     public EntityZombieDoor(World par1World) {
         super(par1World);
         this.danger_level = Constant.GARandom.nextInt(doorList.length);
+    }
+
+    public EntityZombieDoor(World par1World, int danger_level) {
+        super(par1World);
+        this.danger_level = danger_level;
     }
 
     @Override
@@ -70,7 +75,7 @@ public class EntityZombieDoor extends EntityZombie {
         this.spawnCounter = par1NBTTagCompound.getShort("spawnCounter");
         this.spawnSums = par1NBTTagCompound.getByte("spawnSums");
         this.danger_level = par1NBTTagCompound.getByte("danger_level");
-        this.modifiedAttribute = par1NBTTagCompound.getBoolean(" modifiedAttribute");
+        this.modifiedAttribute = par1NBTTagCompound.getBoolean("modifiedAttribute");
     }
     @Override
     public boolean canCatchFire() {

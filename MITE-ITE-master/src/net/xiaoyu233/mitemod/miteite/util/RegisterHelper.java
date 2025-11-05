@@ -81,6 +81,15 @@ public class RegisterHelper {
         
         Items.minecartEmpty.setSoldPrice(75D);
         Items.saddle.setSoldPrice(5D);
+        Items.horseArmorCopper.setSoldPrice(50D);
+        Items.horseArmorSilver.setSoldPrice(100D);
+        Items.horseArmorGold.setSoldPrice(100D);
+        Items.horseArmorIron.setSoldPrice(75D);
+        Items.horseArmorAncientMetal.setSoldPrice(125D);
+        Items.horseArmorMithril.setBuyPrice(200D).setSoldPrice(200D);
+        Items.horseArmorAdamantium.setBuyPrice(600D).setSoldPrice(600D);
+        Items.record13.setSoldPrice(50D);
+        Items.recordCat.setSoldPrice(50D);
 
         Items.copperNugget.setSoldPrice(1D);
         Items.silverNugget.setSoldPrice(2D);

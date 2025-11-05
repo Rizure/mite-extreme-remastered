@@ -9,7 +9,7 @@ public class BlockStairsColorful extends BlockStairs {
         this.setCushioning(1000.0F);
         this.setMaxStackSize(64);
         this.setResistance(1000F);
-        this.setLightValue(0.7F);
+        this.setLightValue(0.75F);
     }
 
     public int dropBlockAsEntityItem(BlockBreakInfo info) {

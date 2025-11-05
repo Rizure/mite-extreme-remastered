@@ -18,6 +18,7 @@ public class BiomeForestTrans extends BiomeBase {
 
     @Overwrite
     public WorldGenerator getRandomWorldGenForTrees(Random par1Random) {
+        WorldGenBigTreeWithIDAndMeta tree;
         int percent = par1Random.nextInt(10);
         if(par1Random.nextInt(10) == 0) {
             return this.worldGeneratorForest;
@@ -25,11 +26,17 @@ public class BiomeForestTrans extends BiomeBase {
         if(par1Random.nextInt(4) == 0) {
             switch (percent) {
                 case 0:
-                    return new WorldGenBigTreeWithIDAndMeta(false, Blocks.wood1.blockID, 0, Blocks.leaves1.blockID, 0);
+                    tree = new WorldGenBigTreeWithIDAndMeta(false, Blocks.wood1.blockID, 0, Blocks.leaves1.blockID, 0);
+                    tree.setHeightLimit(18);
+                    return tree;
                 case 1:
-                    return new WorldGenBigTreeWithIDAndMeta(false, Blocks.wood1.blockID, 1, Blocks.leaves1.blockID, 1);
+                    tree = new WorldGenBigTreeWithIDAndMeta(false, Blocks.wood1.blockID, 1, Blocks.leaves1.blockID, 1);
+                    tree.setHeightLimit(10);
+                    return tree;
                 default:
-                    return new WorldGenBigTreeWithIDAndMeta(false, Blocks.wood.blockID, 0, Blocks.leaves.blockID, 0);
+                    tree = new WorldGenBigTreeWithIDAndMeta(false, Blocks.wood.blockID, 0, Blocks.leaves.blockID, 0);
+                    tree.setHeightLimit(20);
+                    return tree;
             }
         }
         switch (percent) {

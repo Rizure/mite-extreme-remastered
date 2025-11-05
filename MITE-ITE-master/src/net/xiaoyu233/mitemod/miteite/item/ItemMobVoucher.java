@@ -45,11 +45,11 @@ public class ItemMobVoucher extends Item {
                     break;
                 case "planting":
                     info.add(EnumChatFormat.BROWN + Translator.getFormatted("振金棒凭证材料之一", new Object[0]));
-                    info.add(EnumChatFormat.BLUE + Translator.getFormatted("收货作物时概率获得", new Object[0]));
+                    info.add(EnumChatFormat.BLUE + Translator.getFormatted("收获作物时概率掉落", new Object[0]));
                     break;
                 case "villager":
                     info.add(EnumChatFormat.BROWN + Translator.getFormatted("振金棒凭证材料之一", new Object[0]));
-                    info.add(EnumChatFormat.BLUE + Translator.getFormatted("村民交易刷新时概率获得", new Object[0]));
+                    info.add(EnumChatFormat.BLUE + Translator.getFormatted("村民交易刷新时概率掉落", new Object[0]));
                     break;
                 case "club_core":
                     info.add(EnumChatFormat.BROWN + Translator.getFormatted("振金棒合成材料之一", new Object[0]));

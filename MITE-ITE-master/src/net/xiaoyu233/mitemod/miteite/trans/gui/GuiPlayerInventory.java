@@ -1,8 +1,11 @@
 package net.xiaoyu233.mitemod.miteite.trans.gui;
 
 import net.minecraft.*;
+import net.xiaoyu233.mitemod.miteite.item.ArmorModifierTypes;
 import net.xiaoyu233.mitemod.miteite.item.enchantment.Enchantments;
 import net.xiaoyu233.mitemod.miteite.network.CPacketSyncItems;
+import net.xiaoyu233.mitemod.miteite.trans.util.DamageTrans;
+import net.xiaoyu233.mitemod.miteite.util.ReflectHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -53,7 +56,29 @@ public class GuiPlayerInventory extends axp {
             emergencyWords = "无此附魔";
         }
         this.o.b(bkb.a("container.crafting"), 87, 15, 4210752);
-        this.o.b("紧急守备：" + emergencyWords, 87, 63, 4210752);
-        this.o.b("保护：" + String.format("%.2f", this.f.h.getTotalProtection(null)), 87, 73, 4210752);
+
+        int info_page = 2;
+        int display_ticks = this.f.h.getTicksExistedWithOffset() % (100 * info_page);
+        String emergency_cooldown_info = "紧急守备：" + emergencyWords;
+        String money_info = bkb.a("container.shop.money",String.format("%.2f",this.e.player.money));
+        float protection = this.f.h.getTotalProtection(null);
+        int experience = this.e.player.experience;
+        float health = this.e.player.getHealth();
+        float maxHealth = this.e.player.getMaxHealth();
+        String health_info = "生命值：" + String.format("%.1f", health) + "/" + String.format("%.1f", maxHealth);
+        String protection_info = "保护：" + String.format("%.2f", protection);
+        String experience_info = "经验：" + experience;
+        switch (display_ticks / 100){
+            case 0:
+                this.o.b(emergency_cooldown_info, 87, 63, 4210752);
+                this.o.b(protection_info, 87, 73, 4210752);
+                break;
+            case 1:
+                this.o.b(money_info, 87, 63, 4210752);
+                this.o.b(experience_info, 87, 73, 4210752);
+                break;
+            default:
+                break;
+        }
     }
 }

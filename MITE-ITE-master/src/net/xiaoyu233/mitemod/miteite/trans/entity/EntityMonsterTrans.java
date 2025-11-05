@@ -56,7 +56,8 @@ public abstract class EntityMonsterTrans extends EntityInsentient implements IMo
    public void attackEntityFrom(Damage damage, CallbackInfoReturnable<EntityDamageResult> c) {
       if ((Configs.wenscConfig.mobDefense.ConfigValue)
               && damage.getResponsibleEntityP() != null
-              && this.getHeldItem() instanceof ItemTool && this.rand.nextInt(2) > 0
+              && (this.getHeldItem() instanceof ItemTool)
+              && this.rand.nextInt(2) > 0
               && !damage.bypassesMundaneArmor()) {
          damage.scaleAmount(0.5F);
          if (Configs.wenscConfig.mobDisarmWhenDefence.ConfigValue){
@@ -212,7 +213,11 @@ public abstract class EntityMonsterTrans extends EntityInsentient implements IMo
 
          return this.getDistanceSq(target.posX, target.boundingBox.minY, target.posZ) <= var2;
       } else {
-         return this.getDistance(target.posX, this.posY, target.posZ) <= (double)this.getReach() && MathUtil.isInRange(target.boundingBox.minY,this.boundingBox.minY - 0.5f,this.boundingBox.maxY + 0.5f);
+          if(this.isRiding()){
+              return this.getDistance(target.posX, target.posY, target.posZ) <= (double) this.getReach() * 1.75F;
+          }
+         return this.getDistance(target.posX, this.posY, target.posZ) <= (double)this.getReach() &&
+                 MathUtil.isInRange(target.boundingBox.minY,this.boundingBox.minY - 0.5f,this.boundingBox.maxY + 0.5f);
       }
    }
 

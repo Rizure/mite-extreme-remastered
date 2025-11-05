@@ -15,6 +15,8 @@ public class BlockHeadStone extends Block implements IContainer {
         this.setMaxStackSize(1);
         this.setLightOpacity(0);
         this.setLightValue(1.0F);
+        this.setResistance(1000.0F);
+        this.setBlockHardness(38.4F);
     }
 
     @Override

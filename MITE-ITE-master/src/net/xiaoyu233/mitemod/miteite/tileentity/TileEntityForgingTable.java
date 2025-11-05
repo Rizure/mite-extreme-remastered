@@ -53,7 +53,7 @@ public class TileEntityForgingTable extends TileEntity implements IInventory {
                 compound = toolItem.stackTagCompound;
                 if (compound.hasKey("tool_exp")) {
                     int currentExp = compound.getInteger("tool_exp");
-                    compound.setInteger("tool_exp", currentExp + (int) Math.pow(3,toolItem.getMaterialForRepairs().getMinHarvestLevel() - 1) * 25);
+                    compound.setInteger("tool_exp", currentExp + (int) Math.pow(3,toolItem.getMaterialForRepairs().getMinHarvestLevel()) * 10);
                 }
             }
         }

@@ -55,7 +55,8 @@ class EntityZombieTrans extends EntityAnimalWatcher {
                this.worldObj.spawnEntityInWorld(bat);
                bat.onSpawnWithEgg(null);
                bat.setAttackTarget(this.getTarget());
-               bat.entityFX(EnumEntityFX.summoned);
+               if(this.onServer())
+                   bat.entityFX(EnumEntityFX.summoned);
             }
             this.haveTriedToSpawnBat = true;
          }

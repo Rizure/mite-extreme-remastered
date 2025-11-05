@@ -41,7 +41,9 @@ public class ItemGemsTrans extends Item {
             if(ctrl_is_down){
                int amount = player.getHeldItemStack().stackSize;
                player.causeBreakingItemEffect(var10001, var10002.currentItem);
-               player.setHeldItemStack(null);
+               for(int i = 0; i < amount; i++){
+                   player.convertOneOfHeldItem((ItemStack)null);
+               }
                player.addExperience(xp_value * amount);
             }else {
                player.causeBreakingItemEffect(var10001, var10002.currentItem);

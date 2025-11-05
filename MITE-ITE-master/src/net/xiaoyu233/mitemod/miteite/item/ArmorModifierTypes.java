@@ -9,7 +9,7 @@ import java.util.function.Predicate;
 public enum ArmorModifierTypes implements ItemModifierTypes{
     //Armor Modifiers
     DURABILITY_MODIFIER(0.15F,"持久",EnumModifierQuality.Common,5,(stack -> true)),
-    DENSE(0.1F,"致密",EnumModifierQuality.Common,4,(stack -> true)),
+    DENSE(0.175F,"致密",EnumModifierQuality.Uncommon,4,(stack -> true)),
     PROTECTION_MODIFIER(0.125F,"保护",EnumModifierQuality.Uncommon,4,(stack -> hasNotOtherProtectionModifier(stack,1))),
     PROJECTILE_PROTECTION_MODIFIER(2F,"弹射物保护", EnumModifierQuality.Uncommon,4,(stack -> hasNotOtherProtectionModifier(stack,3))),
     EXPLOSION_PROTECTION_MODIFIER(5.5F,"爆炸保护", EnumModifierQuality.Uncommon,4,(stack -> hasNotOtherProtectionModifier(stack,2))),

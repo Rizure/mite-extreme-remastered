@@ -250,23 +250,20 @@ public abstract class ItemArmorTrans extends Item implements IDamageableItem, IU
    @Overwrite
    public float getMultipliedProtection(ItemStack item_stack) {
       float multiplied_protection = this.getRawProtection();
+
+      if (item_stack.getForgingGrade() != 0) {
+          multiplied_protection += this.getEnhancedProtection(item_stack);
+      }
+
       if (item_stack != null && item_stack.hasEnchantment(Enchantment.protection, false)) {
-         multiplied_protection += multiplied_protection * item_stack.getEnchantmentLevelFraction(Enchantment.protection) * 0.5F;
+          multiplied_protection *= 1.0F + item_stack.getEnchantmentLevelFraction(Enchantment.protection) * 0.5F;
       }
 
       if (item_stack != null && item_stack.stackTagCompound != null) {
          float protection_modifier = ArmorModifierTypes.PROTECTION_MODIFIER.getModifierValue(item_stack.stackTagCompound);
          if (protection_modifier > 0.0F) {
-            multiplied_protection *= (1 + protection_modifier);
+            multiplied_protection += protection_modifier * this.getRawProtection();
          }
-         float dense_modifier = ArmorModifierTypes.DENSE.getModifierValue(item_stack.stackTagCompound);
-         if (dense_modifier > 0.0F){
-            multiplied_protection *= 1 + ((float) item_stack.getItemDamage() / item_stack.getMaxDamage()) * dense_modifier;
-         }
-      }
-
-      if (item_stack.getForgingGrade() != 0) {
-         multiplied_protection += this.getEnhancedProtection(item_stack);
       }
 
       return multiplied_protection;

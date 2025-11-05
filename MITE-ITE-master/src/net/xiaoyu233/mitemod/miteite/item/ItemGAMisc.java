@@ -68,6 +68,8 @@ public class ItemGAMisc extends Item {
                 case "headstone_bag":
                     info.add(EnumChatFormat.BROWN + Translator.getFormatted("???:她是我唯一的家人了", new Object[0]));
                     info.add(EnumChatFormat.BROWN + Translator.getFormatted("???:那你用得还蛮快的", new Object[0]));
+                    info.add(EnumChatFormat.BLUE + Translator.getFormatted("在死亡时生成一个方块保存背包物品", new Object[0]));
+                    info.add(EnumChatFormat.BLUE + Translator.getFormatted("该方块并不防爆", new Object[0]));
                     break;
                 default:
                     break;

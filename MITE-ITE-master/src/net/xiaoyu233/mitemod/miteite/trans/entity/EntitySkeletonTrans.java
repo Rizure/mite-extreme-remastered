@@ -3,6 +3,7 @@ package net.xiaoyu233.mitemod.miteite.trans.entity;
 import net.minecraft.*;
 import net.minecraft.server.MinecraftServer;
 import net.xiaoyu233.mitemod.miteite.entity.EntityExchanger;
+import net.xiaoyu233.mitemod.miteite.entity.EntityHostileSkeletonHorse;
 import net.xiaoyu233.mitemod.miteite.item.Items;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
 import net.xiaoyu233.mitemod.miteite.util.Constant;
@@ -137,6 +138,11 @@ public class EntitySkeletonTrans extends EntityMonster implements IRangedEntity 
    public void injectLivingUpdate(CallbackInfo callbackInfo) {
       if(this.isCompressed() && this.getTicksExistedWithOffset() % 60 == 0){
          this.entityFX(EnumEntityFX.summoned);
+      }
+      if(this.isRiding() && this.ridingEntity instanceof EntityHostileSkeletonHorse){
+          if(this.getTarget() != null && this.getTicksExistedWithOffset() % 20 == 0){
+              ((EntityHostileSkeletonHorse)this.ridingEntity).setTarget(this.getTarget());
+          }
       }
       if (this.willChangeWeapon){
          if (this.stowed_item_stack != null && (this.getHeldItemStack() == null || this.getTicksExistedWithOffset() % 10 == 0)) {
@@ -375,7 +381,15 @@ public class EntitySkeletonTrans extends EntityMonster implements IRangedEntity 
       }
 
       this.setCombatTask();
-
+      if(rand.nextInt(100) < Configs.wenscConfig.FlyingSkeletonSpawningWeight.ConfigValue && this.isLongdead() && this.getSkeletonType() == MELEE_ATTACK_SKELETON_ID){
+          EntityHostileSkeletonHorse horse;
+          horse = new EntityHostileSkeletonHorse(this.worldObj);
+          horse.setPosition(this.posX, this.posY, this.posZ);
+          this.worldObj.spawnEntityInWorld(horse);
+          horse.onSpawnWithEgg(new GroupDataHorse(4, 0));
+          horse.entityFX(EnumEntityFX.summoned);
+          this.mountEntity(horse);
+      }
       if(rand.nextInt(100) < Configs.wenscConfig.FlyingSkeletonSpawningWeight.ConfigValue && this.getSkeletonType() == 0 && !this.isLongdead()) {
          EntityBat entityBat;
          this.dataWatcher.updateObject(this.DATA_OBJ_ID_CAN_USE_TRIPLE_ARROW, (byte)(1));

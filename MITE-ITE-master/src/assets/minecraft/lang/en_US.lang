@@ -149,6 +149,7 @@ entity.EntitySpiderKing.name=国王蜘蛛
 entity.EntitySpiderQueen.name=蛛后
 entity.EntityDragger.name=拖曳骷髅
 entity.EntityOreElemental.name=大地元素
+entity.EntityZombieExploder.name=僵尸粉碎者
 
 gui.forgingTable.start=开始锻造
 gui.forgingTable.item_req=锻造需要

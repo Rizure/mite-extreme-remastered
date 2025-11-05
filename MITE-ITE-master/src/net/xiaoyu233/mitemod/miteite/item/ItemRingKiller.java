@@ -91,11 +91,13 @@ public class ItemRingKiller extends Item{
     public void addInformation(ItemStack item_stack, EntityPlayer player, List info, boolean extended_info, Slot slot) {
         if (extended_info) {
             info.add(" ");
-            info.add(EnumChatFormat.BROWN + Translator.getFormatted("自动范围群体伤害", new Object[0]));
-            info.add(EnumChatFormat.BLUE + Translator.getFormatted("范围:" + this.getRingKillerSkillRange(item_stack), new Object[0]));
-            info.add(EnumChatFormat.RED + Translator.getFormatted("伤害:" + this.getRingKillerSkillDamage(item_stack), new Object[0]));
-            info.add(EnumChatFormat.LIGHT_PURPLE + Translator.getFormatted("冷却:" + (float)this.getRingKillerSkillCoolDownTime(item_stack) / 20F + 'S', new Object[0]));
-            info.add(EnumChatFormat.BLUE + Translator.getFormatted("模式:" + item_stack.getItemSubtype(), new Object[0]));
+            info.add(EnumChatFormat.BROWN + Translator.getFormatted("F11是对大哥的认可", new Object[0]));
+            info.add(EnumChatFormat.BROWN + Translator.getFormatted("F12是对大哥的不舍", new Object[0]));
+            info.add(EnumChatFormat.BLUE + Translator.getFormatted("自动范围群体伤害", new Object[0]));
+            info.add(EnumChatFormat.GREEN + Translator.getFormatted("范围:" + this.getRingKillerSkillRange(item_stack), new Object[0]));
+            info.add(EnumChatFormat.GREEN + Translator.getFormatted("伤害:" + this.getRingKillerSkillDamage(item_stack), new Object[0]));
+            info.add(EnumChatFormat.GREEN + Translator.getFormatted("冷却:" + (float)this.getRingKillerSkillCoolDownTime(item_stack) / 20F + 'S', new Object[0]));
+            info.add(EnumChatFormat.GREEN + Translator.getFormatted("模式:" + item_stack.getItemSubtype(), new Object[0]));
         }
     }
 }

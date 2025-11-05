@@ -13,7 +13,7 @@ public class BlockColorful extends Blocks implements IBlockWithSubtypes {
         this.setResistance(20F);
         this.setCreativeTab(CreativeModeTab.tabBlock);
         this.setStepSound(Block.soundStoneFootstep);
-        this.setLightValue(0.7F);
+        this.setLightValue(0.75F);
     }
 
     public int dropBlockAsEntityItem(BlockBreakInfo info) {

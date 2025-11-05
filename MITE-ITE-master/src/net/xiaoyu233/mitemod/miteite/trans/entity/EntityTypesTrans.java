@@ -52,6 +52,8 @@ public class EntityTypesTrans {
       addMapping(EntityFinalZombieBoss.class,"EntityFinalZombieBoss",215);
       addMapping(EntityGrenade.class,"EntityGrenade",216);
       addMapping(EntityOreElemental.class,"EntityOreElemental",217);
+      addMapping(EntityZombieExploder.class,"EntityZombieExploder",218);
+      addMapping(EntityHostileSkeletonHorse.class,"EntityHostileSkeletonHorse",219);
 //      addMapping(EntityThunderMan.class, "EntityThunderMan", 209);
 
    }

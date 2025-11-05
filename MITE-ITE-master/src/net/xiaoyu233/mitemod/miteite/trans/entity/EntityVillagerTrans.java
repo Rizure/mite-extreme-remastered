@@ -198,13 +198,13 @@ public abstract class EntityVillagerTrans extends EntityAgeable implements IMerc
 //         addBlacksmithItem(var2, Item.pocketSundial.itemID, this.rand, this.adjustProbability(0.8F));
          this.initEnhanceBookList();
          if (this.rand.nextFloat() < this.adjustProbability(0.5F)) {
-            var2.add(new MerchantRecipe(new ItemStack(Item.emerald, 4), new ItemStack(Item.diamond, 3)));
+            var2.add(new MerchantRecipe(new ItemStack(Item.emerald, 2), new ItemStack(Item.diamond, 1)));
          }
          if (this.rand.nextFloat() < this.adjustProbability(0.5F)) {
-            var2.add(new MerchantRecipe(new ItemStack(Item.diamond, 3), new ItemStack(Item.emerald, 4)));
+            var2.add(new MerchantRecipe(new ItemStack(Item.diamond, 1), new ItemStack(Item.emerald, 2)));
          }
          if (this.rand.nextFloat() < this.adjustProbability(0.5F)) {
-            var2.add(new MerchantRecipe(new ItemStack(Items.fancyRed, 3), new ItemStack(Item.emerald, 5)));
+            var2.add(new MerchantRecipe(new ItemStack(Items.fancyRed, 5), new ItemStack(Item.emerald, 16)));
          }
          Enchantment var8 = (Enchantment)villagerEnhanceSimpleBookList[this.rand.nextInt(villagerEnhanceSimpleBookList.length)];
 

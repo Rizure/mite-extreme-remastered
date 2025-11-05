@@ -27,5 +27,5 @@ public class ItemClubMetal extends ItemCudgel {
     }
     public boolean hasWoodenHandle() {
         return false;
-    }
+}
 }

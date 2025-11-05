@@ -5,7 +5,6 @@ import net.minecraft.server.MinecraftServer;
 import net.xiaoyu233.fml.util.ReflectHelper;
 import net.xiaoyu233.mitemod.miteite.entity.*;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
-import net.xiaoyu233.mitemod.miteite.util.WorldUtil;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -100,7 +99,7 @@ public abstract class WorldServerTrans extends World {
    @Overwrite
    public Class getSuitableCreature(EnumCreatureType creature_type, int x, int y, int z) {
       boolean check_depth = this.isOverworld();
-      boolean is_blood_moon_day = WorldUtil.isBloodMoonDay(this.getTotalWorldTime()) && !this.isBlueMoon(true);
+      boolean is_blood_moon_day = this.isBloodMoonDay();
       boolean is_blood_moon_up = this.isBloodMoon(true);
       boolean is_freezing_biome = this.getBiomeGenForCoords(x, z).isFreezing();
       boolean is_desert_biome = this.getBiomeGenForCoords(x, z).isDesertBiome();
@@ -182,6 +181,9 @@ public abstract class WorldServerTrans extends World {
             }
             if (entity_class == EntityZombieDoor.class) {
                if(getDayOfOverworld() >= 16 || y <= 40){
+                  if (check_depth && (this.rand.nextInt(40) >= y) && this.rand.nextInt(3) != 0) {
+                      return EntityZombieExploder.class;
+                  }
                   return entity_class;
                }
                return EntityZombie.class;

@@ -3,6 +3,7 @@ package net.xiaoyu233.mitemod.miteite.trans.block;
 import net.minecraft.*;
 import net.xiaoyu233.mitemod.miteite.entity.EntityFinalZombieBoss;
 import net.xiaoyu233.mitemod.miteite.entity.EntityZombieBoss;
+import net.xiaoyu233.mitemod.miteite.entity.EntityZombieExploder;
 import net.xiaoyu233.mitemod.miteite.item.Items;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,6 +36,18 @@ public class BlockMobSpawnerTrans extends BlockContainer {
             entityZombieBoss.entityFX(EnumEntityFX.summoned);
             entityZombieBoss.onSpawnWithEgg(null);
             info.world.spawnEntityInWorld(entityZombieBoss);
+        }else{
+            if(info.world.getWorld().isOverworld() && info.world.rand.nextFloat() < Configs.wenscConfig.zombieBossSpawnPercent.ConfigValue) {
+                EntityZombieExploder entityZombieExploder = new EntityZombieExploder(info.world);
+                entityZombieExploder.setPosition(info.x, info.y, info.z);
+                entityZombieExploder.refreshDespawnCounter(-9600);
+                if(info.getResponsiblePlayer() != null) {
+                    entityZombieExploder.setAttackTarget(info.getResponsiblePlayer());
+                }
+                entityZombieExploder.entityFX(EnumEntityFX.summoned);
+                entityZombieExploder.onSpawnWithEgg(null);
+                info.world.spawnEntityInWorld(entityZombieExploder);
+            }
         }
         return 0;
     }

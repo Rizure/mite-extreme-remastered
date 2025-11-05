@@ -101,8 +101,8 @@ public class ItemConsumables extends Item{
                 info.add(EnumChatFormat.BROWN + Translator.getFormatted("你这人皇幡怎么冒黑烟啊", new Object[0]));
             }
             if(Objects.equals(this.tag, "final_key")){
-                info.add(EnumChatFormat.BROWN + Translator.getFormatted("我在我家发现了开锁师傅的广告", new Object[0]));
-                info.add(EnumChatFormat.RED + Translator.getFormatted("做好准备", new Object[0]));
+                info.add(EnumChatFormat.BROWN + Translator.getFormatted("把世界调成静音", new Object[0]));
+                info.add(EnumChatFormat.BROWN + Translator.getFormatted("聆听开锁师傅被炸飞的声音", new Object[0]));
             }
             if(Objects.equals(this.tag, "end_scroll")){
                 info.add(EnumChatFormat.BROWN + Translator.getFormatted("天机不可泄露", new Object[0]));

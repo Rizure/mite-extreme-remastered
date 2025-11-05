@@ -3,6 +3,7 @@ package net.xiaoyu233.mitemod.miteite.entity;
 import net.minecraft.*;
 import net.xiaoyu233.mitemod.miteite.item.Items;
 import net.xiaoyu233.mitemod.miteite.util.MonsterUtil;
+import org.lwjgl.Sys;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -61,7 +62,6 @@ public class EntityMirrorSkeleton extends EntitySkeleton {
         if (!this.getWorld().isRemote){
             if(ticksExisted % 20 == 0) {
                 EntityLiving target = this.getTarget();
-
                 if(target instanceof EntityPlayer) {
                     if(hasClonePlayer == false) {
                         if(target.getMaxHealth() > this.getMaxHealth()) {

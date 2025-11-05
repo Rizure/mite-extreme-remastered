@@ -7,6 +7,9 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.locks.ReentrantLock;
+
 import java.util.Random;
 
 @Mixin(BiomeDecorator.class)
@@ -32,6 +35,7 @@ public class BiomeDecoratorTrans {
    private static final int REDSTONE_FREQUENCY_OVERWORLD = Configs.wenscConfig.redstoneFrequencyOverworld.ConfigValue;
    private static final int REDSTONE_FREQUENCY_UNDERWORLD = Configs.wenscConfig.redstoneFrequencyUnderworld.ConfigValue;
    private static final int COAL_FREQUENCY_OVERWORLD = Configs.wenscConfig.coalFrequencyOverworld.ConfigValue;
+   private static final boolean veinSizeIncreasesWithDepth = Configs.wenscConfig.veinSizeIncreasesWithDepth.ConfigValue;
    @Shadow
    public boolean generateLakes;
    @Shadow
@@ -110,6 +114,40 @@ public class BiomeDecoratorTrans {
    protected WorldGenerator waterlilyGen;
    @Shadow
    protected int waterlilyPerChunk;
+   private final ReentrantLock lock = new ReentrantLock();
+   @Overwrite
+   public void decorate(World par1World, Random par2Random, int par3, int par4) {
+       lock.lock();
+       try {
+           if(this.currentWorld == null){
+               this.currentWorld = par1World;
+               this.randomGenerator = par2Random;
+               this.randomGenerator.setSeed((long)(par3 + par4 * 65536) + par1World.getSeed() * 4294967296L);
+               this.chunk_X = par3;
+               this.chunk_Z = par4;
+               this.decorate();
+               this.currentWorld = null;
+               this.randomGenerator = null;
+               lock.unlock();
+           }
+       }finally {
+//           System.out.println(par3+","+par4);
+       }
+//       if (this.currentWorld != null) {
+//           throw new RuntimeException("Already decorating!!");
+//       } else {
+//           this.currentWorld = par1World;
+//           this.randomGenerator = par2Random;
+//           this.randomGenerator.setSeed((long)(par3 + par4 * 65536) + par1World.getSeed() * 4294967296L);
+//           this.chunk_X = par3;
+//           this.chunk_Z = par4;
+//           this.decorate();
+//           this.currentWorld = null;
+//           this.randomGenerator = null;
+//       }
+   }
+   @Shadow
+   protected void decorate() {}
 
    public BiomeDecoratorTrans(BiomeBase par1BiomeGenBase) {
       this.sandGen = new WorldGenSand(7, Block.sand.blockID);
@@ -177,12 +215,12 @@ public class BiomeDecoratorTrans {
          this.genMinable(200, this.dirtGen);
          this.genMinable(200, this.gravelGen);
          this.genMinable(COAL_FREQUENCY_OVERWORLD, this.coalGen);
-         this.genMinable(COPPER_FREQUENCY_OVERWORLD, this.copperGen, true);
-         this.genMinable(SILVER_FREQUENCY_OVERWORLD, this.silverGen, true);
-         this.genMinable(GOLD_FREQUENCY_OVERWORLD, this.goldGen, true);
-         this.genMinable(IRON_FREQUENCY_OVERWORLD, this.ironGen, true);
-         this.genMinable(MITHRIL_FREQUENCY_OVERWORLD, this.mithrilGen, true);
-         this.genMinable(5, this.silverfishGen, true);
+         this.genMinable(COPPER_FREQUENCY_OVERWORLD, this.copperGen, veinSizeIncreasesWithDepth);
+         this.genMinable(SILVER_FREQUENCY_OVERWORLD, this.silverGen, veinSizeIncreasesWithDepth);
+         this.genMinable(GOLD_FREQUENCY_OVERWORLD, this.goldGen, veinSizeIncreasesWithDepth);
+         this.genMinable(IRON_FREQUENCY_OVERWORLD, this.ironGen, veinSizeIncreasesWithDepth);
+         this.genMinable(MITHRIL_FREQUENCY_OVERWORLD, this.mithrilGen, veinSizeIncreasesWithDepth);
+         this.genMinable(5, this.silverfishGen, veinSizeIncreasesWithDepth);
          this.genMinable(REDSTONE_FREQUENCY_OVERWORLD, this.redstoneGen);
          this.genMinable(DIAMOND_FREQUENCY_OVERWORLD, this.diamondGen);
          this.genMinable(LAPIS_FREQUENCY_OVERWORLD, this.lapisGen);
@@ -191,12 +229,12 @@ public class BiomeDecoratorTrans {
          }
       } else if (this.currentWorld.isUnderworld()) {
          this.genMinable(300, this.gravelGen);
-         this.genMinable(COPPER_FREQUENCY_UNDERWORLD, this.copperGen, true);
-         this.genMinable(SILVER_FREQUENCY_UNDERWORLD, this.silverGen, true);
-         this.genMinable(GOLD_FREQUENCY_UNDERWORLD, this.goldGen, true);
-         this.genMinable(IRON_FREQUENCY_UNDERWORLD, this.ironGen, true);
-         this.genMinable(MITHRIL_FREQUENCY_UNDERWORLD, this.mithrilGen, true);
-         this.genMinable(ADAMANTIUM_FREQUENCY_UNDERWORLD, this.adamantiteGen, true);
+         this.genMinable(COPPER_FREQUENCY_UNDERWORLD, this.copperGen, veinSizeIncreasesWithDepth);
+         this.genMinable(SILVER_FREQUENCY_UNDERWORLD, this.silverGen, veinSizeIncreasesWithDepth);
+         this.genMinable(GOLD_FREQUENCY_UNDERWORLD, this.goldGen, veinSizeIncreasesWithDepth);
+         this.genMinable(IRON_FREQUENCY_UNDERWORLD, this.ironGen, veinSizeIncreasesWithDepth);
+         this.genMinable(MITHRIL_FREQUENCY_UNDERWORLD, this.mithrilGen, veinSizeIncreasesWithDepth);
+         this.genMinable(ADAMANTIUM_FREQUENCY_UNDERWORLD, this.adamantiteGen, veinSizeIncreasesWithDepth);
          this.genMinable(REDSTONE_FREQUENCY_UNDERWORLD, this.redstoneGen);
          this.genMinable(DIAMOND_FREQUENCY_UNDERWORLD, this.diamondGen);
          this.genMinable(FANCY_RED_FREQUENCY_UNDERWORLD, this.fancyRedGen);
