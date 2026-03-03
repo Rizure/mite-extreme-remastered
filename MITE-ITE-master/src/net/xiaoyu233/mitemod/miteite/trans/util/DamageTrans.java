@@ -96,21 +96,24 @@ public class DamageTrans {
           protection_fraction = MathHelper.clamp_float(protection_fraction,0.0F,1.0F);
           this.amount *= 1.0F - protection_fraction;
 
-          float immunity_fraction = target instanceof EntityPlayer ? 70.0F : 35.0F;
-          float dense_modifier = 0.0F;
-          if(target instanceof EntityPlayer){
-             ItemStack[] var6 = wornItems;
-             int var7 = wornItems.length;
+          if(total_protection > 0){
+              float immunity_base = target instanceof EntityPlayer ? 70.0F : 35.0F;
+              float dense_modifier = 0.0F;
+              if(target instanceof EntityPlayer){
+                  ItemStack[] var6 = wornItems;
+                  int var7 = wornItems.length;
 
-             for(delta = 0; delta < var7; ++delta) {
-                 ItemStack armor = var6[delta];
-                 if (armor != null) {
-                     dense_modifier += ArmorModifierTypes.DENSE.getModifierValue(armor.stackTagCompound);
-                 }
-             }
+                  for(delta = 0; delta < var7; ++delta) {
+                      ItemStack armor = var6[delta];
+                      if (armor != null) {
+                          dense_modifier += ArmorModifierTypes.DENSE.getModifierValue(armor.stackTagCompound);
+                      }
+                  }
+              }
+              dense_modifier = MathHelper.clamp_float(dense_modifier,0.0F,1.0F);
+              float immunity_fraction = total_protection / (total_protection + (immunity_base - 70.0F * dense_modifier));
+              this.amount *= 1.0F - immunity_fraction;
           }
-          this.amount *= 1.0F - (total_protection / (total_protection + (immunity_fraction * (1.0F - dense_modifier))));
-         
          
          DebugAttack.setTargetProtection(total_protection);
          float amount_dealt_to_armor = Math.min(target.getProtectionFromArmor(this.getSource(), false), this.amount);
