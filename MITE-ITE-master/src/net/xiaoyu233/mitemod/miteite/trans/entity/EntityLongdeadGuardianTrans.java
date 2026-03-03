@@ -1,13 +1,20 @@
 package net.xiaoyu233.mitemod.miteite.trans.entity;
 
 import net.minecraft.*;
+import net.minecraft.server.MinecraftServer;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
+import net.xiaoyu233.mitemod.miteite.util.Constant;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.SoftOverride;
 
+import static net.xiaoyu233.mitemod.miteite.util.MonsterUtil.getRandomWeaponTier;
+
 @Mixin(EntityLongdeadGuardian.class)
-public class EntityLongdeadGuardianTrans extends EntityLongdeadTrans {
+public class EntityLongdeadGuardianTrans extends EntityLongdead {
+   @Shadow
+   ItemStack stowed_item_stack;
    public EntityLongdeadGuardianTrans(World world) {
       super(world);
    }
@@ -15,11 +22,14 @@ public class EntityLongdeadGuardianTrans extends EntityLongdeadTrans {
    @Overwrite
    public void addRandomWeapon() {
       super.addRandomWeapon();
-   }
-
-   @Overwrite
-   public void onLivingUpdate() {
-      super.onLivingUpdate();
+      int day_of_world = MinecraftServer.F().getOverworld().getDayOfOverworld();
+      if(this.getSkeletonType() == 0){
+         if(day_of_world > 64){
+            this.stowed_item_stack = (new ItemStack(Constant.SWORDS[getRandomWeaponTier(rand,day_of_world)])).randomizeForMob(this, true);
+         }else {
+            this.stowed_item_stack = new ItemStack(Item.daggerAncientMetal).randomizeForMob(this, true);
+         }
+      }
    }
 
    @Overwrite
@@ -37,14 +47,6 @@ public class EntityLongdeadGuardianTrans extends EntityLongdeadTrans {
    }
    protected boolean willChangeWeapon(){
       return true;
-   }
-
-   @SoftOverride
-   protected void enchantEquipment(ItemStack item_stack) {
-      if ((double)this.getRNG().nextFloat() <= 0.2D + (double)this.getWorld().getDayOfOverworld() / 64.0D / 10.0D) {
-         EnchantmentManager.addRandomEnchantment(this.getRNG(), item_stack, (int)(5.0F + (float)(this.getRNG().nextInt(15 + this.getWorld().getDayOfOverworld() / 32) / 10) * (float)this.getRNG().nextInt(18)));
-      }
-
    }
 
 }

@@ -109,6 +109,14 @@ public class ItemGAFood extends ItemFood {
                 case "suspicious_stew":
                     info.add(EnumChatFormat.BROWN + Translator.getFormatted("信春哥!", new Object[0]));
                     break;
+                case "xiaohuan":
+                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("赶紧把这药吃了吧", new Object[0]));
+                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("再不吃伤口就自己愈合了", new Object[0]));
+                    break;
+                case "dahuan":
+                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("我总算明白为什么烤鱼的", new Object[0]));
+                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("周围会刷新冰山师姐了", new Object[0]));
+                    break;
                 default:
                     break;
             }

@@ -156,6 +156,9 @@ public class Items extends Item{
 
     public static final ItemShard shardFancyRed = new ItemShardExtend(Constant.getNextItemID(), Material.diamond);
     public static final ItemGAMisc headstone_bag = new ItemGAMisc(Constant.getNextItemID(),"headstone_bag");
+    public static final ItemFood xiaoHuanDan = (new ItemGAFood(Constant.getNextItemID(), Materials.bread, 1, 1, 0, false, false, false, "xiaohuan")).setAlwaysEdible();
+    public static final ItemFood daHuanDan = (new ItemGAFood(Constant.getNextItemID(), Materials.bread, 4, 4, 250, false, false, false, "dahuan")).setAlwaysEdible();
+
     private static Item register(String resourceLocation, Item item, CreativeModeTab tab) {
         item.setResourceLocation(item.getResourceLocationPrefix() + resourceLocation);
         item.setUnlocalizedName(resourceLocation);
@@ -261,6 +264,8 @@ public class Items extends Item{
         register("drug_bg_b",wuzhiDan);
         register("drug_yd", demonPillRaw);
         register("drug_yd_b", demonPillCooked);
+        register("drug_xh",xiaoHuanDan);
+        register("drug_dh",daHuanDan);
         register("cubesugar", cubeSugar);
         register("latiao",spicyStrip);
         register("zombie_brain",zombieBrain);
@@ -328,6 +333,9 @@ public class Items extends Item{
                 }
             }
         }
+        register.registerShapelessRecipe(new ItemStack(Items.daHuanDan),false,Items.xiaoHuanDan,Items.xiaoHuanDan,Items.xiaoHuanDan,Items.xiaoHuanDan,Item.sugar);
+        register.registerShapelessRecipe(new ItemStack(Items.buguDan),false,Items.daHuanDan,new ItemStack(Block.leaves,1,0),Block.mushroomBrown,Block.plantYellow);
+        register.registerShapelessRecipe(new ItemStack(Items.buguDan),false,Items.daHuanDan,new ItemStack(Block.leaves,1,2),Block.mushroomBrown,Block.plantYellow);
         register.registerShapelessRecipe(new ItemStack(Items.wuzhiDan,8),false,new Object[]{Items.buguDan,Item.redstone,Block.plantYellow,new ItemStack(Block.plantRed,1,0),new ItemStack(Block.plantRed,1,1),new ItemStack(Block.plantRed,1,2),new ItemStack(Block.plantRed,1,5),new ItemStack(Block.plantRed,1,7),new ItemStack(Block.plantRed,1,8)});
         register.registerShapelessRecipe(new ItemStack(Items.wuzhiDan,1),false,new Object[]{Items.buguDan,Item.redstone,Item.potato,Item.carrot,Item.onion,Block.mushroomBrown});
         register.registerShapelessRecipe(new ItemStack(Items.chikitan,2),false,new Object[]{Item.emerald,Item.emerald,Block.plantYellow,Item.egg});

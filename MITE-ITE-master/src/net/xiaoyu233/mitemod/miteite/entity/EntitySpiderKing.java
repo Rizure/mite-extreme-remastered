@@ -134,13 +134,14 @@ public class EntitySpiderKing extends EntityArachnid {
         int day = this.worldObj.getDayOfOverworld();
         Entity player = damageSource.getResponsibleEntity();
         if(player instanceof EntityPlayer){
+            int looting = damageSource.getLootingModifier();
             int count = Math.min(3, day / 32);
             for(int i = 0;i< count;i++){
                 this.dropItem(Item.emerald);
             }
             for(int i = 0;i< 8;i++){
                 this.dropItem(Items.hugeSpiderLeg);
-                if(this.rand.nextInt(4) == 0){
+                if(this.rand.nextInt(4 + looting) == 0){
                     i++;
                 }
             }

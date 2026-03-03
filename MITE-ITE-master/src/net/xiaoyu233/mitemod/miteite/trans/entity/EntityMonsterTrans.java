@@ -56,7 +56,7 @@ public abstract class EntityMonsterTrans extends EntityInsentient implements IMo
    public void attackEntityFrom(Damage damage, CallbackInfoReturnable<EntityDamageResult> c) {
       if ((Configs.wenscConfig.mobDefense.ConfigValue)
               && damage.getResponsibleEntityP() != null
-              && (this.getHeldItem() instanceof ItemTool)
+              && (this.getHeldItem() instanceof ItemTool || this.getHeldItem() instanceof ItemDoor)
               && this.rand.nextInt(2) > 0
               && !damage.bypassesMundaneArmor()) {
          damage.scaleAmount(0.5F);

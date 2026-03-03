@@ -20,8 +20,8 @@ public class EntityClusterSpider extends EntityArachnid{
         int day = this.getWorld() != null ? this.getWorld().getDayOfOverworld() : 0;
         super.applyEntityAttributes();
         this.setEntityAttribute(GenericAttributes.followRange, 48.0);
-        this.setEntityAttribute(GenericAttributes.attackDamage, 5 * Constant.getNormalMobModifier("Damage",day));
-        this.setEntityAttribute(GenericAttributes.maxHealth, 10 * Constant.getNormalMobModifier("Health",day));
+        this.setEntityAttribute(GenericAttributes.attackDamage, 3 * Constant.getNormalMobModifier("Damage",day));
+        this.setEntityAttribute(GenericAttributes.maxHealth, 6 * Constant.getNormalMobModifier("Health",day));
         this.setEntityAttribute(GenericAttributes.movementSpeed, 0.75);
     }
     public EntityDamageResult attackEntityAsMob(Entity target) {

@@ -15,6 +15,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Calendar;
 
@@ -35,8 +36,6 @@ public class EntitySkeletonTrans extends EntityMonster implements IRangedEntity 
    private int DATA_OBJ_ID_COMPRESSED;
    @Shadow
    private int data_object_id_is_frenzied_by_bone_lord;
-   protected ItemStack stowed_item_stack;
-   private boolean willChangeWeapon;
    public boolean haveTrySpawnBat = false;
 
    @Shadow
@@ -62,16 +61,15 @@ public class EntitySkeletonTrans extends EntityMonster implements IRangedEntity 
       if (this.getSkeletonType() == 2 && day_of_world >= 64) {
          super.setCurrentItemOrArmor(0, (new ItemStack(this.getWeapon(day_of_world))).randomizeForMob(this, day_of_world >= 96));
       } else if (this.getSkeletonType() == 2 && this.getRNG().nextInt(20) == 0 && day_of_world >= 10) {
-         if (!this.getRNG().nextBoolean()) {
+         if (this.getRNG().nextBoolean()) {
             if (day_of_world >= 20) {
                super.setCurrentItemOrArmor(0, (new ItemStack(this.getWeapon(day_of_world))).randomizeForMob(this, false));
             } else {
-               super.setCurrentItemOrArmor(0, (new ItemStack(Item.daggerRustedIron)).randomizeForMob(this, false));
+               super.setCurrentItemOrArmor(0, (new ItemStack(Item.swordRustedIron)).randomizeForMob(this, false));
             }
          } else {
             super.setCurrentItemOrArmor(0, (new ItemStack(Item.daggerRustedIron)).randomizeForMob(this, false));
          }
-
       } else {
          this.setCombatTask();
          super.setCurrentItemOrArmor(0, (new ItemStack(this.getSkeletonType() == 2 ? (this.getRNG().nextInt(6) == 0 ? Items.clubIron : Items.clubWood) : Item.bow)).randomizeForMob(this, true));
@@ -111,9 +109,6 @@ public class EntitySkeletonTrans extends EntityMonster implements IRangedEntity 
       }
    }
 
-   public ItemStack getStowedItemStack() {
-      return this.stowed_item_stack;
-   }
 
    private Item getWeapon(int day){
       return Constant.SWORDS[Math.max(Math.min((day - 16 - this.rand.nextInt(32)) / 16,Constant.SWORDS.length - 1),0)];
@@ -122,11 +117,6 @@ public class EntitySkeletonTrans extends EntityMonster implements IRangedEntity 
    @Override
    public float getWeaponDamageBoost() {
       return 1.15f;
-   }
-
-   @Inject(method = "addRandomEquipment",at = @At("RETURN"))
-   private void injectAddWeapon(CallbackInfo callbackInfo) {
-      this.initStockedWeapon();
    }
 
    @Inject(method = "<init>",at = @At("RETURN"))
@@ -144,25 +134,6 @@ public class EntitySkeletonTrans extends EntityMonster implements IRangedEntity 
               ((EntityHostileSkeletonHorse)this.ridingEntity).setTarget(this.getTarget());
           }
       }
-      if (this.willChangeWeapon){
-         if (this.stowed_item_stack != null && (this.getHeldItemStack() == null || this.getTicksExistedWithOffset() % 10 == 0)) {
-            if (this.getHeldItemStack() == null) {
-               this.swapHeldItemStackWithStowed();
-            } else {
-               Entity target = this.getTarget();
-               if (target != null && this.canSeeTarget(true)) {
-                  double distance = this.getDistanceToEntity(target);
-                  if (this.isHoldingRangedWeapon()) {
-                     if (distance < 5.0D) {
-                        this.swapHeldItemStackWithStowed();
-                     }
-                  } else if (distance > 6.0D) {
-                     this.swapHeldItemStackWithStowed();
-                  }
-               }
-            }
-         }
-      }
    }
 
    @Inject(method = "readEntityFromNBT",at = @At("RETURN"))
@@ -178,26 +149,7 @@ public class EntitySkeletonTrans extends EntityMonster implements IRangedEntity 
       if (par1NBTTagCompound.hasKey("Compressed") && par1NBTTagCompound.getBoolean("Compressed")) {
          this.dataWatcher.updateObject(this.DATA_OBJ_ID_COMPRESSED, (byte)1);
       }
-      if (par1NBTTagCompound.hasKey("stowed_item_stack")) {
-         this.stowed_item_stack = ItemStack.loadItemStackFromNBT(par1NBTTagCompound.getCompoundTag("stowed_item_stack"));
-      } else {
-         this.stowed_item_stack = null;
-      }
-      if (par1NBTTagCompound.hasKey("willChangeWeapon")){
-         this.willChangeWeapon = par1NBTTagCompound.getBoolean("willChangeWeapon");
-      }
-
       this.setCombatTask();
-   }
-
-   void initStockedWeapon(){
-      this.willChangeWeapon = this.willChangeWeapon();
-      int day = this.getWorld() != null ? this.getWorld().getDayOfOverworld() : 0;
-      if (this.getHeldItem() instanceof ItemBow) {
-         this.stowed_item_stack = (new ItemStack(this.getWeapon(day))).randomizeForMob(this, true);
-      }else if (this.getHeldItem() instanceof ItemSword || this.getHeldItem() instanceof ItemCudgel){
-         this.setHeldItemStack(new ItemStack(this.getWeapon(day)).randomizeForMob(this, true));
-      }
    }
 
    @Inject(method = "writeEntityToNBT",at = @At("RETURN"))
@@ -206,56 +158,6 @@ public class EntitySkeletonTrans extends EntityMonster implements IRangedEntity 
       par1NBTTagCompound.setBoolean("TripleShot", this.dataWatcher.getWatchableObjectByte(this.DATA_OBJ_ID_CAN_USE_TRIPLE_ARROW) != 0);
       par1NBTTagCompound.setBoolean("FireBow", this.dataWatcher.getWatchableObjectByte(this.DATA_OBJ_ID_CAN_USE_FIRE_ARROW) != 0);
       par1NBTTagCompound.setBoolean("Compressed", this.isCompressed());
-      if (this.stowed_item_stack != null) {
-         NBTTagCompound compound = new NBTTagCompound();
-         this.stowed_item_stack.writeToNBT(compound);
-         par1NBTTagCompound.setCompoundTag("stowed_item_stack", compound);
-      }
-      par1NBTTagCompound.setBoolean("willChangeWeapon",this.willChangeWeapon);
-   }
-
-   @Overwrite
-   protected void dropFewItems(boolean recently_hit_by_player, DamageSource damage_source) {
-      int looting = damage_source.getLootingModifier();
-      int num_drops;
-      int i;
-      if (this.getSkeletonType() == WITHER_SKELETON_ID) {
-         num_drops = this.rand.nextInt(3 + looting) - 1;
-         if (num_drops > 0 && !recently_hit_by_player) {
-            num_drops -= this.rand.nextInt(num_drops + 1);
-         }
-
-         for(i = 0; i < num_drops; ++i) {
-            this.dropItem(Item.coal.itemID, 1);
-         }
-
-         if (recently_hit_by_player && !this.has_taken_massive_fall_damage && (this.rand.nextInt(this.getBaseChanceOfRareDrop()) < 5 + looting * 2)) {
-            this.dropItemStack(new ItemStack(Item.skull.itemID, 1, 1), 0.0F);
-         }
-      } else if (this.getSkeletonType() != 2) {
-         num_drops = this.rand.nextInt(2 + looting);
-         if (num_drops > 0 && !recently_hit_by_player) {
-            num_drops -= this.rand.nextInt(num_drops + 1);
-         }
-
-         if (this.isLongdead() && num_drops > 0) {
-            num_drops = this.rand.nextInt(3) == 0 ? 1 : 0;
-         }
-
-         for(i = 0; i < num_drops; ++i) {
-            this.dropItem(this.isLongdead() ? Item.arrowAncientMetal.itemID : Item.arrowRustedIron.itemID, 1);
-         }
-      }
-
-      num_drops = this.rand.nextInt(3);
-      if (num_drops > 0 && !recently_hit_by_player) {
-         num_drops -= this.rand.nextInt(num_drops + 1);
-      }
-
-      for(i = 0; i < num_drops; ++i) {
-         this.dropItem(Item.bone.itemID, 1);
-      }
-
    }
 
    @Overwrite
@@ -279,40 +181,6 @@ public class EntitySkeletonTrans extends EntityMonster implements IRangedEntity 
 
    @Shadow
    public void setSkeletonType(int par1) {
-      this.dataWatcher.updateObject(DATA_OBJ_ID_SKELETON_TYPE, (byte)par1);
-      if (par1 == WITHER_SKELETON_ID) {
-         this.setSize(0.72F, 2.34F);
-      } else {
-         this.setSize(0.6F, 1.8F);
-      }
-
-   }
-
-   @Overwrite
-   public void onDeath(DamageSource par1DamageSource) {
-//      if (!this.worldObj.isRemote && this.isCompressed()) {
-//         for(int integer = 0; integer < (Configs.wenscConfig.compressedSkeletonExpandCount.ConfigValue); ++integer) {
-//            EntitySkeleton skeleton = new EntitySkeleton(this.worldObj);
-//            skeleton.setPosition(this.getBlockPosX(), this.getFootBlockPosY(), this.getBlockPosZ());
-//            skeleton.forced_skeleton_type = skeleton.getRandomSkeletonType(this.worldObj);
-//            skeleton.refreshDespawnCounter(-9600);
-//            this.worldObj.spawnEntityInWorld(skeleton);
-//            skeleton.onSpawnWithEgg(null);
-////            skeleton.getDataWatcher().updateObject(DATA_OBJ_ID_COMPRESSED,(byte)0);
-//            skeleton.setAttackTarget(this.getTarget());
-//            skeleton.entityFX(EnumEntityFX.summoned);
-//            int dayOfWorld = this.worldObj.getDayOfOverworld();
-//            if (dayOfWorld > 64) {
-//               skeleton.setCurrentItemOrArmor(1, new ItemStack(Constant.HELMETS[MathHelper.clamp_int(1,MonsterUtil.getRandomItemTier(this.rand, dayOfWorld),Constant.HELMETS.length - 1)]).randomizeForMob(skeleton,true));
-//            }
-//            int standTime = Configs.wenscConfig.compressedSkeletonCrackStandTime.ConfigValue;
-//            skeleton.addPotionEffect(new MobEffect(MobEffectList.weakness.id,standTime,127,true));
-//            skeleton.addPotionEffect(new MobEffect(MobEffectList.moveSlowdown.id,standTime,127,true));
-//            skeleton.addPotionEffect(new MobEffect(MobEffectList.resistance.id,standTime,127,true));
-//         }
-//      }
-
-      super.onDeath(par1DamageSource);
    }
    @Override
    public void onDeathUpdate(){
@@ -331,10 +199,6 @@ public class EntitySkeletonTrans extends EntityMonster implements IRangedEntity 
             skeleton.onSpawnWithEgg(null);
             skeleton.setAttackTarget(this.getTarget());
             skeleton.entityFX(EnumEntityFX.summoned);
-            int dayOfWorld = this.worldObj.getDayOfOverworld();
-            if (dayOfWorld > 32) {
-               skeleton.setCurrentItemOrArmor(1, new ItemStack(Constant.HELMETS[MathHelper.clamp_int(1,MonsterUtil.getRandomItemTier(this.rand, dayOfWorld,3),Constant.HELMETS.length - 1)]).randomizeForMob(skeleton,true));
-            }
             int standTime = Configs.wenscConfig.compressedSkeletonCrackStandTime.ConfigValue;
             skeleton.addPotionEffect(new MobEffect(MobEffectList.weakness.id,standTime,127,true));
             skeleton.addPotionEffect(new MobEffect(MobEffectList.moveSlowdown.id,standTime,127,true));
@@ -342,53 +206,16 @@ public class EntitySkeletonTrans extends EntityMonster implements IRangedEntity 
          }
       }
    }
-
-   @Overwrite
-   public GroupDataEntity onSpawnWithEgg(GroupDataEntity par1EntityLivingData) {
-      par1EntityLivingData = super.onSpawnWithEgg(par1EntityLivingData);
-      int skeleton_type = this.forced_skeleton_type >= 0 ? this.forced_skeleton_type : this.getRandomSkeletonType(super.worldObj);
-      this.dataWatcher.updateObject(this.DATA_OBJ_ID_COMPRESSED, (byte)(this.rand.nextInt(100) < Configs.wenscConfig.compressedSkeletonSpawningWeight.ConfigValue ? 1 : 0));
-      if (skeleton_type == WITHER_SKELETON_ID) {
-         this.tasks.addTask(4, this.aiAttackOnCollide);
-         this.setSkeletonType(WITHER_SKELETON_ID);
-         this.setCurrentItemOrArmor(0, (new ItemStack(Item.swordAncientMetal)).setQuality(EnumQuality.poor).randomizeForMob(this, super.worldObj.getDayOfOverworld() > 160));
-         this.getEntityAttribute(GenericAttributes.attackDamage).setAttribute(4.0D);
-         this.setEntityAttribute(GenericAttributes.maxHealth, this.getEntityAttributeValue(GenericAttributes.maxHealth) * 2.0D);
-         this.setHealth(24.0F);
-      } else {
-         if (skeleton_type == MELEE_ATTACK_SKELETON_ID) {
-            this.setSkeletonType(MELEE_ATTACK_SKELETON_ID);
-            this.tasks.addTask(4, this.aiAttackOnCollide);
-         } else if (skeleton_type == ARROW_SKELETON_ID) {
-            this.setSkeletonType(ARROW_SKELETON_ID);
-            this.tasks.addTask(4, this.aiArrowAttack);
-            this.dataWatcher.updateObject(this.DATA_OBJ_ID_CAN_USE_FIRE_ARROW, (byte)(this.rand.nextInt(10) > 5 ? 1 : 0));
-            this.dataWatcher.updateObject(this.DATA_OBJ_ID_CAN_USE_TRIPLE_ARROW, (byte)(this.rand.nextInt(100) > 85 ? 1 : 0));
-         } else {
-            Minecraft.setErrorMessage("onSpawnWithEgg: Unrecognized skeleton type " + skeleton_type);
-         }
-
-         this.addRandomEquipment();
-      }
-
-      this.setCanPickUpLoot(true);
-      if (this.getEquipmentInSlot(4) == null) {
-         Calendar var2 = super.worldObj.getCurrentDate();
-         if (var2.get(Calendar.MONTH) + 1 == 10 && var2.get(Calendar.DATE) == 31 && this.getRNG().nextFloat() < 0.25F) {
-            super.setCurrentItemOrArmor(4, new ItemStack(this.getRNG().nextFloat() < 0.1F ? Block.pumpkinLantern : Block.pumpkin));
-            super.equipmentDropChances[4] = 0.0F;
-         }
-      }
-
-      this.setCombatTask();
+   @Inject(method = "onSpawnWithEgg",at = @At("RETURN"))
+   private void injectNewTypeSkeleton(CallbackInfoReturnable<GroupDataEntity> callbackInfo){
       if(rand.nextInt(100) < Configs.wenscConfig.RidingSkeletonSpawningWeight.ConfigValue && this.isLongdead() && this.getSkeletonType() == MELEE_ATTACK_SKELETON_ID){
-          EntityHostileSkeletonHorse horse;
-          horse = new EntityHostileSkeletonHorse(this.worldObj);
-          horse.setPosition(this.posX, this.posY, this.posZ);
-          this.worldObj.spawnEntityInWorld(horse);
-          horse.onSpawnWithEgg(new GroupDataHorse(4, 0));
-          horse.entityFX(EnumEntityFX.summoned);
-          this.mountEntity(horse);
+         EntityHostileSkeletonHorse horse;
+         horse = new EntityHostileSkeletonHorse(this.worldObj);
+         horse.setPosition(this.posX, this.posY, this.posZ);
+         this.worldObj.spawnEntityInWorld(horse);
+         horse.onSpawnWithEgg(new GroupDataHorse(4, 0));
+         horse.entityFX(EnumEntityFX.summoned);
+         this.mountEntity(horse);
       }
       if(rand.nextInt(100) < Configs.wenscConfig.FlyingSkeletonSpawningWeight.ConfigValue && this.getSkeletonType() == 0 && !this.isLongdead()) {
          EntityBat entityBat;
@@ -401,8 +228,6 @@ public class EntitySkeletonTrans extends EntityMonster implements IRangedEntity 
          entityBat.entityFX(EnumEntityFX.summoned);
          this.mountEntity(entityBat);
       }
-
-      return par1EntityLivingData;
    }
    @Override
     public boolean requiresLineOfSightToTargets() {
@@ -422,20 +247,13 @@ public class EntitySkeletonTrans extends EntityMonster implements IRangedEntity 
       this.tasks.removeTask(this.aiAttackOnCollide);
       this.tasks.removeTask(this.aiArrowAttack);
       ItemStack var1 = this.getHeldItemStack();
-
       if (var1 != null && var1.getItem() instanceof ItemBow) {
          this.tasks.addTask(4, this.aiArrowAttack);
-         this.tasks.addTask(1, new EntityAISeekFiringPosition(this, 1.0F, true));
+         this.tasks.addTask(4, new EntityAISeekFiringPosition(this, 1.0F, true));
       } else {
          this.tasks.addTask(4, this.aiAttackOnCollide);
       }
 
-   }
-
-   public void swapHeldItemStackWithStowed() {
-      ItemStack item_stack = this.stowed_item_stack;
-      this.stowed_item_stack = this.getHeldItemStack();
-      this.setHeldItemStack(item_stack);
    }
 
    @Overwrite
@@ -490,10 +308,6 @@ public class EntitySkeletonTrans extends EntityMonster implements IRangedEntity 
          byte var2 = par1NBTTagCompound.getByte("SkeletonType");
          this.setSkeletonType(var2);
       }
-   }
-
-   protected boolean willChangeWeapon(){
-      return false;
    }
 
    @Overwrite

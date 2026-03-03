@@ -62,6 +62,9 @@ public class EntityOreElemental extends EntityEarthElemental {
         int day = this.getWorld().getDayOfOverworld();
         this.setHeldItemStack((new ItemStack(Items.VIBRANIUM_PICKAXE, 1)).randomizeForMob(this, day > 64));
         this.initRandomOreHead();
+        if(this.danger_level > 7){
+            this.setCuirass(new ItemStack(Items.VIBRANIUM_CHESTPLATE,1).randomizeForMob(this,day > 64));
+        }
         this.setLeggings((new ItemStack(Items.VIBRANIUM_LEGGINGS, 1)).randomizeForMob(this, day > 64));
         this.setBoots((new ItemStack(Items.VIBRANIUM_BOOTS, 1)).randomizeForMob(this, day > 64));
     }

@@ -40,7 +40,13 @@ public abstract class EntityWitchTrans extends EntityMonster{
     public int summonWolvesP(){
         return this.summonWolves();
     }
-
+    @Overwrite
+    protected void applyEntityAttributes() {
+        super.applyEntityAttributes();
+        int day = this.worldObj.getDayOfOverworld();
+        this.setEntityAttribute(GenericAttributes.maxHealth,40d * Constant.getEliteMobModifier("Health",day,this.worldObj.isOverworld()));
+        this.setEntityAttribute(GenericAttributes.movementSpeed,0.27d);
+    }
     @Overwrite
     public void onLivingUpdate() {
         if (!this.worldObj.isRemote) {

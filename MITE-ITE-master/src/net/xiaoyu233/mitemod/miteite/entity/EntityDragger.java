@@ -15,7 +15,16 @@ public class EntityDragger extends EntitySkeleton{
         super.addRandomEquipment();
         this.setCurrentItemOrArmor(0, (new ItemStack(Items.enderPearl, 1)).randomizeForMob(this, false));
     }
-
+    @Override
+    public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
+        super.writeEntityToNBT(par1NBTTagCompound);
+        par1NBTTagCompound.setInteger("dragStrength", this.dragStrength);
+    }
+    @Override
+    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
+        super.readEntityFromNBT(par1NBTTagCompound);
+        this.dragStrength = par1NBTTagCompound.getInteger("dragStrength");
+    }
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
@@ -37,9 +46,10 @@ public class EntityDragger extends EntitySkeleton{
             this.dropItem(Items.voucherPhase);
             int count = this.rand.nextInt(3 + looting);
             for (int i1 = 0; i1 < count; i1++) {
-                this.dropItem(Item.goldNugget);
-                if(this.rand.nextInt(2) == 0){
+                if(this.rand.nextInt(3) == 0){
                     this.dropItem(Item.enderPearl);
+                }else {
+                    this.dropItem(Item.goldNugget);
                 }
             }
         }
@@ -67,10 +77,18 @@ public class EntityDragger extends EntitySkeleton{
                 this.entityToAttack = this.getClosestVulnerablePlayer(16F);
                 if (entityToAttack instanceof EntityPlayer) {
                     this.entityToAttack.entityFX(EnumEntityFX.curse_effect_learned);
+                    if (entityToAttack instanceof EntityPlayer) {
+                        ((EntityPlayer) entityToAttack).sendChatToPlayer(ChatMessage.createFromTranslationKey("[拖曳骷髅] ").setColor(EnumChatFormat.BLUE).appendComponent(ChatMessage.createFromTranslationKey("你已被拖曳束锁定，拖曳将持续50秒").setColor(EnumChatFormat.YELLOW)));
+                    }
                 }
-                this.dragStrength = 1000;
+                if(this.dragStrength == 0){
+                    this.dragStrength = 1000;
+                }
             } else {
                 if(entityToAttack.isDead || getDistanceToEntity(entityToAttack) > 16F) {
+                    if (entityToAttack instanceof EntityPlayer) {
+                        ((EntityPlayer) entityToAttack).sendChatToPlayer(ChatMessage.createFromTranslationKey("[拖曳骷髅] ").setColor(EnumChatFormat.BLUE).appendComponent(ChatMessage.createFromTranslationKey("已丢失目标").setColor(EnumChatFormat.GREEN)));
+                    }
                     this.entityToAttack = null;
                     return;
                 }
@@ -81,7 +99,7 @@ public class EntityDragger extends EntitySkeleton{
                             return;
                         }
                     }
-                    if(this.dragStrength > 0 && this.dragStrength <= 1000D){
+                    if(this.dragStrength > 0 && this.dragStrength <= 1000){
                         this.dragStrength --;
                         double dx = (entityToAttack.posX - this.posX);
                         double dy = (entityToAttack.posY - this.posY);
@@ -97,7 +115,7 @@ public class EntityDragger extends EntitySkeleton{
                                 double div = 1.0D / (double) range;
                                 for (int delta = 0; delta < range; delta++) {
                                     EntityRideMarker rideMarker = new EntityRideMarker(this.worldObj);
-                                    rideMarker.setPosition(this.posX + dx * div * delta, this.posY + dy * div * delta, this.posZ + dz * div * delta);
+                                    rideMarker.setPosition(this.posX + dx * div * delta, this.posY + dy + this.getEyeHeight() * div * delta, this.posZ + dz * div * delta);
                                     this.worldObj.spawnEntityInWorld(rideMarker);
                                     rideMarker.entityFX(EnumEntityFX.curse_effect_learned);
                                 }

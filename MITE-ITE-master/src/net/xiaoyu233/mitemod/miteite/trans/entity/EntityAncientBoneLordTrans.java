@@ -1,12 +1,19 @@
 package net.xiaoyu233.mitemod.miteite.trans.entity;
 
 import net.minecraft.*;
+import net.minecraft.server.MinecraftServer;
 import net.xiaoyu233.mitemod.miteite.item.Items;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
 import net.xiaoyu233.mitemod.miteite.util.Constant;
 import net.xiaoyu233.mitemod.miteite.util.MonsterUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Mixin(EntityAncientBoneLord.class)
 public class EntityAncientBoneLordTrans extends EntityBoneLordTrans {
@@ -17,16 +24,25 @@ public class EntityAncientBoneLordTrans extends EntityBoneLordTrans {
    @Overwrite
    protected void addRandomEquipment() {
       this.addRandomWeapon();
-      int day = this.getWorld() != null ? Math.max(this.getWorld().getDayOfOverworld() - 16, 0) : 0;
+      int day = this.getWorld() != null ? Math.max(this.getWorld().getDayOfOverworld(), 0) : 0;
       if (day < 64) {
          this.setBoots((new ItemStack(Item.bootsAncientMetal)).randomizeForMob(this, true));
          this.setLeggings((new ItemStack(Item.legsAncientMetal)).randomizeForMob(this, true));
          this.setCuirass((new ItemStack(Item.plateAncientMetal)).randomizeForMob(this, true));
          this.setHelmet((new ItemStack(Item.helmetAncientMetal)).randomizeForMob(this, true));
       } else {
-         MonsterUtil.addDefaultArmor(day + 48, this, true);
+         MonsterUtil.addDefaultArmor(day + 64, this, true);
       }
-      this.initStockedWeapon();
+   }
+   @Inject(method = "addRandomWeapon", at = @At("RETURN"))
+   private void extendsWeapon(CallbackInfo callbackInfo) {
+      int day_of_world = MinecraftServer.F().getOverworld().getDayOfOverworld();
+      if(day_of_world > 16){
+         MonsterUtil.addDefaultWeapon(day_of_world + 64, this);
+         if(day_of_world > 48 && this.rand.nextInt(4) == 0){
+            MonsterUtil.addDefaultTool(day_of_world + 64, this);
+         }
+      }
    }
 
    protected void dropFewItems(boolean recently_hit_by_player, DamageSource damage_source) {
@@ -52,13 +68,6 @@ public class EntityAncientBoneLordTrans extends EntityBoneLordTrans {
       this.setEntityAttribute(GenericAttributes.attackDamage, (boneLordTweak ? 15 : 10) * Constant.getEliteMobModifier("Damage",day,this.worldObj.isOverworld()));
       this.setEntityAttribute(GenericAttributes.maxHealth, (boneLordTweak ? 60 : 30) * Constant.getEliteMobModifier("Health",day,this.worldObj.isOverworld()));
       this.setEntityAttribute(GenericAttributes.movementSpeed, 0.3D * Constant.getEliteMobModifier("Speed",day,this.worldObj.isOverworld()));
-   }
-
-   protected void enchantEquipment(ItemStack item_stack) {
-      if ((double)this.getRNG().nextFloat() <= 0.2D + (double)this.getWorld().getDayOfOverworld() / 64.0D / 10.0D) {
-         EnchantmentManager.addRandomEnchantment(this.getRNG(), item_stack, (int)(5.0F + (float)((this.getRNG().nextInt(15 + this.getWorld().getDayOfOverworld() / 24) + 3) / 10) * (float)this.getRNG().nextInt(18)));
-      }
-
    }
 
    public boolean getCanSpawnHere(boolean perform_light_check) {

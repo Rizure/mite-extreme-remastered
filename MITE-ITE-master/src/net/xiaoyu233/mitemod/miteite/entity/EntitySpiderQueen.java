@@ -128,13 +128,14 @@ public class EntitySpiderQueen extends EntityArachnid {
         Entity player = damageSource.getResponsibleEntity();
         if(player instanceof EntityPlayer){
             int count = Math.min(3,day/ 32);
+            int looting = damageSource.getLootingModifier();
             for(int i = 0;i< count;i++){
                 this.dropItem(Item.emerald);
             }
             this.dropItem(Items.voucherSpider);
             for(int i = 0;i< 8;i++){
                 this.dropItem(Items.hugeSpiderLeg);
-                if(this.rand.nextInt(4) == 0){
+                if(this.rand.nextInt(4 + looting) == 0){
                     i++;
                 }
             }

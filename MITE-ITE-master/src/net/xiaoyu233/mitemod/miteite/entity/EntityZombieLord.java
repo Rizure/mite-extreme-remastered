@@ -5,7 +5,10 @@ import net.xiaoyu233.mitemod.miteite.item.Items;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
 import net.xiaoyu233.mitemod.miteite.util.Constant;
 
-public class EntityZombieLord extends EntityZombie {
+import java.util.ArrayList;
+import java.util.List;
+
+public class EntityZombieLord extends EntityRevenant {
     private int fx_counter;
     private int spawnCounter;
     private int spawnSums;
@@ -18,13 +21,25 @@ public class EntityZombieLord extends EntityZombie {
     @Override
     protected void addRandomEquipment() {
         int day = this.getWorld().getDayOfOverworld();
-        this.setCurrentItemOrArmor(0, (new ItemStack(Items.VIBRANIUM_SWORD, 1)).randomizeForMob(this, day > 64));
+        this.addRandomWeapon();
         this.setCurrentItemOrArmor(1, (new ItemStack(Items.VIBRANIUM_HELMET, 1)).randomizeForMob(this, day > 64));
         this.setCurrentItemOrArmor(2, (new ItemStack(Items.VIBRANIUM_CHESTPLATE, 1)).randomizeForMob(this, day > 64));
         this.setCurrentItemOrArmor(3, (new ItemStack(Items.VIBRANIUM_LEGGINGS, 1)).randomizeForMob(this, day > 64));
         this.setCurrentItemOrArmor(4, (new ItemStack(Items.VIBRANIUM_BOOTS, 1)).randomizeForMob(this, day > 64));
     }
-
+    public void addRandomWeapon() {
+        int day = this.getWorld().getDayOfOverworld();
+        List items = new ArrayList();
+        items.add(new RandomItemListEntry(Items.VIBRANIUM_SWORD, 2));
+        if(day > 10){
+            items.add(new RandomItemListEntry(Items.VIBRANIUM_BATTLE_AXE, 1));
+        }
+        if(day > 20){
+            items.add(new RandomItemListEntry(Items.VIBRANIUM_WAR_HAMMER, 1));
+        }
+        RandomItemListEntry entry = (RandomItemListEntry)WeightedRandom.getRandomItem(this.rand, items);
+        this.setHeldItemStack((new ItemStack(entry.item)).randomizeForMob(this, day > 64));
+    }
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
@@ -39,11 +54,12 @@ public class EntityZombieLord extends EntityZombie {
         return false;
     }
     public int getMaxSpawnedInChunk() {
-        return 1;
+        return 2;
     }
 
     @Override
     protected void dropFewItems(boolean recently_hit_by_player, DamageSource damage_source) {
+        super.dropFewItems(recently_hit_by_player,damage_source);
         if (recently_hit_by_player){
             this.dropItem(Items.voucherOverlord);
             int day = this.getWorld().getDayOfOverworld();
@@ -51,7 +67,6 @@ public class EntityZombieLord extends EntityZombie {
             for (int i1 = 0; i1 < diamond_count; i1++) {
                 this.dropItem(Item.diamond);
             }
-            this.dropItem(Items.zombieBrain);
         }
     }
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {

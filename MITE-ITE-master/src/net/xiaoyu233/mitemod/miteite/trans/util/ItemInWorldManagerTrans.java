@@ -1,6 +1,7 @@
 package net.xiaoyu233.mitemod.miteite.trans.util;
 
 import net.minecraft.*;
+import net.xiaoyu233.mitemod.miteite.block.BlockLeaves1;
 import net.xiaoyu233.mitemod.miteite.block.Blocks;
 import net.xiaoyu233.mitemod.miteite.item.ItemEnhancedPickaxe;
 import net.xiaoyu233.mitemod.miteite.item.enchantment.Enchantments;
@@ -31,6 +32,7 @@ public class ItemInWorldManagerTrans {
     @Shadow
     private boolean tree_felling_in_progress;
     private boolean mining_in_progress;
+    private boolean shearing_in_progress;
 
     @Overwrite
     public boolean tryHarvestBlock(int x, int y, int z) {
@@ -93,7 +95,14 @@ public class ItemInWorldManagerTrans {
                                     this.tree_felling_in_progress = false;
                                 }
 
-                                if (block instanceof BlockOre && !this.mining_in_progress) {
+                                if (block instanceof BlockLeaves1 || block instanceof BlockLeaves && !this.shearing_in_progress) {
+                                    if(this.thisPlayerMP.getHeldItem() instanceof ItemShears)
+                                    this.shearing_in_progress = true;
+                                    this.startShearing(this.theWorld,x,y,z);
+                                    this.shearing_in_progress = false;
+                                }
+
+                                if (block instanceof BlockOre || block instanceof BlockRedstoneOre && !this.mining_in_progress) {
                                     int mining = getEnchantmentLevel(Enchantments.enchantmentChain.effectId, this.thisPlayerMP.getHeldItemStack());
                                     this.mining_in_progress = true;
                                     this.startMining(this.theWorld,x,y,z,mining);
@@ -171,6 +180,19 @@ public class ItemInWorldManagerTrans {
             if(stone instanceof BlockBloodStone){
                 thisPlayerMP.inventory.addItemStackToInventoryOrDropIt(new ItemStack(Block.netherrack));
                 world.setBlockToAir(pos_x + toBreak[i],pos_y + toBreak[i+1], pos_z + toBreak[i+2]);
+            }
+        }
+    }
+    public void startShearing(World world, int pos_x, int pos_y, int pos_z){
+        for(int dx = pos_x - 1; dx <= pos_x + 1; dx++){
+            for(int dy = pos_y - 1; dy <= pos_y + 1; dy++){
+                for(int dz = pos_z - 1; dz <= pos_z + 1; dz++){
+                    boolean isLeaves = world.getBlock(dx,dy,dz) instanceof BlockLeaves;
+                    isLeaves = isLeaves || world.getBlock(dx,dy,dz) instanceof BlockLeaves1;
+                    if(isLeaves){
+                        this.tryHarvestBlock(dx,dy,dz);
+                    }
+                }
             }
         }
     }

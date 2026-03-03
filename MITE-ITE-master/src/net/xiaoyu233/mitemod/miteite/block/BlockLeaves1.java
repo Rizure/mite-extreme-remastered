@@ -222,14 +222,14 @@ public final class BlockLeaves1 extends BlockTransparant {
         } else {
             int leaf_kind = this.getBlockSubtype(info.getMetadata());
             int num_drops;
-            if ((num_drops = this.dropBlockAsEntityItem(info, Blocks.sapling1.blockID, leaf_kind, 1, 0.01F)) > 0) {
+            if ((num_drops = this.dropBlockAsEntityItem(info, Blocks.sapling1.blockID, leaf_kind, 1, 0.05F + 0.01F * info.getHarvesterFortune())) > 0) {
                 return num_drops;
-            } else if ((num_drops = this.dropBlockAsEntityItem(info, Item.stick.itemID, 0, 1, 0.05F)) > 0) {
+            } else if ((num_drops = this.dropBlockAsEntityItem(info, Item.stick.itemID, 0, 1, 0.02F + 0.004F * info.getHarvesterFortune())) > 0) {
                 return num_drops;
             } else if (leaf_kind == 0 || leaf_kind == 1) {
-                return this.dropBlockAsEntityItem(info, Items.powder_wood.itemID, 0, 1, 0.005F);
+                return this.dropBlockAsEntityItem(info, Items.powder_wood.itemID, 0, 1, 0.005F + 0.001F * info.getHarvesterFortune());
             } else {
-                return leaf_kind == 3 ? this.dropBlockAsEntityItem(info, Item.banana.itemID, 0, 1, 0.005F) : 0;
+                return 0;
             }
         }
     }

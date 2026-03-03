@@ -163,13 +163,13 @@ public class WorldGenMinableTrans {
       Block block = Block.blocksList[this.minableBlockId];
       if (world.isUnderworld()) {
           if (block == Block.oreCopper) {
-              return 144;
+              return 128;
           } else if (block == Block.oreSilver) {
-              return 144;
+              return 128;
           } else if (block == Block.oreGold) {
-              return 144;
+              return 128;
           } else if (block == Block.oreIron) {
-              return 144;
+              return 128;
           }
          return 224;
       } else if (world.isTheNether()){

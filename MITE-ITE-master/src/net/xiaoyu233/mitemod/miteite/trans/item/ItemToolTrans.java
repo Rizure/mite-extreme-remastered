@@ -286,7 +286,7 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
       }
       if(item_stack != null){
           expReward = ToolModifierTypes.STEADY.getModifierValue(item_stack.getTagCompound()) * block.getBlockHardness(0);
-          int expReward_int = (int)expReward;
+          int expReward_int = (int) (Math.min(expReward, 5.0F));
           for (int var1 = 0; var1 < expReward_int; var1++){
               info.world.spawnEntityInWorld(new EntityExperienceOrb(info.world, info.drop_x, info.drop_y + 0.5D, info.drop_z, 1));
           }

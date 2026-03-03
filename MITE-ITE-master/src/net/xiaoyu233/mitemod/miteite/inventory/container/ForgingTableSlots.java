@@ -149,11 +149,11 @@ public class ForgingTableSlots extends InventorySubcontainer {
         int bounceChanceFromTool = 0;
         ItemStack hammer = this.getHammerItem();
         if (hammer != null){
-            bounceChanceFromTool += Math.max((hammer.getMaterialForRepairs().getMinHarvestLevel() - Material.copper.getMinHarvestLevel()) * 12,0);
+            bounceChanceFromTool += Math.max((hammer.getMaterialForRepairs().getMinHarvestLevel() - Material.copper.getMinHarvestLevel()) * 18,0);
         }
         ItemStack axeItem = this.getAxeItem();
         if (axeItem != null) {
-            bounceChanceFromTool += Math.max((axeItem.getMaterialForRepairs().getMinHarvestLevel() - Material.copper.getMinHarvestLevel()) * 12,0);
+            bounceChanceFromTool += Math.max((axeItem.getMaterialForRepairs().getMinHarvestLevel() - Material.copper.getMinHarvestLevel()) * 18,0);
         }
         return Math.max(Math.min(recipe.getChanceOfFailure() - bounceChanceFromTool, 100), 0);
     }

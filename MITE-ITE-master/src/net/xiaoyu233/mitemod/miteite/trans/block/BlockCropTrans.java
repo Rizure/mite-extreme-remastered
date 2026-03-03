@@ -6,6 +6,10 @@ import net.xiaoyu233.mitemod.miteite.item.Items;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BlockCrops.class)
 public class BlockCropTrans extends BlockGrowingPlant {
@@ -51,51 +55,55 @@ public class BlockCropTrans extends BlockGrowingPlant {
    protected int getMatureYield() {
       return 1;
    }
-
-   public int dropBlockAsEntityItem(BlockBreakInfo info) {
-      if (!info.wasHarvestedByPlayer() && !info.wasDrought() && !info.wasSnowedUpon() && !info.wasSelfDropped()) {
-         return 0;
-      } else {
-         if (info.wasDrought()) {
-            playCropPopSound(info);
-         }
-
-         if (this.isBlighted(info.getMetadata())) {
-            return 0;
-         } else {
-            ItemStack item_stack = info.getHarvesterItemStack();
-            Item item = item_stack == null ? null : item_stack.getItem();
-            ItemTool tool = item instanceof ItemTool ? (ItemTool)item : null;
-            float harvesting_enchantment;
-            if (tool != null && tool.isEffectiveAgainstBlock(this, info.getMetadata())) {
-               harvesting_enchantment = EnchantmentManager.getEnchantmentLevelFraction(Enchantment.harvesting, info.getHarvesterItemStack()) * 0.5F;
-            } else {
-               harvesting_enchantment = 0.0F;
-            }
-
-            int num_drops;
-            if (this.getGrowth(info.getMetadata()) == 0) {
-               num_drops = this.dropBlockAsEntityItem(info, this.getSeedItem(), 0, 1, 1.0F);
-            } else {
-               if (!this.isMature(info.getMetadata()) || info.wasSelfDropped()) {
-                  return 0;
-               }
-
-               if(info.world.rand.nextInt(50) == 0) {
-                  this.dropBlockAsEntityItem(info, new ItemStack(Items.voucherPlanting, 1));
-               }
-
-               num_drops = this.dropBlockAsEntityItem(info, this.getCropItem(), 0, this.getMatureYield(), 1.0F + harvesting_enchantment);
-            }
-
-            if (info.wasSnowedUpon() && num_drops > 0) {
-               playCropPopSound(info);
-            }
-
-            return num_drops;
-         }
+   @Inject(method = "dropBlockAsEntityItem", at = @At(ordinal = 1, value = "INVOKE",target = "dropBlockAsEntityItem"))
+   public void dropVoucher(BlockBreakInfo info, CallbackInfoReturnable callbackInfoReturnable){
+      if(info.world.rand.nextInt(50) == 0) {
+         this.dropBlockAsEntityItem(info, new ItemStack(Items.voucherPlanting, 1));
       }
    }
+
+//   public int dropBlockAsEntityItem(BlockBreakInfo info) {
+//      if (!info.wasHarvestedByPlayer() && !info.wasDrought() && !info.wasSnowedUpon() && !info.wasSelfDropped()) {
+//         return 0;
+//      } else {
+//         if (info.wasDrought()) {
+//            playCropPopSound(info);
+//         }
+//
+//         if (this.isBlighted(info.getMetadata())) {
+//            return 0;
+//         } else {
+//            ItemStack item_stack = info.getHarvesterItemStack();
+//            Item item = item_stack == null ? null : item_stack.getItem();
+//            ItemTool tool = item instanceof ItemTool ? (ItemTool)item : null;
+//            float harvesting_enchantment;
+//            if (tool != null && tool.isEffectiveAgainstBlock(this, info.getMetadata())) {
+//               harvesting_enchantment = EnchantmentManager.getEnchantmentLevelFraction(Enchantment.harvesting, info.getHarvesterItemStack()) * 0.5F;
+//            } else {
+//               harvesting_enchantment = 0.0F;
+//            }
+//
+//            int num_drops;
+//            if (this.getGrowth(info.getMetadata()) == 0) {
+//               num_drops = this.dropBlockAsEntityItem(info, this.getSeedItem(), 0, 1, 1.0F);
+//            } else {
+//               if (!this.isMature(info.getMetadata()) || info.wasSelfDropped()) {
+//                  return 0;
+//               }
+//
+//
+//
+//               num_drops = this.dropBlockAsEntityItem(info, this.getCropItem(), 0, this.getMatureYield(), 1.0F + harvesting_enchantment);
+//            }
+//
+//            if (info.wasSnowedUpon() && num_drops > 0) {
+//               playCropPopSound(info);
+//            }
+//
+//            return num_drops;
+//         }
+//      }
+//   }
 
    @Shadow
    private boolean isBlighted(int metadata) {

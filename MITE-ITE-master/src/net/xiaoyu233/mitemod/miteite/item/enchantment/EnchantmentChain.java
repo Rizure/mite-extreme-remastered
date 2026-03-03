@@ -43,7 +43,7 @@ public class EnchantmentChain extends Enchantment {
                 return false;
             }
         }
-        return (item instanceof ItemPickaxe || item instanceof ItemWarHammer);
+        return item instanceof ItemPickaxe;
     }
 
     @Override

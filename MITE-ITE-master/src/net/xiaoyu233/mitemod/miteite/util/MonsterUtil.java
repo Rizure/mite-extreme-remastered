@@ -16,11 +16,19 @@ public class MonsterUtil {
            if (rand.nextInt(Math.max(3 - day_count / 32, 1)) == 0 || haveAll) {
                for(int index = 3; index >= 0; --index) {
                    if (rand.nextBoolean() || haveAll) {
-                       monster.setCurrentItemOrArmor(index + 1, (new ItemStack(Constant.ARMORS[index][getRandomItemTier(rand,day_count,index)])).randomizeForMob(monster, day_count > 32));
+                       monster.setCurrentItemOrArmor(index + 1, (new ItemStack(Constant.ARMORS[index][getRandomArmorTier(rand,day_count,index)])).randomizeForMob(monster, day_count > 32));
                    }
                }
            }
        }
+    }
+    public static void addDefaultWeapon(int day_count, EntityInsentient monster) {
+        Random rand = monster.getRNG();
+        monster.setHeldItemStack((new ItemStack(Constant.SWORDS[getRandomWeaponTier(rand,day_count)])).randomizeForMob(monster, day_count > 32));
+    }
+    public static void addDefaultTool(int day_count, EntityInsentient monster) {
+        Random rand = monster.getRNG();
+        monster.setHeldItemStack((new ItemStack(Constant.TOOLS[getRandomToolTier(rand,day_count)])).randomizeForMob(monster, day_count > 32));
     }
 
     public static ItemStack addRandomEnchantment(Random par0Random, ItemStack itemStack, int enchantment_levels,int maxTotalLevel,int maxEnchantmentNum) {
@@ -37,13 +45,51 @@ public class MonsterUtil {
         return itemStack;
     }
 
-    public static int getRandomItemTier(Random rand,int day_count,int equip_index){
-        return getRandomItemTier(rand,day_count / 8, day_count / 16,equip_index);
+    public static int getRandomArmorTier(Random rand,int day_count,int equip_index){
+        return getRandomArmorTier(rand,day_count / 8, day_count / 16,equip_index);
+    }
+    public static int getRandomWeaponTier(Random rand,int day_count){
+        return getRandomWeaponTier(rand,day_count / 8, day_count / 16);
+    }
+    public static int getRandomToolTier(Random rand,int day_count){
+        return getRandomToolTier(rand,day_count / 8, day_count / 16);
     }
 
-    public static int getRandomItemTier(Random random, int maxTier, int minTier, int equip_index) {
+    public static int getRandomArmorTier(Random random, int maxTier, int minTier, int equip_index) {
         if(maxTier > Constant.ARMORS[equip_index].length - 1){
             maxTier = Constant.ARMORS[equip_index].length - 1;
+        }
+        if(minTier < 0){
+            maxTier = 0;
+        }
+        int result = maxTier;
+        while (result > minTier){
+            if(random.nextInt(4) == 0){
+                return result;
+            }
+            result --;
+        }
+        return result;
+    }
+    public static int getRandomWeaponTier(Random random, int maxTier, int minTier) {
+        if(maxTier > Constant.SWORDS.length - 1){
+            maxTier = Constant.SWORDS.length - 1;
+        }
+        if(minTier < 0){
+            maxTier = 0;
+        }
+        int result = maxTier;
+        while (result > minTier){
+            if(random.nextInt(4) == 0){
+                return result;
+            }
+            result --;
+        }
+        return result;
+    }
+    public static int getRandomToolTier(Random random, int maxTier, int minTier) {
+        if(maxTier > Constant.TOOLS.length - 1){
+            maxTier = Constant.TOOLS.length - 1;
         }
         if(minTier < 0){
             maxTier = 0;

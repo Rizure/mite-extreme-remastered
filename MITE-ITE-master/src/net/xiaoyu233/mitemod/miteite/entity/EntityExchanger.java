@@ -46,9 +46,10 @@ public class EntityExchanger extends EntitySkeleton {
             this.dropItem(Items.voucherPhase);
             int count = this.rand.nextInt(3 + looting);
             for (int i1 = 0; i1 < count; i1++) {
-                this.dropItem(Item.ironNugget);
-                if(this.rand.nextInt(2) == 0){
+                if(this.rand.nextInt(3) == 0){
                     this.dropItem(Item.enderPearl);
+                }else {
+                    this.dropItem(Item.ironNugget);
                 }
             }
         }
@@ -90,14 +91,16 @@ public class EntityExchanger extends EntitySkeleton {
 
             if(this.entityToAttack == null) {
                 entityToAttack = this.getClosestVulnerablePlayer(32F);
-                if (entityToAttack instanceof EntityPlayer) {
+                if (entityToAttack != null) {
                     this.worldObj.playSoundAtEntity(this.entityToAttack, "mob.endermen.stare", 1.0F, 1.0F);
                     this.entityToAttack.entityFX(EnumEntityFX.curse_effect_learned);
+                    ((EntityPlayer)entityToAttack).sendChatToPlayer(ChatMessage.createFromTranslationKey("[转移骷髅] ").setColor(EnumChatFormat.BLUE).appendComponent(ChatMessage.createFromTranslationKey("你已被转移束锁定，3秒后转移").setColor(EnumChatFormat.YELLOW)));
                 }
                 this.teleportDelay = 0;
             } else {
                 if(entityToAttack.isDead || getDistanceToEntity(entityToAttack) > 32F) {
                     this.entityToAttack = null;
+                    ((EntityPlayer) entityToAttack).sendChatToPlayer(ChatMessage.createFromTranslationKey("[转移骷髅] ").setColor(EnumChatFormat.BLUE).appendComponent(ChatMessage.createFromTranslationKey("已丢失目标").setColor(EnumChatFormat.GREEN)));
                     return;
                 }
                 if (entityToAttack instanceof EntityPlayer) {

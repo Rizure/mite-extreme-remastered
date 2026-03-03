@@ -21,13 +21,6 @@ public class EntityPhaseSpiderTrans extends EntityWoodSpider {
     }
 
     @Overwrite
-    protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
-        int day = this.getWorld() != null ? this.getWorld().getDayOfOverworld() : 0;
-        this.setEntityAttribute(GenericAttributes.maxHealth, 6 * Constant.getNormalMobModifier("Health",day));
-        this.setEntityAttribute(GenericAttributes.attackDamage, 3 * Constant.getNormalMobModifier("Damage",day));
-    }
-    @Overwrite
     public EntityDamageResult attackEntityFrom(Damage damage) {
         boolean can_evade = true;
         DamageSource damage_source = damage.getSource();

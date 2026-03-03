@@ -42,7 +42,7 @@ public class ForgingTableRecipes {
                 setAxeDurabilityCost((int) (forgee_material.getDurability() * 400.0F)).
                 setHammerDurabilityCost((int) (forgee_material.getDurability() * 500.0F)).
                 setTimeReq(upgrade_level * 200 + 600).
-                setQualityReward(EnumQuality.values()[Math.min(7,upgrade_level / 3 + 2)]).
+                setQualityReward(EnumQuality.values()[Math.min(7,(upgrade_level + 1) / 2 + 2)]).
                 addFaultFeedback(DowngradeFeedback.of(upgrade_level / 2)).
                 addFaultFeedback(DurabilityFeedback.of(DurabilityFeedback.Type.ofPercentage(Math.max(upgrade_level * 10 - table_level.getLevel() * 5,0)))).
                 addMaterials(items).
@@ -55,7 +55,7 @@ public class ForgingTableRecipes {
                 setAxeDurabilityCost((int) (forgee_material.getDurability() * 150.0F)).
                 setHammerDurabilityCost((int) (forgee_material.getDurability() * 250.0F)).
                 setTimeReq(2400).
-                setQualityReward(EnumQuality.values()[Math.min(7,upgrade_level / 3 + 2)]).
+                setQualityReward(EnumQuality.values()[Math.min(7,upgrade_level / 2 + 2)]).
                 addFaultFeedback(DowngradeFeedback.of(upgrade_level / 2)).
                 addFaultFeedback(DurabilityFeedback.of(DurabilityFeedback.Type.ofPercentage(Math.max(upgrade_level * 10 - table_level.getLevel() * 5,0)))).
                 addMaterials(items).

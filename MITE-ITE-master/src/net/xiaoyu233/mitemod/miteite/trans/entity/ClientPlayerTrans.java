@@ -84,17 +84,17 @@ public abstract class ClientPlayerTrans extends beu {
          Material material_to_check_tool_bench_hardness_against = recipe == null ? item.getHardestMetalMaterial() : recipe.getMaterialToCheckToolBenchHardnessAgainst();
          Material tool_material = BlockWorkbench.getToolMaterial(container_workbench.getBlockMetadata());
          if (material_to_check_tool_bench_hardness_against == null) {
-            return tool_material == Materials.vibranium ? 3.4028235E38F : 0.2F;
+            return tool_material == Materials.vibranium ? 3.4028235E38F : 0.5F;
          } else if (tool_material != Material.flint && tool_material != Material.obsidian) {
             if (tool_material != Material.copper && tool_material != Material.silver && tool_material != Material.gold) {
                if (tool_material == Material.iron) {
-                  return 0.4F;
+                  return 1.0F;
                } else if (tool_material == Material.ancient_metal) {
-                  return 0.5F;
+                  return 1.5F;
                } else if (tool_material == Material.mithril) {
-                  return 0.6F;
+                  return 2.5F;
                } else if (tool_material == Material.adamantium) {
-                  return 0.7F;
+                  return 4.0F;
                } else if (tool_material == Materials.vibranium) {
                   return 3.4028235E38F;
                } else {
@@ -102,10 +102,10 @@ public abstract class ClientPlayerTrans extends beu {
                   return 0.0F;
                }
             } else {
-               return 0.3F;
+               return 0.75F;
             }
          } else {
-            return 0.2F;
+            return 0.5F;
          }
       }
    }

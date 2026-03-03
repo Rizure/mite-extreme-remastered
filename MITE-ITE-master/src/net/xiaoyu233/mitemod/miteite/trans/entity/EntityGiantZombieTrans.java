@@ -1,6 +1,7 @@
 package net.xiaoyu233.mitemod.miteite.trans.entity;
 
 import net.minecraft.*;
+import net.xiaoyu233.mitemod.miteite.entity.EntityZombieDoor;
 import net.xiaoyu233.mitemod.miteite.item.Items;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
 import net.xiaoyu233.mitemod.miteite.util.Constant;
@@ -23,29 +24,6 @@ public class EntityGiantZombieTrans extends EntityMonster {
    @Override
    public boolean canBeKnockedBack() {
       return false;
-   }
-
-   private static void addDefaultArmor(int day_count, EntityInsentient monster, boolean haveAll) {
-      Random rand = monster.getRNG();
-      if (rand.nextInt(3 - Math.min(day_count / 128, 2)) == 0 || day_count > 365 || haveAll) {
-         int minTier = rand.nextInt(2 + Math.min(day_count / 64, 6)) + 1;
-
-         for(int index = 4; index > 0; --index) {
-            if (rand.nextInt(5 - Math.min(day_count / 32, 4)) == 0 || day_count > 192 || haveAll) {
-               monster.setCurrentItemOrArmor(index, (new ItemStack(Constant.ARMORS[index - 1][Math.min(getRandomItemTier(rand, Math.min(10, day_count / 16), minTier, day_count) + (day_count > 365 ? 1 : 0), Constant.ARMORS[index - 1].length - 1)])).randomizeForMob(monster, day_count > 64));
-            }
-         }
-      }
-
-   }
-
-   private static int getRandomItemTier(Random random, int maxTier, int minTier, int dayCount) {
-      int now = minTier;
-      while (now < maxTier && random.nextInt(Math.max(2 * now + 1 - dayCount / 12, 1)) == 0) {
-         ++now;
-      }
-
-      return now;
    }
 
    @Override
@@ -98,13 +76,6 @@ public class EntityGiantZombieTrans extends EntityMonster {
          }
       }
       super.dropFewItems(recently_hit_by_player, damage_source);
-   }
-
-   protected void enchantEquipment(ItemStack item_stack) {
-      if ((double)this.getRNG().nextFloat() <= 0.1D + (double)this.getWorld().getDayOfOverworld() / 64.0D / 10.0D) {
-         EnchantmentManager.addRandomEnchantment(this.getRNG(), item_stack, (int)(5.0F + (float)((this.getRNG().nextInt(15 + this.getWorld().getDayOfOverworld() / 24) + 3) / 10) * (float)this.getRNG().nextInt(18)));
-      }
-
    }
 
    @Override
@@ -186,7 +157,44 @@ public class EntityGiantZombieTrans extends EntityMonster {
       }
 
    }
-
+   @Override
+   public void onDeathUpdate(){
+      super.onDeathUpdate();
+      if (this.deathTime == 20) {
+         if (!this.worldObj.isRemote) {
+            float explosion_size_vs_blocks = 0.0F;
+            float explosion_size_vs_living_entities = 2.5F;
+            this.worldObj.createExplosion(this, this.posX, this.posY + (double)(this.height / 4.0F), this.posZ, explosion_size_vs_blocks, explosion_size_vs_living_entities, false);
+            for(int i = 0; i < 8; i++){
+               EntityZombie zombie = new EntityZombie(this.worldObj);
+               zombie.setPosition(this.posX + this.rand.nextFloat() - 0.5F, this.posY, this.posZ + this.rand.nextFloat() - 0.5F);
+               zombie.refreshDespawnCounter(-9600);
+               this.worldObj.spawnEntityInWorld(zombie);
+               zombie.onSpawnWithEgg(null);
+               zombie.addRandomWeapon();
+               zombie.setAttackTarget(this.getTarget());
+               zombie.entityFX(EnumEntityFX.summoned);
+            }
+            for(int i = 0; i < 4; i++){
+               EntitySkeleton skeleton = new EntitySkeleton(this.worldObj);
+               skeleton.setPosition(this.posX + this.rand.nextFloat() - 0.5F, this.posY, this.posZ + this.rand.nextFloat() - 0.5F);
+               skeleton.refreshDespawnCounter(-9600);
+               this.worldObj.spawnEntityInWorld(skeleton);
+               skeleton.onSpawnWithEgg(null);
+               skeleton.addRandomWeapon();
+               skeleton.setAttackTarget(this.getTarget());
+               skeleton.entityFX(EnumEntityFX.summoned);
+            }
+            for(int var3 = 0; var3 < 24; ++var3) {
+               this.worldObj.spawnParticle(EnumParticle.explode, this.posX, this.posY, this.posZ, 4.0D * (this.rand.nextDouble() - 0.5D), 4.0D * (this.rand.nextDouble() - 0.5D), 4.0D * (this.rand.nextDouble() - 0.5D));
+            }
+            for(int var3 = 0; var3 < 24; ++var3) {
+               this.worldObj.spawnParticle(EnumParticle.explode, this.posX, this.posY, this.posZ, 2.0D * (this.rand.nextDouble() - 0.5D), 2.0D * (this.rand.nextDouble() - 0.5D), 2.0D * (this.rand.nextDouble() - 0.5D));
+            }
+            this.entityFX(EnumEntityFX.frags);
+         }
+      }
+   }
    protected void playStepSound(int par1, int par2, int par3, int par4) {
       this.makeSound("mob.zombie.step", 0.15F, 1.0F);
    }

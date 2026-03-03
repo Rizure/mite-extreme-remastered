@@ -206,8 +206,7 @@ public class EntityWanderingWitch extends EntityWitch {
     @Override
     protected void dropFewItems(boolean recently_hit_by_player, DamageSource damage_source) {
         this.dropItem(Items.voucherMagic);
-        int day = this.getWorld().getDayOfOverworld();
-        int num_drops = this.rand.nextInt(5 + damage_source.getLootingModifier()) + Math.min(6,(day + 16)/ 32);
+        int num_drops = this.rand.nextInt(4 + damage_source.getLootingModifier());
         for(int i = 0;i< num_drops;i++){
             if(this.rand.nextInt(4) == 0){
                 this.dropItemStack(new ItemStack(Item.adamantiumNugget,1));

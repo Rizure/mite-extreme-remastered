@@ -180,16 +180,19 @@ public class EntityAnnihilationSkeleton extends EntitySkeleton {
     @Override
     protected void dropFewItems(boolean recently_hit_by_player, DamageSource damage_source) {
         if (recently_hit_by_player){
+            int looting = damage_source.getLootingModifier();
             if(this.rand.nextInt(2) == 0){
                 this.dropItem(Items.voucherStrike);
             }else {
                 this.dropItem(Items.voucherMagic);
             }
-            for(int i = 0;i < 2;i++){
-                this.dropItemStack(new ItemStack(Items.VIBRANIUM_NUGGET,1));
-            }
-            for(int i = 0;i < 2;i++){
-                this.dropItemStack(new ItemStack(Item.diamond,1));
+            int num_drops = this.rand.nextInt(4 + looting);
+            for(int i = 0;i< num_drops;i++){
+                if(this.rand.nextInt(4) == 0){
+                    this.dropItemStack(new ItemStack(Items.VIBRANIUM_NUGGET,1));
+                }else {
+                    this.dropItemStack(new ItemStack(Item.diamond,1));
+                }
             }
         }
     }

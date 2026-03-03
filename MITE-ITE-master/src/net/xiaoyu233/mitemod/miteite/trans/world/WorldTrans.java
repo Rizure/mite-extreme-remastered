@@ -69,7 +69,7 @@ public abstract class WorldTrans {
          }
 
          if (isBloodMoon(first_tick_of_day + 6000L, false)) {
-            WeatherEvent event = new WeatherEvent(first_tick_of_day + 5000L, (int) (13000 * Configs.wenscConfig.timeSpeedInDay.ConfigValue) + 1000);
+            WeatherEvent event = new WeatherEvent(first_tick_of_day + 5000L, 14000);
             event.setStorm(event.start, event.end);
             events.add(event);
          }

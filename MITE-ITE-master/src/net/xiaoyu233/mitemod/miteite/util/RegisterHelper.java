@@ -100,7 +100,7 @@ public class RegisterHelper {
         Items.adamantiumNugget.setSoldPrice(12D);
         VIBRANIUM_NUGGET.setSoldPrice(25D);
 
-        Items.buguDan.setBuyPrice(1.0D).setSoldPrice(1.0D);
+        Items.xiaoHuanDan.setBuyPrice(0.5D).setSoldPrice(0.5D);
         Items.pants.setBuyPrice(9876547210.33D);
 
         Items.getItem(Blocks.blockStairsColorful0.blockID).setBuyPrice(2.5D).setSoldPrice(2.5D);

@@ -51,7 +51,7 @@ public class EntityInfernalCreeperTrans extends EntityCreeperTrans {
    @Inject(method = "<init>",at = @At("RETURN"))
    private void injectCtorModifyExplosion(CallbackInfo callbackInfo){
       if (Configs.wenscConfig.infernalCreeperBoost.ConfigValue) {
-         this.explosionRadius *= 2.5F;
+         this.explosionRadius *= 3.125F;
       }
    }
    

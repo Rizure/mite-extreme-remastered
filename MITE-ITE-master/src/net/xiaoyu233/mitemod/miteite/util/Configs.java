@@ -49,8 +49,8 @@ public class Configs {
         public static ConfigItem <Integer> steppedMobDamageProgressIncreaseDay = new ConfigItem("steppedMobDamageProgressIncreaseDay_v0.1.0", 64, "单次渐进伤害增幅每提升1点所需天数(整数)", 32 ,512);
         public static ConfigItem <Integer> fishingXp = new ConfigItem("fishingXp", 5, "钓鱼经验(整数)", 1 ,10);
         public static ConfigItem <Integer> inRainDebuffTime = new ConfigItem("inRainDebuffTime", 3600, "雨中获得负面效果所需时长(整数)", 0 ,1000000);
-        public static ConfigItem <Float> timeSpeedInDay = new ConfigItem("timeSpeedInDay", 1.0F, "白天时间流速(小数)", 0.25f ,2.0f);
-        public static ConfigItem <Float> timeSpeedInNight = new ConfigItem("timeSpeedInNight", 1.0F, "夜晚时间流速(小数)", 0.25f ,2.0f);
+//        public static ConfigItem <Float> timeSpeedInDay = new ConfigItem("timeSpeedInDay", 1.0F, "白天时间流速(小数)", 0.25f ,2.0f);
+//        public static ConfigItem <Float> timeSpeedInNight = new ConfigItem("timeSpeedInNight", 1.0F, "夜晚时间流速(小数)", 0.25f ,2.0f);
         public static ConfigItem <Integer> playerDefenseCooldown = new ConfigItem("playerDefenseCooldown", 160, "玩家格挡冷却(tick)", 0 ,320);
         public static ConfigItem <Integer> playerDefenceMaxTime = new ConfigItem("playerDefenceMaxTime", 80, "玩家格挡最大时间(tick)", 0 ,160);
         public static ConfigItem <Boolean> playerDisarmPlayer = new ConfigItem("playerDisarmPlayer", true, "玩家缴械玩家");
@@ -158,7 +158,7 @@ public class Configs {
         public static ConfigItem <Float> mobSpawningOffset = new ConfigItem<>("mobSpawningOffset",0.0F,"怪物生成速率加成",0.0F,3.0F);
         public static ConfigItem <Boolean> mobSpawningEvent = new ConfigItem<>("mobSpawningEvent",false,"启用怪物休战期/进攻期设定");
         public static ConfigItem <Boolean> veinSizeIncreasesWithDepth = new ConfigItem<>("veinSizeIncreasesWithDepth",true,"矿物随层数降低矿脉增大");
-        public static ConfigItem <Integer> RidingSkeletonSpawningWeight = new ConfigItem<>("FlyingSkeletonSpawningWeight",10,"古尸骑手生成权重",0,100);
+        public static ConfigItem <Integer> RidingSkeletonSpawningWeight = new ConfigItem<>("RidingSkeletonSpawningWeight",10,"古尸骑手生成权重",0,100);
 //        public static ConfigItem <String> md5String = new ConfigItem("md5String", new lh("wensc").a("busy"), "MD5");
 
     }
@@ -179,8 +179,8 @@ public class Configs {
         wenscMap.put("fishingXp", wenscConfig.fishingXp);
         wenscMap.put("inRainDebuffTime", wenscConfig.inRainDebuffTime);
 //        wenscMap.put("firstDayLongerDayTime", wenscConfig.firstDayLongerDayTime);
-        wenscMap.put("timeSpeedInDay",wenscConfig.timeSpeedInDay);
-        wenscMap.put("timeSpeedInNight",wenscConfig.timeSpeedInNight);
+//        wenscMap.put("timeSpeedInDay",wenscConfig.timeSpeedInDay);
+//        wenscMap.put("timeSpeedInNight",wenscConfig.timeSpeedInNight);
         wenscMap.put("playerDefenseCooldown", wenscConfig.playerDefenseCooldown);
         wenscMap.put("playerDefenceMaxTime", wenscConfig.playerDefenceMaxTime);
         wenscMap.put("playerDisarmPlayer", wenscConfig.playerDisarmPlayer);
@@ -291,7 +291,7 @@ public class Configs {
         wenscMap.put("RidingSkeletonSpawningWeight",wenscConfig.RidingSkeletonSpawningWeight);
 //        wenscMap.put("md5", wenscConfig.md5String);
 
-        String filePth = "mite-extreme.cfg";
+        String filePth = "MITE-Extreme-Remastered.cfg";
         File file_mite = new File(filePth);
         if (file_mite.exists()) {
             Properties properties = new Properties();
@@ -325,7 +325,7 @@ public class Configs {
         }
     }
     public static void beginToLoadShopConfig() {
-        String shopConfigFilePath = "mite-extreme-shop.cfg";
+        String shopConfigFilePath = "MITE-Extreme-Remastered-Shop.cfg";
         File shopConfigFile = new File(shopConfigFilePath);
         if (shopConfigFile.exists()) {
             Properties properties = new Properties();
