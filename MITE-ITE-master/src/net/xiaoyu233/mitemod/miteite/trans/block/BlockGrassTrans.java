@@ -12,50 +12,51 @@ import static net.minecraft.Block.leaves;
 import static net.xiaoyu233.mitemod.miteite.block.Blocks.leaves1;
 
 @Mixin(BlockGrass.class)
-public class BlockGrassTrans extends Block{
-    protected BlockGrassTrans(int par1, Material par2Material, BlockConstants constants) {
-        super(par1, par2Material, constants);
-    }
+public class BlockGrassTrans extends Block {
+   protected BlockGrassTrans(int par1, Material par2Material, BlockConstants constants) {
+      super(par1, par2Material, constants);
+   }
 
-    @Overwrite
-    public boolean isLegalAt(World world, int x, int y, int z, int metadata) {
-        Block block_above = world.getBlock(x, y + 1, z);
-        if (block_above != null && block_above != leaves && block_above != leaves1 && block_above.blockMaterial != Material.snow && block_above.blockMaterial != Material.craftedSnow) {
-            if (block_above instanceof BlockPiston) {
-                return false;
-            } else if (!block_above.hidesAdjacentSide(world, x, y + 1, z, ReflectHelper.dyCast(BlockGrass.class,this), 1)) {
-                return true;
-            } else {
-                return !block_above.isFaceFlatAndSolid(world.getBlockMetadata(x, y + 1, z), EnumFace.BOTTOM);
-            }
-        } else {
+   @Overwrite
+   public boolean isLegalAt(World world, int x, int y, int z, int metadata) {
+      Block block_above = world.getBlock(x, y + 1, z);
+      if (block_above != null && block_above != leaves && block_above != leaves1 && block_above.blockMaterial != Material.snow && block_above.blockMaterial != Material.craftedSnow) {
+         if (block_above instanceof BlockPiston) {
+            return false;
+         } else if (!block_above.hidesAdjacentSide(world, x, y + 1, z, ReflectHelper.dyCast(BlockGrass.class, this), 1)) {
             return true;
-        }
-    }
-    @Overwrite
-    public int dropBlockAsEntityItem(BlockBreakInfo info) {
-        if (info.wasHarvestedByPlayer() && !info.world.isFreezing(info.x, info.z)) {
-            int fortune = info.getHarvesterFortune();
-            if (fortune > 3) {
-                fortune = 3;
-            }
+         } else {
+            return !block_above.isFaceFlatAndSolid(world.getBlockMetadata(x, y + 1, z), EnumFace.BOTTOM);
+         }
+      } else {
+         return true;
+      }
+   }
 
-            if (info.world.isInRain(info.x, info.y + 1, info.z)) {
-                fortune += 12;
-            }
+   @Overwrite
+   public int dropBlockAsEntityItem(BlockBreakInfo info) {
+      if (info.wasHarvestedByPlayer() && !info.world.isFreezing(info.x, info.z)) {
+         int fortune = info.getHarvesterFortune();
+         if (fortune > 3) {
+            fortune = 3;
+         }
 
-            if (fortune > 14) {
-                fortune = 14;
-            }
+         if (info.world.isInRain(info.x, info.y + 1, info.z)) {
+            fortune += 12;
+         }
 
-            if (info.world.rand.nextInt(16 - fortune) == 0) {
-                this.dropBlockAsEntityItem(info, Item.wormRaw);
-            }
-            if (info.world.rand.nextInt(128 - fortune) == 0 && info.world.isInRain(info.x, info.y + 1, info.z)) {
-                this.dropBlockAsEntityItem(info, Items.powder_earth);
-            }
-        }
+         if (fortune > 14) {
+            fortune = 14;
+         }
 
-        return this.dropBlockAsEntityItem(info, Block.dirt.blockID);
-    }
+         if (info.world.rand.nextInt(16 - fortune) == 0) {
+            this.dropBlockAsEntityItem(info, Item.wormRaw);
+         }
+         if (info.world.rand.nextInt(128 - fortune) == 0 && info.world.isInRain(info.x, info.y + 1, info.z)) {
+            this.dropBlockAsEntityItem(info, Items.powder_earth);
+         }
+      }
+
+      return this.dropBlockAsEntityItem(info, Block.dirt.blockID);
+   }
 }

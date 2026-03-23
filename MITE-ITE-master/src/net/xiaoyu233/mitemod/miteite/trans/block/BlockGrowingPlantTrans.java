@@ -8,13 +8,13 @@ import org.spongepowered.asm.mixin.Overwrite;
 
 @Mixin(BlockGrowingPlant.class)
 public abstract class BlockGrowingPlantTrans extends BlockPlant {
-    public BlockGrowingPlantTrans(int block_id) {
-        super(block_id);
-        this.setMaxStackSize(8);
-    }
+   public BlockGrowingPlantTrans(int block_id) {
+      super(block_id);
+      this.setMaxStackSize(8);
+   }
 
-    @Overwrite
-    public float getGlobalGrowthRateModifierFromMITE() {
-        return Configs.wenscConfig.plantGrowthRate.ConfigValue;
-    }
+   @Overwrite
+   public float getGlobalGrowthRateModifierFromMITE() {
+      return Configs.wenscConfig.plantGrowthRate.ConfigValue;
+   }
 }

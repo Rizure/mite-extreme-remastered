@@ -10,11 +10,11 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(CraftingManager.class)
 public interface CraftingManagerInvoker {
-    @Invoker("addRecipe")
-    @Intrinsic
-    ShapedRecipes addRecipeP(ItemStack par1ItemStack, boolean include_in_lowest_crafting_difficulty_determination, Object... par2ArrayOfObj);
+   @Invoker("addRecipe")
+   @Intrinsic
+   ShapedRecipes addRecipeP(ItemStack par1ItemStack, boolean include_in_lowest_crafting_difficulty_determination, Object... par2ArrayOfObj);
 
-    @Invoker("addShapelessRecipe")
-    @Intrinsic
-    ShapelessRecipes addShapelessRecipeP(ItemStack par1ItemStack, boolean include_in_lowest_crafting_difficulty_determination, Object... par2ArrayOfObj);
+   @Invoker("addShapelessRecipe")
+   @Intrinsic
+   ShapelessRecipes addShapelessRecipeP(ItemStack par1ItemStack, boolean include_in_lowest_crafting_difficulty_determination, Object... par2ArrayOfObj);
 }

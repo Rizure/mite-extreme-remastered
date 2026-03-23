@@ -30,29 +30,29 @@ public class GuiPlayerOverlayTrans extends avk {
    @Inject(locals = LocalCapture.CAPTURE_FAILHARD,
            method = "a(II)V",
            at = @At(value = "INVOKE_STRING",
-                    target = "endStartSection(Ljava/lang/String;)V",
-                    args = "ldc=air",
-                    shift = At.Shift.BEFORE))
-   private void injectRenderNutrition(int par1, int par2, CallbackInfo ci, boolean var3, int var4, int var5, FoodMetaData var7, int var8, AttributeInstance var10, int var11, int var12, int var13, float var14, float var15){
-      float protein = (float)this.g.h.getProtein();
-      float phytonutrients = (float)this.g.h.getPhytonutrients();
+                   target = "endStartSection(Ljava/lang/String;)V",
+                   args = "ldc=air",
+                   shift = At.Shift.BEFORE))
+   private void injectRenderNutrition(int par1, int par2, CallbackInfo ci, boolean var3, int var4, int var5, FoodMetaData var7, int var8, AttributeInstance var10, int var11, int var12, int var13, float var14, float var15) {
+      float protein = (float) this.g.h.getProtein();
+      float phytonutrients = (float) this.g.h.getPhytonutrients();
       int var26 = var12 - 90;
       int var25 = var13 + 32;
       GL11.glPushMatrix();
       GL11.glPushMatrix();
-      this.b(this.g.l, (int)phytonutrients + "/" + 160000, (int)(par1 * 0.15), var25 - 8, 16777215);
+      this.b(this.g.l, (int) phytonutrients + "/" + 160000, (int) (par1 * 0.15), var25 - 8, 16777215);
       GL11.glScalef(0.6F, 1.0F, 1.0F);
       this.g.J().a(Constant.icons_ite);
       this.b(var26 - 205, var25, 0, 106, 182, 6);
-      this.b(var26 - 205, var25, 0, 94, (int)(182.0F * (phytonutrients / 160000.0F)), 6);
+      this.b(var26 - 205, var25, 0, 94, (int) (182.0F * (phytonutrients / 160000.0F)), 6);
       GL11.glPopMatrix();
       var26 = var12 - 303;
       GL11.glPushMatrix();
-      this.b(this.g.l, (int)protein + "/" + 160000, (int)(par1 * 0.8), var25 - 8, 16777215);
+      this.b(this.g.l, (int) protein + "/" + 160000, (int) (par1 * 0.8), var25 - 8, 16777215);
       GL11.glScalef(0.6F, 1.0F, 1.0F);
       this.g.J().a(Constant.icons_ite);
       this.b((int) (par1 * 1.21), var25, 0, 106, 182, 6);
-      this.b((int) (par1 * 1.21), var25, 0, 100, (int)(182.0F * (protein / 160000.0F)), 6);
+      this.b((int) (par1 * 1.21), var25, 0, 100, (int) (182.0F * (protein / 160000.0F)), 6);
       GL11.glPopMatrix();
       GL11.glPopMatrix();
    }
@@ -62,7 +62,7 @@ public class GuiPlayerOverlayTrans extends avk {
                    target = "endStartSection(Ljava/lang/String;)V",
                    args = "ldc=air",
                    shift = At.Shift.AFTER))
-   private void injectRenderOverlayMessage(CallbackInfo c){
+   private void injectRenderOverlayMessage(CallbackInfo c) {
       avi var8 = this.g.l;
       if (this.overlayMsgDisplayTime > 0) {
          this.g.C.startSection("overlayMessage");
@@ -70,7 +70,7 @@ public class GuiPlayerOverlayTrans extends avk {
          int var25 = window.a();
          int var26 = window.b();
          GL11.glPushMatrix();
-         GL11.glTranslatef((float)(var25 / 2), (float)(var26 - 68), 0.0F);
+         GL11.glTranslatef((float) (var25 / 2), (float) (var26 - 68), 0.0F);
          GL11.glEnable(3042);
          GL11.glBlendFunc(770, 771);
          var8.b(this.overlayMsg, -var8.a(this.overlayMsg) / 2, -4, this.overlayMsgColor);
@@ -82,27 +82,31 @@ public class GuiPlayerOverlayTrans extends avk {
    }
 
    @Redirect(method = "a(II)V",
-           at = @At(value = "INVOKE",target = "Lnet/minecraft/MathHelper;ceiling_float_int(F)I", ordinal = 0))
-   private int redirectCurrentHealth(float par1){
+           at = @At(value = "INVOKE", target = "Lnet/minecraft/MathHelper;ceiling_float_int(F)I", ordinal = 0))
+   private int redirectCurrentHealth(float par1) {
       return MathHelper.ceiling_float_int(this.g.h.getHealthFraction() * this.fractionHealth());
    }
+
    @Redirect(method = "a(II)V",
-           at = @At(value = "INVOKE",target = "Lnet/minecraft/MathHelper;ceiling_float_int(F)I", ordinal = 1))
-   private int redirectPrevHealth(float par1){
+           at = @At(value = "INVOKE", target = "Lnet/minecraft/MathHelper;ceiling_float_int(F)I", ordinal = 1))
+   private int redirectPrevHealth(float par1) {
       return MathHelper.ceiling_float_int((this.g.h.prevHealth / this.g.h.getHealthLimit()) * this.fractionHealth());
    }
+
    @Redirect(method = "a(II)V",
-           at = @At(value = "INVOKE",target = "Lnet/minecraft/AttributeInstance;getAttributeValue(Lnet/mincraft/GenericAttributes;)D"))
-   private double redirectHealthLimit(AttributeInstance att){
+           at = @At(value = "INVOKE", target = "Lnet/minecraft/AttributeInstance;getAttributeValue(Lnet/mincraft/GenericAttributes;)D"))
+   private double redirectHealthLimit(AttributeInstance att) {
       return this.fractionHealth();
 //      return 20;
    }
-   private float fractionHealth(){
+
+   private float fractionHealth() {
       return Math.min(this.g.h.getHealthLimit(), 20.0F);
    }
+
    @Redirect(method = "a(II)V",
-           at = @At(value = "INVOKE",target = "Lnet/minecraft/EntityLiving;getAbsorptionAmount()F"))
-   private float redirectAbsorptionAmount(){
+           at = @At(value = "INVOKE", target = "Lnet/minecraft/EntityLiving;getAbsorptionAmount()F"))
+   private float redirectAbsorptionAmount() {
 //      return this.g.h.getHealthLimit();
       return this.g.h.getAbsorptionAmount() / this.g.h.getHealthLimit() * this.fractionHealth();
    }

@@ -58,14 +58,14 @@ public class ItemStackTrans {
    }
 
    @Inject(method = "splitStack", at = @At("RETURN"), cancellable = true)
-   public void splitStack(CallbackInfoReturnable<ItemStack>callbackInfoReturnable) {
+   public void splitStack(CallbackInfoReturnable<ItemStack> callbackInfoReturnable) {
       ItemStack itemStack = callbackInfoReturnable.getReturnValue();
       callbackInfoReturnable.setReturnValue(itemStack);
       callbackInfoReturnable.cancel();
    }
 
-   @Redirect(method = "getTooltip",at = @At(value = "INVOKE",target = "Lnet/minecraft/Translator;addToList(Lnet/minecraft/EnumChatFormat;Ljava/lang/String;Ljava/util/List;)V",ordinal = 0))
-   private void removeChangeQualityInfo(EnumChatFormat enum_chat_formatting, String key, List list){
+   @Redirect(method = "getTooltip", at = @At(value = "INVOKE", target = "Lnet/minecraft/Translator;addToList(Lnet/minecraft/EnumChatFormat;Ljava/lang/String;Ljava/util/List;)V", ordinal = 0))
+   private void removeChangeQualityInfo(EnumChatFormat enum_chat_formatting, String key, List list) {
       //Do nothing to remove
       list.remove(list.size() - 1);
    }
@@ -73,11 +73,11 @@ public class ItemStackTrans {
    @Inject(method = "getTooltip", at = @At("RETURN"))
    public void InjectGetTooltip(EntityPlayer par1EntityPlayer, boolean par2, Slot slot, CallbackInfoReturnable<ArrayList> callbackInfoReturnable) {
       List list = callbackInfoReturnable.getReturnValue();
-      if(par2 && slot instanceof SlotShop) {
-         if(slot.getHasStack()) {
+      if (par2 && slot instanceof SlotShop) {
+         if (slot.getHasStack()) {
             ItemStack itemStack = slot.getStack();
-            list.add(EnumChatFormat.AQUA +"售出价格:"+ EnumChatFormat.WHITE + itemStack.getPrice().soldPrice);
-            list.add(EnumChatFormat.AQUA +"购买价格:"+ EnumChatFormat.WHITE + itemStack.getPrice().buyPrice);
+            list.add(EnumChatFormat.AQUA + "售出价格:" + EnumChatFormat.WHITE + itemStack.getPrice().soldPrice);
+            list.add(EnumChatFormat.AQUA + "购买价格:" + EnumChatFormat.WHITE + itemStack.getPrice().buyPrice);
          }
       }
    }
@@ -109,7 +109,7 @@ public class ItemStackTrans {
       var1.setQuality(this.getQuality());
       var1.setIsArtifact(this.is_artifact);
       if (this.stackTagCompound != null) {
-         var1.stackTagCompound = (NBTTagCompound)this.stackTagCompound.copy();
+         var1.stackTagCompound = (NBTTagCompound) this.stackTagCompound.copy();
       }
 
       if (this.getItem().hasExpAndLevel()) {
@@ -124,12 +124,12 @@ public class ItemStackTrans {
          this.toolNbtFixed = true;
          if (this.stackTagCompound == null) {
             this.setTagCompound(new NBTTagCompound());
-            this.stackTagCompound.setInteger("tool_level", 0);
-            this.stackTagCompound.setInteger("tool_exp", 0);
+            this.stackTagCompound.setInteger("using_level", 0);
+            this.stackTagCompound.setInteger("using_exp", 0);
             this.stackTagCompound.setCompoundTag("modifiers", new NBTTagCompound());
-         } else if (!this.stackTagCompound.hasKey("tool_level")) {
-            this.stackTagCompound.setInteger("tool_level", 0);
-            this.stackTagCompound.setInteger("tool_exp", 0);
+         } else if (!this.stackTagCompound.hasKey("using_level")) {
+            this.stackTagCompound.setInteger("using_level", 0);
+            this.stackTagCompound.setInteger("using_exp", 0);
             this.stackTagCompound.setCompoundTag("modifiers", new NBTTagCompound());
          }
 
@@ -143,11 +143,11 @@ public class ItemStackTrans {
                   ArmorModifierTypes[] var2 = ArmorModifierTypes.values();
                   var3 = var2.length;
 
-                  for(var4 = 0; var4 < var3; ++var4) {
+                  for (var4 = 0; var4 < var3; ++var4) {
                      ArmorModifierTypes value = var2[var4];
                      if (compound.getTag(value.nbtName) instanceof NBTTagFloat) {
                         origin = compound.getFloat(value.nbtName);
-                        compound.setInteger(value.nbtName, (int)(origin / value.levelAddition));
+                        compound.setInteger(value.nbtName, (int) (origin / value.levelAddition));
                      }
                   }
                }
@@ -155,11 +155,11 @@ public class ItemStackTrans {
                ToolModifierTypes[] var7 = ToolModifierTypes.values();
                var3 = var7.length;
 
-               for(var4 = 0; var4 < var3; ++var4) {
+               for (var4 = 0; var4 < var3; ++var4) {
                   ToolModifierTypes value = var7[var4];
                   if (compound.getTag(value.nbtName) instanceof NBTTagFloat) {
                      origin = compound.getFloat(value.nbtName);
-                     compound.setInteger(value.nbtName, (int)(origin / value.levelAddition));
+                     compound.setInteger(value.nbtName, (int) (origin / value.levelAddition));
                   }
                }
             }
@@ -175,8 +175,8 @@ public class ItemStackTrans {
       if (this.hasTagCompound() && this.stackTagCompound.hasKey("AttributeModifiers")) {
          NBTTagList var2 = this.stackTagCompound.getTagList("AttributeModifiers");
 
-         for(int var3 = 0; var3 < var2.tagCount(); ++var3) {
-            NBTTagCompound var4 = (NBTTagCompound)var2.tagAt(var3);
+         for (int var3 = 0; var3 < var2.tagCount(); ++var3) {
+            NBTTagCompound var4 = (NBTTagCompound) var2.tagAt(var3);
             AttributeModifier var5 = GenericAttributes.func_111259_a(var4);
             if (var5.getID().getLeastSignificantBits() != 0L && var5.getID().getMostSignificantBits() != 0L) {
                var1.put(var4.getString("AttributeName"), var5);
@@ -200,11 +200,11 @@ public class ItemStackTrans {
       return this.stackTagCompound != null ? this.stackTagCompound.getInteger("forging_grade") : 0;
    }
 
-   public int getEmergencyCooldown(){
+   public int getEmergencyCooldown() {
       return this.stackTagCompound != null && this.stackTagCompound.hasKey("emergencyCooldown") ? this.stackTagCompound.getInteger("emergencyCooldown") : 0;
    }
 
-   public void setEmergencyCooldown(int cooldown){
+   public void setEmergencyCooldown(int cooldown) {
       if (this.stackTagCompound == null) {
          this.stackTagCompound = new NBTTagCompound();
       }
@@ -240,13 +240,11 @@ public class ItemStackTrans {
       return (float) this.getGemMaxLevel(gemModifierTypes) * gemModifierTypes.getRate();
    }
 
-   public void setPrice(double soldPrice, double buyPrice)
-   {
-      if (this.stackTagCompound == null)
-      {
+   public void setPrice(double soldPrice, double buyPrice) {
+      if (this.stackTagCompound == null) {
          this.setTagCompound(new NBTTagCompound());
       }
-      if(!this.stackTagCompound.hasKey("price")){
+      if (!this.stackTagCompound.hasKey("price")) {
          NBTTagCompound nbtTagCompound = new NBTTagCompound();
          nbtTagCompound.setDouble("soldPrice", soldPrice);
          nbtTagCompound.setDouble("buyPrice", buyPrice);
@@ -259,7 +257,7 @@ public class ItemStackTrans {
    }
 
    public PriceItem getPrice() {
-      if(this.stackTagCompound != null && this.stackTagCompound.hasKey("price")) {
+      if (this.stackTagCompound != null && this.stackTagCompound.hasKey("price")) {
          NBTTagCompound nbtTagCompound = (NBTTagCompound) this.stackTagCompound.getTag("price");
          return new PriceItem(nbtTagCompound.getDouble("soldPrice"), nbtTagCompound.getDouble("buyPrice"));
       } else {
@@ -267,34 +265,32 @@ public class ItemStackTrans {
       }
    }
 
-   public void setGem(ItemStack gemStack, int index)
-   {
-      if (this.stackTagCompound == null)
-      {
+   public void setGem(ItemStack gemStack, int index) {
+      if (this.stackTagCompound == null) {
          this.setTagCompound(new NBTTagCompound());
       }
-      if(!this.stackTagCompound.hasKey("Gems")){
-         NBTTagList nbtTagList =  new NBTTagList("Gems");
+      if (!this.stackTagCompound.hasKey("Gems")) {
+         NBTTagList nbtTagList = new NBTTagList("Gems");
 
          for (int i = 0; i < 8; i++) {
-            NBTTagCompound var4  = new NBTTagCompound();
-            var4.setShort("id", (short)-1);
-            var4.setByte("meta", (byte)-1);
+            NBTTagCompound var4 = new NBTTagCompound();
+            var4.setShort("id", (short) -1);
+            var4.setByte("meta", (byte) -1);
             nbtTagList.appendTag(var4);
          }
          this.stackTagCompound.setTag("Gems", nbtTagList);
       }
-      NBTTagList nbtTagList =  this.stackTagCompound.getTagList("Gems");
-      NBTTagCompound nbtTagCompound = (NBTTagCompound)nbtTagList.tagAt(index);
+      NBTTagList nbtTagList = this.stackTagCompound.getTagList("Gems");
+      NBTTagCompound nbtTagCompound = (NBTTagCompound) nbtTagList.tagAt(index);
 
-      nbtTagCompound.setShort("id", gemStack != null ? (short)gemStack.getItem().itemID : (short) -1);
-      nbtTagCompound.setByte("meta",gemStack != null? (byte)gemStack.getItemSubtype() : (byte) -1);
+      nbtTagCompound.setShort("id", gemStack != null ? (short) gemStack.getItem().itemID : (short) -1);
+      nbtTagCompound.setByte("meta", gemStack != null ? (byte) gemStack.getItemSubtype() : (byte) -1);
    }
 
    public int getGemMaxLevel(GemModifierTypes gemModifierTypes) {
       // 在宝石里面寻找最大的
       int max = 0;
-      if(this.stackTagCompound != null && this.stackTagCompound.hasKey("Gems")) {
+      if (this.stackTagCompound != null && this.stackTagCompound.hasKey("Gems")) {
          NBTTagList nbtTagList = this.stackTagCompound.getTagList("Gems");
          for (int i = 0; i < nbtTagList.tagCount(); i++) {
             NBTTagCompound nbtTagCompound = (NBTTagCompound) nbtTagList.tagAt(i);
@@ -335,17 +331,17 @@ public class ItemStackTrans {
       return false;
    }
 
-   @Inject(method = "<init>(III)V",at = @At("RETURN"))
-   private void injectCtorFix(CallbackInfo callback){
-      if (this.getItem() != null){
+   @Inject(method = "<init>(III)V", at = @At("RETURN"))
+   private void injectCtorFix(CallbackInfo callback) {
+      if (this.getItem() != null) {
          if (this.getItem().hasExpAndLevel()) {
             this.fixNBT();
          }
       }
    }
 
-   @Inject(method = "setTagCompound",at = @At(value = "FIELD",target = "Lnet/minecraft/ItemStack;stackTagCompound:Lnet/minecraft/NBTTagCompound;",shift = At.Shift.AFTER))
-   private void injectSetTagFix(CallbackInfoReturnable<ItemStack> callback){
+   @Inject(method = "setTagCompound", at = @At(value = "FIELD", target = "Lnet/minecraft/ItemStack;stackTagCompound:Lnet/minecraft/NBTTagCompound;", shift = At.Shift.AFTER))
+   private void injectSetTagFix(CallbackInfoReturnable<ItemStack> callback) {
       if (this.getItem().hasExpAndLevel()) {
          this.fixNBT();
       }
@@ -375,11 +371,11 @@ public class ItemStackTrans {
 
          if (this.getItem().hasExpAndLevel() && this.stackTagCompound == null) {
             NBTTagCompound tagCompound = new NBTTagCompound();
-            tagCompound.setInteger("tool_level", 0);
-            tagCompound.setInteger("tool_exp", 0);
+            tagCompound.setInteger("using_level", 0);
+            tagCompound.setInteger("using_exp", 0);
             tagCompound.setCompoundTag("modifiers", new NBTTagCompound());
             tagCompound.setInteger("forging_grade", 0);
-            tagCompound.setInteger("emergencyCooldown",0);
+            tagCompound.setInteger("emergencyCooldown", 0);
             this.setTagCompound(tagCompound);
          }
 
@@ -449,6 +445,7 @@ public class ItemStackTrans {
    public ItemStack setTagCompound(NBTTagCompound par1NBTTagCompound) {
       return null;
    }
+
    @Shadow
    public NBTTagList getEnchantmentTagList() {
       return null;
@@ -456,13 +453,13 @@ public class ItemStackTrans {
 
    public int getEnhanceTotalLevel() {
       int level = 0;
-      if(this.getItem() instanceof ItemEnchantedBook) {
+      if (this.getItem() instanceof ItemEnchantedBook) {
          NBTTagList nbtTagList = this.getStoredEnchantmentTagList();
-         if(nbtTagList != null) {
-            for(int var5 = 0; var5 < nbtTagList.tagCount(); ++var5) {
-               NBTTagCompound var6 = (NBTTagCompound)nbtTagList.tagAt(var5);
+         if (nbtTagList != null) {
+            for (int var5 = 0; var5 < nbtTagList.tagCount(); ++var5) {
+               NBTTagCompound var6 = (NBTTagCompound) nbtTagList.tagAt(var5);
                short var7 = var6.getShort("id");
-               if(Enchantment.enchantmentsList[var7].getNumLevels() == 1) {
+               if (Enchantment.enchantmentsList[var7].getNumLevels() == 1) {
                   level += 5;
                } else {
                   level += var6.getShort("lvl");
@@ -471,11 +468,11 @@ public class ItemStackTrans {
          }
       } else {
          NBTTagList enchantments = this.getEnchantmentTagList();
-         if(enchantments != null) {
-            for(int i = 0; i < enchantments.tagCount(); ++i) {
-               NBTTagCompound var6 = (NBTTagCompound)enchantments.tagAt(i);
+         if (enchantments != null) {
+            for (int i = 0; i < enchantments.tagCount(); ++i) {
+               NBTTagCompound var6 = (NBTTagCompound) enchantments.tagAt(i);
                short var7 = var6.getShort("id");
-               if(Enchantment.enchantmentsList[var7].getNumLevels() == 1) {
+               if (Enchantment.enchantmentsList[var7].getNumLevels() == 1) {
                   level += 5;
                } else {
                   level += var6.getShort("lvl");
@@ -489,10 +486,10 @@ public class ItemStackTrans {
 
    @Overwrite
    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound) {
-      par1NBTTagCompound.setShort("id", (short)this.itemID);
-      par1NBTTagCompound.setByte("Count", (byte)this.stackSize);
+      par1NBTTagCompound.setShort("id", (short) this.itemID);
+      par1NBTTagCompound.setByte("Count", (byte) this.stackSize);
       par1NBTTagCompound.setInteger("damage", this.damage);
-      par1NBTTagCompound.setShort("subtype", (short)this.subtype);
+      par1NBTTagCompound.setShort("subtype", (short) this.subtype);
       NBTTagCompound effective_stackTagCompound;
       if (this.stackTagCompound != null) {
          effective_stackTagCompound = this.stackTagCompound;
@@ -508,15 +505,15 @@ public class ItemStackTrans {
          par1NBTTagCompound.setCompoundTag("tag", effective_stackTagCompound);
       } else if (this.getItem().hasExpAndLevel()) {
          effective_stackTagCompound = new NBTTagCompound();
-         effective_stackTagCompound.setInteger("tool_level", 0);
-         effective_stackTagCompound.setInteger("tool_exp", 0);
+         effective_stackTagCompound.setInteger("using_level", 0);
+         effective_stackTagCompound.setInteger("using_exp", 0);
          effective_stackTagCompound.setCompoundTag("modifiers", new NBTTagCompound());
          effective_stackTagCompound.setInteger("forging_grade", 0);
          par1NBTTagCompound.setCompoundTag("tag", effective_stackTagCompound);
       }
 
       if (this.getItem().hasQuality()) {
-         par1NBTTagCompound.setByte("quality", (byte)this.getQuality().ordinal());
+         par1NBTTagCompound.setByte("quality", (byte) this.getQuality().ordinal());
       }
 
       if (this.is_artifact) {

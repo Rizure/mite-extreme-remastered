@@ -13,6 +13,7 @@ public class BlockLeavesTrans extends BlockTransparant {
    public boolean hidesAdjacentSide(IBlockAccess block_access, int x, int y, int z, Block neighbor, int side) {
       return false;
    }
+
    @Overwrite
    public int dropBlockAsEntityItem(BlockBreakInfo info) {
       if (BitHelper.isBitSet(info.getMetadata(), 4)) {

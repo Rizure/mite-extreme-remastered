@@ -34,12 +34,13 @@ public class EntityAncientBoneLordTrans extends EntityBoneLordTrans {
          MonsterUtil.addDefaultArmor(day + 64, this, true);
       }
    }
+
    @Inject(method = "addRandomWeapon", at = @At("RETURN"))
    private void extendsWeapon(CallbackInfo callbackInfo) {
       int day_of_world = MinecraftServer.F().getOverworld().getDayOfOverworld();
-      if(day_of_world > 16){
+      if (day_of_world > 16) {
          MonsterUtil.addDefaultWeapon(day_of_world + 64, this);
-         if(day_of_world > 48 && this.rand.nextInt(4) == 0){
+         if (day_of_world > 48 && this.rand.nextInt(4) == 0) {
             MonsterUtil.addDefaultTool(day_of_world + 64, this);
          }
       }
@@ -47,11 +48,11 @@ public class EntityAncientBoneLordTrans extends EntityBoneLordTrans {
 
    protected void dropFewItems(boolean recently_hit_by_player, DamageSource damage_source) {
       super.dropFewItems(recently_hit_by_player, damage_source);
-      if (recently_hit_by_player){
+      if (recently_hit_by_player) {
          int day = this.getWorld().getDayOfOverworld();
          int count = Math.min(day / 8, 6);
          for (int i1 = 0; i1 < count; i1++) {
-            if(this.rand.nextInt(4) > 0){
+            if (this.rand.nextInt(4) > 0) {
                this.dropItemStack(new ItemStack(Item.emerald));
             }
          }
@@ -65,9 +66,9 @@ public class EntityAncientBoneLordTrans extends EntityBoneLordTrans {
       boolean boneLordTweak = Configs.wenscConfig.boneLordTweak.ConfigValue;
       int day = this.getWorld() != null ? this.getWorld().getDayOfOverworld() : 0;
       this.setEntityAttribute(GenericAttributes.followRange, 48.0D);
-      this.setEntityAttribute(GenericAttributes.attackDamage, (boneLordTweak ? 15 : 10) * Constant.getEliteMobModifier("Damage",day,this.worldObj.isOverworld()));
-      this.setEntityAttribute(GenericAttributes.maxHealth, (boneLordTweak ? 60 : 30) * Constant.getEliteMobModifier("Health",day,this.worldObj.isOverworld()));
-      this.setEntityAttribute(GenericAttributes.movementSpeed, 0.3D * Constant.getEliteMobModifier("Speed",day,this.worldObj.isOverworld()));
+      this.setEntityAttribute(GenericAttributes.attackDamage, (boneLordTweak ? 15 : 10) * Constant.getEliteMobModifier("Damage", day, this.worldObj.isOverworld()));
+      this.setEntityAttribute(GenericAttributes.maxHealth, (boneLordTweak ? 60 : 30) * Constant.getEliteMobModifier("Health", day, this.worldObj.isOverworld()));
+      this.setEntityAttribute(GenericAttributes.movementSpeed, 0.3D * Constant.getEliteMobModifier("Speed", day, this.worldObj.isOverworld()));
    }
 
    public boolean getCanSpawnHere(boolean perform_light_check) {

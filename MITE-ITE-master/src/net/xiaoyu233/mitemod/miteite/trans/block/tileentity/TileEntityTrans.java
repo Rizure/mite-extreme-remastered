@@ -16,11 +16,11 @@ public class TileEntityTrans {
    private static void addMapping(Class par0Class, String par1Str) {
    }
 
-   @Inject(method = "<clinit>",at = @At(value = "RETURN"))
-   private static void registerForgingTable(CallbackInfo c){
+   @Inject(method = "<clinit>", at = @At(value = "RETURN"))
+   private static void registerForgingTable(CallbackInfo c) {
       addMapping(TileEntityForgingTable.class, "ForgingTable");
       addMapping(TileEntityGemSetting.class, "GemSetting");
-      addMapping(TileEntityHeadStone.class,"HeadStone");
+      addMapping(TileEntityHeadStone.class, "HeadStone");
    }
 
    public boolean isForbidenHopper() {

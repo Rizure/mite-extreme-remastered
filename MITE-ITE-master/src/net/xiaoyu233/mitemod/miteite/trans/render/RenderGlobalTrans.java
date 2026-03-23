@@ -12,11 +12,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(bfl.class)
 public class RenderGlobalTrans {
-    @Shadow
-    private Minecraft t;
+   @Shadow
+   private Minecraft t;
 
-    @Inject(method = "a()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/BlockLeaves;a(Z)V", shift = At.Shift.AFTER))
-    public void injectLeaves1Render(CallbackInfo callbackInfo) {
-        Blocks.leaves1.a(this.t.u.isFancyGraphicsEnabled());
-    }
+   @Inject(method = "a()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/BlockLeaves;a(Z)V", shift = At.Shift.AFTER))
+   public void injectLeaves1Render(CallbackInfo callbackInfo) {
+      Blocks.leaves1.a(this.t.u.isFancyGraphicsEnabled());
+   }
 }

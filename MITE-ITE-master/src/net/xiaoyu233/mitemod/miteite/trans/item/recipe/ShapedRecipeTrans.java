@@ -15,18 +15,19 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 @Mixin(ShapedRecipes.class)
 public class ShapedRecipeTrans {
 
-    @Shadow private boolean field_92101_f;
+   @Shadow
+   private boolean field_92101_f;
 
-    public boolean isExtendsNBT() {
-        return field_92101_f;
-    }
+   public boolean isExtendsNBT() {
+      return field_92101_f;
+   }
 
-    @Inject(method = "getCraftingResult",at = @At(value = "INVOKE",target = "Lnet/minecraft/ItemStack;setTagCompound(Lnet/minecraft/NBTTagCompound;)Lnet/minecraft/ItemStack;",shift = At.Shift.AFTER),locals = LocalCapture.CAPTURE_FAILHARD)
-    private void injectDowngradeForgingGrade(InventoryCrafting par1InventoryCrafting, CallbackInfoReturnable<CraftingResult> cir, ItemStack output, int index, ItemStack currentItem){
-        if (currentItem.getItem() instanceof IUpgradableItem && currentItem.getItem().isDamageable()){
-            output.setItemDamage(currentItem.getItemDamage());
-        }
+   @Inject(method = "getCraftingResult", at = @At(value = "INVOKE", target = "Lnet/minecraft/ItemStack;setTagCompound(Lnet/minecraft/NBTTagCompound;)Lnet/minecraft/ItemStack;", shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
+   private void injectDowngradeForgingGrade(InventoryCrafting par1InventoryCrafting, CallbackInfoReturnable<CraftingResult> cir, ItemStack output, int index, ItemStack currentItem) {
+      if (currentItem.getItem() instanceof IUpgradableItem && currentItem.getItem().isDamageable()) {
+         output.setItemDamage(currentItem.getItemDamage());
+      }
 //        // 这里在nbt有可能残留存储有宝石 强制去除
 //        output.GemsList = new ItemStack[8];
-    }
+   }
 }

@@ -2,7 +2,9 @@ package net.xiaoyu233.mitemod.miteite.trans.block;
 
 import net.minecraft.*;
 import net.xiaoyu233.fml.util.Utils;
+import net.xiaoyu233.mitemod.miteite.item.GemModifierTypes;
 import net.xiaoyu233.mitemod.miteite.item.Items;
+import net.xiaoyu233.mitemod.miteite.item.ToolModifierTypes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -12,30 +14,35 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BlockCrops.class)
-public class BlockCropTrans extends BlockGrowingPlant {
+public abstract class BlockCropTrans extends BlockGrowingPlant {
+
+   @Shadow
+   public abstract int dropBlockAsEntityItem(BlockBreakInfo info);
 
    public BlockCropTrans(int block_id) {
       super(block_id);
    }
 
-   @Overwrite
-   public boolean fertilize(World world, int x, int y, int z, ItemStack item_stack) {
-      Item item = item_stack.getItem();
-      if (item != Item.dyePowder && item != Item.manure) {
-         return false;
-      } else {
-         int metadata = world.getBlockMetadata(x, y, z);
-         return this.isBlighted(metadata) && world.setBlockMetadata(x, y, z, this.setBlighted(metadata, false), 2);
-      }
-   }
+//   @Overwrite
+//   public boolean fertilize(World world, int x, int y, int z, ItemStack item_stack) {
+//      Item item = item_stack.getItem();
+//      if (item != Item.dyePowder && item != Item.manure) {
+//         return false;
+//      } else {
+//         int metadata = world.getBlockMetadata(x, y, z);
+//         return this.isBlighted(metadata) && world.setBlockMetadata(x, y, z, this.setBlighted(metadata, false), 2);
+//      }
+//   }
 
    @Shadow
-   public static void playCropPopSound(BlockBreakInfo info) {}
+   public static void playCropPopSound(BlockBreakInfo info) {
+   }
 
    @Shadow
    public int getGrowth(int metadata) {
       return 0;
    }
+
    @Shadow
    public boolean isMature(int metadata) {
       return true;
@@ -55,10 +62,24 @@ public class BlockCropTrans extends BlockGrowingPlant {
    protected int getMatureYield() {
       return 1;
    }
-   @Inject(method = "dropBlockAsEntityItem", at = @At(ordinal = 1, value = "INVOKE",target = "dropBlockAsEntityItem"))
-   public void dropVoucher(BlockBreakInfo info, CallbackInfoReturnable callbackInfoReturnable){
-      if(info.world.rand.nextInt(50) == 0) {
+
+   @Inject(method = "dropBlockAsEntityItem", at = @At(ordinal = 1, value = "INVOKE", target = "dropBlockAsEntityItem"))
+   public void dropVoucher(BlockBreakInfo info, CallbackInfoReturnable callbackInfoReturnable) {
+      if (info.world.rand.nextInt(50) == 0) {
          this.dropBlockAsEntityItem(info, new ItemStack(Items.voucherPlanting, 1));
+      }
+      if (info.getHarvesterItemStack() != null){
+         ItemStack tool = info.getHarvesterItemStack();
+         float rewarding = ToolModifierTypes.TREASURING.getModifierValue(info.getHarvesterItemStack().getTagCompound());
+         if(this.isMature(info.getMetadata())){
+            Item nugget = tool.getGemMaxNumeric(GemModifierTypes.goldize) == 0 ? Item.silverNugget: Item.goldNugget;
+            if(info.world.rand.nextInt(3) > 0){
+               nugget = Item.copperNugget;
+            }
+            if(rewarding > info.world.rand.nextFloat()){
+               this.dropBlockAsEntityItem(info, new ItemStack(nugget));
+            }
+         }
       }
    }
 

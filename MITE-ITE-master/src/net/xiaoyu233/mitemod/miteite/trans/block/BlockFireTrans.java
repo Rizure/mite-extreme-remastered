@@ -12,18 +12,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(BlockFire.class)
 public class BlockFireTrans {
-    @Shadow
-    private void setBurnRate(int par1, int par2, int par3) {
-    }
+   @Shadow
+   private void setBurnRate(int par1, int par2, int par3) {
+   }
 
-    @ModifyConstant(method = "<init>", constant = @Constant(intValue = 256))
-    private static int injected(int value) {
-        return 1024;
-    }
+   @ModifyConstant(method = "<init>", constant = @Constant(intValue = 256))
+   private static int injected(int value) {
+      return 1024;
+   }
 
-    @Inject(method = "<init>", at = @At("RETURN"))
-    public void injectInit(CallbackInfo callbackInfo) {
-        this.setBurnRate(Blocks.wood1.blockID, 5, 5);
-        this.setBurnRate(Blocks.leaves1.blockID, 30, 60);
-    }
+   @Inject(method = "<init>", at = @At("RETURN"))
+   public void injectInit(CallbackInfo callbackInfo) {
+      this.setBurnRate(Blocks.wood1.blockID, 5, 5);
+      this.setBurnRate(Blocks.leaves1.blockID, 30, 60);
+   }
 }

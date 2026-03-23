@@ -35,9 +35,9 @@ public class EntityGiantZombieTrans extends EntityMonster {
    protected void applyEntityAttributes() {
       super.applyEntityAttributes();
       int day = this.worldObj.getDayOfOverworld();
-      this.getEntityAttribute(GenericAttributes.attackDamage).setAttribute(14 * Constant.getBossMobModifier("Health",day));
-      this.getEntityAttribute(GenericAttributes.maxHealth).setAttribute(80 * Constant.getBossMobModifier("Damage",day));
-      this.getEntityAttribute(GenericAttributes.movementSpeed).setAttribute(0.3D * Constant.getBossMobModifier("Speed",day));
+      this.getEntityAttribute(GenericAttributes.attackDamage).setAttribute(14 * Constant.getBossMobModifier("Health", day));
+      this.getEntityAttribute(GenericAttributes.maxHealth).setAttribute(80 * Constant.getBossMobModifier("Damage", day));
+      this.getEntityAttribute(GenericAttributes.movementSpeed).setAttribute(0.3D * Constant.getBossMobModifier("Speed", day));
    }
 
    @Override
@@ -59,19 +59,19 @@ public class EntityGiantZombieTrans extends EntityMonster {
 
    protected void dropFewItems(boolean recently_hit_by_player, DamageSource damage_source) {
       if (recently_hit_by_player) {
-         for(int i = 0; i < 4 + this.rand.nextInt(2); i++){
+         for (int i = 0; i < 4 + this.rand.nextInt(2); i++) {
             this.dropItem(Item.ancientMetalNugget);
          }
-         if(this.getWorld().getDayOfOverworld() > 63){
+         if (this.getWorld().getDayOfOverworld() > 63) {
             this.dropItem(Item.ingotMithril);
          }
-         for(int i = 0; i < 12 + this.rand.nextInt(5); i++){
+         for (int i = 0; i < 12 + this.rand.nextInt(5); i++) {
             this.dropItem(Item.rottenFlesh);
          }
-         for(int i = 0; i < 2 + this.rand.nextInt(3); i++){
+         for (int i = 0; i < 2 + this.rand.nextInt(3); i++) {
             this.dropItem(Items.zombieBrain);
          }
-         for(int i = 0; i < 8 + this.rand.nextInt(5); i++){
+         for (int i = 0; i < 8 + this.rand.nextInt(5); i++) {
             this.dropItem(Item.bone);
          }
       }
@@ -116,8 +116,8 @@ public class EntityGiantZombieTrans extends EntityMonster {
       return super.getReach() * 2.5F;
    }
 
-   @Inject(method = "<init>",at = @At("RETURN"))
-   private void injectAI(CallbackInfo c){
+   @Inject(method = "<init>", at = @At("RETURN"))
+   private void injectAI(CallbackInfo c) {
       this.tasks.addTask(0, new PathfinderGoalFloat(this));
       this.tasks.addTask(2, new PathfinderGoalMeleeAttack(this, EntityPlayer.class, 1.1D, true));
       this.tasks.addTask(3, new PathfinderGoalMeleeAttack(this, EntityVillager.class, 1.0D, true));
@@ -141,7 +141,7 @@ public class EntityGiantZombieTrans extends EntityMonster {
 
    public void onLivingUpdate() {
       super.onLivingUpdate();
-      if (!this.worldObj.isRemote) {
+      if (this.onServer()) {
          if (this.spawnCounter < Configs.wenscConfig.giantZombieSpawnZombieCooldown.ConfigValue) {
             ++this.spawnCounter;
          } else {
@@ -157,15 +157,16 @@ public class EntityGiantZombieTrans extends EntityMonster {
       }
 
    }
+
    @Override
-   public void onDeathUpdate(){
+   public void onDeathUpdate() {
       super.onDeathUpdate();
       if (this.deathTime == 20) {
-         if (!this.worldObj.isRemote) {
+         if (this.onServer()) {
             float explosion_size_vs_blocks = 0.0F;
             float explosion_size_vs_living_entities = 2.5F;
-            this.worldObj.createExplosion(this, this.posX, this.posY + (double)(this.height / 4.0F), this.posZ, explosion_size_vs_blocks, explosion_size_vs_living_entities, false);
-            for(int i = 0; i < 8; i++){
+            this.worldObj.createExplosion(this, this.posX, this.posY + (double) (this.height / 4.0F), this.posZ, explosion_size_vs_blocks, explosion_size_vs_living_entities, false);
+            for (int i = 0; i < 8; i++) {
                EntityZombie zombie = new EntityZombie(this.worldObj);
                zombie.setPosition(this.posX + this.rand.nextFloat() - 0.5F, this.posY, this.posZ + this.rand.nextFloat() - 0.5F);
                zombie.refreshDespawnCounter(-9600);
@@ -175,7 +176,7 @@ public class EntityGiantZombieTrans extends EntityMonster {
                zombie.setAttackTarget(this.getTarget());
                zombie.entityFX(EnumEntityFX.summoned);
             }
-            for(int i = 0; i < 4; i++){
+            for (int i = 0; i < 4; i++) {
                EntitySkeleton skeleton = new EntitySkeleton(this.worldObj);
                skeleton.setPosition(this.posX + this.rand.nextFloat() - 0.5F, this.posY, this.posZ + this.rand.nextFloat() - 0.5F);
                skeleton.refreshDespawnCounter(-9600);
@@ -185,16 +186,17 @@ public class EntityGiantZombieTrans extends EntityMonster {
                skeleton.setAttackTarget(this.getTarget());
                skeleton.entityFX(EnumEntityFX.summoned);
             }
-            for(int var3 = 0; var3 < 24; ++var3) {
+            for (int var3 = 0; var3 < 24; ++var3) {
                this.worldObj.spawnParticle(EnumParticle.explode, this.posX, this.posY, this.posZ, 4.0D * (this.rand.nextDouble() - 0.5D), 4.0D * (this.rand.nextDouble() - 0.5D), 4.0D * (this.rand.nextDouble() - 0.5D));
             }
-            for(int var3 = 0; var3 < 24; ++var3) {
+            for (int var3 = 0; var3 < 24; ++var3) {
                this.worldObj.spawnParticle(EnumParticle.explode, this.posX, this.posY, this.posZ, 2.0D * (this.rand.nextDouble() - 0.5D), 2.0D * (this.rand.nextDouble() - 0.5D), 2.0D * (this.rand.nextDouble() - 0.5D));
             }
             this.entityFX(EnumEntityFX.frags);
          }
       }
    }
+
    protected void playStepSound(int par1, int par2, int par3, int par4) {
       this.makeSound("mob.zombie.step", 0.15F, 1.0F);
    }

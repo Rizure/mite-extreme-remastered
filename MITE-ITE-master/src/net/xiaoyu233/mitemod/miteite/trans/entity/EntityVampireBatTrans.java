@@ -18,7 +18,7 @@ public class EntityVampireBatTrans extends EntityBat {
 
    @Inject(method = "collideWithEntity",
            at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "heal"))
-   private void injectAttack(Entity entity,CallbackInfo callbackInfo){
+   private void injectAttack(Entity entity, CallbackInfo callbackInfo) {
       if (Configs.wenscConfig.batPoisonAttack.ConfigValue) {
          entity.getAsEntityLivingBase().addPotionEffect(new MobEffect(MobEffectList.poison.id, 480, 0));
       }

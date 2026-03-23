@@ -15,6 +15,7 @@ import static net.xiaoyu233.mitemod.miteite.util.MonsterUtil.getRandomWeaponTier
 public class EntityLongdeadGuardianTrans extends EntityLongdead {
    @Shadow
    ItemStack stowed_item_stack;
+
    public EntityLongdeadGuardianTrans(World world) {
       super(world);
    }
@@ -23,10 +24,10 @@ public class EntityLongdeadGuardianTrans extends EntityLongdead {
    public void addRandomWeapon() {
       super.addRandomWeapon();
       int day_of_world = MinecraftServer.F().getOverworld().getDayOfOverworld();
-      if(this.getSkeletonType() == 0){
-         if(day_of_world > 64){
-            this.stowed_item_stack = (new ItemStack(Constant.SWORDS[getRandomWeaponTier(rand,day_of_world)])).randomizeForMob(this, true);
-         }else {
+      if (this.getSkeletonType() == 0) {
+         if (day_of_world > 64) {
+            this.stowed_item_stack = (new ItemStack(Constant.SWORDS[getRandomWeaponTier(rand, day_of_world)])).randomizeForMob(this, true);
+         } else {
             this.stowed_item_stack = new ItemStack(Item.daggerAncientMetal).randomizeForMob(this, true);
          }
       }
@@ -45,7 +46,8 @@ public class EntityLongdeadGuardianTrans extends EntityLongdead {
    protected void applyEntityAttributes() {
       super.applyEntityAttributes();
    }
-   protected boolean willChangeWeapon(){
+
+   protected boolean willChangeWeapon() {
       return true;
    }
 

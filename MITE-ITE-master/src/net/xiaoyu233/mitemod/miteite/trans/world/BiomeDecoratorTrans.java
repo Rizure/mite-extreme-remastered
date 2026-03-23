@@ -115,39 +115,44 @@ public class BiomeDecoratorTrans {
    @Shadow
    protected int waterlilyPerChunk;
    private final ReentrantLock lock = new ReentrantLock();
+
    @Overwrite
    public void decorate(World par1World, Random par2Random, int par3, int par4) {
-       lock.lock();
-       try {
-           if(this.currentWorld == null){
-               this.currentWorld = par1World;
-               this.randomGenerator = par2Random;
-               this.randomGenerator.setSeed((long)(par3 + par4 * 65536) + par1World.getSeed() * 4294967296L);
-               this.chunk_X = par3;
-               this.chunk_Z = par4;
-               this.decorate();
-               this.currentWorld = null;
-               this.randomGenerator = null;
-               lock.unlock();
-           }
-       }finally {
+//      lock.lock();
+      try {
+         if (this.currentWorld == null) {
+            this.currentWorld = par1World;
+            this.randomGenerator = par2Random;
+            this.randomGenerator.setSeed((long) (par3 + par4 * 65536) + par1World.getSeed() * 4294967296L);
+            this.chunk_X = par3;
+            this.chunk_Z = par4;
+            this.decorate();
+            this.currentWorld = null;
+            this.randomGenerator = null;
+//            lock.unlock();
+         }
+      } finally {
 //           System.out.println(par3+","+par4);
-       }
-//       if (this.currentWorld != null) {
-//           throw new RuntimeException("Already decorating!!");
-//       } else {
-//           this.currentWorld = par1World;
-//           this.randomGenerator = par2Random;
-//           this.randomGenerator.setSeed((long)(par3 + par4 * 65536) + par1World.getSeed() * 4294967296L);
-//           this.chunk_X = par3;
-//           this.chunk_Z = par4;
-//           this.decorate();
-//           this.currentWorld = null;
-//           this.randomGenerator = null;
-//       }
+      }
+//      if(!lock.isLocked()){
+//         if (this.currentWorld != null) {
+//            throw new RuntimeException("Already decorating!!");
+//         } else {
+//            this.currentWorld = par1World;
+//            this.randomGenerator = par2Random;
+//            this.randomGenerator.setSeed((long)(par3 + par4 * 65536) + par1World.getSeed() * 4294967296L);
+//            this.chunk_X = par3;
+//            this.chunk_Z = par4;
+//            this.decorate();
+//            this.currentWorld = null;
+//            this.randomGenerator = null;
+//         }
+//      }
    }
+
    @Shadow
-   protected void decorate() {}
+   protected void decorate() {
+   }
 
    public BiomeDecoratorTrans(BiomeBase par1BiomeGenBase) {
       this.sandGen = new WorldGenSand(7, Block.sand.blockID);
@@ -198,7 +203,7 @@ public class BiomeDecoratorTrans {
 //            frequency *= 4;
 //         }
 //      }
-      while(frequency-- > 0) {
+      while (frequency-- > 0) {
          if (this.randomGenerator.nextInt(10) == 0) {
             int x = this.chunk_X + this.randomGenerator.nextInt(16);
             int y = world_gen_minable.getRandomVeinHeight(this.currentWorld, this.randomGenerator);

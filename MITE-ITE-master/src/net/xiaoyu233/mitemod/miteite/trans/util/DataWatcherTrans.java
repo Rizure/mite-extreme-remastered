@@ -9,31 +9,32 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin(DataWatcher.class)
 //Fix some class cast crashing problem
 public abstract class DataWatcherTrans {
-    @Shadow
-    abstract WatchableObject getWatchedObject(int par1);
-    @Overwrite
-    public byte getWatchableObjectByte(int par1) {
-        return ((Number)this.getWatchedObject(par1).getObject()).byteValue();
-    }
+   @Shadow
+   abstract WatchableObject getWatchedObject(int par1);
 
-    @Overwrite
-    public short getWatchableObjectShort(int par1) {
-        return ((Number)this.getWatchedObject(par1).getObject()).shortValue();
-    }
+   @Overwrite
+   public byte getWatchableObjectByte(int par1) {
+      return ((Number) this.getWatchedObject(par1).getObject()).byteValue();
+   }
 
-    @Overwrite
-    public int getWatchableObjectInt(int par1) {
-        return ((Number)this.getWatchedObject(par1).getObject()).intValue();
-    }
+   @Overwrite
+   public short getWatchableObjectShort(int par1) {
+      return ((Number) this.getWatchedObject(par1).getObject()).shortValue();
+   }
 
-    @Overwrite
-    public float getWatchableObjectFloat(int par1) {
-        return ((Number)this.getWatchedObject(par1).getObject()).floatValue();
-    }
+   @Overwrite
+   public int getWatchableObjectInt(int par1) {
+      return ((Number) this.getWatchedObject(par1).getObject()).intValue();
+   }
 
-    @Overwrite
-    public String getWatchableObjectString(int par1) {
-        return this.getWatchedObject(par1).getObject().toString();
-    }
+   @Overwrite
+   public float getWatchableObjectFloat(int par1) {
+      return ((Number) this.getWatchedObject(par1).getObject()).floatValue();
+   }
+
+   @Overwrite
+   public String getWatchableObjectString(int par1) {
+      return this.getWatchedObject(par1).getObject().toString();
+   }
 
 }

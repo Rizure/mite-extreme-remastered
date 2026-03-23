@@ -14,7 +14,7 @@ public class BiomeHellTrans extends BiomeBase {
       super(par1);
    }
 
-   @Inject(method = "<init>",at = @At("RETURN"))
+   @Inject(method = "<init>", at = @At("RETURN"))
    public void injectCtor(CallbackInfo callbackInfo) {
       this.spawnableMonsterList.clear();
       this.spawnableMonsterList.add(new BiomeMeta(EntityGhast.class, 100, 1, 2));

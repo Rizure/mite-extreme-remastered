@@ -7,28 +7,28 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin({EnumGamemode.class})
 public class EnumGamemodeTrans {
-    public EnumGamemodeTrans() {
-    }
+   public EnumGamemodeTrans() {
+   }
 
-    @Redirect(
-            method = {"getByID", "a"},
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/Minecraft;inDevMode()Z"
-            )
-    )
-    private static boolean redirectInDevMode() {
-        return true;
-    }
+   @Redirect(
+           method = {"getByID", "a"},
+           at = @At(
+                   value = "INVOKE",
+                   target = "Lnet/minecraft/Minecraft;inDevMode()Z"
+           )
+   )
+   private static boolean redirectInDevMode() {
+      return true;
+   }
 
-    @Redirect(
-            method = {"e", "isCreative"},
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/Minecraft;inDevMode()Z"
-            )
-    )
-    private boolean redirectInDevModeNS() {
-        return true;
-    }
+   @Redirect(
+           method = {"e", "isCreative"},
+           at = @At(
+                   value = "INVOKE",
+                   target = "Lnet/minecraft/Minecraft;inDevMode()Z"
+           )
+   )
+   private boolean redirectInDevModeNS() {
+      return true;
+   }
 }

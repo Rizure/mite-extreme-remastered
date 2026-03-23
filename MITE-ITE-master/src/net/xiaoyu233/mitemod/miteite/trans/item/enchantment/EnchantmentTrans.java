@@ -22,17 +22,18 @@ public class EnchantmentTrans {
    @Shadow
    private int difficulty;
 
-   @Inject(method = "<clinit>",at = @At("RETURN"))
-   private static void injectClinit(CallbackInfo callbackInfo){
+   @Inject(method = "<clinit>", at = @At("RETURN"))
+   private static void injectClinit(CallbackInfo callbackInfo) {
       Enchantments.registerEnchantments();
       for (Enchantment enchantment : enchantmentsList) {
-         if (enchantment != null && !Enchantments.individualEnchantments.contains(enchantment)){
-            if (enchantment.enchantIndividually()){
+         if (enchantment != null && !Enchantments.individualEnchantments.contains(enchantment)) {
+            if (enchantment.enchantIndividually()) {
                Enchantments.individualEnchantments.add(enchantment);
             }
          }
       }
    }
+
    @Overwrite
    public int getMinEnchantmentLevelsCost(int level) {
       if (level < 1) {
@@ -53,11 +54,11 @@ public class EnchantmentTrans {
       }
    }
 
-   public float enchantIndividualChance(int enchantmentLevel){
+   public float enchantIndividualChance(int enchantmentLevel) {
       return 0;
    }
 
-   public boolean enchantIndividually(){
+   public boolean enchantIndividually() {
       return false;
    }
 

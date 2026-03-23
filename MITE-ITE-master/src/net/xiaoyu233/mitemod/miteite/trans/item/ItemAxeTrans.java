@@ -8,13 +8,13 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.SoftOverride;
 
 @Mixin(ItemAxe.class)
-public class ItemAxeTrans extends ItemToolTrans{
-    @Override
-    @SoftOverride
-    protected int getExpForBlockBreak(BlockBreakInfo blockBreakInfo) {
-        if (blockBreakInfo.block instanceof BlockLog || blockBreakInfo.block instanceof BlockLog1){
-            return 12;
-        }
-        return Math.max(super.getExpForBlockBreak(blockBreakInfo),1);
-    }
+public class ItemAxeTrans extends ItemToolTrans {
+   @Override
+   @SoftOverride
+   protected int getExpForBlockBreak(BlockBreakInfo blockBreakInfo) {
+      if (blockBreakInfo.block instanceof BlockLog || blockBreakInfo.block instanceof BlockLog1) {
+         return 12;
+      }
+      return Math.max(super.getExpForBlockBreak(blockBreakInfo), 1);
+   }
 }

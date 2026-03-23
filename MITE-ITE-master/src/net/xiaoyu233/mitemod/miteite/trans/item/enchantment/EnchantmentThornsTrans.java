@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.SoftOverride;
 
 @Mixin(EnchantmentThorns.class)
-public class EnchantmentThornsTrans extends EnchantmentTrans{
+public class EnchantmentThornsTrans extends EnchantmentTrans {
    @Shadow
    public boolean canEnchantItem(Item item) {
       return false;

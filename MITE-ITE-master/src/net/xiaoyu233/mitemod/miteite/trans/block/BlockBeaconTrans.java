@@ -11,7 +11,7 @@ public class BlockBeaconTrans extends BlockContainer {
    }
 
    public void breakBlock(World world, int x, int y, int z, int block_id, int metadata) {
-      TileEntityBeacon beacon = (TileEntityBeacon)world.getBlockTileEntity(x, y, z);
+      TileEntityBeacon beacon = (TileEntityBeacon) world.getBlockTileEntity(x, y, z);
       beacon.clearAllPlayersBoost();
       world.removeBlockTileEntity(x, y, z);
    }

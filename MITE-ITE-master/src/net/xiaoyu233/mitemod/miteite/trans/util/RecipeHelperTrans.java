@@ -7,8 +7,8 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
 @Mixin(RecipeHelper.class)
 public class RecipeHelperTrans {
-    @ModifyConstant(method = "addRecipe", constant = @Constant(intValue = 256))
-    private static int injected(int value) {
-        return 1024;
-    }
+   @ModifyConstant(method = "addRecipe", constant = @Constant(intValue = 256))
+   private static int injected(int value) {
+      return 1024;
+   }
 }

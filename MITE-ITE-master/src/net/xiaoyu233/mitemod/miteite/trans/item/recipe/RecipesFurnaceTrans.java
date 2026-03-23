@@ -23,7 +23,7 @@ public class RecipesFurnaceTrans {
       } else {
          int input_item_id = input_item_stack.itemID;
          if (heat_level == -1) {
-            return (ItemStack)this.smeltingList.get(input_item_id);
+            return (ItemStack) this.smeltingList.get(input_item_id);
          } else {
             ItemStack result_item_stack;
             if (input_item_id == Block.sand.blockID) {
@@ -36,7 +36,7 @@ public class RecipesFurnaceTrans {
 //               result_item_stack = heat_level >= 4 && input_item_stack.stackSize >= Configs.wenscConfig.mithrilBlockCountToAdamantium.ConfigValue ? new ItemStack(Item.ingotAdamantium) : null;
 //            }
             else {
-               result_item_stack = (ItemStack)this.smeltingList.get(input_item_id);
+               result_item_stack = (ItemStack) this.smeltingList.get(input_item_id);
             }
 
             return heat_level < TileEntityFurnace.getHeatLevelRequired(input_item_stack.itemID) ? null : result_item_stack;

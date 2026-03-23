@@ -25,7 +25,7 @@ public class PathfinderGoalBreedTrans {
    @Redirect(method = "spawnBaby",
            at = @At(value = "NEW",
                    target = "(Lnet/minecraft/World;DDDI)Lnet/minecraft/EntityExperienceOrb;"))
-   private EntityExperienceOrb redirectSpawnEntity(World par1World, double par2, double par4, double par6, int par8){
+   private EntityExperienceOrb redirectSpawnEntity(World par1World, double par2, double par4, double par6, int par8) {
       return new EntityExperienceOrb(this.theWorld, this.theAnimal.posX, this.theAnimal.posY, this.theAnimal.posZ, this.theAnimal.getBreedExp());
    }
 }

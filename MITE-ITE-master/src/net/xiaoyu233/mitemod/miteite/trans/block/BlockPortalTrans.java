@@ -26,11 +26,11 @@ public abstract class BlockPortalTrans extends Block {
       } else {
          Random random = new Random(seed);
 
-         for(chunk_z = 0; chunk_z < 4; ++chunk_z) {
+         for (chunk_z = 0; chunk_z < 4; ++chunk_z) {
             runegate_domain_radius = world.getRunegateDomainRadius(block_runestone == Block.runestoneAdamantium ? Material.adamantium : Material.mithril);
             x = random.nextInt(runegate_domain_radius * 2) - runegate_domain_radius;
 
-            for(z = random.nextInt(runegate_domain_radius * 2) - runegate_domain_radius; block_runestone == Block.runestoneAdamantium && WorldServer.getDistanceFromDeltas(x, z) < (double)(runegate_domain_radius / 2); z = random.nextInt(runegate_domain_radius * 2) - runegate_domain_radius) {
+            for (z = random.nextInt(runegate_domain_radius * 2) - runegate_domain_radius; block_runestone == Block.runestoneAdamantium && WorldServer.getDistanceFromDeltas(x, z) < (double) (runegate_domain_radius / 2); z = random.nextInt(runegate_domain_radius * 2) - runegate_domain_radius) {
                x = random.nextInt(runegate_domain_radius * 2) - runegate_domain_radius;
             }
 
@@ -43,8 +43,8 @@ public abstract class BlockPortalTrans extends Block {
       int chunk_x = x >> 4;
       chunk_z = z >> 4;
 
-      for(runegate_domain_radius = -1; runegate_domain_radius <= 1; ++runegate_domain_radius) {
-         for(int dz = -1; dz <= 1; ++dz) {
+      for (runegate_domain_radius = -1; runegate_domain_radius <= 1; ++runegate_domain_radius) {
+         for (int dz = -1; dz <= 1; ++dz) {
             world.getChunkProvider().provideChunk(chunk_x + runegate_domain_radius, chunk_z + dz);
          }
       }
@@ -52,7 +52,7 @@ public abstract class BlockPortalTrans extends Block {
       if (world.isTheNether()) {
          y = 0;
 
-         while(true) {
+         while (true) {
             ++y;
             if (y >= 123) {
                break;
@@ -61,14 +61,14 @@ public abstract class BlockPortalTrans extends Block {
             if (world.isAirOrPassableBlock(x, y, z, false)) {
                ++y;
                if (world.isAirOrPassableBlock(x, y, z, false) && !world.isAirOrPassableBlock(x, y - 2, z, false) && !world.isLavaBlock(x, y - 2, z) && !world.isLavaBlock(x, y - 1, z)) {
-                  return new int[]{x, y-1, z};
+                  return new int[]{x, y - 1, z};
                }
             }
          }
       } else if (world.isUnderworld()) {
          y = 254;
 
-         while(true) {
+         while (true) {
             --y;
             if (y <= 0) {
                break;
@@ -81,7 +81,7 @@ public abstract class BlockPortalTrans extends Block {
       } else {
          y = 256;
 
-         while(true) {
+         while (true) {
             --y;
             if (y <= 0) {
                break;
@@ -90,7 +90,7 @@ public abstract class BlockPortalTrans extends Block {
             if (world.isAirOrPassableBlock(x, y, z, false)) {
                --y;
                if (world.isAirOrPassableBlock(x, y, z, false)) {
-                  while(y > 0 && world.isAirOrPassableBlock(x, y - 1, z, false)) {
+                  while (y > 0 && world.isAirOrPassableBlock(x, y - 1, z, false)) {
                      --y;
                   }
 
@@ -104,7 +104,7 @@ public abstract class BlockPortalTrans extends Block {
          }
       }
 
-      if (!world.isUnderworld()){
+      if (!world.isUnderworld()) {
          if (!world.isAirOrPassableBlock(x, 64, z, true)) {
             world.setBlockToAir(x, 64, z);
          }
@@ -113,7 +113,7 @@ public abstract class BlockPortalTrans extends Block {
             world.setBlockToAir(x, 65, z);
          }
          return new int[]{x, 64, z};
-      }else {
+      } else {
          int minY = Configs.wenscConfig.underworldMantleBlockOffset.ConfigValue + 5;
          if (!world.isAirOrPassableBlock(x, 120, z, true)) {
             world.setBlockToAir(x, minY, z);
@@ -126,14 +126,15 @@ public abstract class BlockPortalTrans extends Block {
       }
    }
 
-   @Shadow public abstract BlockRunestone getRunegateType(World world, int x, int y, int z);
+   @Shadow
+   public abstract BlockRunestone getRunegateType(World world, int x, int y, int z);
 
    protected BlockPortalTrans(int par1, Material par2Material, BlockConstants constants) {
       super(par1, par2Material, constants);
    }
 
    @Shadow
-   public int getPortalTypeBasedOnLocation(World world, int x, int y, int z, boolean test_for_runegate){
+   public int getPortalTypeBasedOnLocation(World world, int x, int y, int z, boolean test_for_runegate) {
       return 0;
    }
 
@@ -162,8 +163,8 @@ public abstract class BlockPortalTrans extends Block {
 
             int var7;
             int var8;
-            for(var7 = -1; var7 <= 2; ++var7) {
-               for(var8 = -1; var8 <= 3; ++var8) {
+            for (var7 = -1; var7 <= 2; ++var7) {
+               for (var8 = -1; var8 <= 3; ++var8) {
                   boolean var9 = var7 == -1 || var7 == 2 || var8 == -1 || var8 == 3;
                   if (var7 != -1 && var7 != 2 || var8 != -1 && var8 != 3) {
                      int var10 = par1World.getBlockId(par2 + var5 * var7, par3 + var8, par4 + var6 * var7);
@@ -178,22 +179,22 @@ public abstract class BlockPortalTrans extends Block {
                }
             }
 
-            for(var7 = 0; var7 < 2; ++var7) {
-               for(var8 = 0; var8 < 3; ++var8) {
+            for (var7 = 0; var7 < 2; ++var7) {
+               for (var8 = 0; var8 < 3; ++var8) {
                   par1World.setBlock(par2 + var5 * var7, par3 + var8, par4 + var6 * var7, Block.portal.blockID, 0, 2);
                }
             }
 
             int metadata = this.getPortalTypeBasedOnLocation(par1World, par2, par3, par4, true);
 
-            for(var7 = 0; var7 < 2; ++var7) {
-               for(var8 = 0; var8 < 3; ++var8) {
-                  if(metadata == 1) {
-                     if(par1World.getDayOfOverworld() >= Configs.wenscConfig.underworldGateOpenDay.ConfigValue) {
+            for (var7 = 0; var7 < 2; ++var7) {
+               for (var8 = 0; var8 < 3; ++var8) {
+                  if (metadata == 1) {
+                     if (par1World.getDayOfOverworld() >= Configs.wenscConfig.underworldGateOpenDay.ConfigValue) {
                         par1World.setBlock(par2 + var5 * var7, par3 + var8, par4 + var6 * var7, Block.portal.blockID, metadata, 2);
                      }
-                  } else if(metadata == 2) {
-                     if(par1World.getDayOfOverworld() >= Configs.wenscConfig.netherGateOpenDay.ConfigValue) {
+                  } else if (metadata == 2) {
+                     if (par1World.getDayOfOverworld() >= Configs.wenscConfig.netherGateOpenDay.ConfigValue) {
                         par1World.setBlock(par2 + var5 * var7, par3 + var8, par4 + var6 * var7, Block.portal.blockID, metadata, 2);
                      }
                   } else {
@@ -207,14 +208,15 @@ public abstract class BlockPortalTrans extends Block {
       }
    }
 
-   @Inject(locals = LocalCapture.CAPTURE_FAILHARD,method = "onEntityCollidedWithBlock",at = @At(value = "INVOKE",shift = At.Shift.BEFORE,target = "Lnet/minecraft/BlockPortal;initiateRunegateTeleport(Lnet/minecraft/WorldServer;IIILnet/minecraft/ServerPlayer;Z)V"))
-   private void injectTeleportTips(World par1World, int par2, int par3, int par4, Entity par5Entity, CallbackInfo ci, EntityPlayer player, int metadata, boolean is_runegate, boolean is_portal_to_world_spawn){
+   @Inject(locals = LocalCapture.CAPTURE_FAILHARD, method = "onEntityCollidedWithBlock", at = @At(value = "INVOKE", shift = At.Shift.BEFORE, target = "Lnet/minecraft/BlockPortal;initiateRunegateTeleport(Lnet/minecraft/WorldServer;IIILnet/minecraft/ServerPlayer;Z)V"))
+   private void injectTeleportTips(World par1World, int par2, int par3, int par4, Entity par5Entity, CallbackInfo ci, EntityPlayer player, int metadata, boolean is_runegate, boolean is_portal_to_world_spawn) {
       if (Configs.wenscConfig.logPlayersInteractWithPortal.ConfigValue) {
-         ((WorldServer)par1World).p().getConfigurationManager().sendChatMsg(ChatMessage.createFromTranslationWithSubstitutions("gameplay.portal_door.interact", player.getEntityName()).setColor(EnumChatFormat.DARK_RED));
+         ((WorldServer) par1World).p().getConfigurationManager().sendChatMsg(ChatMessage.createFromTranslationWithSubstitutions("gameplay.portal_door.interact", player.getEntityName()).setColor(EnumChatFormat.DARK_RED));
       }
    }
 
-   @Shadow protected abstract int getRunegateSeed(World world, int x, int y, int z);
+   @Shadow
+   protected abstract int getRunegateSeed(World world, int x, int y, int z);
 
    public boolean isTouchingBottomBedrock(World world, int x, int y, int z) {
       int frame_min_y = this.getFrameMinY(world, x, y, z);

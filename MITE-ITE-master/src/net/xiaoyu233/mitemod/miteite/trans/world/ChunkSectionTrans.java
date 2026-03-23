@@ -8,10 +8,10 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(ChunkSection.class)
 public class ChunkSectionTrans {
-    @Redirect(method = {
-            "setExtBlockID",
-    }, at = @At(value = "INVOKE", target = "Lnet/minecraft/Debug;setErrorMessage(Ljava/lang/String;)V"))
-    public void deletePrintBlockIdMessage(String message) {
+   @Redirect(method = {
+           "setExtBlockID",
+   }, at = @At(value = "INVOKE", target = "Lnet/minecraft/Debug;setErrorMessage(Ljava/lang/String;)V"))
+   public void deletePrintBlockIdMessage(String message) {
 
-    }
+   }
 }

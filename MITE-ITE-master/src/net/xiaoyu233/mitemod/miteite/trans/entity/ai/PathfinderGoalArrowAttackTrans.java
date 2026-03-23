@@ -8,9 +8,11 @@ import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(PathfinderGoalArrowAttack.class)
 public class PathfinderGoalArrowAttackTrans {
-    @Shadow @Final private EntityInsentient entityHost;
+   @Shadow
+   @Final
+   private EntityInsentient entityHost;
 
-    public EntityInsentient getEntityHost() {
-        return entityHost;
-    }
+   public EntityInsentient getEntityHost() {
+      return entityHost;
+   }
 }

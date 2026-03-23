@@ -54,7 +54,7 @@ public class PacketOpenWindowTrans {
          player.displayGUIWorkbench(this.x, this.y, this.z);
          player.openContainer.windowId = this.windowId;
       } else if (this.inventoryType == 2) {
-         TileEntityFurnace var4 = (TileEntityFurnace)tile_entity;
+         TileEntityFurnace var4 = (TileEntityFurnace) tile_entity;
          if (this.useProvidedWindowTitle) {
             var4.setCustomInvName(this.windowTitle);
          }
@@ -62,7 +62,7 @@ public class PacketOpenWindowTrans {
          player.displayGUIFurnace(var4);
          player.openContainer.windowId = this.windowId;
       } else if (this.inventoryType == 3) {
-         TileEntityDispenser var7 = (TileEntityDispenser)tile_entity;
+         TileEntityDispenser var7 = (TileEntityDispenser) tile_entity;
          if (this.useProvidedWindowTitle) {
             var7.setCustomInvName(this.windowTitle);
          }
@@ -73,7 +73,7 @@ public class PacketOpenWindowTrans {
          player.displayGUIEnchantment(this.x, this.y, this.z, this.useProvidedWindowTitle ? this.windowTitle : null);
          player.openContainer.windowId = this.windowId;
       } else if (this.inventoryType == 5) {
-         TileEntityBrewingStand var5 = (TileEntityBrewingStand)tile_entity;
+         TileEntityBrewingStand var5 = (TileEntityBrewingStand) tile_entity;
          if (this.useProvidedWindowTitle) {
             var5.setCustomInvName(this.windowTitle);
          }
@@ -84,7 +84,7 @@ public class PacketOpenWindowTrans {
          player.displayGUIMerchant(new tz(player), this.useProvidedWindowTitle ? this.windowTitle : null);
          player.openContainer.windowId = this.windowId;
       } else if (this.inventoryType == 7) {
-         TileEntityBeacon var8 = (TileEntityBeacon)tile_entity;
+         TileEntityBeacon var8 = (TileEntityBeacon) tile_entity;
          player.displayGUIBeacon(var8);
          if (this.useProvidedWindowTitle) {
             var8.setCustomInvName(this.windowTitle);
@@ -98,7 +98,7 @@ public class PacketOpenWindowTrans {
       } else {
          TileEntityHopper var3;
          if (this.inventoryType == 9) {
-            var3 = (TileEntityHopper)tile_entity;
+            var3 = (TileEntityHopper) tile_entity;
             if (this.useProvidedWindowTitle) {
                var3.setCustomInvName(this.windowTitle);
             }
@@ -106,7 +106,7 @@ public class PacketOpenWindowTrans {
             player.displayGUIHopper(var3);
             player.openContainer.windowId = this.windowId;
          } else if (this.inventoryType == 10) {
-            TileEntityDropper var6 = (TileEntityDropper)tile_entity;
+            TileEntityDropper var6 = (TileEntityDropper) tile_entity;
             if (this.useProvidedWindowTitle) {
                var6.setCustomInvName(this.windowTitle);
             }
@@ -116,7 +116,7 @@ public class PacketOpenWindowTrans {
          } else if (this.inventoryType == 11) {
             Entity var9 = this.getEntityByID(player, this.field_111008_f);
             if (var9 != null && var9 instanceof EntityHorse) {
-               player.displayGUIHorse((EntityHorse)var9, new InventoryHorseChest(this.windowTitle, this.useProvidedWindowTitle, this.slotsCount));
+               player.displayGUIHorse((EntityHorse) var9, new InventoryHorseChest(this.windowTitle, this.useProvidedWindowTitle, this.slotsCount));
                player.openContainer.windowId = this.windowId;
             }
          } else if (this.inventoryType == 12) {
@@ -134,11 +134,10 @@ public class PacketOpenWindowTrans {
 //            System.out.println("this is the FT's size == " + this.slotsCount);
             player.displayGUIForgingTable(this.x, this.y, this.z, new ForgingTableSlots(new InventorySubcontainer(this.windowTitle, this.useProvidedWindowTitle, ForgingTableSlots.slotSize)));
             player.openContainer.windowId = this.windowId;
-         }  else if (this.inventoryType == 15) {
-            TileEntityGemSetting var3x = (TileEntityGemSetting)tile_entity;
+         } else if (this.inventoryType == 15) {
+            TileEntityGemSetting var3x = (TileEntityGemSetting) tile_entity;
 
-            if (this.useProvidedWindowTitle)
-            {
+            if (this.useProvidedWindowTitle) {
                var3x.setCustomInvName(this.windowTitle);
             }
 
@@ -147,7 +146,10 @@ public class PacketOpenWindowTrans {
          } else if (this.inventoryType == 16) {
             player.displayGUIShop();
             player.openContainer.windowId = this.windowId;
-         }else {
+         } else if (this.inventoryType == 17) {
+            player.displayGUIExtremeWorkbench(this.x, this.y, this.z);
+            player.openContainer.windowId = this.windowId;
+         } else {
             Minecraft.setErrorMessage("handleOpenWindow: type not handled " + this.inventoryType);
          }
       }
@@ -155,9 +157,8 @@ public class PacketOpenWindowTrans {
    }
 
    @Overwrite
-   public boolean hasCoords()
-   {
-      return this.inventoryType == 0 || this.inventoryType == 1 || this.inventoryType == 2 || this.inventoryType == 3 || this.inventoryType == 4 || this.inventoryType == 5 || this.inventoryType == 7 || this.inventoryType == 8 || this.inventoryType == 9 || this.inventoryType == 10 || this.inventoryType == 15;
+   public boolean hasCoords() {
+      return this.inventoryType == 0 || this.inventoryType == 1 || this.inventoryType == 2 || this.inventoryType == 3 || this.inventoryType == 4 || this.inventoryType == 5 || this.inventoryType == 7 || this.inventoryType == 8 || this.inventoryType == 9 || this.inventoryType == 10 || this.inventoryType == 14 || this.inventoryType == 15;
    }
 
    @Shadow

@@ -17,7 +17,7 @@ public class EntityBlazeTrans extends EntityMonster {
    protected void applyEntityAttributes() {
       super.applyEntityAttributes();
       int day = this.worldObj.getDayOfOverworld();
-      this.setEntityAttribute(GenericAttributes.attackDamage, 8 * Constant.getNormalMobModifier("Damage",day));
-      this.setEntityAttribute(GenericAttributes.maxHealth, 30 * Constant.getNormalMobModifier("Health",day));
+      this.setEntityAttribute(GenericAttributes.attackDamage, 8 * Constant.getNormalMobModifier("Damage", day));
+      this.setEntityAttribute(GenericAttributes.maxHealth, 30 * Constant.getNormalMobModifier("Health", day));
    }
 }

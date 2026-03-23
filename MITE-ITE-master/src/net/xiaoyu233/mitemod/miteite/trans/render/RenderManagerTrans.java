@@ -21,12 +21,13 @@ public class RenderManagerTrans {
    @Shadow
    private final Map<Class<? extends Entity>, bgm> q = new HashMap<>();
 
-   private RenderManagerTrans() {}
+   private RenderManagerTrans() {
+   }
 
    @Inject(
            method = "<init>",
            at = @At(value = "RETURN"))
-   private void injectRegister(CallbackInfo callback){
+   private void injectRegister(CallbackInfo callback) {
       this.q.put(EntityAncientDragon.class, new RenderAncientDragon());
       this.q.put(EntityAnnihilationSkeleton.class, new RenderAnnihilationSkeleton());
       this.q.put(EntityWanderingWitch.class, new RenderWanderingWitch());
@@ -34,7 +35,9 @@ public class RenderManagerTrans {
       this.q.put(EntityZombieBoss.class, new RenderZombieBoss());
       this.q.put(EntitySpiderKing.class, new RenderSpiderKing(1.45F));
       this.q.put(EntitySpiderQueen.class, new RenderSpiderQueen(1.45F));
-      this.q.put(EntityClusterSpider.class, new RenderClusterSpider(0.5F));
+      this.q.put(EntityClusterSpider.class, new RenderClusterSpider(0.6F));
+      this.q.put(EntityEnderSpider.class, new RenderEnderSpider(1.0F));
+      this.q.put(EntityStalkerCreeper.class, new RenderStalkerCreeper());
       this.q.put(EntityGrenade.class, new bgx(Items.grenade));
       for (bgm o : this.q.values()) {
          o.a(ReflectHelper.dyCast(bgl.class, this));

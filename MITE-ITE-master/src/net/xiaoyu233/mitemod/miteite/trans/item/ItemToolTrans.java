@@ -29,44 +29,44 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
    @Shadow
    private Material effective_material;
    @Final
-   private BiFunction<Integer,Boolean,Integer> expForLevel;
+   private BiFunction<Integer, Boolean, Integer> expForLevel;
 
-   @Inject(method = "<init>",at = @At("RETURN"))
-   private void injectInitExpForLevel(int par1, Material material,CallbackInfo callbackInfo){
-      if (material == Material.copper || material == Material.silver || material == Material.gold){
-         this.expForLevel = this.createExpForLevel(300,75,25);
-      }else if (material == Material.iron){
-         this.expForLevel = this.createExpForLevel(300,75,25);
-      }else if (material == Material.ancient_metal){
-         this.expForLevel = this.createExpForLevel(450,150,75);
+   @Inject(method = "<init>", at = @At("RETURN"))
+   private void injectInitExpForLevel(int par1, Material material, CallbackInfo callbackInfo) {
+      if (material == Material.copper || material == Material.silver || material == Material.gold) {
+         this.expForLevel = this.createExpForLevel(300, 75, 25);
+      } else if (material == Material.iron) {
+         this.expForLevel = this.createExpForLevel(300, 75, 25);
+      } else if (material == Material.ancient_metal) {
+         this.expForLevel = this.createExpForLevel(450, 150, 75);
       } else if (material == Material.mithril) {
-         this.expForLevel = this.createExpForLevel(750,250,125);
-      }else if (material == Material.adamantium){
-         this.expForLevel = this.createExpForLevel(900,300,150);
-      }else if (material == Materials.vibranium){
-         this.expForLevel = this.createExpForLevel(1200,400,200);
-      }else {
-         this.expForLevel = this.createExpForLevel(450,150,75);
+         this.expForLevel = this.createExpForLevel(750, 250, 125);
+      } else if (material == Material.adamantium) {
+         this.expForLevel = this.createExpForLevel(900, 300, 150);
+      } else if (material == Materials.vibranium) {
+         this.expForLevel = this.createExpForLevel(1200, 400, 200);
+      } else {
+         this.expForLevel = this.createExpForLevel(450, 150, 75);
       }
 //      this.expForLevel = this.createExpForLevel(1,1,0);
    }
 
-   private BiFunction<Integer, Boolean, Integer> createExpForLevel(int start, int base, int increase){
-      return (level, isWeapon) -> level == 0 ? start : base + level * increase * (isWeapon ? 2 : 1 );
+   private BiFunction<Integer, Boolean, Integer> createExpForLevel(int start, int base, int increase) {
+      return (level, isWeapon) -> level == 0 ? start : base + level * increase * (isWeapon ? 2 : 1);
    }
 
    public void addInformation(ItemStack item_stack, EntityPlayer player, List info, boolean extended_info, Slot slot) {
       super.addInformation(item_stack, player, info, extended_info, slot);
       if (item_stack.hasTagCompound()) {
-         if (item_stack.getTagCompound().hasKey("tool_level")) {
-            int tool_level = item_stack.getTagCompound().getInteger("tool_level");
+         if (item_stack.getTagCompound().hasKey("using_level")) {
+            int tool_level = item_stack.getTagCompound().getInteger("using_level");
             int maxToolLevel = this.getMaxToolLevel(item_stack);
             if (this.isMaxToolLevel(item_stack)) {
                info.add("工具等级:§6已达到最高级" + maxToolLevel);
             } else {
                info.add("工具等级:" + tool_level + "/" + maxToolLevel);
-               if (item_stack.getTagCompound().hasKey("tool_exp")) {
-                  info.add("工具经验" + EnumChatFormat.WHITE + item_stack.getTagCompound().getInteger("tool_exp") + "/" + this.getExpReqForLevel(tool_level, this.isWeapon(item_stack.getItem())));
+               if (item_stack.getTagCompound().hasKey("using_exp")) {
+                  info.add("工具经验" + EnumChatFormat.WHITE + item_stack.getTagCompound().getInteger("using_exp") + "/" + this.getExpReqForLevel(tool_level, this.isWeapon(item_stack.getItem())));
                }
             }
          }
@@ -76,9 +76,9 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
             info.add("§5强化等级:§6" + StringUtil.intToRoman(forgingGrade));
             if (extended_info) {
                info.add("  §7装备经验增加:§a" + this.getEquipmentExpBounce(item_stack) * 100 + "%");
-               if (this.isWeapon(item_stack.getItem())){
+               if (this.isWeapon(item_stack.getItem())) {
                   info.add("  §9攻击力增加:§6" + ItemStack.field_111284_a.format(this.getEnhancedDamage(item_stack)));
-               }else {
+               } else {
                   info.add("  §9挖掘速度加:§6" + ItemStack.field_111284_a.format(item_stack.getEnhanceFactor() * 100) + "%");
                }
             }
@@ -86,8 +86,21 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
 
          if (extended_info) {
             info.add("§5宝石:");
-            info.add(" §3攻击增加:§6" + ItemStack.field_111284_a.format(item_stack.getGemMaxNumeric(GemModifierTypes.damage)));
-            info.add(" §3效率增加:§6" + ItemStack.field_111284_a.format(item_stack.getGemMaxNumeric(GemModifierTypes.haste)));
+            if (item_stack.getGemMaxLevel(GemModifierTypes.damage) != 0) {
+               info.add(" §3攻击增加:§6" + ItemStack.field_111284_a.format(item_stack.getGemMaxNumeric(GemModifierTypes.damage)));
+            }
+            if (item_stack.getGemMaxLevel(GemModifierTypes.haste) != 0) {
+               info.add(" §3效率增加:§6" + ItemStack.field_111284_a.format(item_stack.getGemMaxNumeric(GemModifierTypes.haste)));
+            }
+            if (item_stack.getGemMaxLevel(GemModifierTypes.goldize) != 0) {
+               info.add(" §3点金倍率:§6" + ItemStack.field_111284_a.format(item_stack.getGemMaxNumeric(GemModifierTypes.goldize)));
+            }
+            if (item_stack.getGemMaxLevel(GemModifierTypes.predation) != 0) {
+               info.add(" §3倾轧倍率:§6" + ItemStack.field_111284_a.format(item_stack.getGemMaxNumeric(GemModifierTypes.predation)));
+            }
+            if (item_stack.getGemMaxLevel(GemModifierTypes.execute) != 0) {
+               info.add(" §3裁决最高增伤:§6" + ItemStack.field_111284_a.format(item_stack.getGemMaxNumeric(GemModifierTypes.execute) * 100) + "%");
+            }
             NBTTagCompound compound = item_stack.stackTagCompound.getCompoundTag("modifiers");
             if (!compound.hasNoTags()) {
                info.add("工具强化:");
@@ -104,7 +117,7 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
 
    private int applyCalculateDurabilityModifier(int origin, ItemStack stack) {
       NBTTagCompound compound = stack.getTagCompound();
-      return (int)((float)origin * Math.max(0.0F, 1.0F - ToolModifierTypes.DURABILITY_MODIFIER.getModifierValue(compound)));
+      return (int) ((float) origin * Math.max(0.0F, 1.0F - ToolModifierTypes.DURABILITY_MODIFIER.getModifierValue(compound)));
    }
 
    @Overwrite
@@ -118,7 +131,7 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
 
    public Multimap<String, AttributeModifier> getAttrModifiers(ItemStack stack) {
       Multimap<String, AttributeModifier> var1 = super.getAttrModifiers(stack);
-      var1.put(GenericAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(Item.field_111210_e, "Tool modifier", (double)this.damageVsEntity + (double)this.getAttackDamageBounce(stack) + this.getEnhancedDamage(stack), 0));
+      var1.put(GenericAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(Item.field_111210_e, "Tool modifier", (double) this.damageVsEntity + (double) this.getAttackDamageBounce(stack) + this.getEnhancedDamage(stack), 0));
       return var1;
    }
 
@@ -144,6 +157,7 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
 //      return EnchantmentManager.hasEnchantment(par1ItemStack, Enchantments.DEFENCED) ? EnumItemInUseAction.BLOCK : null;
       return player.canDefense() ? EnumItemInUseAction.BLOCK : null;
    }
+
    @Overwrite
    public float getMaterialHarvestEfficiency() {
       if (this.effective_material == Material.wood) {
@@ -171,6 +185,8 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
       } else if (this.effective_material == Material.ancient_metal) {
          return 2.0F;
       } else if (this.effective_material == Materials.vibranium) {
+         return 3.5F;
+      } else if (this.effective_material == Materials.mitega) {
          return 3.5F;
       } else {
          Minecraft.setErrorMessage("getMaterialHarvestEfficiency: tool material not handled");
@@ -204,14 +220,14 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
       if (unnaturalModifierValue > 0.0F) {
          int deltaLevel = itemStack.getItem().getMaterialForRepairs().getMinHarvestLevel() - block.blockMaterial.getMinHarvestLevel();
          if (deltaLevel > 0) {
-            commonModifierValue += (float)deltaLevel * unnaturalModifierValue;
+            commonModifierValue += (float) deltaLevel * unnaturalModifierValue;
          }
       }
       commonModifierValue += gemModifierValue;
 
       float enhanceModifierValue = (float) (1 + itemStack.getEnhanceFactor());
       float result = this.getBaseHarvestEfficiency(block) * (this.getMaterialHarvestEfficiency() + commonModifierValue) * enhanceModifierValue;
-      if(player.isInWater() || player.isInRain()){
+      if (player.isInWater() || player.isInRain()) {
          result *= 1 + ToolModifierTypes.AQUADYNAMIC_MODIFIER.getModifierValue(itemStack.getTagCompound());
       }
       return result;
@@ -223,7 +239,7 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
 
    @Overwrite
    public final int getToolDecayFromAttackingEntity(ItemStack item_stack, EntityLiving entity_living_base) {
-      return this.applyCalculateDurabilityModifier(Math.max((int)(100.0F * ReflectHelper.dyCast(ItemTool.class, this).getBaseDecayRateForAttackingEntity(item_stack)), 1), item_stack);
+      return this.applyCalculateDurabilityModifier(Math.max((int) (100.0F * ReflectHelper.dyCast(ItemTool.class, this).getBaseDecayRateForAttackingEntity(item_stack)), 1), item_stack);
    }
 
    @Shadow
@@ -240,7 +256,7 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
          Minecraft.setErrorMessage("ItemTool.hitEntity: called on client?");
       }
 
-      if (par3EntityLivingBase instanceof EntityPlayer && ((EntityPlayer)par3EntityLivingBase).inCreativeMode()) {
+      if (par3EntityLivingBase instanceof EntityPlayer && ((EntityPlayer) par3EntityLivingBase).inCreativeMode()) {
          return false;
       } else {
          par1ItemStack.tryDamageItem(DamageSource.generic, this.getToolDecayFromAttackingEntity(par1ItemStack, par2EntityLivingBase), par3EntityLivingBase);
@@ -257,7 +273,7 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
       return this.getMaxToolLevel(itemStack) <= this.getToolLevel(itemStack);
    }
 
-   public int getMaxToolLevel(ItemStack itemStack){
+   public int getMaxToolLevel(ItemStack itemStack) {
       return 6 + itemStack.getMaterialForRepairs().getMinHarvestLevel() * 2 + itemStack.getForgingGrade();
    }
 
@@ -273,37 +289,14 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
 
       Block block = info.block;
       ItemStack item_stack = info.getHarvesterItemStack();
-      float expReward;
-      if (!(block instanceof BlockOre && info.getMetadata() == 1) && block != Block.oreDiamond && block != Block.oreCoal && block != Block.oreEmerald && block != Block.oreRedstone && block != Block.oreLapis && block != Block.oreNetherQuartz){
-         expReward = ToolModifierTypes.GEOLOGY.getModifierValue(info.getHarvesterItemStack().getTagCompound());
-         if (expReward != 0){
-            ItemStack dropItemStack = new ItemStack(info.block);
-            ItemStack smeltingResult = RecipesFurnace.smelting().getSmeltingResult(dropItemStack, 5);
-            if (smeltingResult != null){
-               info.world.spawnEntityInWorld(new EntityExperienceOrb(info.world, info.drop_x, info.drop_y + 0.5D, info.drop_z, (int) (smeltingResult.getExperienceReward() * expReward)));
-            }
-         }
-      }
       if(item_stack != null){
-          expReward = ToolModifierTypes.STEADY.getModifierValue(item_stack.getTagCompound()) * block.getBlockHardness(0);
-          int expReward_int = (int) (Math.min(expReward, 5.0F));
-          for (int var1 = 0; var1 < expReward_int; var1++){
-              info.world.spawnEntityInWorld(new EntityExperienceOrb(info.world, info.drop_x, info.drop_y + 0.5D, info.drop_z, 1));
-          }
-          if(itemRand.nextFloat() < expReward - expReward_int){
-              info.world.spawnEntityInWorld(new EntityExperienceOrb(info.world, info.drop_x, info.drop_y + 0.5D, info.drop_z, 1));
-          }
-      }
-
-      if(itemRand.nextFloat() < 2.0F * ToolModifierTypes.BLESS_OF_NATURE.getModifierValue(info.getHarvesterItemStack().getTagCompound())){
-         info.getResponsiblePlayer().getFoodStats().addSatiation(1);
-         info.getResponsiblePlayer().getFoodStats().addNutrition(2);
-         if(itemRand.nextFloat() < 2.0F * ToolModifierTypes.BLESS_OF_NATURE.getModifierValue(info.getHarvesterItemStack().getTagCompound())){
-            info.getResponsiblePlayer().heal(1);
-         }
+         this.performGeologyEffect(info,item_stack);
+         this.performGoldizeEffect(info,item_stack);
+         this.performSteadyEffect(info,item_stack);
+         this.performBlessedOfNatureEffect(info,item_stack);
       }
       if (item_stack.isItemStackDamageable() && !block.isPortable(info.world, info.getHarvester(), info.x, info.y, info.z) && !info.isResponsiblePlayerInCreativeMode() && info.getBlockHardness() > 0.0F && this.getStrVsBlock(block, info.getMetadata()) > 1.0F) {
-         if (!(item_stack.getItem() instanceof ItemSword) && this.isEffectiveAgainstBlock(info.block, info.getMetadata()) &&!item_stack.getItem().isMaxToolLevel(item_stack)) {
+         if (!(item_stack.getItem() instanceof ItemSword) && this.isEffectiveAgainstBlock(info.block, info.getMetadata()) && !item_stack.getItem().isMaxToolLevel(item_stack)) {
             this.addExpForTool(info.getHarvesterItemStack(), info.getResponsiblePlayer(), this.getExpForBlockBreak(info));
          }
 
@@ -314,8 +307,8 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
       }
    }
 
-   protected int getExpForBlockBreak(BlockBreakInfo blockBreakInfo){
-      return (int) (blockBreakInfo.block.getBlockHardness(0) * Math.pow(blockBreakInfo.block.getMinHarvestLevel(0),2));
+   protected int getExpForBlockBreak(BlockBreakInfo blockBreakInfo) {
+      return (int) (blockBreakInfo.block.getBlockHardness(0) * Math.pow(blockBreakInfo.block.getMinHarvestLevel(0), 2));
    }
 
    @Override
@@ -335,16 +328,23 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
       //确认副属性条目数上限
       int modifierTypesCap = Math.min(all_modifiers.size(), 4 + (stack.getForgingGrade() / 5));
       //首次升级（目前没问题）
-      if(tagCompound.getInteger("tool_level") == 1){
+      if (tagCompound.getInteger("using_level") == 1) {
+         //录入拥有的副属性
+         for (int n = 0; n < all_modifiers.size(); n++) {
+            if (modifiers.hasKey(all_modifiers.get(n).nbtName)) {
+               obtained_modifiers.add(all_modifiers.get(n));
+            }
+         }
+         modifierTypesCap -= obtained_modifiers.size();
          int i = itemRand.nextInt(3) == 0 ? 0 : 1;
-         while (i < modifierTypesCap){
-            modifierType = ModifierUtils.getModifierWithWeight(available_modifiers,player.getRNG());
+         while (i < modifierTypesCap) {
+            modifierType = ModifierUtils.getModifierWithWeight(available_modifiers, player.getRNG());
             if (modifierType != null) {
                if (!modifiers.hasKey(modifierType.nbtName) && modifierType.canApplyTo(stack)) {
                   this.addModifierLevelFor(modifiers, modifierType);
                   player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "获得了" + modifierType.color.toString() + modifierType.displayName + "§r属性"));
                   i++;
-               }else {
+               } else {
                   available_modifiers.remove(modifierType);
                }
             } else {
@@ -356,55 +356,55 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
       //之后的升级（仍然有问题）
       else {
          int upgradeCount = itemRand.nextInt(5) == 0 ? 2 : 1;
-         while (upgradeCount > 0){
+         while (upgradeCount > 0) {
             //初始化
             available_modifiers = ModifierUtils.getAllCanBeAppliedToolModifiers(stack);
             obtained_modifiers.clear();
-            
-            
+
+
             //录入拥有的副属性
             for (int n = 0; n < all_modifiers.size(); n++) {
-               if(modifiers.hasKey(all_modifiers.get(n).nbtName)){
+               if (modifiers.hasKey(all_modifiers.get(n).nbtName)) {
                   obtained_modifiers.add(all_modifiers.get(n));
                }
             }
-            System.out.println("检查：已有属性obtained_modifiers:" + obtained_modifiers);
-            
-            
+//            System.out.println("检查：已有属性obtained_modifiers:" + obtained_modifiers);
+
+
             //词条数目不够直接附加新属性
-            if(obtained_modifiers.size() < modifierTypesCap){
+            if (obtained_modifiers.size() < modifierTypesCap) {
                for (int n = 0; n < obtained_modifiers.size(); n++) {
                   //保证取一个新属性
-                  if(available_modifiers.contains(obtained_modifiers.get(n))){
+                  if (available_modifiers.contains(obtained_modifiers.get(n))) {
                      available_modifiers.remove(obtained_modifiers.get(n));
                      n = 0;
                   }
                }
-               System.out.println("检查：保证全新的属性available_modifiers:" + available_modifiers);
-               modifierType = ModifierUtils.getModifierWithWeight(available_modifiers,player.getRNG());
+//               System.out.println("检查：保证全新的属性available_modifiers:" + available_modifiers);
+               modifierType = ModifierUtils.getModifierWithWeight(available_modifiers, player.getRNG());
                this.addModifierLevelFor(modifiers, modifierType);
                player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "获得了" + modifierType.color.toString() + modifierType.displayName + "§r属性"));
                return;
             }
-            
+
             //其他情况
             for (int n = 0; n < obtained_modifiers.size(); n++) {
                //删除已有的不兼容/已满级的副属性
-               if(!(available_modifiers.contains(obtained_modifiers.get(n)))){
+               if (!(available_modifiers.contains(obtained_modifiers.get(n)))) {
                   obtained_modifiers.remove(obtained_modifiers.get(n));
                   n = 0;
                }
             }
-            System.out.println("检查：可升级属性obtained_modifiers:" + obtained_modifiers);
+//            System.out.println("检查：可升级属性obtained_modifiers:" + obtained_modifiers);
             //升级已有的
-            if(!obtained_modifiers.isEmpty()){
+            if (!obtained_modifiers.isEmpty()) {
                int n = itemRand.nextInt(obtained_modifiers.size());
-               if(Configs.wenscConfig.allowInfLeveling.ConfigValue || (obtained_modifiers.get(n).getMaxLevel() > modifiers.getInteger(obtained_modifiers.get(n).getNbtName()))){
+               if (Configs.wenscConfig.allowInfLeveling.ConfigValue || (obtained_modifiers.get(n).getMaxLevel() > modifiers.getInteger(obtained_modifiers.get(n).getNbtName()))) {
                   player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "的" + obtained_modifiers.get(n).color.toString() + obtained_modifiers.get(n).displayName + "§r属性已升级到" +
                           this.addModifierLevelFor(modifiers, obtained_modifiers.get(n))
                           + "级"));
                }
-            }else {
+            } else {
                Minecraft.setErrorMessage("onItemLevelUp: No matching modifier to upgrade/apply.");
             }
             upgradeCount--;
@@ -418,13 +418,35 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
          player.setHeldItemInUse();
          return true;
       }
+      if (ctrl_is_down) {
+         if (player.getSkillCooldown() == 0) {
+            if (player.getHeldItemStack().getItem() instanceof ItemTool) {
+               if (player.getHeldItemStack().getGemMaxLevel(GemModifierTypes.medication) != 0) {
+                  if (player.getTicksExistedWithOffset() % 3 == 0) {
+                     EntityPotion potion = new EntityPotion(player.worldObj, player, 16453);
+                     potion.setPosition(player.posX + (player.getRNG().nextFloat() * 2.0F) - 1.0F, player.posY - 1, player.posZ + (player.getRNG().nextFloat() * 2.0F) - 1.0F);
+                     player.worldObj.spawnEntityInWorld(potion);
+                     if (player.getRNG().nextFloat() > player.getHeldItemStack().getGemMaxNumeric(GemModifierTypes.medication)) {
+                        player.setSkillCooldown(1500);
+                     }
+                  }
+               }
+               if (player.getHeldItemStack().getGemMaxLevel(GemModifierTypes.teleport) != 0) {
+                  player.setSkillCooldown((int) (3000.0F * (1.0F - player.getHeldItemStack().getGemMaxNumeric(GemModifierTypes.teleport))));
+                  player.worldObj.spawnEntityInWorld(new EntityEnderPearl(player.worldObj, player));
+               }
+            }
+         } else {
+            player.sendChatToPlayer(ChatMessage.createFromTranslationKey("[宝石] ").setColor(EnumChatFormat.BLUE).appendComponent(ChatMessage.createFromTranslationKey("特殊能力冷却时间剩余" + (player.getSkillCooldown() / 20) + "秒.").setColor(EnumChatFormat.YELLOW)));
+         }
+      }
       return false;
    }
 
    @Override
    public void onItemUseFinish(ItemStack item_stack, World world, EntityPlayer player) {
 //      super.onItemUseFinish(item_stack, world, player);
-      if (player.onServer()){
+      if (player.onServer()) {
          player.setDefenseCooldown(Configs.wenscConfig.playerDefenseCooldown.ConfigValue);
       }
    }
@@ -432,8 +454,93 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
    @Override
    public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4) {
       super.onPlayerStoppedUsing(par1ItemStack, par2World, par3EntityPlayer, par4);
-      if (par3EntityPlayer.onServer()){
+      if (par3EntityPlayer.onServer()) {
          par3EntityPlayer.setDefenseCooldown(Configs.wenscConfig.playerDefenseCooldown.ConfigValue);
+      }
+   }
+
+   private void performGeologyEffect(BlockBreakInfo info, ItemStack item_stack){
+      Block block = info.block;
+      float expReward = 0;
+      if (block instanceof BlockOre && info.getMetadata() != 1) {
+         expReward = ToolModifierTypes.GEOLOGY.getModifierValue(item_stack.getTagCompound());
+         if (expReward != 0) {
+            ItemStack dropItemStack = new ItemStack(info.block);
+            ItemStack smeltingResult = RecipesFurnace.smelting().getSmeltingResult(dropItemStack, 5);
+            if (smeltingResult != null) {
+               int expectedExperience = smeltingResult.getExperienceReward();
+               if(expectedExperience != 0){
+                  info.world.spawnEntityInWorld(new EntityExperienceOrb(info.world, info.drop_x, info.drop_y + 0.5D, info.drop_z, (int) (smeltingResult.getExperienceReward() * expReward)));
+               }
+            }
+         }
+      }
+   }
+
+   private void performSteadyEffect(BlockBreakInfo info, ItemStack item_stack){
+      Block block = info.block;
+      float expReward = 0;
+      expReward = ToolModifierTypes.STEADY.getModifierValue(item_stack.getTagCompound()) * block.getBlockHardness(0);
+      if (!block.isPortable(null, null, 0, 0, 0)) {
+         int expReward_int = (int) (Math.min(expReward, 4.0F));
+         for (int var1 = 0; var1 < expReward_int; var1++) {
+            info.world.spawnEntityInWorld(new EntityExperienceOrb(info.world, info.drop_x, info.drop_y + 0.5D, info.drop_z, 1));
+         }
+         if (itemRand.nextFloat() < expReward - expReward_int) {
+            info.world.spawnEntityInWorld(new EntityExperienceOrb(info.world, info.drop_x, info.drop_y + 0.5D, info.drop_z, 1));
+         }
+      }
+   }
+
+   private void performGoldizeEffect(BlockBreakInfo info, ItemStack item_stack){
+      Block block = info.block;
+      if (info.getResponsiblePlayer() instanceof EntityPlayer) {
+         float goldChance = info.getHarvesterItemStack().getGemMaxNumeric(GemModifierTypes.goldize) * block.getBlockHardness(0);
+         if (!block.isPortable(null, null, 0, 0, 0)) {
+            int goldCount = (int) (Math.min(goldChance, 2.0F));
+            for (int var1 = 0; var1 < goldCount; var1++) {
+               info.world.spawnEntityInWorld(new EntityItem(info.world, info.x, info.y, info.z, new ItemStack(Item.goldNugget, 1)));
+            }
+            if (itemRand.nextFloat() < goldChance - goldCount) {
+               info.world.spawnEntityInWorld(new EntityItem(info.world, info.x, info.y, info.z, new ItemStack(Item.goldNugget, 1)));
+            }
+         }
+      }
+   }
+
+   private void performBlessedOfNatureEffect(BlockBreakInfo info, ItemStack item_stack){
+      Block block = info.block;
+      float modifierBoostByHardness = block.getBlockHardness(0);
+      if(modifierBoostByHardness < 1.0F){
+         modifierBoostByHardness = 1.0F;
+      }
+      float baseModifierValue = ToolModifierTypes.BLESS_OF_NATURE.getModifierValue(info.getHarvesterItemStack().getTagCompound());
+      if (itemRand.nextFloat() < modifierBoostByHardness * baseModifierValue) {
+         info.getResponsiblePlayer().getFoodStats().addSatiation(2);
+         info.getResponsiblePlayer().getFoodStats().addNutrition(1);
+         if(info.getResponsiblePlayer().onServer()){
+            info.getResponsiblePlayer().getAsEntityPlayerMP().addProtein(1600);
+            info.getResponsiblePlayer().getAsEntityPlayerMP().addPhytonutrients(1600);
+         }
+         if (itemRand.nextFloat() < modifierBoostByHardness * baseModifierValue) {
+            info.getResponsiblePlayer().heal(1);
+         }
+         if(info.block instanceof BlockCrops && ((BlockCrops) info.block).isMature(info.getMetadata())){
+            for(int dx = -2; dx <= 2; dx++){
+               for(int dz = -2; dz <= 2; dz++){
+                  Block anotherCrops = info.world.getBlock(info.x + dx, info.y, info.z + dz);
+                  int metadata = info.world.getBlockMetadata(info.x + dx, info.y, info.z + dz);
+                  if(anotherCrops instanceof BlockCrops && itemRand.nextFloat() < baseModifierValue && dx * dz == 0){
+                     info.world.setBlockMetadata(info.x + dx, info.y, info.z + dz, ((BlockCrops)anotherCrops).incrementGrowth(metadata), 2);
+                     info.world.playAuxSFX(2005,info.x + dx, info.y, info.z + dz, 0);
+                  }
+                  if(anotherCrops instanceof BlockCrops && ((BlockCrops) anotherCrops).isBlighted(metadata) && itemRand.nextFloat() < baseModifierValue * 2){
+                     info.world.setBlockMetadata(info.x + dx, info.y, info.z + dz, ((BlockCrops)anotherCrops).setBlighted(metadata, false), 2);
+                     info.world.playAuxSFX(2005,info.x + dx, info.y, info.z + dz, 0);
+                  }
+               }
+            }
+         }
       }
    }
 }

@@ -7,10 +7,10 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
 @Mixin(BlockReed.class)
 public class BlockReedTrans {
-    @ModifyConstant(method = {
-            "updateTick"
-    }, constant = @Constant(intValue = 16))
-    private static int ModifyThunderFrequencyInNormal(int value) {
-        return 5;
-    }
+   @ModifyConstant(method = {
+           "updateTick"
+   }, constant = @Constant(intValue = 16))
+   private static int ModifyThunderFrequencyInNormal(int value) {
+      return 5;
+   }
 }

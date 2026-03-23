@@ -24,9 +24,9 @@ public class ContainerMerchantTrans extends Container {
 
    @Inject(method = "onContainerClosed",
            at = @At(ordinal = 0,
-                   shift = At.Shift.AFTER,value = "INVOKE_ASSIGN",
+                   shift = At.Shift.AFTER, value = "INVOKE_ASSIGN",
                    target = "Lnet/minecraft/InventoryMerchant;getStackInSlotOnClosing(I)Lnet/minecraft/ItemStack;"))
-   private void injectSyncWhenClose(EntityPlayer par1EntityPlayer,CallbackInfo callback) {
+   private void injectSyncWhenClose(EntityPlayer par1EntityPlayer, CallbackInfo callback) {
       this.updatePlayerInventory(par1EntityPlayer);
    }
 
@@ -35,15 +35,15 @@ public class ContainerMerchantTrans extends Container {
    private void injectSyncWhenTransferItems(EntityPlayer par1EntityPlayer, int par2, CallbackInfoReturnable<ItemStack> c) {
       if (!this.player.worldObj.isRemote) {
          this.updatePlayerInventory(this.player);
-         ((ServerPlayer)this.player).updateCraftingInventory(this, this.getInventory());
+         ((ServerPlayer) this.player).updateCraftingInventory(this, this.getInventory());
       }
    }
 
    private void updatePlayerInventory(EntityPlayer player) {
       ArrayList<ItemStack> itemList = new ArrayList();
 
-      for(int index = 0; index < player.openContainer.inventorySlots.size(); ++index) {
-         itemList.add(((Slot)player.openContainer.inventorySlots.get(index)).getStack());
+      for (int index = 0; index < player.openContainer.inventorySlots.size(); ++index) {
+         itemList.add(((Slot) player.openContainer.inventorySlots.get(index)).getStack());
       }
 
       ((ServerPlayer) player).updateCraftingInventory(player.openContainer, itemList);

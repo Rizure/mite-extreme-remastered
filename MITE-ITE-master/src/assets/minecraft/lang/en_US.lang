@@ -16,11 +16,24 @@ item.vibranium_war_hammer.name=振金战锤
 item.vibranium_battle_axe.name=振金战斧
 item.vibranium_bow.name=振金弓
 
+item.ga.name=地精锭
+item.ga_nugget.name=地精粒
+item.ga_fan.name=地精扇
+
 item.enhance_stone/iron.name=抛光石
 item.enhance_stone/mithril.name=精锻石
 item.enhance_stone/adamantium.name=淬炼石
 item.enhance_stone/vibranium.name=回火石
 item.enhance_stone/universal.name=精粹录
+
+item.forging_template/copper.name=铜锻造模板
+item.forging_template/silver.name=银锻造模板
+item.forging_template/gold.name=金锻造模板
+item.forging_template/iron.name=铁锻造模板
+item.forging_template/ancient_metal.name=古金属锻造模板
+item.forging_template/mithril.name=秘银锻造模板
+item.forging_template/adamantium.name=艾德曼锻造模板
+item.forging_template/vibranium.name=振金锻造模板
 
 item.iron_club.name=铁棒
 item.ancient_metal_club.name=远古金属棒
@@ -69,6 +82,10 @@ tile.vibranium_chest.name=振金箱子
 
 
 tile.headstone.name=墓碑
+tile.enhance_stone_iron_block.name=抛光石块
+tile.enhance_stone_mithril_block.name=精锻石块
+
+tile.toolbench.ga.name=地精工作台
 
 achievement.vibraniumIngot=那我岂不是要无敌了?
 achievement.vibraniumIngot.desc=制作出一个振金锭
@@ -151,7 +168,16 @@ entity.EntityDragger.name=拖曳骷髅
 entity.EntityOreElemental.name=矿物元素
 entity.EntityZombieExploder.name=僵尸粉碎者
 entity.EntityHostileSkeletonHorse.name=骷髅马
+entity.EntityZombiePigmanLord.name=猪人领主
+entity.EntityStalkerCreeper.name=潜伏爬行者
+entity.EntityEnderSpider.name=终结蜘蛛
 
+gui.forgingTable.mode=切换模式
+gui.forgingTable.modeInfo=当前模式
+gui.forgingTable.modeUpgrading=升级模式
+gui.forgingTable.modeDefusing=拆解模式
+gui.forgingTable.modeApplying=封装模式
+gui.forgingTable.modeForging=锻造模式
 gui.forgingTable.start=开始锻造
 gui.forgingTable.item_req=锻造需要
 gui.forgingTable.failed=强化失败!
@@ -237,40 +263,81 @@ item.fancy_red.name=红钻
 item.shardFancyRed.name=红钻碎片
 
 item.enhance_gem_phase1.damage.name=三角攻击宝石
-item.enhance_gem_phase1.protection.name=三角保护宝石
-item.enhance_gem_phase1.health.name=三角生命宝石
-item.enhance_gem_phase1.recover.name=三角恢复宝石
-item.enhance_gem_phase1.haste.name=三角急迫宝石
-
 item.enhance_gem_phase2.damage.name=四角攻击宝石
-item.enhance_gem_phase2.protection.name=四角保护宝石
-item.enhance_gem_phase2.health.name=四角生命宝石
-item.enhance_gem_phase2.recover.name=四角恢复宝石
-item.enhance_gem_phase2.haste.name=四角急迫宝石
-
 item.enhance_gem_phase3.damage.name=五角攻击宝石
-item.enhance_gem_phase3.protection.name=五角保护宝石
-item.enhance_gem_phase3.health.name=五角生命宝石
-item.enhance_gem_phase3.recover.name=五角恢复宝石
-item.enhance_gem_phase3.haste.name=五角急迫宝石
-
 item.enhance_gem_phase4.damage.name=六角攻击宝石
-item.enhance_gem_phase4.protection.name=六角保护宝石
-item.enhance_gem_phase4.health.name=六角生命宝石
-item.enhance_gem_phase4.recover.name=六角恢复宝石
-item.enhance_gem_phase4.haste.name=六角急迫宝石
-
 item.enhance_gem_phase5.damage.name=七角攻击宝石
-item.enhance_gem_phase5.protection.name=七角保护宝石
-item.enhance_gem_phase5.health.name=七角生命宝石
-item.enhance_gem_phase5.recover.name=七角恢复宝石
-item.enhance_gem_phase5.haste.name=七角急迫宝石
-
 item.enhance_gem_phase6.damage.name=八角攻击宝石
-item.enhance_gem_phase6.protection.name=八角保护宝石
+
+item.enhance_gem_phase1.health.name=三角生命宝石
+item.enhance_gem_phase2.health.name=四角生命宝石
+item.enhance_gem_phase3.health.name=五角生命宝石
+item.enhance_gem_phase4.health.name=六角生命宝石
+item.enhance_gem_phase5.health.name=七角生命宝石
 item.enhance_gem_phase6.health.name=八角生命宝石
+
+item.enhance_gem_phase1.recover.name=三角恢复宝石
+item.enhance_gem_phase2.recover.name=四角恢复宝石
+item.enhance_gem_phase3.recover.name=五角恢复宝石
+item.enhance_gem_phase4.recover.name=六角恢复宝石
+item.enhance_gem_phase5.recover.name=七角恢复宝石
 item.enhance_gem_phase6.recover.name=八角恢复宝石
+
+item.enhance_gem_phase1.protection.name=三角保护宝石
+item.enhance_gem_phase2.protection.name=四角保护宝石
+item.enhance_gem_phase3.protection.name=五角保护宝石
+item.enhance_gem_phase4.protection.name=六角保护宝石
+item.enhance_gem_phase5.protection.name=七角保护宝石
+item.enhance_gem_phase6.protection.name=八角保护宝石
+
+item.enhance_gem_phase1.haste.name=三角急迫宝石
+item.enhance_gem_phase2.haste.name=四角急迫宝石
+item.enhance_gem_phase3.haste.name=五角急迫宝石
+item.enhance_gem_phase4.haste.name=六角急迫宝石
+item.enhance_gem_phase5.haste.name=七角急迫宝石
 item.enhance_gem_phase6.haste.name=八角急迫宝石
+
+item.enhance_gem_phase1.polish.name=三角积淀宝石
+item.enhance_gem_phase2.polish.name=四角积淀宝石
+item.enhance_gem_phase3.polish.name=五角积淀宝石
+item.enhance_gem_phase4.polish.name=六角积淀宝石
+item.enhance_gem_phase5.polish.name=七角积淀宝石
+item.enhance_gem_phase6.polish.name=八角积淀宝石
+
+item.enhance_gem_phase1.execute.name=三角裁决宝石
+item.enhance_gem_phase2.execute.name=四角裁决宝石
+item.enhance_gem_phase3.execute.name=五角裁决宝石
+item.enhance_gem_phase4.execute.name=六角裁决宝石
+item.enhance_gem_phase5.execute.name=七角裁决宝石
+item.enhance_gem_phase6.execute.name=八角裁决宝石
+
+item.enhance_gem_phase1.predation.name=三角倾轧宝石
+item.enhance_gem_phase2.predation.name=四角倾轧宝石
+item.enhance_gem_phase3.predation.name=五角倾轧宝石
+item.enhance_gem_phase4.predation.name=六角倾轧宝石
+item.enhance_gem_phase5.predation.name=七角倾轧宝石
+item.enhance_gem_phase6.predation.name=八角倾轧宝石
+
+item.enhance_gem_phase1.goldize.name=三角点金宝石
+item.enhance_gem_phase2.goldize.name=四角点金宝石
+item.enhance_gem_phase3.goldize.name=五角点金宝石
+item.enhance_gem_phase4.goldize.name=六角点金宝石
+item.enhance_gem_phase5.goldize.name=七角点金宝石
+item.enhance_gem_phase6.goldize.name=八角点金宝石
+
+item.enhance_gem_phase1.medication.name=三角治疗宝石
+item.enhance_gem_phase2.medication.name=四角治疗宝石
+item.enhance_gem_phase3.medication.name=五角治疗宝石
+item.enhance_gem_phase4.medication.name=六角治疗宝石
+item.enhance_gem_phase5.medication.name=七角治疗宝石
+item.enhance_gem_phase6.medication.name=八角治疗宝石
+
+item.enhance_gem_phase1.teleport.name=三角传送宝石
+item.enhance_gem_phase2.teleport.name=四角传送宝石
+item.enhance_gem_phase3.teleport.name=五角传送宝石
+item.enhance_gem_phase4.teleport.name=六角传送宝石
+item.enhance_gem_phase5.teleport.name=七角传送宝石
+item.enhance_gem_phase6.teleport.name=八角传送宝石
 
 item.gem_shard_0.name=朴素四角宝石
 item.gem_shard_1.name=朴素五角宝石
@@ -280,13 +347,20 @@ item.gem_shard_4.name=朴素八角宝石
 
 
 item.enhance_gem_box_phase1.name=三角宝石箱
-
+item.enhance_gem_box_phase2.name=特效宝石箱
+item.enhance_gem_box_phase3.name=技能宝石箱
 
 item.tooltip.attributeGem.damage=基础攻击增加
 item.tooltip.attributeGem.protection=保护值增加
 item.tooltip.attributeGem.health=最大生命增加
 item.tooltip.attributeGem.recover=恢复速度增加
 item.tooltip.attributeGem.haste=挖掘效率增加
+item.tooltip.attributeGem.execute=裁决最大增伤
+item.tooltip.attributeGem.polish=低血量最高提速
+item.tooltip.attributeGem.predation=倾轧倍率
+item.tooltip.attributeGem.goldize=点金倍率
+item.tooltip.attributeGem.medication=触发多重治疗倍率
+item.tooltip.attributeGem.teleport=传送冷却缩减
 
 item.tooltip.gem_shard_usage_0=用于合成高级宝石
 item.tooltip.gem_shard_usage_1=用于合成高级宝石
@@ -318,6 +392,8 @@ item.meliodas.name=愤怒之罪
 item.diane.name=嫉妒之罪
 item.escanor.name=傲慢之罪
 
+item.psi_core.name=灵力核心
+
 item.drug_xh.name=小还丹
 item.drug_dh.name=大还丹
 item.drug_bg.name=辟谷丹
@@ -341,9 +417,15 @@ item.t13.name=TB
 item.bad_apple.name=Bad Apple!!!
 item.pants.name=蓝白内裤
 item.headstone_bag.name=黑曜石棺材
+item.chibi_creeper_soul.name=苦力之魂
+item.chibi_creeper_baby.name=苦力宝宝
+
+item.bamboo.name=金雷竹
 
 tile.gem_setting.name=宝石镶嵌台
 container.crafting.needsRemoveGems=请先移除宝石
+
+tile.extreme_workbench.name=重制工作台
 
 tile.leaves1.maple.name=枫树树叶
 tile.log1.maple.name=枫树木
@@ -381,3 +463,5 @@ tile.slab.group5.white.name=彩石台阶
 container.shop=商店
 container.shop.money=余额:%s
 key.openShop=打开商店
+
+tile.toolbench.estimatedtime=预计制造时间:

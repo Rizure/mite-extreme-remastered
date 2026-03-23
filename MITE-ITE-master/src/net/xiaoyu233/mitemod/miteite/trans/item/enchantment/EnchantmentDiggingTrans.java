@@ -10,12 +10,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EnchantmentDigging.class)
 public class EnchantmentDiggingTrans {
-    @Inject(method = "canEnchantItem(Lnet/minecraft/Item;)Z", at = @At("RETURN"), cancellable = true)
-    private void extendsTools(Item item, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
-        if(item.getClass() == ItemEnhancedPickaxe.class){
-            callbackInfoReturnable.setReturnValue(true);
-            callbackInfoReturnable.cancel();
-        }
-    }
-    
+   @Inject(method = "canEnchantItem(Lnet/minecraft/Item;)Z", at = @At("RETURN"), cancellable = true)
+   private void extendsTools(Item item, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
+      if (item.getClass() == ItemEnhancedPickaxe.class) {
+         callbackInfoReturnable.setReturnValue(true);
+         callbackInfoReturnable.cancel();
+      }
+   }
+
 }

@@ -18,11 +18,12 @@ import java.util.UUID;
 
 @Mixin(EntityPigZombie.class)
 public abstract class EntityZombiePigmanTrans extends EntityZombie implements IRangedEntity {
-    @Shadow
-    private int randomSoundDelay;
-    @Shadow
-    private int angerLevel;
-//   @Shadow
+   @Shadow
+   private int randomSoundDelay;
+   @Shadow
+   private int angerLevel;
+
+   //   @Shadow
 //   @Final
 //   public static final AttributeModifier field_110190_br;
 //   @Shadow
@@ -41,42 +42,43 @@ public abstract class EntityZombiePigmanTrans extends EntityZombie implements IR
    public EntityZombiePigmanTrans(World par1World) {
       super(par1World);
    }
-//
-@Overwrite
-protected void applyEntityAttributes() {
-    super.applyEntityAttributes();
-    int day = this.getWorld() != null ? Math.max(this.getWorld().getDayOfOverworld(), 0) : 0;
-    this.setEntityAttribute(GenericAttributes.followRange, 64.0D);
-    this.setEntityAttribute(GenericAttributes.attackDamage, 15 * Constant.getNormalMobModifier("Damage",day));
-    this.setEntityAttribute(GenericAttributes.maxHealth, 40 * Constant.getNormalMobModifier("Health",day));
-    this.setEntityAttribute(GenericAttributes.movementSpeed, 0.4D * Constant.getNormalMobModifier("Speed",day));
-    this.setEntityAttribute(EntityZombie.field_110186_bp, this.rand.nextDouble() * 0.10000000149011612D);
-}
 
-    @Overwrite
-    protected void dropFewItems(boolean recently_hit_by_player, DamageSource damage_source) {
-        if(this.angerLevel < 1){
-            this.dropItem(Items.voucherGuard);
-        }else {
-            if(this.rand.nextBoolean()){
-                this.dropItem(Items.voucherCluster);
-            }
-        }
-        if (this.rand.nextFloat() < (recently_hit_by_player ? 0.5F : 0.25F)) {
-            this.dropItem(Item.rottenFlesh);
-        }
+   //
+   @Overwrite
+   protected void applyEntityAttributes() {
+      super.applyEntityAttributes();
+      int day = this.getWorld() != null ? Math.max(this.getWorld().getDayOfOverworld(), 0) : 0;
+      this.setEntityAttribute(GenericAttributes.followRange, 64.0D);
+      this.setEntityAttribute(GenericAttributes.attackDamage, 15 * Constant.getNormalMobModifier("Damage", day));
+      this.setEntityAttribute(GenericAttributes.maxHealth, 40 * Constant.getNormalMobModifier("Health", day));
+      this.setEntityAttribute(GenericAttributes.movementSpeed, 0.4D * Constant.getNormalMobModifier("Speed", day));
+      this.setEntityAttribute(EntityZombie.field_110186_bp, this.rand.nextDouble() * 0.10000000149011612D);
+   }
 
-        int num_drops = this.rand.nextInt(2 + damage_source.getLootingModifier());
+   @Overwrite
+   protected void dropFewItems(boolean recently_hit_by_player, DamageSource damage_source) {
+      if (this.angerLevel < 1) {
+         this.dropItem(Items.voucherGuard);
+      } else {
+         if (this.rand.nextBoolean()) {
+            this.dropItem(Items.voucherCluster);
+         }
+      }
+      if (this.rand.nextFloat() < (recently_hit_by_player ? 0.5F : 0.25F)) {
+         this.dropItem(Item.rottenFlesh);
+      }
 
-        for(int i = 0; i < num_drops; ++i) {
-            this.dropItem(Item.goldNugget);
-        }
+      int num_drops = this.rand.nextInt(2 + damage_source.getLootingModifier());
 
-        if (recently_hit_by_player && !this.has_taken_massive_fall_damage && this.rand.nextInt(this.getBaseChanceOfRareDrop()) < 5 + damage_source.getLootingModifier() * 2) {
-            this.dropItem(Item.ingotGold);
-        }
+      for (int i = 0; i < num_drops; ++i) {
+         this.dropItem(Item.goldNugget);
+      }
 
-    }
+      if (recently_hit_by_player && !this.has_taken_massive_fall_damage && this.rand.nextInt(this.getBaseChanceOfRareDrop()) < 5 + damage_source.getLootingModifier() * 2) {
+         this.dropItem(Item.ingotGold);
+      }
+
+   }
 //
 //   @Override
 //   public EntityDamageResult attackEntityAsMob(Entity target) {
@@ -205,22 +207,22 @@ protected void applyEntityAttributes() {
 //      return item_stack.getItemSubtype() == 0 && item_stack.getItemDamage() == 0 && item_stack.hasMaterial(Material.gold);
 //   }
 
-    @Shadow
-    private void becomeAngryAt(Entity par1Entity) {
-    }
+   @Shadow
+   private void becomeAngryAt(Entity par1Entity) {
+   }
 
-    @Overwrite
-    protected EntityPlayer findPlayerToAttack(float max_distance) {
-        if (this.angerLevel < 1) {
-            max_distance /= 2.0F;
-        }
+   @Overwrite
+   protected EntityPlayer findPlayerToAttack(float max_distance) {
+      if (this.angerLevel < 1) {
+         max_distance /= 2.0F;
+      }
 
-        Entity previous_target = this.getEntityToAttack();
-        EntityPlayer target = super.findPlayerToAttack(max_distance);
-        if (target != null && target != previous_target) {
-            this.becomeAngryAt(target);
-        }
+      Entity previous_target = this.getEntityToAttack();
+      EntityPlayer target = super.findPlayerToAttack(max_distance);
+      if (target != null && target != previous_target) {
+         this.becomeAngryAt(target);
+      }
 
-        return target;
-    }
+      return target;
+   }
 }

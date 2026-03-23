@@ -22,14 +22,14 @@ public class TileEntityFurnaceTrans extends TileEntity {
 
    @Overwrite
    public static int getHeatLevelRequired(int item_id) {
-         // 高燃染料=振金，艾德曼
+      // 高燃染料=振金，艾德曼
       if (item_id == Block.coalBlock.blockID || item_id == Blocks.blockVibranium.blockID || item_id == Block.blockAdamantium.blockID) {
          return 5;
          // 烈焰棒=秘银块，远古金属块
-      } else if (item_id == Block.oreAdamantium.blockID || item_id == Blocks.netherAdamantiumOre.blockID || item_id == Block.blockMithril.blockID || item_id == Block.blockAncientMetal.blockID) {
+      } else if (item_id == Block.oreAdamantium.blockID || item_id == Blocks.netherAdamantiumOre.blockID || item_id == Block.blockMithril.blockID || item_id == Blocks.blockEnhanceStoneMithril.blockID || item_id == Block.blockAncientMetal.blockID) {
          return 4;
          // 岩浆=铁块，金块，银块，铜块
-      } else if (item_id == Block.oreMithril.blockID || item_id == Block.blockIron.blockID || item_id == Block.blockCopper.blockID || item_id == Block.blockSilver.blockID || item_id == Block.blockGold.blockID) {
+      } else if (item_id == Block.oreMithril.blockID || item_id == Blocks.blockEnhanceStoneIron.blockID || item_id == Block.blockIron.blockID || item_id == Block.blockCopper.blockID || item_id == Block.blockSilver.blockID || item_id == Block.blockGold.blockID) {
          return 3;
       } else if (item_id == Block.oreCopper.blockID || item_id == Block.oreSilver.blockID || item_id == Block.oreGold.blockID || item_id == Block.oreIron.blockID) {
          return 2;

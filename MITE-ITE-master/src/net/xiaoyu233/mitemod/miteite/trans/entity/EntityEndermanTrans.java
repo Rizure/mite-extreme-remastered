@@ -30,21 +30,21 @@ public class EntityEndermanTrans extends EntityMonster {
    protected void applyEntityAttributes() {
       super.applyEntityAttributes();
       int day = this.worldObj.getDayOfOverworld();
-      this.setEntityAttribute(GenericAttributes.attackDamage, 18 * net.xiaoyu233.mitemod.miteite.util.Constant.getEliteMobModifier("Damage",day));
-      this.setEntityAttribute(GenericAttributes.maxHealth, 60 * net.xiaoyu233.mitemod.miteite.util.Constant.getEliteMobModifier("Health",day));
-      this.setEntityAttribute(GenericAttributes.movementSpeed, 0.27D * net.xiaoyu233.mitemod.miteite.util.Constant.getEliteMobModifier("Speed",day));
+      this.setEntityAttribute(GenericAttributes.attackDamage, 18 * net.xiaoyu233.mitemod.miteite.util.Constant.getEliteMobModifier("Damage", day));
+      this.setEntityAttribute(GenericAttributes.maxHealth, 60 * net.xiaoyu233.mitemod.miteite.util.Constant.getEliteMobModifier("Health", day));
+      this.setEntityAttribute(GenericAttributes.movementSpeed, 0.27D * net.xiaoyu233.mitemod.miteite.util.Constant.getEliteMobModifier("Speed", day));
    }
 
    @Overwrite
    protected void dropFewItems(boolean recently_hit_by_player, DamageSource damage_source) {
-      if (recently_hit_by_player){
+      if (recently_hit_by_player) {
          this.dropItem(Items.voucherPhase);
       }
       int item_id = this.getDropItemId();
       if (item_id > 0) {
          int num_drops = this.rand.nextInt(2 + damage_source.getLootingModifier());
 
-         for(int i = 0; i < num_drops; ++i) {
+         for (int i = 0; i < num_drops; ++i) {
             this.dropItem(item_id, 1);
          }
       }
@@ -52,7 +52,7 @@ public class EntityEndermanTrans extends EntityMonster {
 
    public EntityDamageResult attackEntityAsMob(Entity target) {
       this.worldObj.setEntityState(this, EnumEntityState.golem_throw);
-      EntityDamageResult result = target.attackEntityFrom(new Damage(DamageSource.causeMobDamage(this), (float)this.getEntityAttributeValue(GenericAttributes.attackDamage)));
+      EntityDamageResult result = target.attackEntityFrom(new Damage(DamageSource.causeMobDamage(this), (float) this.getEntityAttributeValue(GenericAttributes.attackDamage)));
       if (result != null && result.entityWasKnockedBack()) {
          target.motionY += 0.2D;
       }

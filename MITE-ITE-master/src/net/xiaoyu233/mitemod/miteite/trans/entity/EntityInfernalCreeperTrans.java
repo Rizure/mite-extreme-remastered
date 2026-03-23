@@ -1,9 +1,6 @@
 package net.xiaoyu233.mitemod.miteite.trans.entity;
 
-import net.minecraft.DamageSource;
-import net.minecraft.EntityInfernalCreeper;
-import net.minecraft.Item;
-import net.minecraft.World;
+import net.minecraft.*;
 import net.xiaoyu233.mitemod.miteite.item.Items;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,10 +10,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntityInfernalCreeper.class)
-public class EntityInfernalCreeperTrans extends EntityCreeperTrans {
+public class EntityInfernalCreeperTrans extends EntityCreeper {
    public EntityInfernalCreeperTrans(World world) {
       super(world);
-      this.setSize(this.width* getScale(), this.height* getScale());
+      this.setSize(this.width * getScale(), this.height * getScale());
    }
 
    @Overwrite
@@ -26,7 +23,7 @@ public class EntityInfernalCreeperTrans extends EntityCreeperTrans {
 
    @Overwrite
    protected void dropFewItems(boolean recently_hit_by_player, DamageSource damage_source) {
-      if (recently_hit_by_player){
+      if (recently_hit_by_player) {
          this.dropItem(Items.voucherDestruction);
       }
       int num_drops = this.rand.nextInt(4);
@@ -43,16 +40,16 @@ public class EntityInfernalCreeperTrans extends EntityCreeperTrans {
          num_drops -= this.rand.nextInt(num_drops + 1);
       }
 
-      for(int i = 0; i < num_drops; ++i) {
+      for (int i = 0; i < num_drops; ++i) {
          this.dropItem(this.getDropItemId(), 1);
       }
    }
 
-   @Inject(method = "<init>",at = @At("RETURN"))
-   private void injectCtorModifyExplosion(CallbackInfo callbackInfo){
+   @Inject(method = "<init>", at = @At("RETURN"))
+   private void injectCtorModifyExplosion(CallbackInfo callbackInfo) {
       if (Configs.wenscConfig.infernalCreeperBoost.ConfigValue) {
          this.explosionRadius *= 3.125F;
       }
    }
-   
+
 }

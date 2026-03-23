@@ -4,51 +4,49 @@ import net.minecraft.*;
 import net.xiaoyu233.mitemod.miteite.item.Materials;
 
 public class EnchantmentChain extends Enchantment {
-    protected EnchantmentChain(int id, yq rarity, int difficulty) {
-        super(id, rarity, difficulty);
-    }
+   protected EnchantmentChain(int id, yq rarity, int difficulty) {
+      super(id, rarity, difficulty);
+   }
 
-    @Override
-    public int getNumLevels() {
-        return 5;
-    }
+   @Override
+   public int getNumLevels() {
+      return 5;
+   }
 
 //    @Override
 //    public float enchantIndividualChance(int enchantmentLevel) {
-////        return enchantmentLevel < 43 ? 0 : 0.005f + 0.3f * (enchantmentLevel / 158f);
+
+   /// /        return enchantmentLevel < 43 ? 0 : 0.005f + 0.3f * (enchantmentLevel / 158f);
 //        return enchantmentLevel < 30 ? 0 : 0.5f + 0.3f * (enchantmentLevel / 158f);
 //    }
-
-    @Override
-    public boolean canApplyTogether(Enchantment par1Enchantment)
-    {
-        return (super.canApplyTogether(par1Enchantment) && par1Enchantment.effectId != silkTouch.effectId);
-    }
+   @Override
+   public boolean canApplyTogether(Enchantment par1Enchantment) {
+      return (super.canApplyTogether(par1Enchantment) && par1Enchantment.effectId != silkTouch.effectId);
+   }
 
 //    @Override
 //    public boolean enchantIndividually() {
 //        return true;
 //    }
 
-    @Override
-    public String getNameSuffix() {
-        return "chain";
-    }
+   @Override
+   public String getNameSuffix() {
+      return "chain";
+   }
 
-    @Override
-    public boolean canEnchantItem(Item item) {
-        if (item instanceof ItemTool) {
-            Material material = ((ItemTool)item).getToolMaterial();
-            if (!(material == Materials.vibranium || material == Materials.mithril || material == Materials.adamantium || material == Materials.iron || material == Materials.ancient_metal)) {
-                return false;
-            }
-        }
-        return item instanceof ItemPickaxe;
-    }
+   @Override
+   public boolean canEnchantItem(Item item) {
+      if (item instanceof ItemTool) {
+         Material material = ((ItemTool) item).getToolMaterial();
+         if (!(material == Materials.vibranium || material == Materials.mithril || material == Materials.adamantium || material == Materials.iron || material == Materials.ancient_metal)) {
+            return false;
+         }
+      }
+      return item instanceof ItemPickaxe;
+   }
 
-    @Override
-    public boolean isOnCreativeTab(CreativeModeTab creative_tab)
-    {
-        return creative_tab == CreativeModeTab.tabTools;
-    }
+   @Override
+   public boolean isOnCreativeTab(CreativeModeTab creative_tab) {
+      return creative_tab == CreativeModeTab.tabTools;
+   }
 }

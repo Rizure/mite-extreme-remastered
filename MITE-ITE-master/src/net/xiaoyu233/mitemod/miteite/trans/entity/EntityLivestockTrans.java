@@ -12,11 +12,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(EntityLivestock.class)
 public abstract class EntityLivestockTrans extends EntityAnimalTrans {
    private int illnessToDeathCounter;
-   
+
    public EntityLivestockTrans(World par1World) {
       super(par1World);
    }
-//   public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
+
+   //   public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
 //      super.writeEntityToNBT(par1NBTTagCompound);
 //      par1NBTTagCompound.setFloat("food", this.getFood());
 //      par1NBTTagCompound.setFloat("water", this.getWater());
@@ -75,8 +76,8 @@ public abstract class EntityLivestockTrans extends EntityAnimalTrans {
    private void setWater(float water) {
    }
 
-   @Inject(method = "onLivingUpdate",at = @At(value = "FIELD",shift = At.Shift.AFTER,target = "Lnet/minecraft/World;isRemote:Z",ordinal = 0))
-   private void injectIllnessToDeath(CallbackInfo c){
+   @Inject(method = "onLivingUpdate", at = @At(value = "FIELD", shift = At.Shift.AFTER, target = "Lnet/minecraft/World;isRemote:Z", ordinal = 0))
+   private void injectIllnessToDeath(CallbackInfo c) {
       if (!this.isWell()) {
          ++this.illnessToDeathCounter;
          if (this.illnessToDeathCounter == Configs.wenscConfig.animalIllToDeathTime.ConfigValue) {
@@ -89,13 +90,13 @@ public abstract class EntityLivestockTrans extends EntityAnimalTrans {
       }
    }
 
-   @Inject(method = "readEntityFromNBT",at = @At("RETURN"))
-   private void injectReadNBT(NBTTagCompound compound,CallbackInfo callbackInfo){
+   @Inject(method = "readEntityFromNBT", at = @At("RETURN"))
+   private void injectReadNBT(NBTTagCompound compound, CallbackInfo callbackInfo) {
       this.illnessToDeathCounter = compound.getInteger("death_counter");
    }
 
-   @Inject(method = "writeEntityToNBT",at = @At("RETURN"))
-   private void injectWriteNBT(NBTTagCompound compound,CallbackInfo c){
+   @Inject(method = "writeEntityToNBT", at = @At("RETURN"))
+   private void injectWriteNBT(NBTTagCompound compound, CallbackInfo c) {
       compound.setInteger("death_counter", this.illnessToDeathCounter);
    }
 //   @Overwrite

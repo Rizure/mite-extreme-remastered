@@ -37,10 +37,11 @@ public class EntityLongdeadTrans extends EntitySkeleton {
          MonsterUtil.addDefaultArmor(day, this, true);
       }
    }
+
    @Inject(method = "addRandomWeapon", at = @At("RETURN"))
    private void extendsWeapon(CallbackInfo callbackInfo) {
       int day_of_world = MinecraftServer.F().getOverworld().getDayOfOverworld();
-      if(day_of_world > 64 && this.getSkeletonType() != 0){
+      if (day_of_world > 64 && this.getSkeletonType() != 0) {
          MonsterUtil.addDefaultWeapon(day_of_world + 16, this);
       }
    }
@@ -50,14 +51,14 @@ public class EntityLongdeadTrans extends EntitySkeleton {
       super.applyEntityAttributes();
       int day = this.getWorld() != null ? this.getWorld().getDayOfOverworld() : 0;
       this.setEntityAttribute(GenericAttributes.followRange, 40.0D);
-      if(this.isGuardian()){
-         this.setEntityAttribute(GenericAttributes.maxHealth, 26 * Constant.getEliteMobModifier("Health",day,this.worldObj.isOverworld()));
-         this.setEntityAttribute(GenericAttributes.movementSpeed, 0.29D * Constant.getEliteMobModifier("Speed",day,this.worldObj.isOverworld()));
-         this.setEntityAttribute(GenericAttributes.attackDamage, 13 * Constant.getEliteMobModifier("Damage",day,this.worldObj.isOverworld()));
-      }else {
-         this.setEntityAttribute(GenericAttributes.attackDamage, 10 * Constant.getNormalMobModifier("Damage",day,this.worldObj.isOverworld()));
-         this.setEntityAttribute(GenericAttributes.maxHealth, 18 * Constant.getNormalMobModifier("Health",day,this.worldObj.isOverworld()));
-         this.setEntityAttribute(GenericAttributes.movementSpeed, 0.27D * Constant.getNormalMobModifier("Speed",day,this.worldObj.isOverworld()));
+      if (this.isGuardian()) {
+         this.setEntityAttribute(GenericAttributes.maxHealth, 26 * Constant.getEliteMobModifier("Health", day, this.worldObj.isOverworld()));
+         this.setEntityAttribute(GenericAttributes.movementSpeed, 0.29D * Constant.getEliteMobModifier("Speed", day, this.worldObj.isOverworld()));
+         this.setEntityAttribute(GenericAttributes.attackDamage, 13 * Constant.getEliteMobModifier("Damage", day, this.worldObj.isOverworld()));
+      } else {
+         this.setEntityAttribute(GenericAttributes.attackDamage, 10 * Constant.getNormalMobModifier("Damage", day, this.worldObj.isOverworld()));
+         this.setEntityAttribute(GenericAttributes.maxHealth, 18 * Constant.getNormalMobModifier("Health", day, this.worldObj.isOverworld()));
+         this.setEntityAttribute(GenericAttributes.movementSpeed, 0.27D * Constant.getNormalMobModifier("Speed", day, this.worldObj.isOverworld()));
       }
    }
 

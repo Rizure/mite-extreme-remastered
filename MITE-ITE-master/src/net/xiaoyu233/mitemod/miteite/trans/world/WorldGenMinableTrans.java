@@ -17,7 +17,7 @@ public class WorldGenMinableTrans {
    @Shadow
    private int minableBlockId;
 
-//   @Overwrite
+   //   @Overwrite
    @Overwrite
    public int getRandomVeinHeight(World world, Random rand) {
       Block block = Block.blocksList[this.minableBlockId];
@@ -38,52 +38,52 @@ public class WorldGenMinableTrans {
          if (block == Block.dirt) {
             do {
                relative_height = rand.nextFloat();
-            } while(relative_height <= rand.nextFloat());
+            } while (relative_height <= rand.nextFloat());
          } else if (block == Block.gravel) {
             do {
                relative_height = rand.nextFloat();
-            } while(relative_height <= rand.nextFloat());
+            } while (relative_height <= rand.nextFloat());
          } else if (block == Block.oreCoal) {
             do {
                relative_height = rand.nextFloat();
-            } while(relative_height <= rand.nextFloat());
+            } while (relative_height <= rand.nextFloat());
          } else if (block == Block.oreCopper) {
             if (rand.nextInt(2) == 0) {
                relative_height = rand.nextFloat() * 0.6F + 0.4F;
             } else {
                do {
                   relative_height = rand.nextFloat();
-               } while(relative_height >= rand.nextFloat());
+               } while (relative_height >= rand.nextFloat());
             }
          } else if (block == Block.oreSilver) {
             do {
                relative_height = rand.nextFloat();
-            } while(relative_height >= rand.nextFloat());
+            } while (relative_height >= rand.nextFloat());
          } else if (block == Block.oreGold) {
             do {
                relative_height = rand.nextFloat();
-            } while(relative_height >= rand.nextFloat());
+            } while (relative_height >= rand.nextFloat());
          } else if (block == Block.oreIron) {
             do {
                relative_height = rand.nextFloat();
-            } while(relative_height >= rand.nextFloat());
+            } while (relative_height >= rand.nextFloat());
          } else if (block == Block.oreMithril) {
             do {
                relative_height = rand.nextFloat();
-            } while(relative_height >= rand.nextFloat());
+            } while (relative_height >= rand.nextFloat());
          } else if (block != Block.oreAdamantium && block != Block.silverfish) {
             if (block == Block.oreRedstone) {
                do {
                   relative_height = rand.nextFloat();
-               } while(relative_height >= rand.nextFloat());
+               } while (relative_height >= rand.nextFloat());
             } else if (block == Block.oreDiamond) {
                do {
                   relative_height = rand.nextFloat();
-               } while(relative_height >= rand.nextFloat());
+               } while (relative_height >= rand.nextFloat());
             } else if (block == Blocks.fancyRed) {
                do {
                   relative_height = rand.nextFloat();
-               } while(relative_height >= rand.nextFloat());
+               } while (relative_height >= rand.nextFloat());
             } else {
                if (block != Block.oreLapis) {
                   Minecraft.setErrorMessage("WorldGenMinable: unknown ore id " + this.minableBlockId);
@@ -95,12 +95,12 @@ public class WorldGenMinableTrans {
          } else {
             do {
                relative_height = rand.nextFloat();
-            } while(relative_height >= rand.nextFloat());
+            } while (relative_height >= rand.nextFloat());
          }
 
          int min_height = this.getMinVeinHeight(world);
          int height_range = this.getMaxVeinHeight(world) - min_height + 1;
-         return min_height + (int)(relative_height * (float)height_range);
+         return min_height + (int) (relative_height * (float) height_range);
       }
    }
 //   @Shadow
@@ -142,9 +142,9 @@ public class WorldGenMinableTrans {
          return 0;
       } else if (block == Block.oreLapis) {
          return 8;
-      } else if(world.isTheNether()){
+      } else if (world.isTheNether()) {
          return 35;
-      }else {
+      } else {
          Minecraft.setErrorMessage("WorldGenMinable: unknown ore id " + block.blockID);
          return -1;
       }
@@ -162,19 +162,19 @@ public class WorldGenMinableTrans {
    public int getMaxVeinHeight(World world) {
       Block block = Block.blocksList[this.minableBlockId];
       if (world.isUnderworld()) {
-          if (block == Block.oreCopper) {
-              return 128;
-          } else if (block == Block.oreSilver) {
-              return 128;
-          } else if (block == Block.oreGold) {
-              return 128;
-          } else if (block == Block.oreIron) {
-              return 128;
-          }
+         if (block == Block.oreCopper) {
+            return 128;
+         } else if (block == Block.oreSilver) {
+            return 128;
+         } else if (block == Block.oreGold) {
+            return 128;
+         } else if (block == Block.oreIron) {
+            return 128;
+         }
          return 224;
-      } else if (world.isTheNether()){
+      } else if (world.isTheNether()) {
          return 115;
-      }else if (block == Block.dirt) {
+      } else if (block == Block.dirt) {
          return 128;
       } else if (block == Block.gravel) {
          return 128;

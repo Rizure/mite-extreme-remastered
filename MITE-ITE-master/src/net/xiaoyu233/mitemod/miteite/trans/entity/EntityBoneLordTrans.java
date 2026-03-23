@@ -23,7 +23,7 @@ public class EntityBoneLordTrans extends EntitySkeletonTrans {
 
    protected void dropFewItems(boolean recently_hit_by_player, DamageSource damage_source) {
       super.dropFewItems(recently_hit_by_player, damage_source);
-      if (recently_hit_by_player){
+      if (recently_hit_by_player) {
          int day = this.getWorld().getDayOfOverworld();
          int count = Math.min(day / 8, 6);
          for (int i1 = 0; i1 < count; i1++) {
@@ -45,12 +45,13 @@ public class EntityBoneLordTrans extends EntitySkeletonTrans {
          MonsterUtil.addDefaultArmor(day + 32, this, true);
       }
    }
+
    @Inject(method = "addRandomWeapon", at = @At("RETURN"))
    private void extendsWeapon(CallbackInfo callbackInfo) {
       int day_of_world = MinecraftServer.F().getOverworld().getDayOfOverworld();
-      if(day_of_world > 0){
+      if (day_of_world > 0) {
          MonsterUtil.addDefaultWeapon(day_of_world + 16, this);
-         if(day_of_world > 16 && this.rand.nextInt(4) == 0){
+         if (day_of_world > 16 && this.rand.nextInt(4) == 0) {
             MonsterUtil.addDefaultTool(day_of_world + 16, this);
          }
       }
@@ -67,9 +68,9 @@ public class EntityBoneLordTrans extends EntitySkeletonTrans {
       boolean boneLordTweak = Configs.wenscConfig.boneLordTweak.ConfigValue;
       int day = this.getWorld() != null ? this.getWorld().getDayOfOverworld() : 0;
       this.setEntityAttribute(GenericAttributes.followRange, 44.0D);
-      this.setEntityAttribute(GenericAttributes.attackDamage, (boneLordTweak ? 12 : 8) * Constant.getEliteMobModifier("Damage",day));
-      this.setEntityAttribute(GenericAttributes.maxHealth, (boneLordTweak ? 45 : 30) * Constant.getEliteMobModifier("Health",day));
-      this.setEntityAttribute(GenericAttributes.movementSpeed, 0.27D * Constant.getEliteMobModifier("Speed",day));
+      this.setEntityAttribute(GenericAttributes.attackDamage, (boneLordTweak ? 12 : 8) * Constant.getEliteMobModifier("Damage", day));
+      this.setEntityAttribute(GenericAttributes.maxHealth, (boneLordTweak ? 45 : 30) * Constant.getEliteMobModifier("Health", day));
+      this.setEntityAttribute(GenericAttributes.movementSpeed, 0.27D * Constant.getEliteMobModifier("Speed", day));
    }
 
    @Overwrite

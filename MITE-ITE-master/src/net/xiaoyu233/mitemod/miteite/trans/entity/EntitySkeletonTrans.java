@@ -2,13 +2,11 @@ package net.xiaoyu233.mitemod.miteite.trans.entity;
 
 import net.minecraft.*;
 import net.minecraft.server.MinecraftServer;
-import net.xiaoyu233.mitemod.miteite.entity.EntityExchanger;
 import net.xiaoyu233.mitemod.miteite.entity.EntityHostileSkeletonHorse;
 import net.xiaoyu233.mitemod.miteite.item.Items;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
 import net.xiaoyu233.mitemod.miteite.util.Constant;
 import net.xiaoyu233.mitemod.miteite.util.MonsterUtil;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -16,8 +14,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.Calendar;
 
 @Mixin(EntitySkeleton.class)
 public class EntitySkeletonTrans extends EntityMonster implements IRangedEntity {
@@ -39,7 +35,7 @@ public class EntitySkeletonTrans extends EntityMonster implements IRangedEntity 
    public boolean haveTrySpawnBat = false;
 
    @Shadow
-   private void addRandomEquipment(){
+   private void addRandomEquipment() {
    }
 
    public EntitySkeletonTrans(World par1World) {
@@ -82,22 +78,20 @@ public class EntitySkeletonTrans extends EntityMonster implements IRangedEntity 
       int day = this.getWorld() != null ? this.getWorld().getDayOfOverworld() : 0;
       this.setEntityAttribute(GenericAttributes.followRange, 64.0D);
       if (this.getSkeletonType() == WITHER_SKELETON_ID) {
-         this.setEntityAttribute(GenericAttributes.attackDamage, (12) * Constant.getEliteMobModifier("Damage",day));
-         this.setEntityAttribute(GenericAttributes.maxHealth, (30) * Constant.getEliteMobModifier("Health",day));
-         this.setEntityAttribute(GenericAttributes.movementSpeed, 0.27D * Constant.getEliteMobModifier("Speed",day));
+         this.setEntityAttribute(GenericAttributes.attackDamage, (12) * Constant.getEliteMobModifier("Damage", day));
+         this.setEntityAttribute(GenericAttributes.maxHealth, (30) * Constant.getEliteMobModifier("Health", day));
+         this.setEntityAttribute(GenericAttributes.movementSpeed, 0.27D * Constant.getEliteMobModifier("Speed", day));
       } else {
-         this.setEntityAttribute(GenericAttributes.attackDamage, 8 * Constant.getNormalMobModifier("Damage",day));
-         this.setEntityAttribute(GenericAttributes.maxHealth, 8 * Constant.getNormalMobModifier("Health",day));
-         this.setEntityAttribute(GenericAttributes.movementSpeed, 0.27D * Constant.getNormalMobModifier("Speed",day));
+         this.setEntityAttribute(GenericAttributes.attackDamage, 8 * Constant.getNormalMobModifier("Damage", day));
+         this.setEntityAttribute(GenericAttributes.maxHealth, 8 * Constant.getNormalMobModifier("Health", day));
+         this.setEntityAttribute(GenericAttributes.movementSpeed, 0.27D * Constant.getNormalMobModifier("Speed", day));
       }
    }
 
    @Override
    protected float getChanceOfCausingFire() {
-      return Math.min(0.05f + this.worldObj.getDayOfOverworld() / 800f,0.25f);
+      return Math.min(0.05f + this.worldObj.getDayOfOverworld() / 800f, 0.25f);
    }
-
-
 
 
    @Overwrite
@@ -105,13 +99,13 @@ public class EntitySkeletonTrans extends EntityMonster implements IRangedEntity 
       if (world.isTheNether()) {
          return WITHER_SKELETON_ID;
       } else {
-         return (double)this.getRNG().nextFloat() < (this.isLongdead() ? 0.5D : 0.2d) ? MELEE_ATTACK_SKELETON_ID : ARROW_SKELETON_ID;
+         return (double) this.getRNG().nextFloat() < (this.isLongdead() ? 0.5D : 0.2d) ? MELEE_ATTACK_SKELETON_ID : ARROW_SKELETON_ID;
       }
    }
 
 
-   private Item getWeapon(int day){
-      return Constant.SWORDS[Math.max(Math.min((day - 16 - this.rand.nextInt(32)) / 16,Constant.SWORDS.length - 1),0)];
+   private Item getWeapon(int day) {
+      return Constant.SWORDS[Math.max(Math.min((day - 16 - this.rand.nextInt(32)) / 16, Constant.SWORDS.length - 1), 0)];
    }
 
    @Override
@@ -119,42 +113,44 @@ public class EntitySkeletonTrans extends EntityMonster implements IRangedEntity 
       return 1.15f;
    }
 
-   @Inject(method = "<init>",at = @At("RETURN"))
-   private void injectInit(World world,CallbackInfo callbackInfo){
+   @Inject(method = "<init>", at = @At("RETURN"))
+   private void injectInit(World world, CallbackInfo callbackInfo) {
       this.tasks.addTask(5, new PathfinderGoalMoveTowardsRestriction(this, 1.0));
    }
 
-   @Inject(method = "onLivingUpdate",at = @At("RETURN"))
+   @Inject(method = "onLivingUpdate", at = @At("RETURN"))
    public void injectLivingUpdate(CallbackInfo callbackInfo) {
-      if(this.isCompressed() && this.getTicksExistedWithOffset() % 60 == 0){
-         this.entityFX(EnumEntityFX.summoned);
+      if (this.isCompressed() && this.getTicksExistedWithOffset() % 60 == 0) {
+         if(this.onServer()){
+            this.entityFX(EnumEntityFX.summoned);
+         }
       }
-      if(this.isRiding() && this.ridingEntity instanceof EntityHostileSkeletonHorse){
-          if(this.getTarget() != null && this.getTicksExistedWithOffset() % 20 == 0){
-              ((EntityHostileSkeletonHorse)this.ridingEntity).setTarget(this.getTarget());
-          }
+      if (this.isRiding() && this.ridingEntity instanceof EntityHostileSkeletonHorse) {
+         if (this.getTarget() != null && this.getTicksExistedWithOffset() % 20 == 0) {
+            ((EntityHostileSkeletonHorse) this.ridingEntity).setTarget(this.getTarget());
+         }
       }
    }
 
-   @Inject(method = "readEntityFromNBT",at = @At("RETURN"))
-   private void injectReadNBT(NBTTagCompound par1NBTTagCompound,CallbackInfo ci){
+   @Inject(method = "readEntityFromNBT", at = @At("RETURN"))
+   private void injectReadNBT(NBTTagCompound par1NBTTagCompound, CallbackInfo ci) {
       if (par1NBTTagCompound.hasKey("TripleShot") && par1NBTTagCompound.getBoolean("TripleShot")) {
-         this.dataWatcher.updateObject(this.DATA_OBJ_ID_CAN_USE_TRIPLE_ARROW, (byte)1);
+         this.dataWatcher.updateObject(this.DATA_OBJ_ID_CAN_USE_TRIPLE_ARROW, (byte) 1);
       }
 
       if (par1NBTTagCompound.hasKey("FireBow") && par1NBTTagCompound.getBoolean("FireBow")) {
-         this.dataWatcher.updateObject(this.DATA_OBJ_ID_CAN_USE_FIRE_ARROW, (byte)1);
+         this.dataWatcher.updateObject(this.DATA_OBJ_ID_CAN_USE_FIRE_ARROW, (byte) 1);
       }
 
       if (par1NBTTagCompound.hasKey("Compressed") && par1NBTTagCompound.getBoolean("Compressed")) {
-         this.dataWatcher.updateObject(this.DATA_OBJ_ID_COMPRESSED, (byte)1);
+         this.dataWatcher.updateObject(this.DATA_OBJ_ID_COMPRESSED, (byte) 1);
       }
       this.setCombatTask();
    }
 
-   @Inject(method = "writeEntityToNBT",at = @At("RETURN"))
-   private void injectWriteNBT(NBTTagCompound par1NBTTagCompound,CallbackInfo ci){
-      par1NBTTagCompound.setByte("SkeletonType", (byte)this.getSkeletonType());
+   @Inject(method = "writeEntityToNBT", at = @At("RETURN"))
+   private void injectWriteNBT(NBTTagCompound par1NBTTagCompound, CallbackInfo ci) {
+      par1NBTTagCompound.setByte("SkeletonType", (byte) this.getSkeletonType());
       par1NBTTagCompound.setBoolean("TripleShot", this.dataWatcher.getWatchableObjectByte(this.DATA_OBJ_ID_CAN_USE_TRIPLE_ARROW) != 0);
       par1NBTTagCompound.setBoolean("FireBow", this.dataWatcher.getWatchableObjectByte(this.DATA_OBJ_ID_CAN_USE_FIRE_ARROW) != 0);
       par1NBTTagCompound.setBoolean("Compressed", this.isCompressed());
@@ -163,11 +159,11 @@ public class EntitySkeletonTrans extends EntityMonster implements IRangedEntity 
    @Overwrite
    protected void entityInit() {
       super.entityInit();
-      this.dataWatcher.addObject(DATA_OBJ_ID_SKELETON_TYPE, (byte)0);
-      this.data_object_id_is_frenzied_by_bone_lord = this.dataWatcher.addObject(this.dataWatcher.getNextAvailableId(), (byte)0);
-      this.DATA_OBJ_ID_CAN_USE_FIRE_ARROW = this.dataWatcher.addObject(this.dataWatcher.getNextAvailableId(), (byte)0);
-      this.DATA_OBJ_ID_CAN_USE_TRIPLE_ARROW = this.dataWatcher.addObject(this.dataWatcher.getNextAvailableId(), (byte)0);
-      this.DATA_OBJ_ID_COMPRESSED = this.dataWatcher.addObject(this.dataWatcher.getNextAvailableId(), (byte)0);
+      this.dataWatcher.addObject(DATA_OBJ_ID_SKELETON_TYPE, (byte) 0);
+      this.data_object_id_is_frenzied_by_bone_lord = this.dataWatcher.addObject(this.dataWatcher.getNextAvailableId(), (byte) 0);
+      this.DATA_OBJ_ID_CAN_USE_FIRE_ARROW = this.dataWatcher.addObject(this.dataWatcher.getNextAvailableId(), (byte) 0);
+      this.DATA_OBJ_ID_CAN_USE_TRIPLE_ARROW = this.dataWatcher.addObject(this.dataWatcher.getNextAvailableId(), (byte) 0);
+      this.DATA_OBJ_ID_COMPRESSED = this.dataWatcher.addObject(this.dataWatcher.getNextAvailableId(), (byte) 0);
    }
 
    public boolean isHoldingRangedWeapon() {
@@ -182,14 +178,17 @@ public class EntitySkeletonTrans extends EntityMonster implements IRangedEntity 
    @Shadow
    public void setSkeletonType(int par1) {
    }
+
    @Override
-   public void onDeathUpdate(){
+   public void onDeathUpdate() {
       super.onDeathUpdate();
-      if(this.isCompressed()){
-         this.entityFX(EnumEntityFX.summoned);
+      if (this.isCompressed()) {
+         if(this.onServer()){
+            this.entityFX(EnumEntityFX.summoned);
+         }
       }
-      if (!this.worldObj.isRemote && this.isCompressed() && this.deathTime == 20) {
-         for(int integer = 0; integer < (Configs.wenscConfig.compressedSkeletonExpandCount.ConfigValue); ++integer) {
+      if (this.onServer() && this.isCompressed() && this.deathTime == 20) {
+         for (int integer = 0; integer < (Configs.wenscConfig.compressedSkeletonExpandCount.ConfigValue); ++integer) {
             int EntityID = EntityTypes.getEntityID(this);
             EntitySkeleton skeleton = (EntitySkeleton) EntityTypes.createEntityByID(EntityID, this.worldObj);
             skeleton.setPosition(this.getBlockPosX(), this.getFootBlockPosY(), this.getBlockPosZ());
@@ -200,39 +199,59 @@ public class EntitySkeletonTrans extends EntityMonster implements IRangedEntity 
             skeleton.setAttackTarget(this.getTarget());
             skeleton.entityFX(EnumEntityFX.summoned);
             int standTime = Configs.wenscConfig.compressedSkeletonCrackStandTime.ConfigValue;
-            skeleton.addPotionEffect(new MobEffect(MobEffectList.weakness.id,standTime,127,true));
-            skeleton.addPotionEffect(new MobEffect(MobEffectList.moveSlowdown.id,standTime,127,true));
-            skeleton.addPotionEffect(new MobEffect(MobEffectList.resistance.id,standTime,127,true));
+            skeleton.addPotionEffect(new MobEffect(MobEffectList.weakness.id, standTime, 127, true));
+            skeleton.addPotionEffect(new MobEffect(MobEffectList.moveSlowdown.id, standTime, 127, true));
+            skeleton.addPotionEffect(new MobEffect(MobEffectList.resistance.id, standTime, 127, true));
          }
       }
    }
-   @Inject(method = "onSpawnWithEgg",at = @At("RETURN"))
-   private void injectNewTypeSkeleton(CallbackInfoReturnable<GroupDataEntity> callbackInfo){
-      if(rand.nextInt(100) < Configs.wenscConfig.RidingSkeletonSpawningWeight.ConfigValue && this.isLongdead() && this.getSkeletonType() == MELEE_ATTACK_SKELETON_ID){
+
+   @Inject(method = "onSpawnWithEgg", at = @At("RETURN"))
+   private void injectNewTypeSkeleton(CallbackInfoReturnable<GroupDataEntity> callbackInfo) {
+      this.dataWatcher.updateObject(this.DATA_OBJ_ID_COMPRESSED, (byte) (this.rand.nextInt(100) < Configs.wenscConfig.compressedSkeletonSpawningWeight.ConfigValue ? 1 : 0));
+      if (rand.nextInt(100) < Configs.wenscConfig.ridingSkeletonSpawningWeight.ConfigValue && this.isLongdead() && this.getSkeletonType() == MELEE_ATTACK_SKELETON_ID) {
          EntityHostileSkeletonHorse horse;
          horse = new EntityHostileSkeletonHorse(this.worldObj);
          horse.setPosition(this.posX, this.posY, this.posZ);
          this.worldObj.spawnEntityInWorld(horse);
          horse.onSpawnWithEgg(new GroupDataHorse(4, 0));
-         horse.entityFX(EnumEntityFX.summoned);
+         if(horse.onServer()){
+            horse.entityFX(EnumEntityFX.summoned);
+         }
          this.mountEntity(horse);
       }
-      if(rand.nextInt(100) < Configs.wenscConfig.FlyingSkeletonSpawningWeight.ConfigValue && this.getSkeletonType() == 0 && !this.isLongdead()) {
+      if (rand.nextInt(100) < Configs.wenscConfig.FlyingSkeletonSpawningWeight.ConfigValue && this.getSkeletonType() == 0 && !this.isLongdead()) {
          EntityBat entityBat;
-         this.dataWatcher.updateObject(this.DATA_OBJ_ID_CAN_USE_TRIPLE_ARROW, (byte)(1));
+         this.dataWatcher.updateObject(this.DATA_OBJ_ID_CAN_USE_TRIPLE_ARROW, (byte) (1));
          entityBat = new EntityBat(this.worldObj);
          entityBat.setPosition(this.posX, this.posY, this.posZ);
          this.worldObj.spawnEntityInWorld(entityBat);
          entityBat.onSpawnWithEgg(null);
          entityBat.setAttackTarget(this.getTarget());
-         entityBat.entityFX(EnumEntityFX.summoned);
+         if(entityBat.onServer()) {
+            entityBat.entityFX(EnumEntityFX.summoned);
+         }
          this.mountEntity(entityBat);
       }
    }
+
+   @Inject(method = "onSpawnWithEgg", at = @At("RETURN"))
+   private void ModifyWitherSkeleton(CallbackInfoReturnable<GroupDataEntity> callbackInfo) {
+      int skeleton_type = this.forced_skeleton_type >= 0 ? this.forced_skeleton_type : this.getRandomSkeletonType(super.worldObj);
+      if (skeleton_type == WITHER_SKELETON_ID) {
+         int day_of_world = MinecraftServer.F().getOverworld().getDayOfOverworld();
+         MonsterUtil.addDefaultWeapon(day_of_world + 16, this);
+         MonsterUtil.addDefaultArmor(day_of_world + 16, this, true);
+         this.setEntityAttribute(GenericAttributes.attackDamage, 12 * Constant.getNormalMobModifier("Damage", day_of_world, this.worldObj.isOverworld()));
+         this.setEntityAttribute(GenericAttributes.maxHealth, 24 * Constant.getNormalMobModifier("Health", day_of_world, this.worldObj.isOverworld()));
+         this.setEntityAttribute(GenericAttributes.movementSpeed, 0.27D * Constant.getNormalMobModifier("Speed", day_of_world, this.worldObj.isOverworld()));
+      }
+   }
+
    @Override
-    public boolean requiresLineOfSightToTargets() {
-       return !this.isOutdoors();
-    }
+   public boolean requiresLineOfSightToTargets() {
+      return this.isOutdoors() || (this.getHeldItemStack() != null && this.getHeldItemStack().getItem() == Item.enderPearl);
+   }
 
    private boolean isCompressed() {
       return this.dataWatcher.getWatchableObjectByte(this.DATA_OBJ_ID_COMPRESSED) != 0;
@@ -259,17 +278,15 @@ public class EntitySkeletonTrans extends EntityMonster implements IRangedEntity 
    @Overwrite
    public void attackEntityWithRangedAttack(EntityLiving target, float par2) {
       int rawDay = this.getWorld() != null ? this.getWorld().getDayOfOverworld() : 0;
-      EntityArrow var3 = new EntityArrow(this.worldObj, this, target, 1.6F, (float)(14 - this.worldObj.difficultySetting * 4), this.isLongdead() ? Item.arrowAncientMetal : Item.arrowRustedIron, false);
+      EntityArrow var3 = new EntityArrow(this.worldObj, this, target, 1.6F, (float) (14 - this.worldObj.difficultySetting * 4), this.isLongdead() ? Item.arrowAncientMetal : Item.arrowRustedIron, false);
       int var4 = Math.max(EnchantmentManager.getEnchantmentLevel(Enchantment.power.effectId, this.getHeldItemStack()), 1);
       int var5 = Math.max(EnchantmentManager.getEnchantmentLevel(Enchantment.punch.effectId, this.getHeldItemStack()), 1);
-      double var6 = (double)(par2 * 2.0F) + this.rand.nextGaussian() * 0.25D + (double)((float)this.worldObj.difficultySetting * 0.11F);
+      double var6 = (double) (par2 * 2.0F) + this.rand.nextGaussian() * 0.25D + (double) ((float) this.worldObj.difficultySetting * 0.11F);
       var3.setDamage(var6);
-      if (var4 > 0)
-      {
-         var3.setDamage(var3.getDamage() + (double)var4 * 0.5D + 0.5D);
+      if (var4 > 0) {
+         var3.setDamage(var3.getDamage() + (double) var4 * 0.5D + 0.5D);
       }
-      if (var5 > 0)
-      {
+      if (var5 > 0) {
          var3.setKnockbackStrength(var5);
       }
       if (EnchantmentManager.getEnchantmentLevel(Enchantment.flame.effectId, this.getHeldItemStack()) > 0 || this.getSkeletonType() == 1 || this.isInFire() && this.getRNG().nextInt(3) == 0 || this.dataWatcher.getWatchableObjectByte(this.DATA_OBJ_ID_CAN_USE_FIRE_ARROW) > 0 && rawDay > 196) {
@@ -277,14 +294,14 @@ public class EntitySkeletonTrans extends EntityMonster implements IRangedEntity 
       }
       if ((Configs.wenscConfig.skeletonTripleShot.ConfigValue) && this.dataWatcher.getWatchableObjectByte(this.DATA_OBJ_ID_CAN_USE_TRIPLE_ARROW) > 0) {
          EntityArrow[] covering = new EntityArrow[2];
-         for(int i = 0; i < covering.length;i ++){
-            covering[i] = new EntityArrow(this.worldObj, this, target, 1.6F, (float)(14 - this.worldObj.difficultySetting * 4), this.isLongdead() ? Item.arrowAncientMetal : Item.arrowRustedIron, false);
-            covering[i].motionX *= 1.0D + 0.25D * this.rand.nextDouble();
-            covering[i].motionY *= 1.0D + 0.25D * this.rand.nextDouble();
-            covering[i].motionZ *= 1.0D + 0.25D * this.rand.nextDouble();
+         for (int i = 0; i < covering.length; i++) {
+            covering[i] = new EntityArrow(this.worldObj, this, target, 1.6F, (float) (14 - this.worldObj.difficultySetting * 4), this.isLongdead() ? Item.arrowAncientMetal : Item.arrowRustedIron, false);
+            covering[i].motionX *= 1.0D + 0.5D * this.rand.nextDouble() - 0.25D;
+            covering[i].motionY *= 1.0D + 0.5D * this.rand.nextDouble() - 0.25D;
+            covering[i].motionZ *= 1.0D + 0.5D * this.rand.nextDouble() - 0.25D;
             covering[i].setDamage(var6 / 2);
             if (var4 > 0) {
-               covering[i].setDamage(covering[i].getDamage() + (double)var4 * 0.5 + 0.5);
+               covering[i].setDamage(covering[i].getDamage() + (double) var4 * 0.5 + 0.5);
             }
             if (var5 > 0) {
                covering[i].setKnockbackStrength(var5);

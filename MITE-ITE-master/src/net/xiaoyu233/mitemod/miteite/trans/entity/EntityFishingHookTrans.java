@@ -31,7 +31,7 @@ public abstract class EntityFishingHookTrans extends Entity {
    @Redirect(method = "catchFish",
            at = @At(value = "NEW",
                    target = "(Lnet/minecraft/World;DDDI)Lnet/minecraft/EntityExperienceOrb;"))
-   private EntityExperienceOrb ctorFishingExp(World par1World, double par2, double par4, double par6, int par8){
+   private EntityExperienceOrb ctorFishingExp(World par1World, double par2, double par4, double par6, int par8) {
       return new EntityExperienceOrb(this.angler.worldObj, this.angler.posX, this.angler.posY + 0.5D, this.angler.posZ + 0.5D, Configs.wenscConfig.fishingXp.ConfigValue);
    }
 
@@ -47,14 +47,14 @@ public abstract class EntityFishingHookTrans extends Entity {
 
       Item[] fishTypeListStage0 = new Item[]{Item.bootsLeather, Item.arrowRustedIron, Item.silverNugget, Item.goldNugget, Item.leather, Item.getItem(Block.waterlily), Item.rottenFlesh, Item.bone, Item.stick, Item.silk, Item.sinew, Item.bowlWater, Item.copperNugget, Item.coinCopper, Item.chainRustedIron, Item.getItem(Block.cactus), Item.getItem(Block.planks), Item.getItem(Block.sandStone), Item.getItem(Block.planks)};
 
-      Item[] fishTypeListStage1 = new Item[]{Item.coinSilver, Item.coinGold, Item.ironNugget, Item.ingotIron, Item.ingotGold, Item.ingotSilver, Item.bow, Item.ancientMetalNugget, Item.mithrilNugget, Item.adamantiumNugget, Item.ingotIron, Item.appleGold, Items.powder_liquid, Item.carrot, Item.potato, Item.onion};
+      Item[] fishTypeListStage1 = new Item[]{Item.coinSilver, Item.coinGold, Item.ironNugget, Item.ingotIron, Item.ingotGold, Item.ingotSilver, Item.bow, Item.ancientMetalNugget, Item.mithrilNugget, Item.adamantiumNugget, Item.ingotIron, Item.appleGold, Items.powder_liquid, Item.carrot, Item.potato, Item.onion, Items.bamboo};
 
-      Item[] fishTypeListStage2 = new Item[]{Items.VIBRANIUM_NUGGET, Item.ingotMithril, Item.ingotAdamantium, Item.ingotAncientMetal, Item.coinMithril, Item.coinAncientMetal};
+      Item[] fishTypeListStage2 = new Item[]{Items.vibraniumNugget, Item.ingotMithril, Item.ingotAdamantium, Item.ingotAncientMetal, Item.coinMithril, Item.coinAncientMetal};
 
       int k;
-      for( k = -16; k <= 16; ++k) {
-         for(int dz = -16; dz <= 16; ++dz) {
-            for(int dy = -3; dy <= 0; ++dy) {
+      for (k = -16; k <= 16; ++k) {
+         for (int dz = -16; dz <= 16; ++dz) {
+            for (int dy = -3; dy <= 0; ++dy) {
                Block block = this.worldObj.getBlock(x + k, y + dy, z + dz);
                if (block == Block.dirt || block == Block.grass || block == Block.sand) {
                   ++count;
@@ -78,10 +78,10 @@ public abstract class EntityFishingHookTrans extends Entity {
          return fishTypeListStage0[this.rand.nextInt(fishTypeListStage0.length)];
       }
       if (this.worldObj.getBiomeGenForCoords(x, z) == BiomeBase.ocean && count == 0L) {
-         if(this.rand.nextInt(10) == 0){
+         if (this.rand.nextInt(10) == 0) {
             return Item.fishLargeRaw;
          }
-         if(this.rand.nextInt(10) == 0){
+         if (this.rand.nextInt(10) == 0) {
             return fishTypeListStage0[this.rand.nextInt(fishTypeListStage0.length)];
          }
       }

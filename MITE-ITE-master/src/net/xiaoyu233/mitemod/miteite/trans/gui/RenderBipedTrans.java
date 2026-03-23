@@ -7,10 +7,10 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
 @Mixin(bgu.class)
 public class RenderBipedTrans {
-    @ModifyConstant(method = {
-            "a(Lnet/minecraft/EntityInsentient;F)V",
-    }, constant = @Constant(intValue = 256))
-    private static int injected(int value) {
-        return 1024;
-    }
+   @ModifyConstant(method = {
+           "a(Lnet/minecraft/EntityInsentient;F)V",
+   }, constant = @Constant(intValue = 256))
+   private static int injected(int value) {
+      return 1024;
+   }
 }

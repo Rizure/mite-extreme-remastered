@@ -12,20 +12,21 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ItemShovel.class)
 public abstract class ItemShovelTrans extends ItemTool {
-    protected ItemShovelTrans(int par1, Material material) {
-        super(par1, material);
-    }
+   protected ItemShovelTrans(int par1, Material material) {
+      super(par1, material);
+   }
 
-    @Inject(
-            method = {"<init>(ILnet/minecraft/Material;)V"},
-            at = {@At("RETURN")}
-    )
-    public void injectCtor(CallbackInfo callbackInfo) {
-        this.addMaterialsEffectiveAgainst(new Material[]{Material.tnt});
-    }
-    @Override
-    @SoftOverride
-    protected int getExpForBlockBreak(BlockBreakInfo blockBreakInfo) {
-        return 5;
-    }
+   @Inject(
+           method = {"<init>(ILnet/minecraft/Material;)V"},
+           at = {@At("RETURN")}
+   )
+   public void injectCtor(CallbackInfo callbackInfo) {
+      this.addMaterialsEffectiveAgainst(new Material[]{Material.tnt});
+   }
+
+   @Override
+   @SoftOverride
+   protected int getExpForBlockBreak(BlockBreakInfo blockBreakInfo) {
+      return 5;
+   }
 }

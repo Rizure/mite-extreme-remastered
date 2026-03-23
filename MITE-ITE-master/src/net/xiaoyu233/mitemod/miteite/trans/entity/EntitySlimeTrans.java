@@ -8,18 +8,18 @@ import org.spongepowered.asm.mixin.Overwrite;
 
 @Mixin(EntitySlime.class)
 public abstract class EntitySlimeTrans extends EntityCubicTrans {
-    public EntitySlimeTrans(World par1World) {
-        super(par1World);
-    }
+   public EntitySlimeTrans(World par1World) {
+      super(par1World);
+   }
 
-    @Override
-    protected float getAttackDamageBonus() {
-        return Configs.wenscConfig.slimeAttackDamageBonus.ConfigValue;
-    }
+   @Override
+   protected float getAttackDamageBonus() {
+      return Configs.wenscConfig.slimeAttackDamageBonus.ConfigValue;
+   }
 
-    @Override
-    @Overwrite
-    public int getAttackStrengthMultiplierForType() {
-        return Configs.wenscConfig.slimeAttackDamageMultiplier.ConfigValue;
-    }
+   @Override
+   @Overwrite
+   public int getAttackStrengthMultiplierForType() {
+      return Configs.wenscConfig.slimeAttackDamageMultiplier.ConfigValue;
+   }
 }

@@ -25,10 +25,11 @@ public abstract class CraftingManagerHelper {
    }
 
    @Shadow
-   private void checkRecipe(Item item, int subtype_or_0){}
+   private void checkRecipe(Item item, int subtype_or_0) {
+   }
 
    @Redirect(method = "<init>",
-           at = @At(value = "INVOKE",target = "Lnet/minecraft/RecipesMITE;addCraftingRecipes(Lnet/minecraft/CraftingManager;)V"))
+           at = @At(value = "INVOKE", target = "Lnet/minecraft/RecipesMITE;addCraftingRecipes(Lnet/minecraft/CraftingManager;)V"))
    private void injectRegisterRecipes(CraftingManager crafters) {
       RegisterHelper.registerAllItems();
       RecipesMITE.addCraftingRecipes(crafters);
@@ -36,15 +37,15 @@ public abstract class CraftingManagerHelper {
    }
 
    @Redirect(method = "<init>",
-           at = @At(value = "INVOKE",target = "Lnet/minecraft/CraftingManager;addRecipe(Lnet/minecraft/ItemStack;[Ljava/lang/Object;)Lnet/minecraft/ShapedRecipes;"),
+           at = @At(value = "INVOKE", target = "Lnet/minecraft/CraftingManager;addRecipe(Lnet/minecraft/ItemStack;[Ljava/lang/Object;)Lnet/minecraft/ShapedRecipes;"),
            slice = @Slice(
-                   from = @At(value = "FIELD",target = "Lnet/minecraft/Item;appleGold:Lnet/minecraft/Item;"),
-                   to = @At(value = "FIELD",target = "Lnet/minecraft/Item;goldenCarrot:Lnet/minecraft/Item;")))
-   private ShapedRecipes injectModifyGoldenAppleRecipe(CraftingManager caller,ItemStack par1ItemStack, Object... par2ArrayOfObj){
+                   from = @At(value = "FIELD", target = "Lnet/minecraft/Item;appleGold:Lnet/minecraft/Item;"),
+                   to = @At(value = "FIELD", target = "Lnet/minecraft/Item;goldenCarrot:Lnet/minecraft/Item;")))
+   private ShapedRecipes injectModifyGoldenAppleRecipe(CraftingManager caller, ItemStack par1ItemStack, Object... par2ArrayOfObj) {
       return this.addRecipe(new ItemStack(Item.appleGold, 1, 0),
               "###",
-                              "IXI",
-                              "###",
+              "IXI",
+              "###",
               '#', Item.goldNugget,
               'I', Item.ingotGold,
               'X', Item.appleRed);

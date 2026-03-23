@@ -6,10 +6,10 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
 @Mixin(ItemExpBottle.class)
 public class ItemExpBottleTrans {
-    @ModifyConstant(method = {
-            "addInformation",
-    }, constant = @org.spongepowered.asm.mixin.injection.Constant(intValue = 2))
-    private static int injected(int value) {
-        return 5;
-    }
+   @ModifyConstant(method = {
+           "addInformation",
+   }, constant = @org.spongepowered.asm.mixin.injection.Constant(intValue = 2))
+   private static int injected(int value) {
+      return 5;
+   }
 }

@@ -42,7 +42,7 @@ public class PlayerInventoryTrans {
    public boolean inventoryChanged;
 
    //Fix the bug of getting items invalidly
-   @Inject(method = "trySwitchItemOrRestock",at = @At(value = "HEAD"))
+   @Inject(method = "trySwitchItemOrRestock", at = @At(value = "HEAD"))
    private void injectItemsSync(CallbackInfoReturnable<Boolean> callbackInfo) {
       this.player.sendPacket(new CPacketSyncItems());
    }
@@ -54,12 +54,12 @@ public class PlayerInventoryTrans {
 
    public ItemStack getRingKiller() {
       ItemStack itemStack = null;
-      for(int i = 0; i < this.jewelryInventory.length; ++i) {
+      for (int i = 0; i < this.jewelryInventory.length; ++i) {
          if (this.jewelryInventory[i] != null && (this.jewelryInventory[i].getItem() instanceof ItemRingKiller)) {
-            if(itemStack == null) {
+            if (itemStack == null) {
                itemStack = this.jewelryInventory[i];
             } else {
-               if(((ItemRingKiller) this.jewelryInventory[i].getItem()).getLevel() > ((ItemRingKiller)itemStack.getItem()).getLevel()) {
+               if (((ItemRingKiller) this.jewelryInventory[i].getItem()).getLevel() > ((ItemRingKiller) itemStack.getItem()).getLevel()) {
                   itemStack = this.jewelryInventory[i];
                }
             }
@@ -67,65 +67,69 @@ public class PlayerInventoryTrans {
       }
       return itemStack;
    }
+
    public boolean containsHeadstone() {
-       for(int i = 0; i < this.jewelryInventory.length; ++i) {
-           if (this.jewelryInventory[i] != null && (this.jewelryInventory[i].getItem() == Items.headstone_bag)) {
-               return true;
-           }
-       }
-       return false;
+      for (int i = 0; i < this.jewelryInventory.length; ++i) {
+         if (this.jewelryInventory[i] != null && (this.jewelryInventory[i].getItem() == Items.headstone_bag)) {
+            return true;
+         }
+      }
+      return false;
    }
+
    public ItemStack getDynamicCore() {
-      for(int i = 0; i < this.jewelryInventory.length; ++i) {
+      for (int i = 0; i < this.jewelryInventory.length; ++i) {
          if (this.jewelryInventory[i] != null && (this.jewelryInventory[i].getItem() instanceof ItemDynamicCore)) {
             return this.jewelryInventory[i];
          }
       }
       return null;
    }
+
    public ItemStack getRegenerationCore() {
-      for(int i = 0; i < this.jewelryInventory.length; ++i) {
+      for (int i = 0; i < this.jewelryInventory.length; ++i) {
          if (this.jewelryInventory[i] != null && (this.jewelryInventory[i].getItem() instanceof ItemRegenerationCore)) {
             return this.jewelryInventory[i];
          }
       }
       return null;
    }
+
    public ItemStack getGuardCore() {
-      for(int i = 0; i < this.jewelryInventory.length; ++i) {
+      for (int i = 0; i < this.jewelryInventory.length; ++i) {
          if (this.jewelryInventory[i] != null && (this.jewelryInventory[i].getItem() instanceof ItemGuardCore)) {
             return this.jewelryInventory[i];
          }
       }
       return null;
    }
-   
+
    @Overwrite
    public NBTTagList writeToNBT(NBTTagList par1NBTTagList) {
       int var2;
       NBTTagCompound var3;
-      for(var2 = 0; var2 < this.mainInventory.length; ++var2) {
+      for (var2 = 0; var2 < this.mainInventory.length; ++var2) {
          if (this.mainInventory[var2] != null) {
             var3 = new NBTTagCompound();
-            var3.setByte("Slot", (byte)var2);
+            var3.setByte("Slot", (byte) var2);
             this.mainInventory[var2].writeToNBT(var3);
             par1NBTTagList.appendTag(var3);
          }
       }
 
-      for(var2 = 0; var2 < this.jewelryInventory.length; ++var2) {
+      for (var2 = 0; var2 < this.jewelryInventory.length; ++var2) {
          if (this.jewelryInventory[var2] != null) {
             var3 = new NBTTagCompound();
-            var3.setByte("Slot", (byte)(var2 + 100));
+            var3.setByte("Slot", (byte) (var2 + 100));
             this.jewelryInventory[var2].writeToNBT(var3);
             par1NBTTagList.appendTag(var3);
          }
       }
 
-      for(var2 = 0; var2 < this.armorInventory.length; ++var2) {
+      for (var2 = 0; var2 < this.armorInventory.length; ++var2) {
          if (this.armorInventory[var2] != null) {
             var3 = new NBTTagCompound();
-            var3.setByte("Slot", (byte)(var2 + 100 + this.jewelryInventory.length));
+            var3.setByte("Slot", (byte) (var2 + 100 + this.jewelryInventory.length));
             this.armorInventory[var2].writeToNBT(var3);
             par1NBTTagList.appendTag(var3);
          }
@@ -139,8 +143,8 @@ public class PlayerInventoryTrans {
       this.jewelryInventory = new ItemStack[8];
       this.armorInventory = new ItemStack[4];
 
-      for(int var2 = 0; var2 < par1NBTTagList.tagCount(); ++var2) {
-         NBTTagCompound var3 = (NBTTagCompound)par1NBTTagList.tagAt(var2);
+      for (int var2 = 0; var2 < par1NBTTagList.tagCount(); ++var2) {
+         NBTTagCompound var3 = (NBTTagCompound) par1NBTTagList.tagAt(var2);
          int var4 = var3.getByte("Slot") & 255;
          ItemStack var5 = ItemStack.loadItemStackFromNBT(var3);
          if (var5 != null) {
@@ -157,6 +161,7 @@ public class PlayerInventoryTrans {
       }
 
    }
+
    @Overwrite
    public int getSizeInventory() {
       return this.mainInventory.length + this.armorInventory.length + this.jewelryInventory.length;
@@ -167,8 +172,8 @@ public class PlayerInventoryTrans {
 
       ItemStack[] var3 = this.mainInventory;
       ItemStack[] val4 = this.jewelryInventory;
-      if(par1 >= var3.length + val4.length) {
-         par1 -= var3.length +val4.length;
+      if (par1 >= var3.length + val4.length) {
+         par1 -= var3.length + val4.length;
          var3 = this.armorInventory;
       } else if (par1 >= var3.length) {
          par1 -= var3.length;
@@ -197,7 +202,7 @@ public class PlayerInventoryTrans {
    public ItemStack getStackInSlot(int par1) {
       ItemStack[] var2 = this.mainInventory;
       ItemStack[] val3 = this.jewelryInventory;
-      if(par1 >= var2.length + val3.length) {
+      if (par1 >= var2.length + val3.length) {
          par1 -= var2.length + val3.length;
          var2 = this.armorInventory;
       } else if (par1 >= var2.length) {
@@ -206,25 +211,29 @@ public class PlayerInventoryTrans {
       }
       return var2[par1];
    }
+
    @Shadow
-   public void inventorySlotChangedOnServer(int slot_index){};
+   public void inventorySlotChangedOnServer(int slot_index) {
+   }
+
+   ;
 
    @Overwrite
    public int getSlotIndex(ItemStack item_stack) {
       int i;
-      for(i = 0; i < this.mainInventory.length; ++i) {
+      for (i = 0; i < this.mainInventory.length; ++i) {
          if (this.mainInventory[i] == item_stack) {
             return i;
          }
       }
 
-      for(i = 0; i < this.jewelryInventory.length; ++i) {
+      for (i = 0; i < this.jewelryInventory.length; ++i) {
          if (this.jewelryInventory[i] == item_stack) {
             return i + this.mainInventory.length;
          }
       }
 
-      for(i = 0; i < this.armorInventory.length; ++i) {
+      for (i = 0; i < this.armorInventory.length; ++i) {
          if (this.armorInventory[i] == item_stack) {
             return i + this.mainInventory.length + this.jewelryInventory.length;
          }
@@ -244,11 +253,14 @@ public class PlayerInventoryTrans {
             slot_index += this.mainInventory.length + this.jewelryInventory.length;
          }
 
-         this.setInventorySlotContents(slot_index, (ItemStack)null);
+         this.setInventorySlotContents(slot_index, (ItemStack) null);
       }
    }
+
    @Shadow
-   public int getSlotIndex(ItemStack item_stack, ItemStack[] inventory) { return -1; }
+   public int getSlotIndex(ItemStack item_stack, ItemStack[] inventory) {
+      return -1;
+   }
 
    @Overwrite
    public void destroyInventoryItemStack(ItemStack item_stack) {
@@ -262,34 +274,35 @@ public class PlayerInventoryTrans {
                this.destroyInventoryItemStack(slot_index, this.jewelryInventory);
             } else {
                slot_index = this.getSlotIndex(item_stack, this.armorInventory);
-               if(slot_index >= 0) {
+               if (slot_index >= 0) {
                   this.destroyInventoryItemStack(slot_index, this.armorInventory);
                }
             }
          }
       }
    }
+
    @Overwrite
    public int calcChecksum(int for_release_number) {
       int checksum = 0;
 
       int i;
       ItemStack item_stack;
-      for(i = 0; i < this.mainInventory.length; ++i) {
+      for (i = 0; i < this.mainInventory.length; ++i) {
          item_stack = this.mainInventory[i];
          if (item_stack != null) {
             checksum += item_stack.calcChecksum(for_release_number);
          }
       }
 
-      for(i = 0; i < this.jewelryInventory.length; ++i) {
+      for (i = 0; i < this.jewelryInventory.length; ++i) {
          item_stack = this.jewelryInventory[i];
          if (item_stack != null) {
             checksum += item_stack.calcChecksum(for_release_number);
          }
       }
 
-      for(i = 0; i < this.armorInventory.length; ++i) {
+      for (i = 0; i < this.armorInventory.length; ++i) {
          item_stack = this.armorInventory[i];
          if (item_stack != null) {
             checksum += item_stack.calcChecksum(for_release_number);
@@ -298,24 +311,25 @@ public class PlayerInventoryTrans {
 
       return checksum;
    }
+
    @Overwrite
    public void destroyInventory() {
       ItemStack[] item_stacks = this.mainInventory;
 
       int i;
-      for(i = 0; i < item_stacks.length; ++i) {
+      for (i = 0; i < item_stacks.length; ++i) {
          item_stacks[i] = null;
       }
 
       item_stacks = this.jewelryInventory;
 
-      for(i = 0; i < item_stacks.length; ++i) {
+      for (i = 0; i < item_stacks.length; ++i) {
          item_stacks[i] = null;
       }
 
       item_stacks = this.armorInventory;
 
-      for(i = 0; i < item_stacks.length; ++i) {
+      for (i = 0; i < item_stacks.length; ++i) {
          item_stacks[i] = null;
       }
 
@@ -326,19 +340,19 @@ public class PlayerInventoryTrans {
       int num = 0;
 
       int i;
-      for(i = 0; i < this.mainInventory.length; ++i) {
+      for (i = 0; i < this.mainInventory.length; ++i) {
          if (this.mainInventory[i] != null && this.mainInventory[i].getItem() == item) {
             num += this.mainInventory[i].stackSize;
          }
       }
 
-      for(i = 0; i < this.jewelryInventory.length; ++i) {
+      for (i = 0; i < this.jewelryInventory.length; ++i) {
          if (this.jewelryInventory[i] != null && this.jewelryInventory[i].getItem() == item) {
             num += this.jewelryInventory[i].stackSize;
          }
       }
 
-      for(i = 0; i < this.armorInventory.length; ++i) {
+      for (i = 0; i < this.armorInventory.length; ++i) {
          if (this.armorInventory[i] != null && this.armorInventory[i].getItem() == item) {
             num += this.armorInventory[i].stackSize;
          }
@@ -351,19 +365,19 @@ public class PlayerInventoryTrans {
    public void setInventorySlotContents(int par1, ItemStack par2ItemStack) {
       ItemStack[] var3 = this.mainInventory;
       ItemStack[] val4 = this.jewelryInventory;
-      if(par1 >= var3.length + val4.length) {
-         par1 -= var3.length +val4.length;
+      if (par1 >= var3.length + val4.length) {
+         par1 -= var3.length + val4.length;
          var3 = this.armorInventory;
       } else if (par1 >= var3.length) {
          par1 -= var3.length;
          var3 = this.jewelryInventory;
       }
-      if(var3 == this.jewelryInventory && par1 == 7 && par2ItemStack != null) {
-         if(!Configs.wenscConfig.isCloseShop.ConfigValue) {
-            System.out.println(Arrays.toString(new Map[]{par2ItemStack.getItem().soldPriceArray}));
-            if((double)par2ItemStack.getItem().soldPriceArray.get(par2ItemStack.getItemSubtype()) > 0D) {
-               if(!this.player.worldObj.isRemote) {
-                  player.addChatMessage("现有余额：" + String.format("%.2f", player.plusMoney(par2ItemStack.stackSize * (double)par2ItemStack.getItem().soldPriceArray.get(par2ItemStack.getItemSubtype()))));
+      if (var3 == this.jewelryInventory && par1 == 7 && par2ItemStack != null) {
+         if (!Configs.wenscConfig.isCloseShop.ConfigValue) {
+//            System.out.println(Arrays.toString(new Map[]{par2ItemStack.getItem().soldPriceArray}));
+            if ((double) par2ItemStack.getItem().soldPriceArray.get(par2ItemStack.getItemSubtype()) > 0D) {
+               if (!this.player.worldObj.isRemote) {
+                  player.addChatMessage("现有余额：" + String.format("%.2f", player.plusMoney(par2ItemStack.stackSize * (double) par2ItemStack.getItem().soldPriceArray.get(par2ItemStack.getItemSubtype()))));
                }
             }
          }
@@ -371,8 +385,8 @@ public class PlayerInventoryTrans {
          return;
       }
       if (var3[par1] != par2ItemStack) {
-         if(par2ItemStack != null ) {
-            if(par2ItemStack.getItem().itemID != Items.lavaInPipes.itemID) {
+         if (par2ItemStack != null) {
+            if (par2ItemStack.getItem().itemID != Items.lavaInPipes.itemID) {
                var3[par1] = par2ItemStack;
                if (var3 == this.mainInventory && !this.player.worldObj.isRemote) {
                   this.inventorySlotChangedOnServer(par1);
@@ -398,9 +412,9 @@ public class PlayerInventoryTrans {
    public ItemStack getStackInSlotOnClosing(int par1) {
       ItemStack[] var2 = this.mainInventory;
       ItemStack[] var4 = this.jewelryInventory;
-      if(par1 >= var2.length + var4.length) {
+      if (par1 >= var2.length + var4.length) {
          var2 = this.armorInventory;
-         par1-= var2.length + var4.length;
+         par1 -= var2.length + var4.length;
       } else if (par1 >= var2.length) {
          var2 = var4;
          par1 -= this.mainInventory.length;
@@ -417,21 +431,21 @@ public class PlayerInventoryTrans {
    @Overwrite
    public void dropAllItems() {
       int var1;
-      for(var1 = 0; var1 < this.mainInventory.length; ++var1) {
+      for (var1 = 0; var1 < this.mainInventory.length; ++var1) {
          if (this.mainInventory[var1] != null) {
             this.player.dropPlayerItemWithRandomChoice(this.mainInventory[var1], true);
             this.mainInventory[var1] = null;
          }
       }
 
-      for(var1 = 0; var1 < this.jewelryInventory.length; ++var1) {
+      for (var1 = 0; var1 < this.jewelryInventory.length; ++var1) {
          if (this.jewelryInventory[var1] != null) {
             this.player.dropPlayerItemWithRandomChoice(this.jewelryInventory[var1], true);
             this.jewelryInventory[var1] = null;
          }
       }
 
-      for(var1 = 0; var1 < this.armorInventory.length; ++var1) {
+      for (var1 = 0; var1 < this.armorInventory.length; ++var1) {
          if (this.armorInventory[var1] != null) {
             this.player.dropPlayerItemWithRandomChoice(this.armorInventory[var1], true);
             this.armorInventory[var1] = null;
@@ -443,9 +457,9 @@ public class PlayerInventoryTrans {
 
    @Overwrite
    public ItemStack getInventorySlotContents(int index) {
-      if(index >= this.mainInventory.length + this.jewelryInventory.length) {
+      if (index >= this.mainInventory.length + this.jewelryInventory.length) {
          return this.armorInventory[index - this.mainInventory.length - this.jewelryInventory.length];
-      } else if(index >= this.mainInventory.length) {
+      } else if (index >= this.mainInventory.length) {
          return this.jewelryInventory[index - this.mainInventory.length];
       } else {
          return this.mainInventory[index];
@@ -455,15 +469,15 @@ public class PlayerInventoryTrans {
    @Overwrite
    public void copyInventory(PlayerInventory par1InventoryPlayer) {
       int var2;
-      for(var2 = 0; var2 < this.mainInventory.length; ++var2) {
+      for (var2 = 0; var2 < this.mainInventory.length; ++var2) {
          this.mainInventory[var2] = ItemStack.copyItemStack(par1InventoryPlayer.mainInventory[var2]);
       }
 
-      for(var2 = 0; var2 < this.armorInventory.length; ++var2) {
+      for (var2 = 0; var2 < this.armorInventory.length; ++var2) {
          this.armorInventory[var2] = ItemStack.copyItemStack(par1InventoryPlayer.armorInventory[var2]);
       }
 
-      for(var2 = 0; var2 < this.jewelryInventory.length; ++var2) {
+      for (var2 = 0; var2 < this.jewelryInventory.length; ++var2) {
          this.jewelryInventory[var2] = ItemStack.copyItemStack(par1InventoryPlayer.jewelryInventory[var2]);
       }
 
@@ -482,18 +496,18 @@ public class PlayerInventoryTrans {
                    shift = At.Shift.BEFORE,
                    value = "INVOKE",
                    target = "Lnet/minecraft/EntityDamageResult;applyArmorDamageResult(Lnet/minecraft/ItemDamageResult;)Lnet/minecraft/EntityDamageResult;"))
-   private void injectDamageArmor(DamageSource damage_source, float amount, EntityDamageResult result, CallbackInfo ci, int amount_remaining, int armor_index, ItemStack item_stack, int portion){
+   private void injectDamageArmor(DamageSource damage_source, float amount, EntityDamageResult result, CallbackInfo ci, int amount_remaining, int armor_index, ItemStack item_stack, int portion) {
       float durability_modifier = 0.0F;
       if (item_stack.getTagCompound() != null) {
          durability_modifier = ArmorModifierTypes.DURABILITY_MODIFIER.getModifierValue(item_stack.stackTagCompound);
       }
 
-      result.applyArmorDamageResult(item_stack.tryDamageItem(damage_source, (int)Math.max((1.0F - durability_modifier) * (float)portion, 1.0F), this.player));
+      result.applyArmorDamageResult(item_stack.tryDamageItem(damage_source, (int) Math.max((1.0F - durability_modifier) * (float) portion, 1.0F), this.player));
       Item item = item_stack.getItem();
       if (damage_source != null && damage_source.getResponsibleEntity() != null
               && !item.isMaxToolLevel(item_stack) && this.player.hurtTime == 10
       ) {
-         item.addExpForTool(item_stack, this.player, (int) Math.max(this.player.getTotalProtection(damage_source),result.getAmountOfHealthLost()) * 3);
+         item.addExpForTool(item_stack, this.player, (int) Math.max(this.player.getTotalProtection(damage_source), result.getAmountOfHealthLost()) * 3);
       }
    }
 
@@ -502,7 +516,7 @@ public class PlayerInventoryTrans {
            at = @At(
                    value = "INVOKE",
                    target = "Lnet/minecraft/EntityDamageResult;applyArmorDamageResult(Lnet/minecraft/ItemDamageResult;)Lnet/minecraft/EntityDamageResult;"))
-   private EntityDamageResult removeApplyArmorDamageResult(EntityDamageResult caller,ItemDamageResult itemDamageResult){
+   private EntityDamageResult removeApplyArmorDamageResult(EntityDamageResult caller, ItemDamageResult itemDamageResult) {
       return null;
    }
 
@@ -511,7 +525,7 @@ public class PlayerInventoryTrans {
            at = @At(
                    value = "INVOKE",
                    target = "Lnet/minecraft/ItemStack;tryDamageItem(Lnet/minecraft/DamageSource;ILnet/minecraft/EntityLiving;)Lnet/minecraft/ItemDamageResult;"))
-   private ItemDamageResult removeTryDamageItemStack(ItemStack caller,DamageSource damage_source, int damage, EntityLiving owner){
+   private ItemDamageResult removeTryDamageItemStack(ItemStack caller, DamageSource damage_source, int damage, EntityLiving owner) {
       return null;
    }
 }

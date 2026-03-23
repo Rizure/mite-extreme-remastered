@@ -11,7 +11,7 @@ public class EntityIronGolemTrans extends EntityGolem {
    public int DATA_OBJ_IS_BOOSTED;
    @Shadow
    private int attackTimer;
-   
+
    public EntityIronGolemTrans(World par1World) {
       super(par1World);
    }
@@ -22,14 +22,14 @@ public class EntityIronGolemTrans extends EntityGolem {
       int day = this.getWorld() != null ? this.getWorld().getDayOfOverworld() : 0;
       this.getEntityAttribute(GenericAttributes.maxHealth).setAttribute(200.0D);
       this.getEntityAttribute(GenericAttributes.movementSpeed).setAttribute(0.25D);
-      this.setEntityAttribute(GenericAttributes.attackDamage, 0.0D);
+      this.setEntityAttribute(GenericAttributes.attackDamage, 20.0D);
    }
 
    public EntityDamageResult attackEntityAsMob(Entity target) {
-      this.attackTimer = 10;
+      this.attackTimer = this.isBoosted() ? 5 : 10;
       this.worldObj.setEntityState(this, EnumEntityState.golem_throw);
       int day = this.getWorld() != null ? this.getWorld().getDayOfOverworld() : 0;
-      EntityDamageResult result = target.attackEntityFrom(new Damage(DamageSource.causeMobDamage(this), (float) (25f + day / 16f + this.getEntityAttributeValue(GenericAttributes.attackDamage))));
+      EntityDamageResult result = target.attackEntityFrom(new Damage(DamageSource.causeMobDamage(this), (float) this.getEntityAttributeValue(GenericAttributes.attackDamage)));
       if (result != null) {
          if (result.entityWasKnockedBack()) {
             target.motionY += 0.4000000059604645D;
@@ -43,8 +43,8 @@ public class EntityIronGolemTrans extends EntityGolem {
 
    protected void entityInit() {
       super.entityInit();
-      this.dataWatcher.addObject(16, (byte)0);
-      this.DATA_OBJ_IS_BOOSTED = this.dataWatcher.addObject(this.dataWatcher.getNextAvailableId(), (byte)0);
+      this.dataWatcher.addObject(16, (byte) 0);
+      this.DATA_OBJ_IS_BOOSTED = this.dataWatcher.addObject(this.dataWatcher.getNextAvailableId(), (byte) 0);
    }
 
    private boolean isBoosted() {
@@ -64,11 +64,11 @@ public class EntityIronGolemTrans extends EntityGolem {
    public boolean onEntityRightClicked(EntityPlayer player, ItemStack item_stack) {
       if (Configs.wenscConfig.canBoostIronGolem.ConfigValue && !this.isBoosted() && item_stack != null && item_stack.isBlock() && item_stack.getItemAsBlock().getBlock() == Block.blockMithril) {
          this.setSize(1.9F, 3.5F);
-         this.setEntityAttribute(GenericAttributes.maxHealth, this.getEntityAttributeValue(GenericAttributes.maxHealth) + 20.0D);
-         this.setEntityAttribute(GenericAttributes.attackDamage, this.getEntityAttributeValue(GenericAttributes.attackDamage) + 3.0D);
-         this.setHealth((float)this.getEntityAttributeValue(GenericAttributes.maxHealth));
-         this.dataWatcher.updateObject(this.DATA_OBJ_IS_BOOSTED, (byte)1);
-         if (!this.getWorld().isRemote) {
+         this.setEntityAttribute(GenericAttributes.maxHealth, this.getEntityAttributeValue(GenericAttributes.maxHealth) + 200.0D);
+         this.setEntityAttribute(GenericAttributes.attackDamage, this.getEntityAttributeValue(GenericAttributes.attackDamage) + 20.0D);
+         this.setHealth((float) this.getEntityAttributeValue(GenericAttributes.maxHealth));
+         this.dataWatcher.updateObject(this.DATA_OBJ_IS_BOOSTED, (byte) 1);
+         if (player.onServer()) {
             player.convertOneOfHeldItem(null);
          }
 
@@ -81,12 +81,12 @@ public class EntityIronGolemTrans extends EntityGolem {
    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
       super.readEntityFromNBT(par1NBTTagCompound);
       if (par1NBTTagCompound.hasKey("Boosted")) {
-         this.dataWatcher.updateObject(this.DATA_OBJ_IS_BOOSTED, (byte)(par1NBTTagCompound.getBoolean("Boosted") ? 1 : 0));
+         this.dataWatcher.updateObject(this.DATA_OBJ_IS_BOOSTED, (byte) (par1NBTTagCompound.getBoolean("Boosted") ? 1 : 0));
       }
 
       this.setPlayerCreated(par1NBTTagCompound.getBoolean("PlayerCreated"));
       if (this.isBoosted()) {
-         this.setSize(1.9F, 3.0F);
+         this.setSize(1.4F, 4.5F);
       }
 
    }

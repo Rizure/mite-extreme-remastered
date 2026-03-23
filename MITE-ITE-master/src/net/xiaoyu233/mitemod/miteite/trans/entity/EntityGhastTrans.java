@@ -1,8 +1,7 @@
 package net.xiaoyu233.mitemod.miteite.trans.entity;
 
 import net.minecraft.*;
-import net.xiaoyu233.mitemod.miteite.entity.EntityLargeFireballNB;
-import net.xiaoyu233.mitemod.miteite.util.Configs;
+import net.xiaoyu233.mitemod.miteite.entity.EntityLargeFireballNonExplodeBlock;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -73,9 +72,9 @@ public class EntityGhastTrans extends EntityFlying implements IMonster {
       double var5 = this.waypointZ - super.posZ;
       double var7 = var1 * var1 + var3 * var3 + var5 * var5;
       if (var7 < 1.0D || var7 > 3600.0D) {
-         this.waypointX = super.posX + (double)((super.rand.nextFloat() * 2.0F - 1.0F) * 16.0F);
-         this.waypointY = super.posY + (double)((super.rand.nextFloat() * 2.0F - 1.0F) * 16.0F);
-         this.waypointZ = super.posZ + (double)((super.rand.nextFloat() * 2.0F - 1.0F) * 16.0F);
+         this.waypointX = super.posX + (double) ((super.rand.nextFloat() * 2.0F - 1.0F) * 16.0F);
+         this.waypointY = super.posY + (double) ((super.rand.nextFloat() * 2.0F - 1.0F) * 16.0F);
+         this.waypointZ = super.posZ + (double) ((super.rand.nextFloat() * 2.0F - 1.0F) * 16.0F);
       }
 
       if (this.courseChangeCooldown-- <= 0) {
@@ -106,31 +105,31 @@ public class EntityGhastTrans extends EntityFlying implements IMonster {
       double var9 = 64.0D;
       if (this.targetedEntity != null && this.targetedEntity.getDistanceSqToEntity(this) < var9 * var9) {
          Vec3D target_center = this.targetedEntity.getCenterPoint();
-         super.renderYawOffset = super.rotationYaw = (float)MathHelper.getYawInDegrees(super.getCenterPoint(), target_center);
+         super.renderYawOffset = super.rotationYaw = (float) MathHelper.getYawInDegrees(super.getCenterPoint(), target_center);
          if (super.canSeeEntity(this.targetedEntity)) {
             if (this.attackCounter == 8) {
-               super.worldObj.playAuxSFXAtEntity(null, 1007, (int)super.posX, (int)super.posY, (int)super.posZ, 0);
+               super.worldObj.playAuxSFXAtEntity(null, 1007, (int) super.posX, (int) super.posY, (int) super.posZ, 0);
             }
 
             ++this.attackCounter;
             if (this.attackCounter == 15) {
                double distance_sq = super.getCenterPoint().squareDistanceTo(target_center);
-               float lead = (float)Math.pow(distance_sq, 0.44D);
+               float lead = (float) Math.pow(distance_sq, 0.44D);
                lead *= 0.5F + super.rand.nextFloat();
                target_center.xCoord = this.targetedEntity.getPredictedPosX(lead);
                target_center.zCoord = this.targetedEntity.getPredictedPosZ(lead);
-               super.worldObj.playAuxSFXAtEntity(null, 1008, (int)super.posX, (int)super.posY, (int)super.posZ, 0);
+               super.worldObj.playAuxSFXAtEntity(null, 1008, (int) super.posX, (int) super.posY, (int) super.posZ, 0);
 
                //Triple shot
 //               for(int i = 3; i > 0; --i) {
                //No triple shots anymore
-                  EntityLargeFirebal var17 = new EntityLargeFireballNB(super.worldObj, this, target_center, 4.0F);
-                  var17.field_92057_e = this.explosionStrength;
-                  var17.accelerationX *= 1.15d;
-                  var17.accelerationY *= 1.15d;
-                  var17.accelerationZ *= 1.15d;
+               EntityLargeFirebal var17 = new EntityLargeFireballNonExplodeBlock(super.worldObj, this, target_center, 4.0F);
+               var17.field_92057_e = this.explosionStrength;
+               var17.accelerationX *= 1.15d;
+               var17.accelerationY *= 1.15d;
+               var17.accelerationZ *= 1.15d;
 
-                  super.worldObj.spawnEntityInWorld(var17);
+               super.worldObj.spawnEntityInWorld(var17);
 //               }
 
                this.attackCounter = -35;
@@ -139,7 +138,7 @@ public class EntityGhastTrans extends EntityFlying implements IMonster {
             --this.attackCounter;
          }
       } else {
-         super.renderYawOffset = super.rotationYaw = -((float)Math.atan2(super.motionX, super.motionZ)) * 180.0F / 3.1415927F;
+         super.renderYawOffset = super.rotationYaw = -((float) Math.atan2(super.motionX, super.motionZ)) * 180.0F / 3.1415927F;
          if (this.attackCounter > 0) {
             --this.attackCounter;
          }
@@ -147,7 +146,7 @@ public class EntityGhastTrans extends EntityFlying implements IMonster {
 
       if (!super.worldObj.isRemote) {
          byte var21 = super.dataWatcher.getWatchableObjectByte(16);
-         byte var12 = (byte)(this.attackCounter > 10 ? 1 : 0);
+         byte var12 = (byte) (this.attackCounter > 10 ? 1 : 0);
          if (var21 != var12) {
             super.dataWatcher.updateObject(16, var12);
          }

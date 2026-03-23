@@ -1,6 +1,7 @@
 package net.xiaoyu233.mitemod.miteite.trans.entity;
 
 import net.minecraft.*;
+import net.xiaoyu233.mitemod.miteite.util.ReflectHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -12,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 @Mixin(EntityExperienceOrb.class)
-public class EntityExperienceOrbTrans extends Entity{
+public class EntityExperienceOrbTrans extends Entity {
    @Shadow
    public int xpOrbAge;
    @Shadow
@@ -26,69 +27,64 @@ public class EntityExperienceOrbTrans extends Entity{
    @Shadow
    private EntityPlayer closestPlayer;
    public boolean shouldMerge = true;
+
    public EntityExperienceOrbTrans(World par1World) {
       super(par1World);
    }
+
    @Overwrite
    public static int getXPSplit(int par0) {
-       return par0 / 3 > 0 ? par0 / 3 : (par0 == 2 ? 2 : 1);
+      return par0 / 3 > 0 ? par0 / 3 : (par0 == 2 ? 2 : 1);
    }
-//   @Inject(method = "readEntityFromNBT",at = @At("RETURN"))
-//   private void injectReadNBT(NBTTagCompound compound,CallbackInfo callbackInfo){
-//      this.shouldMerge = compound.getBoolean("shouldMerge");
-//   }
-//
-//   @Inject(method = "writeEntityToNBT",at = @At("RETURN"))
-//   private void injectWriteNBT(NBTTagCompound compound,CallbackInfo c){
-//      compound.setBoolean("shouldMerge", this.shouldMerge);
-//   }
-//
-//    @Redirect(
-//            method = {"onUpdate"},
-//            at = @At(
-//                    ordinal = 0,
-//                    value = "INVOKE",
-//                    target = "Lnet/minecraft/EntityPlayer;getEyeHeight()F"
-//            )
-//    )
-//    public float modifyOrbAdsorptionCenter(EntityPlayer entityPlayer) {
-//        return -0.5F;
-//    }
-//   @Inject(
-//           method = {"onUpdate"},
-//           at = @At(
-//                   ordinal = 0,
-//                   value = "INVOKE",
-//                   target = "moveEntity"
-//           )
-//   )
-//   public void AbsorbXpOrbs(CallbackInfo callbackInfo) {
-//      if(this.closestPlayer == null && this.player_this_belongs_to == null){
-//         if (this.xpOrbAge % 10 == 0 && this.xpOrbAge > 200) {
-//            List targets  = this.getNearbyEntities(4.0F,2.0F);
-//            int total_value = 0;
-//            for(int i = 0; i < targets.size(); i++){
-//               if(targets.get(i) instanceof EntityExperienceOrb){
-//                  if(this.xpValue > ((EntityExperienceOrb) targets.get(i)).getXpValue() && ((EntityExperienceOrb) targets.get(i)).shouldMerge){
-//                     total_value += ((EntityExperienceOrb) targets.get(i)).getXpValue();
-//                     ((EntityExperienceOrb) targets.get(i)).xpOrbAge = 9999;
-//                     ((EntityExperienceOrb) targets.get(i)).shouldMerge = false;
-//                  }
-//               }
-//            }
-//            if(total_value != 0){
-//               EntityExperienceOrb newOrb = new EntityExperienceOrb(this.worldObj,this.posX,this.posY,this.posZ,total_value);
-//               newOrb.xpOrbAge = this.xpOrbAge;
-//               this.worldObj.spawnEntityInWorld(newOrb);
-//               this.xpOrbAge = 9999;
-//            }
-//         }
-//      }
-//   }
+
+   @Inject(method = "onUpdate", at = @At("HEAD"))
+   private void mergeNearbyXPOrbs(CallbackInfo ci) {
+      EntityExperienceOrb self = (EntityExperienceOrb) (Object)this;
+      if (!self.onServer() || self.isDead) return;
+      if (self.xpOrbAge % 60 != 0 || self.xpOrbAge < 200) return;
+      double mergeRadius = 0.5D;
+      for (Object obj : self.worldObj.getEntitiesWithinAABB(EntityExperienceOrb.class, self.boundingBox.expand(mergeRadius, mergeRadius, mergeRadius))) {
+         EntityExperienceOrb other = (EntityExperienceOrb) obj;
+         if (other == self || other.isDead) continue;
+         if (self.player_this_belongs_to != null) continue;
+         int total_value = other.getXpValue() + self.getXpValue();
+         if (total_value > 32767) continue;
+         if (other.getXpValue() >= self.getXpValue()) {
+            if(total_value != 0){
+               EntityExperienceOrb newOrb = new EntityExperienceOrb(this.worldObj,this.posX,this.posY,this.posZ,total_value);
+               newOrb.xpOrbAge = self.xpOrbAge;
+               this.worldObj.spawnEntityInWorld(newOrb);
+            }
+            self.setDead();
+            other.setDead();
+         }
+         else {
+            if(total_value != 0){
+               EntityExperienceOrb newOrb = new EntityExperienceOrb(this.worldObj,this.posX,this.posY,this.posZ,total_value);
+               newOrb.xpOrbAge = other.xpOrbAge;
+               this.worldObj.spawnEntityInWorld(newOrb);
+            }
+            self.setDead();
+            other.setDead();
+         }
+         return;
+      }
+   }
+    @Redirect(
+            method = {"onUpdate"},
+            at = @At(
+                    ordinal = 0,
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/EntityPlayer;getEyeHeight()F"
+            )
+    )
+    public float modifyOrbAdsorptionCenter(EntityPlayer entityPlayer) {
+        return -0.5F;
+    }
    @Overwrite
    public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
-      par1NBTTagCompound.setShort("Health", (short)((byte)this.xpOrbHealth));
-      par1NBTTagCompound.setShort("Age", (short)this.xpOrbAge);
+      par1NBTTagCompound.setShort("Health", (short) ((byte) this.xpOrbHealth));
+      par1NBTTagCompound.setShort("Age", (short) this.xpOrbAge);
       par1NBTTagCompound.setInteger("Value", this.xpValue);
       if (this.player_this_belongs_to != null) {
          par1NBTTagCompound.setString("player_this_belongs_to", this.player_this_belongs_to);
@@ -101,8 +97,9 @@ public class EntityExperienceOrbTrans extends Entity{
 
    @Shadow
    protected void entityInit() {
-      
+
    }
+
    @Overwrite
    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
       this.xpOrbHealth = par1NBTTagCompound.getShort("Health") & 255;

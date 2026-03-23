@@ -16,19 +16,19 @@ import org.spongepowered.asm.mixin.Mixin;
 @Mixin(BlockStone.class)
 public class BlockStoneTrans extends Block {
 
-    public BlockStoneTrans(int par1) {
-        super(par1, Material.stone, new BlockConstants());
-        this.setCreativeTab(CreativeModeTab.tabBlock);
-        this.setMaxStackSize(64);
-    }
+   public BlockStoneTrans(int par1) {
+      super(par1, Material.stone, new BlockConstants());
+      this.setCreativeTab(CreativeModeTab.tabBlock);
+      this.setMaxStackSize(64);
+   }
 
-    public Block setBlockHardness(float resistance) {
-        this.setMaxStackSize(64);
-        // super.a(resistance / 10.0F); 经验
-        return null;
-    }
+   public Block setBlockHardness(float resistance) {
+      this.setMaxStackSize(64);
+      // super.a(resistance / 10.0F); 经验
+      return null;
+   }
 
-    public int dropBlockAsEntityItem(BlockBreakInfo info) {
-        return this.dropBlockAsEntityItem(info, cobblestone);
-    }
+   public int dropBlockAsEntityItem(BlockBreakInfo info) {
+      return this.dropBlockAsEntityItem(info, cobblestone);
+   }
 }

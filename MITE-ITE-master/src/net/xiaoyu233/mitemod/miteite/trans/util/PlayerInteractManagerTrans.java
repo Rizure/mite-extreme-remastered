@@ -12,29 +12,30 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin({PlayerInteractManager.class})
 public abstract class PlayerInteractManagerTrans {
-    @Shadow
-    public ServerPlayer thisPlayerMP;
+   @Shadow
+   public ServerPlayer thisPlayerMP;
 
-    @Shadow
-    private boolean tree_felling_in_progress;
-    @Shadow
-    public World theWorld;
-    @Shadow
-    public abstract boolean tryHarvestBlock(int x, int y, int z);
+   @Shadow
+   private boolean tree_felling_in_progress;
+   @Shadow
+   public World theWorld;
 
-    public PlayerInteractManagerTrans() {
-    }
+   @Shadow
+   public abstract boolean tryHarvestBlock(int x, int y, int z);
 
-    @Redirect(
-            method = {"setGameType", "getGameType", "isCreative", "initializeGameType"},
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/Minecraft;inDevMode()Z"
-            )
-    )
-    private boolean redirectInDevMode() {
-        return (this.thisPlayerMP != null && this.thisPlayerMP.isOp()) || Minecraft.inDevMode();
-    }
+   public PlayerInteractManagerTrans() {
+   }
+
+   @Redirect(
+           method = {"setGameType", "getGameType", "isCreative", "initializeGameType"},
+           at = @At(
+                   value = "INVOKE",
+                   target = "Lnet/minecraft/Minecraft;inDevMode()Z"
+           )
+   )
+   private boolean redirectInDevMode() {
+      return (this.thisPlayerMP != null && this.thisPlayerMP.isOp()) || Minecraft.inDevMode();
+   }
 
 //    @Inject(locals = LocalCapture.CAPTURE_FAILHARD, method = "tryHarvestBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/ServerPlayer;addStat(Lnet/minecraft/Statistic;I)V", ordinal = 1, shift = At.Shift.AFTER))
 //    public void injectAnoterTree(int x, int y, int z, CallbackInfoReturnable<Boolean> cir, Block block, BlockBreakInfo block_break_info, boolean player_can_damage_block, int data, boolean block_was_removed, ItemStack held_item_stack) {

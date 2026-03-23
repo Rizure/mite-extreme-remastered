@@ -13,9 +13,10 @@ public class EnchantmentLootBonusTrans extends Enchantment {
    protected EnchantmentLootBonusTrans(int id, yq rarity, int difficulty) {
       super(id, rarity, difficulty);
    }
+
    @Inject(method = "canEnchantItem(Lnet/minecraft/Item;)Z", at = @At("RETURN"), cancellable = true)
    private void extendsTools(Item item, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
-      if(item.getClass() == ItemShears.class && this == fortune){
+      if (item.getClass() == ItemShears.class && this == fortune) {
          callbackInfoReturnable.setReturnValue(true);
          callbackInfoReturnable.cancel();
       }

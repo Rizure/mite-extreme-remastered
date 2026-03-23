@@ -11,6 +11,7 @@ public abstract class EntityChickenTrans extends EntityLivestockTrans {
    public EntityChickenTrans(World world) {
       super(world);
    }
+
    public float getAIMoveSpeed() {
       return this.riddenByEntity == null ? super.getAIMoveSpeed() : 0.0875F;
    }
@@ -40,8 +41,8 @@ public abstract class EntityChickenTrans extends EntityLivestockTrans {
          this.rotationPitch = this.riddenByEntity.rotationPitch * 0.5F;
          this.setRotation(this.rotationYaw, this.rotationPitch);
          this.rotationYawHead = this.renderYawOffset = this.rotationYaw;
-         par1 = ((EntityLiving)this.riddenByEntity).moveStrafing * 0.5F;
-         par2 = ((EntityLiving)this.riddenByEntity).moveForward;
+         par1 = ((EntityLiving) this.riddenByEntity).moveStrafing * 0.5F;
+         par2 = ((EntityLiving) this.riddenByEntity).moveForward;
          if (par2 <= 0.0F) {
             par2 *= 0.25F;
          }

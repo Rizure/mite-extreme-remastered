@@ -8,9 +8,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(FishModLoader.class)
 public class FishModLoaderTrans {
-    @Inject(method = "versionCheck", at = @At("HEAD"), cancellable = true)
-    private static void preventCheckVersion(CallbackInfoReturnable<String> callbackInfoReturnable) {
-        callbackInfoReturnable.setReturnValue(null);
-        callbackInfoReturnable.cancel();
-    }
+   @Inject(method = "versionCheck", at = @At("HEAD"), cancellable = true)
+   private static void preventCheckVersion(CallbackInfoReturnable<String> callbackInfoReturnable) {
+      callbackInfoReturnable.setReturnValue(null);
+      callbackInfoReturnable.cancel();
+   }
 }

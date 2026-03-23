@@ -4,6 +4,7 @@ import net.minecraft.*;
 import net.xiaoyu233.mitemod.miteite.item.Items;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
 import net.xiaoyu233.mitemod.miteite.util.Constant;
+import net.xiaoyu233.mitemod.miteite.util.ReflectHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -27,8 +28,8 @@ public class EntityCreeperTrans extends EntityMonster {
    protected void applyEntityAttributes() {
       super.applyEntityAttributes();
       int day = this.getWorld() != null ? Math.max(this.getWorld().getDayOfOverworld(), 0) : 0;
-      this.setEntityAttribute(GenericAttributes.movementSpeed, 0.23D * Constant.getNormalMobModifier("Speed",day));
-      this.setEntityAttribute(GenericAttributes.maxHealth, 20 * Constant.getNormalMobModifier("Health",day));
+      this.setEntityAttribute(GenericAttributes.movementSpeed, 0.23D * Constant.getNormalMobModifier("Speed", day));
+      this.setEntityAttribute(GenericAttributes.maxHealth, 20 * Constant.getNormalMobModifier("Health", day));
       this.setEntityAttribute(GenericAttributes.followRange, 64.0D);
    }
 
@@ -39,18 +40,20 @@ public class EntityCreeperTrans extends EntityMonster {
    public void setExplosionTime(int br) {
       this.fuseTime = br;
    }
+
    public void onDeath(DamageSource par1DamageSource) {
       super.onDeath(par1DamageSource);
       if (par1DamageSource.getResponsibleEntity() instanceof EntitySkeleton) {
          int var2 = Item.recordUnderworld.itemID + this.rand.nextInt(Item.recordLegends.itemID - Item.recordUnderworld.itemID + 1);
          this.dropItem(var2, 1);
       }
-      if (par1DamageSource.isFireDamage() || par1DamageSource.isLavaDamage() || par1DamageSource.isExplosion()){
+      if (par1DamageSource.isFireDamage() || par1DamageSource.isLavaDamage() || par1DamageSource.isExplosion()) {
          this.burntoDeath = true;
       }
    }
+
    @Override
-   public void onDeathUpdate(){
+   public void onDeathUpdate() {
       super.onDeathUpdate();
       if (this.deathTime == 20 && (this.burntoDeath || this.getPowered())) {
          if (!this.worldObj.isRemote) {
@@ -58,17 +61,25 @@ public class EntityCreeperTrans extends EntityMonster {
             float explosion_size_vs_blocks = this.explosionRadius * 0.715F;
             float explosion_size_vs_living_entities = this.explosionRadius * 1.1F;
             if (this.getPowered()) {
-               this.worldObj.createExplosion(this, this.posX, this.posY + (double)(this.height / 4.0F), this.posZ, explosion_size_vs_blocks * 2.0F, explosion_size_vs_living_entities * 2.0F, var2);
+               this.worldObj.createExplosion(this, this.posX, this.posY + (double) (this.height / 4.0F), this.posZ, explosion_size_vs_blocks * 2.0F, explosion_size_vs_living_entities * 2.0F, var2);
             } else {
-               this.worldObj.createExplosion(this, this.posX, this.posY + (double)(this.height / 4.0F), this.posZ, explosion_size_vs_blocks, explosion_size_vs_living_entities, var2);
+               this.worldObj.createExplosion(this, this.posX, this.posY + (double) (this.height / 4.0F), this.posZ, explosion_size_vs_blocks, explosion_size_vs_living_entities, var2);
             }
             this.entityFX(EnumEntityFX.frags);
-            if(this.getPowered()){
+            if (this.getPowered()) {
                this.dropItem(Items.powder_thunder);
+            }
+            if (this.burntoDeath){
+               if(ReflectHelper.dyCast(this) instanceof EntityInfernalCreeper){
+                  this.dropItem(Items.chibiCreeperSoul);
+               }else {
+                  this.dropItem(Items.chibiCreeperBaby);
+               }
             }
          }
       }
    }
+
    @Shadow
    public boolean getPowered() {
       return false;

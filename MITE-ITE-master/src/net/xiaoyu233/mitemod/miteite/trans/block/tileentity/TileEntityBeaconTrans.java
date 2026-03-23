@@ -72,27 +72,27 @@ public class TileEntityBeaconTrans extends TileEntity {
 //   }
 
    private float getCraftingBoostFactor(int level) {
-      switch(level) {
-      case 1:
-         return 0.25F;
-      case 2:
-         return 0.4F;
-      case 3:
-         return 0.6F;
-      case 4:
-         return 0.85F;
-      default:
-         return 0F;
+      switch (level) {
+         case 1:
+            return 0.25F;
+         case 2:
+            return 0.4F;
+         case 3:
+            return 0.6F;
+         case 4:
+            return 0.85F;
+         default:
+            return 0F;
       }
    }
 
-   @Inject(method = "readFromNBT",at = @At("RETURN"))
-   public void injectReadNBT(NBTTagCompound par1NBTTagCompound,CallbackInfo callbackInfo) {
+   @Inject(method = "readFromNBT", at = @At("RETURN"))
+   public void injectReadNBT(NBTTagCompound par1NBTTagCompound, CallbackInfo callbackInfo) {
       this.currentPos = new BlockPos(this.xCoord, this.yCoord, this.zCoord);
    }
 
-   @Inject(method = "updateState",at = @At(value = "HEAD"))
-   private void injectUpdatePos(CallbackInfo ci){
+   @Inject(method = "updateState", at = @At(value = "HEAD"))
+   private void injectUpdatePos(CallbackInfo ci) {
       if (this.currentPos == null) {
          this.currentPos = new BlockPos(this.xCoord, this.yCoord, this.zCoord);
       }
@@ -103,8 +103,8 @@ public class TileEntityBeaconTrans extends TileEntity {
    }
 
    @Overwrite
-   private void updateState(){
-      if (this.currentPos == null){
+   private void updateState() {
+      if (this.currentPos == null) {
          this.currentPos = new BlockPos(this.xCoord, this.yCoord, this.zCoord);
       }
       if (!this.worldObj.canBlockSeeTheSky(this.xCoord, this.yCoord + 1, this.zCoord)) {
@@ -115,7 +115,7 @@ public class TileEntityBeaconTrans extends TileEntity {
          int previousLevel = this.levels;
          this.levels = 0;
 
-         for(int var1 = 1; var1 <= 4; this.levels = var1++) {
+         for (int var1 = 1; var1 <= 4; this.levels = var1++) {
             int var2 = this.yCoord - var1;
             if (var2 < 0) {
                break;
@@ -123,8 +123,8 @@ public class TileEntityBeaconTrans extends TileEntity {
 
             boolean var3 = true;
 
-            for(int var4 = this.xCoord - var1; var4 <= this.xCoord + var1 && var3; ++var4) {
-               for(int var5 = this.zCoord - var1; var5 <= this.zCoord + var1; ++var5) {
+            for (int var4 = this.xCoord - var1; var4 <= this.xCoord + var1 && var3; ++var4) {
+               for (int var5 = this.zCoord - var1; var5 <= this.zCoord + var1; ++var5) {
                   int var6 = this.worldObj.getBlockId(var4, var2, var5);
                   if (var6 != Block.blockEmerald.blockID && var6 != Block.blockDiamond.blockID && var6 != Block.blockCopper.blockID && var6 != Block.blockSilver.blockID && var6 != Block.blockGold.blockID && var6 != Block.blockIron.blockID && var6 != Block.blockMithril.blockID && var6 != Block.blockAdamantium.blockID && var6 != Blocks.blockVibranium.blockID) {
                      var3 = false;

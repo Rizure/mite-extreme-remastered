@@ -24,6 +24,12 @@ public class NetworkManagerTrans {
    public void processStartForgingPacket(CPacketStartForging packet) {
    }
 
-   public void handleUpdateDefense(BiPacketUpdateDefense packet){
+   public void handleUpdateDefense(BiPacketUpdateDefense packet) {
+   }
+
+   public void processSwitchForgingTableModePacket(CPacketSwitchForgingTableMode packet) {
+   }
+
+   public void handleUpdateForgingTableModeState(SPacketUpdateForgingTableModeState packet){
    }
 }

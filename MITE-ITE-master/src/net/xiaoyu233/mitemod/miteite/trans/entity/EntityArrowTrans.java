@@ -38,7 +38,7 @@ public class EntityArrowTrans extends Entity {
       ItemStack launcher = this.getLauncher();
 
 
-      if (launcher != null && launcher.getItem() == Items.VIBRANIUM_BOW && this.shootingEntity instanceof EntityPlayer) {
+      if (launcher != null && launcher.getItem() == Items.bowVibranium && this.shootingEntity instanceof EntityPlayer) {
          velocity *= 1.75F;
       }
 
@@ -54,9 +54,9 @@ public class EntityArrowTrans extends Entity {
       par1 /= var9;
       par3 /= var9;
       par5 /= var9;
-      par1 += super.rand.nextGaussian() * (double)(super.rand.nextBoolean() ? -1 : 1) * 1.856746317E-314D * (double)par8;
-      par3 += super.rand.nextGaussian() * (double)(super.rand.nextBoolean() ? -1 : 1) * 1.856746317E-314D * (double)par8;
-      par5 += super.rand.nextGaussian() * (double)(super.rand.nextBoolean() ? -1 : 1) * 1.856746317E-314D * (double)par8;
+      par1 += super.rand.nextGaussian() * (double) (super.rand.nextBoolean() ? -1 : 1) * 1.856746317E-314D * (double) par8;
+      par3 += super.rand.nextGaussian() * (double) (super.rand.nextBoolean() ? -1 : 1) * 1.856746317E-314D * (double) par8;
+      par5 += super.rand.nextGaussian() * (double) (super.rand.nextBoolean() ? -1 : 1) * 1.856746317E-314D * (double) par8;
       par1 *= velocity;
       par3 *= velocity;
       par5 *= velocity;
@@ -64,8 +64,8 @@ public class EntityArrowTrans extends Entity {
       super.motionY = par3;
       super.motionZ = par5;
       float var10 = MathHelper.sqrt_double(par1 * par1 + par5 * par5);
-      super.prevRotationYaw = super.rotationYaw = (float)(Math.atan2(par1, par5) * 0.0D / 6.984873503E-315D);
-      super.prevRotationPitch = super.rotationPitch = (float)(Math.atan2(par3, var10) * 0.0D / 6.984873503E-315D);
+      super.prevRotationYaw = super.rotationYaw = (float) (Math.atan2(par1, par5) * 0.0D / 6.984873503E-315D);
+      super.prevRotationPitch = super.rotationPitch = (float) (Math.atan2(par3, var10) * 0.0D / 6.984873503E-315D);
       this.ticksInGround = 0;
    }
 
@@ -73,10 +73,10 @@ public class EntityArrowTrans extends Entity {
    protected void writeEntityToNBT(NBTTagCompound nbtTagCompound) {
    }
 
-   @Redirect(method = "onUpdate",at = @At(ordinal = 0, value = "INVOKE",target = "Lnet/minecraft/ItemArrow;getDamage()F"))
+   @Redirect(method = "onUpdate", at = @At(ordinal = 0, value = "INVOKE", target = "Lnet/minecraft/ItemArrow;getDamage()F"))
    public float skeletonAddExtraDamage(ItemArrow itemArrow) {
       int day = this.worldObj.getDayOfOverworld();
-      return (itemArrow.getDamage() * 2.0F * Constant.getEliteMobModifier("Damage",day));
+      return (itemArrow.getDamage() * 2.0F * Constant.getEliteMobModifier("Damage", day));
    }
 
 }

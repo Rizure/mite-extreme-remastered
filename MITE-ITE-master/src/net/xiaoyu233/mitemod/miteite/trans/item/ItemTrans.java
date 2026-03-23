@@ -3,11 +3,9 @@ package net.xiaoyu233.mitemod.miteite.trans.item;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.*;
-import net.xiaoyu233.mitemod.miteite.block.Blocks;
 import net.xiaoyu233.mitemod.miteite.item.ItemModifierTypes;
 import net.xiaoyu233.mitemod.miteite.item.Items;
 import net.xiaoyu233.mitemod.miteite.item.Materials;
-import net.xiaoyu233.mitemod.miteite.util.Configs;
 import net.xiaoyu233.mitemod.miteite.util.ReflectHelper;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,26 +13,32 @@ import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.io.PrintStream;
 import java.util.*;
 
 @Mixin(Item.class)
 public abstract class ItemTrans {
-   @Shadow public abstract List getSubItems();
+   @Shadow
+   public abstract List getSubItems();
 
-   @Shadow public abstract boolean getHasSubtypes();
+   @Shadow
+   public abstract boolean getHasSubtypes();
 
-   @Shadow public abstract int getNumSubtypes();
+   @Shadow
+   public abstract int getNumSubtypes();
 
-   @Shadow private int sugar_content;
+   @Shadow
+   private int sugar_content;
 
-   @Shadow public abstract boolean hasQuality();
+   @Shadow
+   public abstract boolean hasQuality();
 
-   @Shadow private int maxDamage;
+   @Shadow
+   private int maxDamage;
 
-   @Shadow public abstract boolean isDamageable();
+   @Shadow
+   public abstract boolean isDamageable();
 
    @Shadow
    private static Item[] itemsList;
@@ -48,7 +52,7 @@ public abstract class ItemTrans {
    public Map<Integer, Double> soldPriceArray = new HashMap<>();
 
    public Map<Integer, Double> buyPriceArray = new HashMap<>();
-   
+
 
    @ModifyConstant(method = {
            "<init>(ILjava/lang/String;I)V",
@@ -57,12 +61,12 @@ public abstract class ItemTrans {
       return 1024;
    }
 
-   @Inject(method = "<init>()V",at = @At("RETURN"))
+   @Inject(method = "<init>()V", at = @At("RETURN"))
    private void injectCtor(CallbackInfo callbackInfo) {
       ReflectHelper.dyCast(Item.class, this).recipes = new aah[500];
    }
 
-   @Inject(method = "<init>(ILjava/lang/String;I)V",at = @At("RETURN"))
+   @Inject(method = "<init>(ILjava/lang/String;I)V", at = @At("RETURN"))
    private void injectCtor(int par1, String texture, int num_subtypes, CallbackInfo callbackInfo) {
       ReflectHelper.dyCast(Item.class, this).recipes = new aah[500];
    }
@@ -74,7 +78,7 @@ public abstract class ItemTrans {
 
    // 向源类进行注入
    public Item setBuyPrice(double price) {
-      if(this.getHasSubtypes()) {
+      if (this.getHasSubtypes()) {
          List subs = this.getSubItems();
          for (int i = 0; i < subs.size(); i++) {
             ItemStack itemStack = (ItemStack) subs.get(i);
@@ -84,13 +88,13 @@ public abstract class ItemTrans {
       } else {
          this.buyPriceArray.put(0, price);
       }
-      return ReflectHelper.dyCast(Item.class,this);
+      return ReflectHelper.dyCast(Item.class, this);
    }
 
 
    // 向源类进行注入
    public Item setSoldPrice(double price) {
-      if(this.getHasSubtypes()) {
+      if (this.getHasSubtypes()) {
          List subs = this.getSubItems();
          for (int i = 0; i < subs.size(); i++) {
             ItemStack itemStack = (ItemStack) subs.get(i);
@@ -104,7 +108,7 @@ public abstract class ItemTrans {
    }
 
 
-   public void setSugarContent(int sugarContent){
+   public void setSugarContent(int sugarContent) {
       this.sugar_content = sugarContent;
    }
 
@@ -112,14 +116,14 @@ public abstract class ItemTrans {
       stack.fixNBT();
       NBTTagCompound tagCompound = stack.stackTagCompound;
       if (tagCompound != null) {
-         if (tagCompound.hasKey("tool_exp")) {
-            tagCompound.setInteger("tool_exp", tagCompound.getInteger("tool_exp") + exp);
-            if (tagCompound.hasKey("tool_level")) {
-               int currentLevel = tagCompound.getInteger("tool_level");
+         if (tagCompound.hasKey("using_exp")) {
+            tagCompound.setInteger("using_exp", tagCompound.getInteger("using_exp") + exp);
+            if (tagCompound.hasKey("using_level")) {
+               int currentLevel = tagCompound.getInteger("using_level");
                int nextLevelExpReq = this.getExpReqForLevel(currentLevel, this.isWeapon(stack.getItem()));
-               if (tagCompound.getInteger("tool_exp") >= nextLevelExpReq) {
-                  tagCompound.setInteger("tool_level", currentLevel + 1);
-                  tagCompound.setInteger("tool_exp", 0);
+               if (tagCompound.getInteger("using_exp") >= nextLevelExpReq) {
+                  tagCompound.setInteger("using_level", currentLevel + 1);
+                  tagCompound.setInteger("using_exp", 0);
                   if (!player.worldObj.isRemote) {
                      player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "已升级,当前等级:" + (currentLevel + 1)).setColor(EnumChatFormat.DARK_AQUA));
                   }
@@ -134,8 +138,8 @@ public abstract class ItemTrans {
          }
       } else {
          NBTTagCompound compound = new NBTTagCompound();
-         compound.setInteger("tool_exp", 0);
-         compound.setInteger("tool_level", 0);
+         compound.setInteger("using_exp", 0);
+         compound.setInteger("using_level", 0);
          stack.stackTagCompound = compound;
       }
    }
@@ -182,7 +186,7 @@ public abstract class ItemTrans {
 
    @Overwrite
    public int getHeatLevel(ItemStack item_stack) {
-      if (ReflectHelper.dyCast(this) == Items.BLAZE_COAL_POWDER) {
+      if (ReflectHelper.dyCast(this) == Items.blazeCoalPowder) {
          return 5;
       } else if (ReflectHelper.dyCast(this) == Item.blazeRod) {
          return 4;
@@ -224,7 +228,9 @@ public abstract class ItemTrans {
       } else if (material_for_repairs == Material.ancient_metal) {
          return Item.ancientMetalNugget;
       } else if (material_for_repairs == Materials.vibranium) {
-         return Items.VIBRANIUM_NUGGET;
+         return Items.vibraniumNugget;
+      } else if (material_for_repairs == Materials.mitega) {
+         return Items.miteGaNugget;
       } else if (material_for_repairs == Materials.redstone) {
          return Items.redstone;
       } else {
@@ -241,7 +247,7 @@ public abstract class ItemTrans {
    }
 
    public int getToolLevel(ItemStack itemStack) {
-      return itemStack.stackTagCompound != null ? itemStack.getTagCompound().getInteger("tool_level") : 0;
+      return itemStack.stackTagCompound != null ? itemStack.getTagCompound().getInteger("using_level") : 0;
    }
 
    public boolean hasExpAndLevel() {

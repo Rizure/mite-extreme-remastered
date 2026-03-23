@@ -7,15 +7,15 @@ import org.spongepowered.asm.mixin.Overwrite;
 
 @Mixin(EnchantmentVampiric.class)
 public class EnchantmentVampiricTrans {
-    @Overwrite
-    public boolean canEnchantItem(Item item) {
-        if (item instanceof ItemTool) {
-            Material material = ((ItemTool)item).getToolMaterial();
-            if (material != Materials.vibranium) {
-                return false;
-            }
-        }
+   @Overwrite
+   public boolean canEnchantItem(Item item) {
+      if (item instanceof ItemTool) {
+         Material material = ((ItemTool) item).getToolMaterial();
+         if (material != Materials.vibranium) {
+            return false;
+         }
+      }
 
-        return item instanceof ItemSword || item instanceof ItemScythe || item instanceof ItemCudgel;
-    }
+      return item instanceof ItemSword || item instanceof ItemScythe || item instanceof ItemCudgel;
+   }
 }

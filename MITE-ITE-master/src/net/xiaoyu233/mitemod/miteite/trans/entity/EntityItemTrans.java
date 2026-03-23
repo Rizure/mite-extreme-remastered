@@ -19,7 +19,11 @@ public abstract class EntityItemTrans extends Entity {
    }
 
    @Shadow
-   public boolean canBePickedUpBy(EntityLiving entity_living_base) { return true;};
+   public boolean canBePickedUpBy(EntityLiving entity_living_base) {
+      return true;
+   }
+
+   ;
 
    @Overwrite
    public void onCollideWithPlayer(EntityPlayer par1EntityPlayer) {
@@ -63,19 +67,19 @@ public abstract class EntityItemTrans extends Entity {
                   }
 
                   if (var2.itemID == Item.wheat.itemID) {
-                     this.worldObj.getWorldInfo().fullfillVillageCondition(1, (WorldServer)this.worldObj);
+                     this.worldObj.getWorldInfo().fullfillVillageCondition(1, (WorldServer) this.worldObj);
                   }
 
                   if (var2.itemID == Item.carrot.itemID) {
-                     this.worldObj.getWorldInfo().fullfillVillageCondition(2, (WorldServer)this.worldObj);
+                     this.worldObj.getWorldInfo().fullfillVillageCondition(2, (WorldServer) this.worldObj);
                   }
 
                   if (var2.itemID == Item.potato.itemID) {
-                     this.worldObj.getWorldInfo().fullfillVillageCondition(4, (WorldServer)this.worldObj);
+                     this.worldObj.getWorldInfo().fullfillVillageCondition(4, (WorldServer) this.worldObj);
                   }
 
                   if (var2.itemID == Item.onion.itemID) {
-                     this.worldObj.getWorldInfo().fullfillVillageCondition(8, (WorldServer)this.worldObj);
+                     this.worldObj.getWorldInfo().fullfillVillageCondition(8, (WorldServer) this.worldObj);
                   }
 
                   this.playSound("random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
@@ -109,7 +113,7 @@ public abstract class EntityItemTrans extends Entity {
    @Shadow
    protected abstract boolean canTriggerWalking();
 
-   @Inject(method = {"<init>(Lnet/minecraft/World;)V","<init>(Lnet/minecraft/World;DDD)V","<init>(Lnet/minecraft/World;DDDLnet/minecraft/ItemStack;)V"},at = @At("RETURN"))
+   @Inject(method = {"<init>(Lnet/minecraft/World;)V", "<init>(Lnet/minecraft/World;DDD)V", "<init>(Lnet/minecraft/World;DDDLnet/minecraft/ItemStack;)V"}, at = @At("RETURN"))
    protected void injectInit(CallbackInfo callbackInfo) {
       this.canBePickUpByPlayer = true;
    }
@@ -117,9 +121,9 @@ public abstract class EntityItemTrans extends Entity {
    @Inject(method = "canBePickedUpBy",
            at = @At(value = "HEAD"),
            cancellable = true)
-   public void injectPlayerCannotPickup(EntityLiving entity_living_base,CallbackInfoReturnable<Boolean> callback){
+   public void injectPlayerCannotPickup(EntityLiving entity_living_base, CallbackInfoReturnable<Boolean> callback) {
       if (entity_living_base instanceof EntityPlayer) {
-         if (!this.canBePickUpByPlayer){
+         if (!this.canBePickUpByPlayer) {
             callback.setReturnValue(false);
             callback.cancel();
          }
@@ -136,7 +140,7 @@ public abstract class EntityItemTrans extends Entity {
            at = @At(value = "INVOKE",
                    shift = At.Shift.AFTER,
                    target = "Lnet/minecraft/EntityItem;calcExplosionForce(FD)F"))
-   private void injectCancelExplosionCopy(CallbackInfoReturnable<Boolean> callback){
+   private void injectCancelExplosionCopy(CallbackInfoReturnable<Boolean> callback) {
       if (this.isExploded) {
          this.setDead();
          this.tryRemoveFromWorldUniques();
@@ -145,9 +149,9 @@ public abstract class EntityItemTrans extends Entity {
       }
    }
 
-   @Inject(method = "readEntityFromNBT",at = @At(value = "RETURN"))
+   @Inject(method = "readEntityFromNBT", at = @At(value = "RETURN"))
    protected void readEntityFromNBT(NBTTagCompound var1, CallbackInfo callback) {
-      if (var1.hasKey("CanBePickupByPlayer")){
+      if (var1.hasKey("CanBePickupByPlayer")) {
          this.canBePickUpByPlayer = var1.getBoolean("CanBePickupByPlayer");
       }
    }
@@ -155,7 +159,7 @@ public abstract class EntityItemTrans extends Entity {
    @Redirect(method = "handleExplosion",
            at = @At(value = "INVOKE",
                    target = "Lnet/minecraft/EntityItem;tryRemoveFromWorldUniques()V"))
-   private void injectUpdateExploded(EntityItem caller){
+   private void injectUpdateExploded(EntityItem caller) {
       this.isExploded = true;
       this.tryRemoveFromWorldUniques();
    }
@@ -172,8 +176,8 @@ public abstract class EntityItemTrans extends Entity {
    public void tryRemoveFromWorldUniques() {
    }
 
-   @Inject(method = "writeEntityToNBT",at = @At(value = "RETURN"))
-   protected void writeEntityToNBT(NBTTagCompound var1,CallbackInfo callback) {
-      var1.setBoolean("CanBePickupByPlayer",this.canBePickUpByPlayer);
+   @Inject(method = "writeEntityToNBT", at = @At(value = "RETURN"))
+   protected void writeEntityToNBT(NBTTagCompound var1, CallbackInfo callback) {
+      var1.setBoolean("CanBePickupByPlayer", this.canBePickUpByPlayer);
    }
 }

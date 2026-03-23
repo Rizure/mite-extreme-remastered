@@ -43,33 +43,33 @@ public class SpawnerCreatureTrans {
          return 0.5F * (1.0F + Configs.wenscConfig.mobSpawningOffset.ConfigValue);
       } else {
          float hostile_mob_spawning_rate_modifier;
-          hostile_mob_spawning_rate_modifier = Math.abs((float)world.getTimeOfDay() - 12000.0F) / 6000.0F + (1.0F + Configs.wenscConfig.mobSpawningOffset.ConfigValue);
-          if(Configs.wenscConfig.mobSpawningEvent.ConfigValue){
-              if (world.decreased_hostile_mob_spawning_counter > 0) {
-                  --world.decreased_hostile_mob_spawning_counter;
-                  hostile_mob_spawning_rate_modifier *= 0.5F;
-              } else if (this.random.nextInt(24000) == 0) {
-                  world.decreased_hostile_mob_spawning_counter = this.random.nextInt(4000);
-              }
+         hostile_mob_spawning_rate_modifier = Math.abs((float) world.getTimeOfDay() - 12000.0F) / 6000.0F + (1.0F + Configs.wenscConfig.mobSpawningOffset.ConfigValue);
+         if (Configs.wenscConfig.mobSpawningEvent.ConfigValue) {
+            if (world.decreased_hostile_mob_spawning_counter > 0) {
+               --world.decreased_hostile_mob_spawning_counter;
+               hostile_mob_spawning_rate_modifier *= 0.5F;
+            } else if (this.random.nextInt(24000) == 0) {
+               world.decreased_hostile_mob_spawning_counter = this.random.nextInt(4000);
+            }
 
-              if (world.increased_hostile_mob_spawning_counter > 0) {
-                  --world.increased_hostile_mob_spawning_counter;
-                  hostile_mob_spawning_rate_modifier *= 2.0F;
-              } else if (this.random.nextInt(24000) == 0) {
-                  world.increased_hostile_mob_spawning_counter = this.random.nextInt(2000);
-              }
+            if (world.increased_hostile_mob_spawning_counter > 0) {
+               --world.increased_hostile_mob_spawning_counter;
+               hostile_mob_spawning_rate_modifier *= 2.0F;
+            } else if (this.random.nextInt(24000) == 0) {
+               world.increased_hostile_mob_spawning_counter = this.random.nextInt(2000);
+            }
 
-              if(world.no_hostile_mob_spawning_counter > 0) {
-                  --world.no_hostile_mob_spawning_counter;
-                  hostile_mob_spawning_rate_modifier = 0F;
-              }else if (this.random.nextInt(24000) == 0) {
-                  world.no_hostile_mob_spawning_counter = this.random.nextInt(4000);
-              }
+            if (world.no_hostile_mob_spawning_counter > 0) {
+               --world.no_hostile_mob_spawning_counter;
+               hostile_mob_spawning_rate_modifier = 0F;
+            } else if (this.random.nextInt(24000) == 0) {
+               world.no_hostile_mob_spawning_counter = this.random.nextInt(4000);
+            }
 
-              if (hostile_mob_spawning_rate_modifier < 1.0F && (world.isBloodMoon(false) || world.isThundering(true))) {
-                  hostile_mob_spawning_rate_modifier = 1.0F;
-              }
-          }
+            if (hostile_mob_spawning_rate_modifier < 1.0F && (world.isBloodMoon(false) || world.isThundering(true))) {
+               hostile_mob_spawning_rate_modifier = 1.0F;
+            }
+         }
          return hostile_mob_spawning_rate_modifier;
       }
    }
@@ -83,7 +83,7 @@ public class SpawnerCreatureTrans {
       boolean is_blood_moon = world.isBloodMoon(false);
       boolean is_blue_moon = world.isBlueMoon(false);
       boolean is_daytime = world.isDaytime();
-      int creature_limit = Math.min(4096 , Math.max(32 , world.getDayOfOverworld() * 2) + creature_type.getMaxNumberOfCreature() * this.eligibleChunksForSpawning.size() / 64);
+      int creature_limit = Math.min(4096, Math.max(32, world.getDayOfOverworld() * 2) + creature_type.getMaxNumberOfCreature() * this.eligibleChunksForSpawning.size() / 64);
       if (deep_only) {
          creature_limit *= 4;
       }
@@ -103,12 +103,12 @@ public class SpawnerCreatureTrans {
          Iterator eligible_chunk_iterator = this.eligibleChunksForSpawning.keySet().iterator();
 
          label248:
-         while(true) {
+         while (true) {
             int x;
             int y;
             int z;
             do {
-               while(true) {
+               while (true) {
                   do {
                      do {
                         ChunkCoordIntPair chunk_coord;
@@ -117,8 +117,8 @@ public class SpawnerCreatureTrans {
                               return total_spawned;
                            }
 
-                           chunk_coord = (ChunkCoordIntPair)eligible_chunk_iterator.next();
-                        } while(this.eligibleChunksForSpawning.get(chunk_coord));
+                           chunk_coord = (ChunkCoordIntPair) eligible_chunk_iterator.next();
+                        } while (this.eligibleChunksForSpawning.get(chunk_coord));
 
                         ChunkPosition chunk_pos = getRandomSpawningPointInChunk(world, chunk_coord.chunkXPos, chunk_coord.chunkZPos);
                         if (deep_only && chunk_pos.y >= 60) {
@@ -128,8 +128,8 @@ public class SpawnerCreatureTrans {
                         x = chunk_pos.x;
                         y = chunk_pos.y;
                         z = chunk_pos.z;
-                     } while(world.isOverworld() && y == 63 && world.rand.nextInt(4) > 0 && world.getBlock(x, y - 1, z) == Block.ice);
-                  } while(world.getClosestPlayer(x, y, z, 48.0D, true) == null && world.rand.nextInt(2) == 0);
+                     } while (world.isOverworld() && y == 63 && world.rand.nextInt(4) > 0 && world.getBlock(x, y - 1, z) == Block.ice);
+                  } while (world.getClosestPlayer(x, y, z, 48.0D, true) == null && world.rand.nextInt(2) == 0);
 
                   if (deep_only) {
                      if (y < 60 && world.countMobs(true, false) < creature_limit) {
@@ -139,13 +139,13 @@ public class SpawnerCreatureTrans {
                      break;
                   }
                }
-            } while(!canCreatureTypeSpawnAtLocation(creature_type, world, x, y, z, false, null));
+            } while (!canCreatureTypeSpawnAtLocation(creature_type, world, x, y, z, false, null));
 
             int num_spawned_below_60 = 0;
             int num_spawned_at_60_or_higher = 0;
 
             label246:
-            for(int var18 = 0; var18 < 3; ++var18) {
+            for (int var18 = 0; var18 < 3; ++var18) {
                int x_with_random_offset = x;
                int z_with_random_offset = z;
                byte random_offset_range = 6;
@@ -154,8 +154,8 @@ public class SpawnerCreatureTrans {
                int var25 = 0;
                byte max_spawn_attempts = 4;
 
-               while(true) {
-                  while(true) {
+               while (true) {
+                  while (true) {
                      if (var25 >= max_spawn_attempts) {
                         continue label246;
                      }
@@ -164,9 +164,9 @@ public class SpawnerCreatureTrans {
                      z_with_random_offset += world.rand.nextInt(random_offset_range) - world.rand.nextInt(random_offset_range);
                      double[] resulting_y_pos = new double[1];
                      if (canCreatureTypeSpawnAtLocation(creature_type, world, x_with_random_offset, y, z_with_random_offset, false, resulting_y_pos)) {
-                        float pos_x = (float)x_with_random_offset + 0.5F;
-                        float pos_z = (float)z_with_random_offset + 0.5F;
-                        float pos_y = (float)resulting_y_pos[0];
+                        float pos_x = (float) x_with_random_offset + 0.5F;
+                        float pos_z = (float) z_with_random_offset + 0.5F;
+                        float pos_y = (float) resulting_y_pos[0];
                         boolean can_spawn_close_to_player = (world.isOverworld() || world.isUnderworld()) && world.getClosestPlayer(pos_x, pos_y, pos_z, 24.0D, true) != null && world.getBlockLightValue(x_with_random_offset, MathHelper.floor_float(pos_y), z_with_random_offset) == 0 && world.getBlockLightValue(x_with_random_offset, MathHelper.floor_float(pos_y) + 1, z_with_random_offset) == 0;
                         if (can_spawn_close_to_player) {
                            if (world.getClosestPlayer(pos_x, pos_y, pos_z, 8.0D, false) != null) {
@@ -178,9 +178,9 @@ public class SpawnerCreatureTrans {
                            continue;
                         }
 
-                        float delta_x = pos_x - (float)spawn_point.posX;
-                        float delta_y = pos_y - (float)spawn_point.posY;
-                        float delta_z = pos_z - (float)spawn_point.posZ;
+                        float delta_x = pos_x - (float) spawn_point.posX;
+                        float delta_y = pos_y - (float) spawn_point.posY;
+                        float delta_z = pos_z - (float) spawn_point.posZ;
                         float distance_from_spawn_point_sq = delta_x * delta_x + delta_y * delta_y + delta_z * delta_z;
                         if (distance_from_spawn_point_sq >= 576.0F) {
                            if (suitable_creature_class == null) {
@@ -200,7 +200,7 @@ public class SpawnerCreatureTrans {
                               }
 
                               if (entity_living instanceof EntityBat && try_to_hang_bats_from_ceiling) {
-                                 pos_y = this.tryHangBatFromCeiling(world, (EntityBat)entity_living, x_with_random_offset, y, z_with_random_offset, pos_x, pos_y, pos_z);
+                                 pos_y = this.tryHangBatFromCeiling(world, (EntityBat) entity_living, x_with_random_offset, y, z_with_random_offset, pos_x, pos_y, pos_z);
                               }
 
                               if (is_overworld && Entity.isClass(entity_living, EntityPhaseSpider.class)) {

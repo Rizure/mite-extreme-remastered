@@ -33,27 +33,29 @@ public class EntityTypesTrans {
       return null;
    }
 
-   @Inject(method = "<clinit>",at = @At("RETURN"))
-   private static void injectClinit(CallbackInfo ci){
+   @Inject(method = "<clinit>", at = @At("RETURN"))
+   private static void injectClinit(CallbackInfo ci) {
       addMapping(EntityAncientDragon.class, "EntityTest", 201);
       addMapping(EntityRideMarker.class, "EntityMarker", 202);
-      addMapping(EntityZombieLord.class, "EntityZombieLord", 203);
-      addMapping(EntityZombiePigmanLord.class, "EntityZombiePigmanLord", 204);
-      addMapping(EntityAnnihilationSkeleton.class, "EntityAnnihilationSkeleton", 205);
+      addMapping(EntityZombieLord.class, "EntityZombieLord", 203,0x003366,0x9999ff);
+      addMapping(EntityZombiePigmanLord.class, "EntityZombiePigmanLord", 204,0x003366,0x9999ff);
+      addMapping(EntityAnnihilationSkeleton.class, "EntityAnnihilationSkeleton", 205,0x660000,0x663300);
       addMapping(EntityWanderingWitch.class, "EntityWanderingWitch", 206);
       addMapping(EntityZombieDoor.class, "EntityZombieDoor", 207);
       addMapping(EntityExchanger.class, "EntityExchanger", 208);
       addMapping(EntityZombieBoss.class, "EntityZombieBoss", 209);
       addMapping(EntityMirrorSkeleton.class, "EntityMirrorSkeleton", 210);
-      addMapping(EntitySpiderKing.class,"EntitySpiderKing", 211);
-      addMapping(EntitySpiderQueen.class,"EntitySpiderQueen",212);
+      addMapping(EntitySpiderKing.class, "EntitySpiderKing", 211);
+      addMapping(EntitySpiderQueen.class, "EntitySpiderQueen", 212);
       addMapping(EntityClusterSpider.class, "EntityClusterSpider", 213);
-      addMapping(EntityDragger.class, "EntityDragger",214);
-      addMapping(EntityFinalZombieBoss.class,"EntityFinalZombieBoss",215);
-      addMapping(EntityGrenade.class,"EntityGrenade",216);
-      addMapping(EntityOreElemental.class,"EntityOreElemental",217);
-      addMapping(EntityZombieExploder.class,"EntityZombieExploder",218);
-      addMapping(EntityHostileSkeletonHorse.class,"EntityHostileSkeletonHorse",219);
+      addMapping(EntityDragger.class, "EntityDragger", 214);
+      addMapping(EntityFinalZombieBoss.class, "EntityFinalZombieBoss", 215);
+      addMapping(EntityGrenade.class, "EntityGrenade", 216);
+      addMapping(EntityOreElemental.class, "EntityOreElemental", 217);
+      addMapping(EntityZombieExploder.class, "EntityZombieExploder", 218);
+      addMapping(EntityHostileSkeletonHorse.class, "EntityHostileSkeletonHorse", 219);
+      addMapping(EntityStalkerCreeper.class, "EntityStalkerCreeper", 220);
+      addMapping(EntityEnderSpider.class, "EntityEnderSpider", 221);
 //      addMapping(EntityThunderMan.class, "EntityThunderMan", 209);
 
    }

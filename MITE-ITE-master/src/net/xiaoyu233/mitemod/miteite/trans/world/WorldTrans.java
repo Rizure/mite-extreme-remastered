@@ -17,16 +17,18 @@ import java.util.Set;
 
 @Mixin(World.class)
 public abstract class WorldTrans {
-    @Shadow
-    public abstract Vec3D e(float par1);
+   @Shadow
+   public abstract Vec3D e(float par1);
 
-    @Shadow public abstract ChunkCoordinates getSpawnPoint();
+   @Shadow
+   public abstract ChunkCoordinates getSpawnPoint();
 
-   @Shadow public static int getDayOfWorld(long unadjusted_tick){
+   @Shadow
+   public static int getDayOfWorld(long unadjusted_tick) {
       return 0;
    }
 
-   public int getDayOfOverworld(){
+   public int getDayOfOverworld() {
       return getDayOfWorld(this.worldInfo.getWorldTotalTime(0));
    }
 
@@ -34,10 +36,12 @@ public abstract class WorldTrans {
    public WorldData worldInfo;
    @Shadow
    protected Set activeChunkSet;
+
    @Shadow
    public final int getDimensionId() {
       return 0;
    }
+
    @Shadow
    private long getWorldCreationTime() {
       return 0;
@@ -47,6 +51,7 @@ public abstract class WorldTrans {
    private String getDimensionName() {
       return null;
    }
+
    @Overwrite
    public final List generateWeatherEvents(int day) {
       if (!this.isOverworld()) {
@@ -57,12 +62,12 @@ public abstract class WorldTrans {
       if (day < 2) {
          return events;
       } else {
-         long first_tick_of_day = (long)((day - 1) * 24000 - 6000);
-         Random random = new Random(this.getWorldCreationTime() + (long)(this.getDimensionId() * 938473) + (long)day);
+         long first_tick_of_day = (long) ((day - 1) * 24000 - 6000);
+         Random random = new Random(this.getWorldCreationTime() + (long) (this.getDimensionId() * 938473) + (long) day);
          random.nextInt();
 
-         for(int i = 0; i < 3 && random.nextInt(4) <= 0; ++i) {
-            WeatherEvent event = new WeatherEvent(first_tick_of_day + (long)random.nextInt(24000), random.nextInt(12000) + 6000);
+         for (int i = 0; i < 3 && random.nextInt(4) <= 0; ++i) {
+            WeatherEvent event = new WeatherEvent(first_tick_of_day + (long) random.nextInt(24000), random.nextInt(12000) + 6000);
             if (!isHarvestMoon(event.start, true) && !isHarvestMoon(event.end, true) && !isHarvestMoon(event.start + 6000L, true) && !isHarvestMoon(event.end - 6000L, true) && !isBloodMoon(event.start, false) && !isBloodMoon(event.end, false) && !isBlueMoon(event.start, false) && !isBlueMoon(event.end, false)) {
                events.add(event);
             }
@@ -77,6 +82,7 @@ public abstract class WorldTrans {
          return events;
       }
    }
+
    @Inject(locals = LocalCapture.CAPTURE_FAILHARD, method = "getBlockId", at = @At(value = "FIELD", target = "Lnet/minecraft/Chunk;storageArrays:[Lnet/minecraft/ChunkSection;", shift = At.Shift.AFTER), cancellable = true)
    private void injectGetBlockId(int par1, int par2, int par3, CallbackInfoReturnable<Integer> cir, Chunk var4) {
       ChunkSection extended_block_storage = var4.storageArrays[par2 >> 4];
@@ -123,9 +129,9 @@ public abstract class WorldTrans {
       int min_z = bounding_box.getBlockCoordForMinZ();
       int max_z = bounding_box.getBlockCoordForMaxZ();
 
-      for(int x = min_x; x <= max_x; ++x) {
-         for(int y = min_y; y <= max_y; ++y) {
-            for(int z = min_z; z <= max_z; ++z) {
+      for (int x = min_x; x <= max_x; ++x) {
+         for (int y = min_y; y <= max_y; ++y) {
+            for (int z = min_z; z <= max_z; ++z) {
                Block block = this.getBlock(x, y, z);
                if (block != null && block.isSolid(this.getBlockMetadata(x, y, z))) {
                   return true;
@@ -174,7 +180,8 @@ public abstract class WorldTrans {
       return false;
    }
 
-   @Shadow public abstract long getTotalWorldTime();
+   @Shadow
+   public abstract long getTotalWorldTime();
 
    @Shadow
    public final boolean isHarvestMoon(boolean exclusivelyAtNight) {

@@ -17,7 +17,8 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(EntityLiving.class)
 public abstract class EntityLivingTrans extends Entity {
-   @Shadow public abstract void e(float par1);
+   @Shadow
+   public abstract void e(float par1);
 
    @Shadow
    public int attackTime;
@@ -83,13 +84,12 @@ public abstract class EntityLivingTrans extends Entity {
    }
 
 
-
    @Overwrite
    public boolean isInRain() {
-      if(this.riddenByEntity != null || this.ridingEntity != null) {
+      if (this.riddenByEntity != null || this.ridingEntity != null) {
          return false;
       } else {
-         return this.worldObj.isInRain(this.getBlockPosX(), MathHelper.floor_double(this.getFootPosY() + (double)this.height), this.getBlockPosZ());
+         return this.worldObj.isInRain(this.getBlockPosX(), MathHelper.floor_double(this.getFootPosY() + (double) this.height), this.getBlockPosZ());
       }
    }
 
@@ -97,17 +97,17 @@ public abstract class EntityLivingTrans extends Entity {
    protected void entityInit() {
    }
 
-   @Inject(locals = LocalCapture.CAPTURE_FAILHARD,method = "attackEntityFrom",at = @At(value = "INVOKE",shift = At.Shift.AFTER,target = "Lnet/minecraft/EntityLiving;attackEntityFromHelper(Lnet/minecraft/Damage;Lnet/minecraft/EntityDamageResult;)Lnet/minecraft/EntityDamageResult;"))
-   private void injectAfterDamageCallback(Damage damage, CallbackInfoReturnable<EntityDamageResult> c, EntityDamageResult result){
+   @Inject(locals = LocalCapture.CAPTURE_FAILHARD, method = "attackEntityFrom", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/EntityLiving;attackEntityFromHelper(Lnet/minecraft/Damage;Lnet/minecraft/EntityDamageResult;)Lnet/minecraft/EntityDamageResult;"))
+   private void injectAfterDamageCallback(Damage damage, CallbackInfoReturnable<EntityDamageResult> c, EntityDamageResult result) {
       this.checkForAfterDamage(damage, result);
    }
 
-   @Inject(locals = LocalCapture.CAPTURE_FAILHARD,method = "onDeath",at = @At(value = "INVOKE_ASSIGN",target = "Lnet/minecraft/EnchantmentManager;getLootingModifier(Lnet/minecraft/EntityLiving;)I",shift = At.Shift.AFTER))
-   private void injectDropHead(DamageSource par1DamageSource, CallbackInfo ci, Entity var2, EntityLiving var3, int var4){
+   @Inject(locals = LocalCapture.CAPTURE_FAILHARD, method = "onDeath", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/EnchantmentManager;getLootingModifier(Lnet/minecraft/EntityLiving;)I", shift = At.Shift.AFTER))
+   private void injectDropHead(DamageSource par1DamageSource, CallbackInfo ci, Entity var2, EntityLiving var3, int var4) {
       if (var2 instanceof EntityPlayer) {
          ItemStack heldItemStack = ((EntityPlayer) var2).getHeldItemStack();
          if (heldItemStack != null) {
-            float modifierValue = EnchantmentManager.getEnchantmentLevel(Enchantments.BEHEADING,heldItemStack) * 0.2F;
+            float modifierValue = EnchantmentManager.getEnchantmentLevel(Enchantments.BEHEADING, heldItemStack) * 0.2F;
             if (modifierValue > 0.0F) {
                boolean dropHead = (float) this.rand.nextInt(100) < modifierValue * 100.0F;
                if (dropHead) {
@@ -122,9 +122,9 @@ public abstract class EntityLivingTrans extends Entity {
                   }
 
                   if (thisLiving instanceof EntitySkeleton) {
-                     if (((EntitySkeleton) thisLiving).getSkeletonType() == 1){
+                     if (((EntitySkeleton) thisLiving).getSkeletonType() == 1) {
                         headItemStack = new ItemStack(Item.skull, 1, 1);
-                     }else {
+                     } else {
                         headItemStack = new ItemStack(Item.skull, 1, 0);
                      }
                   }
@@ -142,15 +142,15 @@ public abstract class EntityLivingTrans extends Entity {
       }
    }
 
-   public boolean canBeTargetTo(EntityLiving from){
+   public boolean canBeTargetTo(EntityLiving from) {
       return true;
    }
 
-   @Redirect(method = "onEntityUpdate",at = @At(ordinal = 1,value = "INVOKE",target = "Lnet/minecraft/EntityLiving;attackEntityFrom(Lnet/minecraft/Damage;)Lnet/minecraft/EntityDamageResult;"))
-   private EntityDamageResult injectModifyPlayerInWallDamage(EntityLiving caller,Damage damage){
+   @Redirect(method = "onEntityUpdate", at = @At(ordinal = 1, value = "INVOKE", target = "Lnet/minecraft/EntityLiving;attackEntityFrom(Lnet/minecraft/Damage;)Lnet/minecraft/EntityDamageResult;"))
+   private EntityDamageResult injectModifyPlayerInWallDamage(EntityLiving caller, Damage damage) {
       // 取消蝙蝠骑士窒息伤害
-      if(ReflectHelper.dyCast(this) instanceof EntitySkeleton) {
-         if(((EntitySkeleton)ReflectHelper.dyCast(this)).ridingEntity != null) {
+      if (ReflectHelper.dyCast(this) instanceof EntitySkeleton) {
+         if (((EntitySkeleton) ReflectHelper.dyCast(this)).ridingEntity != null) {
             return null;
          }
       }

@@ -37,12 +37,12 @@ public class SlotArmorTrans extends Container {
             Block enchantment_table_block = super.world.getBlock(this.posX, this.posY, this.posZ);
             int enchantment_table_power = (1 + numAccessibleBookshelves) * (enchantment_table_block == Block.enchantmentTableEmerald ? 2 : 4);
             int enchantment_levels = EnchantmentManager.getEnchantmentLevelsAlteredByItemEnchantability(enchantment_table_power, item);
-            float fraction = (1.0F + (float)slotIndex) / 3.0F;
+            float fraction = (1.0F + (float) slotIndex) / 3.0F;
             if (slotIndex < 2) {
                fraction += (random.nextFloat() - 0.5F) * 0.2F;
             }
 
-            return Math.max(Math.round((float)enchantment_levels * fraction), 1);
+            return Math.max(Math.round((float) enchantment_levels * fraction), 1);
          }
       } else {
          return 5;
@@ -65,7 +65,7 @@ public class SlotArmorTrans extends Container {
    private int getNumAccessibleBookshelves() {
       int num_bookshelves = 0;
 
-      for(int dy = 0; dy <= 3 && (dy != 3 || super.world.isAirOrPassableBlock(this.posX, this.posY + 1, this.posZ, false)); ++dy) {
+      for (int dy = 0; dy <= 3 && (dy != 3 || super.world.isAirOrPassableBlock(this.posX, this.posY + 1, this.posZ, false)); ++dy) {
          boolean[][] is_block_accessible = new boolean[5][5];
          if (super.world.isAirOrPassableBlock(this.posX, this.posY + dy, this.posZ - 1, false)) {
             is_block_accessible[2][0] = true;
@@ -119,8 +119,8 @@ public class SlotArmorTrans extends Container {
             }
          }
 
-         for(int dx = -2; dx <= 2; ++dx) {
-            for(int dz = -2; dz <= 2; ++dz) {
+         for (int dx = -2; dx <= 2; ++dx) {
+            for (int dz = -2; dz <= 2; ++dz) {
                if (is_block_accessible[2 + dx][2 + dz] && super.world.getBlock(this.posX + dx, this.posY + dy, this.posZ + dz) == Block.bookShelf) {
                   ++num_bookshelves;
                }

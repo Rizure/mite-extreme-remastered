@@ -4,7 +4,7 @@ import net.minecraft.ItemShard;
 import net.minecraft.Material;
 
 public class ItemShardExtend extends ItemShard {
-    protected ItemShardExtend(int id, Material material) {
-        super(id, material);
-    }
+   protected ItemShardExtend(int id, Material material) {
+      super(id, material);
+   }
 }

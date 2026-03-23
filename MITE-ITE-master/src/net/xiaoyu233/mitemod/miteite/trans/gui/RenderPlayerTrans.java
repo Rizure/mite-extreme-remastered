@@ -7,10 +7,10 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
 @Mixin(bhj.class)
 public class RenderPlayerTrans {
-    @ModifyConstant(method = {
-            "a(Lnet/minecraft/beu;F)V",
-    }, constant = @Constant(intValue = 256))
-    private static int injected(int value) {
-        return 1024;
-    }
+   @ModifyConstant(method = {
+           "a(Lnet/minecraft/beu;F)V",
+   }, constant = @Constant(intValue = 256))
+   private static int injected(int value) {
+      return 1024;
+   }
 }

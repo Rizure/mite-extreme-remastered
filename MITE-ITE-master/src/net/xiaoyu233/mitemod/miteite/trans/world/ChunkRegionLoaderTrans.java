@@ -56,14 +56,13 @@ public class ChunkRegionLoaderTrans {
    }
 
 
-
    @ModifyVariable(method = "getInvalidSectionBlockConversionIdsOrMetadata", at = @At("STORE"), ordinal = 0)
    private static int[][] injected(int[][] source) {
       return new int[1024][];
    }
 
    @Redirect(method = "readChunkFromNBT", at = @At(value = "INVOKE", target = "Lnet/minecraft/ChunkRegionLoader;handleSectionChecksumFailure(Lnet/minecraft/ChunkSection;)V"))
-   public void removeConflictFunction(ChunkRegionLoader _this,ChunkSection var13) {
+   public void removeConflictFunction(ChunkRegionLoader _this, ChunkSection var13) {
       // fix树叶变床
    }
 
@@ -93,11 +92,11 @@ public class ChunkRegionLoaderTrans {
       int var8 = var4.length;
 
       NBTTagCompound var11;
-      for(int var9 = 0; var9 < var8; ++var9) {
+      for (int var9 = 0; var9 < var8; ++var9) {
          ChunkSection var10 = var7[var9];
          if (var10 != null) {
             var11 = new NBTTagCompound();
-            var11.setByte("Y", (byte)(var10.getYLocation() >> 4 & 255));
+            var11.setByte("Y", (byte) (var10.getYLocation() >> 4 & 255));
             var11.setInteger("Blocks", this.calcSectionChecksum(xz_and_seed_checksum_component, var10.getYLocation() >> 4 & 255, var10.getBlockLSBArray()));
             var11.setByteArray("BlockData", var10.getBlockLSBArray());
             if (var10.getBlockMSBArray() != null) {
@@ -124,16 +123,16 @@ public class ChunkRegionLoaderTrans {
 
       Iterator var18;
       label220:
-      for(var8 = 0; var8 < entity_lists.length; ++var8) {
+      for (var8 = 0; var8 < entity_lists.length; ++var8) {
          var18 = entity_lists[var8].iterator();
 
-         while(true) {
-            while(true) {
+         while (true) {
+            while (true) {
                if (!var18.hasNext()) {
                   continue label220;
                }
 
-               Entity var21 = (Entity)var18.next();
+               Entity var21 = (Entity) var18.next();
                if (Minecraft.inDevMode() && par1Chunk.checkForEntityDuplicates(var21)) {
                   Minecraft.setErrorMessage("writeChunkToNBT: " + var21.getEntityName() + " was found in the chunk's entityLists more than once");
                }
@@ -200,8 +199,8 @@ public class ChunkRegionLoaderTrans {
       var18 = par1Chunk.chunkTileEntityMap.values().iterator();
       int tile_entities_checksum = xz_and_seed_checksum_component;
 
-      while(var18.hasNext()) {
-         TileEntity var22 = (TileEntity)var18.next();
+      while (var18.hasNext()) {
+         TileEntity var22 = (TileEntity) var18.next();
          tile_entities_checksum += this.calcTileEntityChecksum(var22);
          var11 = new NBTTagCompound();
          var22.writeToNBT(var11);
@@ -240,8 +239,8 @@ public class ChunkRegionLoaderTrans {
 
       byte[] update_skylight_columns = new byte[par1Chunk.updateSkylightColumns.length];
 
-      for(int i = 0; i < update_skylight_columns.length; ++i) {
-         update_skylight_columns[i] = (byte)(par1Chunk.updateSkylightColumns[i] ? -1 : 0);
+      for (int i = 0; i < update_skylight_columns.length; ++i) {
+         update_skylight_columns[i] = (byte) (par1Chunk.updateSkylightColumns[i] ? -1 : 0);
       }
 
       par3NBTTagCompound.setByteArray("update_skylight_columns", update_skylight_columns);
@@ -257,8 +256,8 @@ public class ChunkRegionLoaderTrans {
 
          pending_blocklight_updates = new byte[par1Chunk.pending_skylight_updates.length];
 
-         for(i = 0; i < pending_blocklight_updates.length; ++i) {
-            pending_blocklight_updates[i] = (byte)(par1Chunk.pending_skylight_updates[i] ? -1 : 0);
+         for (i = 0; i < pending_blocklight_updates.length; ++i) {
+            pending_blocklight_updates[i] = (byte) (par1Chunk.pending_skylight_updates[i] ? -1 : 0);
          }
 
          par3NBTTagCompound.setByteArray("pending_skylight_updates", pending_blocklight_updates);
@@ -272,8 +271,8 @@ public class ChunkRegionLoaderTrans {
 
       pending_blocklight_updates = new byte[par1Chunk.pending_blocklight_updates.length];
 
-      for(i = 0; i < pending_blocklight_updates.length; ++i) {
-         pending_blocklight_updates[i] = (byte)(par1Chunk.pending_blocklight_updates[i] ? -1 : 0);
+      for (i = 0; i < pending_blocklight_updates.length; ++i) {
+         pending_blocklight_updates[i] = (byte) (par1Chunk.pending_blocklight_updates[i] ? -1 : 0);
       }
 
       par3NBTTagCompound.setByteArray("pending_blocklight_updates", pending_blocklight_updates);
@@ -286,10 +285,10 @@ public class ChunkRegionLoaderTrans {
          int index = -1;
 
          Entry entry;
-         for(Iterator iterator = par1Chunk.pending_sand_falls.entrySet().iterator(); iterator.hasNext(); pending_sand_falls[index] = (Integer)entry.getValue()) {
-            entry = (Entry)iterator.next();
+         for (Iterator iterator = par1Chunk.pending_sand_falls.entrySet().iterator(); iterator.hasNext(); pending_sand_falls[index] = (Integer) entry.getValue()) {
+            entry = (Entry) iterator.next();
             ++index;
-            pending_sand_falls[index] = (Integer)entry.getKey();
+            pending_sand_falls[index] = (Integer) entry.getKey();
             ++index;
          }
 

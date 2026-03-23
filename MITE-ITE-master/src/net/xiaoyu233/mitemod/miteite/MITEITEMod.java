@@ -17,46 +17,47 @@ import java.io.File;
 
 @Mod
 public class MITEITEMod extends AbstractMod {
-    // jar -cvf mite-extreme-v0.0.4.jar .
-    private static final int MOD_LOADER_MIN_VER_NUM = 100;
-    private static final String MOD_LOADER_MIN_VER_STRING = "v1.0.0";
-    @Override
-    public void preInit() {
+   // jar -cvf mite-extreme-v0.0.4.jar .
+   private static final int MOD_LOADER_MIN_VER_NUM = 100;
+   private static final String MOD_LOADER_MIN_VER_STRING = "v1.0.0";
 
-    }
+   @Override
+   public void preInit() {
 
-    @Nonnull
-    @Override
-    public InjectionConfig getInjectionConfig() {
-        return InjectionConfig.Builder.of("MITE-Extreme", MinecraftTrans.class.getPackage(), MixinEnvironment.Phase.INIT).setRequired().build();
-    }
+   }
 
-    @Override
-    public void postInit() {
-        ModInfo modLoader = FishModLoader.getModsMap().get("FishModLoader");
-        int modLoaderNum = modLoader.getModVerNum();
-        if (modLoaderNum < MOD_LOADER_MIN_VER_NUM){
-            JFrame diaFrame = new JFrame();
-            diaFrame.setAlwaysOnTop(true);
-            JOptionPane.showMessageDialog(diaFrame,"MITE-Extreme加载错误: 模组加载器版本过低\nFishModLoader模组加载器需要至少" + MOD_LOADER_MIN_VER_STRING + "版本 \n当前版本:" + modLoader.getModVerStr(),"错误", JOptionPane.ERROR_MESSAGE);
-            System.exit(1);
-        }
-        EventListeners.registerAllEvents();
-        Configs.loadConfigs();
-    }
+   @Nonnull
+   @Override
+   public InjectionConfig getInjectionConfig() {
+      return InjectionConfig.Builder.of("MITE-Extreme", MinecraftTrans.class.getPackage(), MixinEnvironment.Phase.INIT).setRequired().build();
+   }
 
-    @Override
-    public String modId() {
-        return "MITE-Extreme";
-    }
+   @Override
+   public void postInit() {
+      ModInfo modLoader = FishModLoader.getModsMap().get("FishModLoader");
+      int modLoaderNum = modLoader.getModVerNum();
+      if (modLoaderNum < MOD_LOADER_MIN_VER_NUM) {
+         JFrame diaFrame = new JFrame();
+         diaFrame.setAlwaysOnTop(true);
+         JOptionPane.showMessageDialog(diaFrame, "MITE-Extreme加载错误: 模组加载器版本过低\nFishModLoader模组加载器需要至少" + MOD_LOADER_MIN_VER_STRING + "版本 \n当前版本:" + modLoader.getModVerStr(), "错误", JOptionPane.ERROR_MESSAGE);
+         System.exit(1);
+      }
+      EventListeners.registerAllEvents();
+      Configs.loadConfigs();
+   }
 
-    @Override
-    public int modVerNum() {
-        return Constant.MITE_ITE_VER_NUM;
-    }
+   @Override
+   public String modId() {
+      return "MITE-Extreme";
+   }
 
-    @Override
-    public String modVerStr() {
-        return Constant.MITE_ITE_VERSION;
-    }
+   @Override
+   public int modVerNum() {
+      return Constant.MITE_ITE_VER_NUM;
+   }
+
+   @Override
+   public String modVerStr() {
+      return Constant.MITE_ITE_VERSION;
+   }
 }

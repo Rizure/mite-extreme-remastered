@@ -2,12 +2,15 @@ package net.xiaoyu233.mitemod.miteite.trans.entity;
 
 import net.minecraft.*;
 import net.xiaoyu233.fml.util.ReflectHelper;
+import net.xiaoyu233.mitemod.miteite.block.BlockExtendedToolbench;
+import net.xiaoyu233.mitemod.miteite.gui.GuiExtremeWorkbench;
 import net.xiaoyu233.mitemod.miteite.gui.GuiForgingTable;
 import net.xiaoyu233.mitemod.miteite.gui.GuiGemSetting;
 import net.xiaoyu233.mitemod.miteite.gui.GuiShop;
 import net.xiaoyu233.mitemod.miteite.inventory.container.ForgingTableSlots;
 import net.xiaoyu233.mitemod.miteite.item.Materials;
 import net.xiaoyu233.mitemod.miteite.tileentity.TileEntityGemSetting;
+import net.xiaoyu233.mitemod.miteite.util.EnumToolbenchType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -37,7 +40,8 @@ public abstract class ClientPlayerTrans extends beu {
       return null;
    }
 
-   @Shadow public abstract void addChatMessage(String par1Str);
+   @Shadow
+   public abstract void addChatMessage(String par1Str);
 
    public void displayGUIChestForMinecartEntity(EntityMinecartChest par1IInventory) {
       this.d.a(new axj(ReflectHelper.dyCast(this), par1IInventory));
@@ -47,14 +51,16 @@ public abstract class ClientPlayerTrans extends beu {
       this.d.a(new GuiForgingTable(ReflectHelper.dyCast(this), x, y, z, slots));
    }
 
-   public void displayGUIGemSetting(TileEntityGemSetting tileEntityGemSetting)
-   {
+   public void displayGUIGemSetting(TileEntityGemSetting tileEntityGemSetting) {
       this.d.a(new GuiGemSetting(this, tileEntityGemSetting));
    }
 
-   public void displayGUIShop()
-   {
+   public void displayGUIShop() {
       this.d.a(new GuiShop(this));
+   }
+
+   public void displayGUIExtremeWorkbench(int par1, int par2, int par3) {
+      this.d.a(new GuiExtremeWorkbench(this, this.worldObj, par1, par2, par3));
    }
 
    @Overwrite
@@ -76,36 +82,43 @@ public abstract class ClientPlayerTrans extends beu {
       if (!(container instanceof ContainerWorkbench)) {
          return 0.0F;
       } else {
-         ContainerWorkbench container_workbench = (ContainerWorkbench)container;
-         SlotResult slot_crafting = (SlotResult)container_workbench.getSlot(0);
+         ContainerWorkbench container_workbench = (ContainerWorkbench) container;
+         SlotResult slot_crafting = (SlotResult) container_workbench.getSlot(0);
          ItemStack item_stack = slot_crafting.getStack();
          Item item = item_stack == null ? null : item_stack.getItem();
          aah recipe = container_workbench.getRecipe();
          Material material_to_check_tool_bench_hardness_against = recipe == null ? item.getHardestMetalMaterial() : recipe.getMaterialToCheckToolBenchHardnessAgainst();
-         Material tool_material = BlockWorkbench.getToolMaterial(container_workbench.getBlockMetadata());
-         if (material_to_check_tool_bench_hardness_against == null) {
-            return tool_material == Materials.vibranium ? 3.4028235E38F : 0.5F;
-         } else if (tool_material != Material.flint && tool_material != Material.obsidian) {
-            if (tool_material != Material.copper && tool_material != Material.silver && tool_material != Material.gold) {
-               if (tool_material == Material.iron) {
-                  return 1.0F;
-               } else if (tool_material == Material.ancient_metal) {
-                  return 1.5F;
-               } else if (tool_material == Material.mithril) {
-                  return 2.5F;
-               } else if (tool_material == Material.adamantium) {
-                  return 4.0F;
-               } else if (tool_material == Materials.vibranium) {
-                  return 3.4028235E38F;
-               } else {
-                  Minecraft.setErrorMessage("getBenchAndToolsModifier: unrecognized tool material " + tool_material);
-                  return 0.0F;
-               }
-            } else {
-               return 0.75F;
-            }
-         } else {
+//         System.out.println(material_to_check_tool_bench_hardness_against);
+         int metadata = container_workbench.getBlockMetadata();
+         int benchType = container_workbench.benchType;
+         Material tool_material = null;
+         if (benchType == EnumToolbenchType.ORIGINAL.ordinal()) {
+            tool_material = BlockWorkbench.getToolMaterial(metadata);
+         } else if (benchType == EnumToolbenchType.EXTENDED.ordinal()) {
+            tool_material = BlockExtendedToolbench.getToolMaterial(metadata);
+         }
+         if (tool_material == Material.flint || tool_material == Material.obsidian) {
             return 0.5F;
+         } else if (tool_material == Material.copper || tool_material == Material.silver || tool_material == Material.gold) {
+            return 0.75F;
+         } else if (tool_material == Material.iron) {
+            return 1.0F;
+         } else if (tool_material == Material.ancient_metal) {
+            return 1.5F;
+         } else if (tool_material == Material.mithril) {
+            return 2.5F;
+         } else if (tool_material == Material.adamantium) {
+            return 4.0F;
+         } else if (tool_material == Materials.mitega) {
+            return 3.4028235E38F;
+         } else if (tool_material == Materials.vibranium) {
+            return 3.4028235E38F;
+         } else {
+            if (material_to_check_tool_bench_hardness_against == null) {
+               return 0.0F;
+            }
+            Minecraft.setErrorMessage("getBenchAndToolsModifier: unrecognized tool material " + tool_material);
+            return 0.0F;
          }
       }
    }

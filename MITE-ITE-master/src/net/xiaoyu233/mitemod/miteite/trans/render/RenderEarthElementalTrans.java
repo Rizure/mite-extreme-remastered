@@ -16,15 +16,34 @@ public class RenderEarthElementalTrans extends bgu {
 
    protected bjo getTextures(EntityEarthElemental earth_elemental) {
       int type = earth_elemental.getType();
-      if (type == EntityEarthElemental.CLAY_NORMAL) {
+      if(type == EntityEarthElemental.STONE_NORMAL){
+         return super.textures[0];
+      }else if(type == EntityEarthElemental.STONE_MAGMA){
+         return super.textures[1];
+      }else if(type == EntityEarthElemental.OBSIDIAN_NORMAL){
+         return super.textures[2];
+      }else if(type == EntityEarthElemental.OBSIDIAN_MAGMA){
+         return super.textures[3];
+      }else if(type == EntityEarthElemental.NETHERRACK_NORMAL){
+         return super.textures[4];
+      }else if(type == EntityEarthElemental.NETHERRACK_MAGMA){
+         return super.textures[5];
+      }else if(type == EntityEarthElemental.END_STONE_NORMAL){
+         return super.textures[6];
+      }else if(type == EntityEarthElemental.END_STONE_MAGMA){
+         return super.textures[7];
+      }else if(type == EntityEarthElemental.CLAY_NORMAL){
          return super.textures[8];
-      } else {
-         return type == EntityEarthElemental.CLAY_HARDENED ? super.textures[9] : super.textures[type == EntityEarthElemental.STONE_NORMAL ? 0 : (type == EntityEarthElemental.STONE_MAGMA ? 1 : (type == EntityEarthElemental.OBSIDIAN_NORMAL ? 2 : (type == EntityEarthElemental.OBSIDIAN_MAGMA ? 3 : (type == EntityEarthElemental.NETHERRACK_NORMAL ? 4 : (type == EntityEarthElemental.NETHERRACK_MAGMA ? 5 : (type == EntityEarthElemental.END_STONE_NORMAL ? 6 : (type == 5 ? 10 : 7)))))))];
+      }else if (type == EntityEarthElemental.CLAY_HARDENED) {
+         return super.textures[9];
+      }else if(type == 5 /* PLANKS */){
+         return super.textures[10];
       }
+      return super.textures[0];
    }
 
-   @Inject(method = "setTextures()V",at = @At("RETURN"))
-   private void injectTexture(CallbackInfo c){
+   @Inject(method = "setTextures()V", at = @At("RETURN"))
+   private void injectTexture(CallbackInfo c) {
       this.setTexture(10, "plank", false);
    }
 

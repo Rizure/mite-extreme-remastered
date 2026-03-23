@@ -60,14 +60,23 @@ public abstract class ServerPlayerTrans extends EntityPlayer implements ICraftin
    private int phytonutrients;
    @Shadow
    private int protein;
+
    public ServerPlayerTrans(World par1World, String par2Str) {
       super(par1World, par2Str);
    }
 
-  @Redirect(method = "canCommandSenderUseCommand", at = @At(value = "INVOKE", target = "Lnet/minecraft/Minecraft;inDevMode()Z"))
-  public boolean injectDevMode(int par1, String par2Str) {
-      return Minecraft.inDevMode() || (this !=null && this.isOp());
-  }
+   @Redirect(method = "canCommandSenderUseCommand", at = @At(value = "INVOKE", target = "Lnet/minecraft/Minecraft;inDevMode()Z"))
+   public boolean injectDevMode(int par1, String par2Str) {
+      return Minecraft.inDevMode() || (this != null && this.isOp());
+   }
+
+   public void displayGUIExtremeWorkbench(int par1, int par2, int par3) {
+      this.getNextWindowId();
+      this.playerNetServerHandler.sendPacket((new Packet100OpenWindow(this.currentWindowId, 17, "Crafting", 9, true)).setCoords(par1, par2, par3));
+      this.openContainer = new ContainerExtremeWorkbench(this, par1, par2, par3);
+      this.openContainer.windowId = this.currentWindowId;
+      this.openContainer.onCraftGuiOpened(this);
+   }
 
    public void displayGUIChestForMinecartEntity(EntityMinecartChest par1IInventory) {
       if (this.openContainer != this.inventoryContainer) {
@@ -85,16 +94,15 @@ public abstract class ServerPlayerTrans extends EntityPlayer implements ICraftin
    public void displayGUIForgingTable(int x, int y, int z, ForgingTableSlots slots) {
       this.getNextWindowId();
       TileEntity tile_entity = this.worldObj.getBlockTileEntity(x, y, z);
-      this.playerNetServerHandler.sendPacket((new Packet100OpenWindow(this.currentWindowId, 14, tile_entity.getCustomInvName(), 9, tile_entity.hasCustomName())).setCoords(x, y, z));
+      this.playerNetServerHandler.sendPacket((new Packet100OpenWindow(this.currentWindowId, 14, tile_entity.getCustomInvName(), 10, tile_entity.hasCustomName())).setCoords(x, y, z));
       this.openContainer = new ContainerForgingTable(slots, this, x, y, z);
       this.openContainer.windowId = this.currentWindowId;
-      ReflectHelper.dyCast(ServerPlayer.class, this).updateCraftingInventory(this.openContainer, ((ContainerForgingTable)this.openContainer).getInventory());
+      ReflectHelper.dyCast(ServerPlayer.class, this).updateCraftingInventory(this.openContainer, ((ContainerForgingTable) this.openContainer).getInventory());
 //      this.openContainer.a(this);
       this.openContainer.onCraftGuiOpened(this);
    }
 
-   public void displayGUIGemSetting(TileEntityGemSetting tileEntityGemSetting)
-   {
+   public void displayGUIGemSetting(TileEntityGemSetting tileEntityGemSetting) {
       this.getNextWindowId();
       this.playerNetServerHandler.sendPacket((new Packet100OpenWindow(this.currentWindowId, 15, tileEntityGemSetting.getCustomNameOrUnlocalized(), tileEntityGemSetting.getSizeInventory(), tileEntityGemSetting.hasCustomName())).setCoords(tileEntityGemSetting));
       this.openContainer = new ContainerGemSetting(this, tileEntityGemSetting);
@@ -102,25 +110,21 @@ public abstract class ServerPlayerTrans extends EntityPlayer implements ICraftin
       this.openContainer.onCraftGuiOpened(this);
    }
 
-    public void displayGUIShop()
-    {
-        this.getNextWindowId();
-        this.playerNetServerHandler.sendPacket((new Packet100OpenWindow(this.currentWindowId, 16, "shop", 45, false)));
-        this.openContainer = new ContainerShop(this);
-        this.openContainer.windowId = this.currentWindowId;
-        this.openContainer.onCraftGuiOpened(this);
-        try
-        {
-            ByteArrayOutputStream var5 = new ByteArrayOutputStream();
-            DataOutputStream var6 = new DataOutputStream(var5);
-            var6.writeInt(Items.priceStackList.size());
-            this.playerNetServerHandler.sendPacket(new Packet250CustomPayload("MC|ShopSize", var5.toByteArray()));
-        }
-        catch (IOException var7)
-        {
-            var7.printStackTrace();
-        }
-    }
+   public void displayGUIShop() {
+      this.getNextWindowId();
+      this.playerNetServerHandler.sendPacket((new Packet100OpenWindow(this.currentWindowId, 16, "shop", 45, false)));
+      this.openContainer = new ContainerShop(this);
+      this.openContainer.windowId = this.currentWindowId;
+      this.openContainer.onCraftGuiOpened(this);
+      try {
+         ByteArrayOutputStream var5 = new ByteArrayOutputStream();
+         DataOutputStream var6 = new DataOutputStream(var5);
+         var6.writeInt(Items.priceStackList.size());
+         this.playerNetServerHandler.sendPacket(new Packet250CustomPayload("MC|ShopSize", var5.toByteArray()));
+      } catch (IOException var7) {
+         var7.printStackTrace();
+      }
+   }
 
    @Override
    @Shadow
@@ -133,21 +137,24 @@ public abstract class ServerPlayerTrans extends EntityPlayer implements ICraftin
       return null;
    }
 
-   @Shadow protected abstract void getNextWindowId();
+   @Shadow
+   protected abstract void getNextWindowId();
 
-   @Shadow public abstract int getPhytonutrients();
+   @Shadow
+   public abstract int getPhytonutrients();
 
-   @Shadow public abstract int getProtein();
+   @Shadow
+   public abstract int getProtein();
 
    @Overwrite
    public void onUpdateEntity() {
       try {
          super.onUpdate();
 
-         for(int var1 = 0; var1 < this.inventory.getSizeInventory(); ++var1) {
+         for (int var1 = 0; var1 < this.inventory.getSizeInventory(); ++var1) {
             ItemStack var6 = this.inventory.getStackInSlot(var1);
             if (var6 != null && Item.itemsList[var6.itemID].isMap() && this.playerNetServerHandler.getNumChunkDataPackets() <= 5) {
-               Packet var8 = ((ItemWorldMapBase)Item.itemsList[var6.itemID]).getUpdatePacket(var6, this.worldObj, this);
+               Packet var8 = ((ItemWorldMapBase) Item.itemsList[var6.itemID]).getUpdatePacket(var6, this.worldObj, this);
                if (var8 != null) {
                   this.playerNetServerHandler.sendPacket(var8);
                }

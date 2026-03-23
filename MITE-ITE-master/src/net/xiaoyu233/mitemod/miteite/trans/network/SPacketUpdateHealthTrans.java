@@ -53,7 +53,7 @@ public class SPacketUpdateHealthTrans extends Packet {
 
    @Inject(method = "readPacketData",
            at = @At("RETURN"))
-   private void injectReadPacketData(DataInput par1DataInput,CallbackInfo c) throws IOException {
+   private void injectReadPacketData(DataInput par1DataInput, CallbackInfo c) throws IOException {
       this.protein = par1DataInput.readInt();
       this.phytonutrients = par1DataInput.readInt();
       this.money = par1DataInput.readDouble();
@@ -96,8 +96,9 @@ public class SPacketUpdateHealthTrans extends Packet {
    public void setMoney(double money) {
       this.money = money;
    }
-   public void setEnhance_level(int enhanceLevel){
-      this.enhance_level = enhanceLevel; 
+
+   public void setEnhance_level(int enhanceLevel) {
+      this.enhance_level = enhanceLevel;
    }
 
    @Override

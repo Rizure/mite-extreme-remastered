@@ -2,6 +2,7 @@ package net.xiaoyu233.mitemod.miteite.trans.util;
 
 import net.minecraft.*;
 import net.xiaoyu233.mitemod.miteite.item.ArmorModifierTypes;
+import net.xiaoyu233.mitemod.miteite.item.GemModifierTypes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -16,25 +17,27 @@ import java.util.List;
 
 @Mixin(PlayerAbilities.class)
 public class PlayerAbilitiesTrans {
-    @Shadow
-    public EntityPlayer player;
-    @Inject(method = "getWalkSpeed()F",at = @At(value = "RETURN"), cancellable = true)
-    private void modifierBoost(CallbackInfoReturnable<Float> callbackInfoReturnable){
-        int hour_of_day = this.player.worldObj.getHourOfDay();
-        float modifier_factor = 1.0F;
-        if(this.player.worldObj.isOverworld()){
-            if(hour_of_day < 18 && hour_of_day > 6){
-                ItemStack boots = this.player.getBoots();
-                if (boots != null){
-                    modifier_factor += ArmorModifierTypes.SUN_AFFINITY.getModifierValue(boots.getTagCompound());
-                }
-            }else {
-                ItemStack helmet = this.player.getHelmet();
-                if (helmet != null){
-                    modifier_factor += ArmorModifierTypes.NIGHT_AFFINITY.getModifierValue(helmet.getTagCompound());
-                }
+   @Shadow
+   public EntityPlayer player;
+
+   @Inject(method = "getWalkSpeed()F", at = @At(value = "RETURN"), cancellable = true)
+   private void modifierBoost(CallbackInfoReturnable<Float> callbackInfoReturnable) {
+      int hour_of_day = this.player.worldObj.getHourOfDay();
+      float modifier_factor = 1.0F;
+      if (this.player.worldObj.isOverworld()) {
+         if (hour_of_day < 18 && hour_of_day > 6) {
+            ItemStack boots = this.player.getBoots();
+            if (boots != null) {
+               modifier_factor += ArmorModifierTypes.SUN_AFFINITY.getModifierValue(boots.getTagCompound());
             }
-        }
-        callbackInfoReturnable.setReturnValue(modifier_factor * callbackInfoReturnable.getReturnValue());
-    }
+         } else {
+            ItemStack helmet = this.player.getHelmet();
+            if (helmet != null) {
+               modifier_factor += ArmorModifierTypes.NIGHT_AFFINITY.getModifierValue(helmet.getTagCompound());
+            }
+         }
+      }
+      modifier_factor += this.player.getGemSumNumeric(GemModifierTypes.polish) * (1.0F - this.player.getHealthFraction());
+      callbackInfoReturnable.setReturnValue(modifier_factor * callbackInfoReturnable.getReturnValue());
+   }
 }

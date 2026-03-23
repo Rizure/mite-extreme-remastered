@@ -57,8 +57,8 @@ public class EntityWolfTrans extends EntityTameableAnimal {
          int num_meats = 0;
 
          Item meat;
-         for(Iterator var3 = MEATS.iterator(); var3.hasNext(); num_meats += par1EntityPlayer.inventory.getHotbarSlotContainItem(meat)) {
-            meat = (Item)var3.next();
+         for (Iterator var3 = MEATS.iterator(); var3.hasNext(); num_meats += par1EntityPlayer.inventory.getHotbarSlotContainItem(meat)) {
+            meat = (Item) var3.next();
          }
 
          return num_meats > 0 && this.rand.nextInt(2000) < num_meats;

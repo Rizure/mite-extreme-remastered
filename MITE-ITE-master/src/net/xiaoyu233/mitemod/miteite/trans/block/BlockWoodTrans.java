@@ -11,22 +11,22 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(BlockWood.class)
 public class BlockWoodTrans {
-    @Shadow
-    private BlockSubtypes subtypes ;
+   @Shadow
+   private BlockSubtypes subtypes;
 
-    @Inject(method = "<init>", at = @At("RETURN"))
-    public void injectInit(CallbackInfo callbackInfo) {
-        this.subtypes = new BlockSubtypes(new String[] {"oak", "spruce", "birch", "jungle", "maple", "cherry", "maple", "maple"});
-    }
+   @Inject(method = "<init>", at = @At("RETURN"))
+   public void injectInit(CallbackInfo callbackInfo) {
+      this.subtypes = new BlockSubtypes(new String[]{"oak", "spruce", "birch", "jungle", "maple", "cherry", "maple", "maple"});
+   }
 
-    @Overwrite
-    public boolean isValidMetadata(int metadata) {
-        return metadata >= 0 && metadata < 8;
-    }
+   @Overwrite
+   public boolean isValidMetadata(int metadata) {
+      return metadata >= 0 && metadata < 8;
+   }
 
-    @Overwrite
-    public int getBlockSubtypeUnchecked(int metadata) {
-        return metadata & 7;
-    }
+   @Overwrite
+   public int getBlockSubtypeUnchecked(int metadata) {
+      return metadata & 7;
+   }
 
 }

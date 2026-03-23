@@ -6,58 +6,62 @@ import net.minecraft.MaterialMapColor;
 import net.minecraft.Minecraft;
 
 public class Materials extends Material {
-    public static final Materials vibranium = (Materials) new Materials(EnumEquipmentMaterials.vibranium).setMetal(false).setHarmedByLava(false).setMinHarvestLevel(6);
-    public static final Materials invincible = (Materials) new Materials("misc").setHarmedByLava(false).setHarmedByAcid(false).setHarmedByLava(false).setMetal(false).setFlammability(false,false,false);
-    public Materials(EnumEquipmentMaterial enum_crafting_material) {
-        super(enum_crafting_material);
-    }
+   public static final Materials vibranium = (Materials) new Materials(EnumEquipmentMaterials.vibranium).setMetal(false).setHarmedByLava(false).setMinHarvestLevel(6);
+   public static final Materials invincible = (Materials) new Materials("misc").setHarmedByLava(false).setHarmedByAcid(false).setHarmedByLava(false).setMetal(false).setFlammability(false, false, false);
+   public static final Materials mitega = (Materials) new Materials(EnumEquipmentMaterials.ga).setMetal(false).setHarmedByLava(false).setMinHarvestLevel(6);
 
-    public Materials(String name, MaterialMapColor map_color) {
-        super(name, map_color);
-    }
+   public Materials(EnumEquipmentMaterial enum_crafting_material) {
+      super(enum_crafting_material);
+   }
 
-    public Materials(String name) {
-        super(name);
-    }
+   public Materials(String name, MaterialMapColor map_color) {
+      super(name, map_color);
+   }
 
-    public String getName() {
-        return super.name;
-    }
+   public Materials(String name) {
+      super(name);
+   }
 
-    public float getDurability(){
-        return super.durability;
-    }
+   public String getName() {
+      return super.name;
+   }
 
-    public float getDamageVsEntity() {
-        if (this == wood) {
-            return 0.0F;
-        } else if (this == flint) {
-            return 1.0F;
-        } else if (this == obsidian) {
-            return 2.0F;
-        } else if (this == rusted_iron) {
-            return 2.0F;
-        } else if (this == copper) {
-            return 3.0F;
-        } else if (this == silver) {
-            return 3.0F;
-        } else if (this == gold) {
-            return 2.0F;
-        } else if (this == iron) {
-            return 4.0F;
-        } else if (this == ancient_metal) {
-            return 4.0F;
-        } else if (this == mithril) {
-            return 5.0F;
-        } else if (this == adamantium) {
-            return 6.0F;
-        } else if (this == vibranium) {
-            return 7.0F;
-        } else if (this == diamond) {
-            return 4.0F;
-        } else {
-            Minecraft.setErrorMessage("getDamageVsEntity: unhandled material " + this.name);
-            return 0.0F;
-        }
-    }
+   public float getDurability() {
+      return super.durability;
+   }
+
+   public float getDamageVsEntity() {
+      if (this == wood) {
+         return 0.0F;
+      } else if (this == flint) {
+         return 1.0F;
+      } else if (this == obsidian) {
+         return 2.0F;
+      } else if (this == rusted_iron) {
+         return 2.0F;
+      } else if (this == copper) {
+         return 3.0F;
+      } else if (this == silver) {
+         return 3.0F;
+      } else if (this == gold) {
+         return 2.0F;
+      } else if (this == iron) {
+         return 4.0F;
+      } else if (this == ancient_metal) {
+         return 4.0F;
+      } else if (this == mithril) {
+         return 5.0F;
+      } else if (this == adamantium) {
+         return 6.0F;
+      } else if (this == vibranium) {
+         return 7.0F;
+      } else if (this == mitega) {
+         return 7.0F;
+      } else if (this == diamond) {
+         return 4.0F;
+      } else {
+         Minecraft.setErrorMessage("getDamageVsEntity: unhandled material " + this.name);
+         return 0.0F;
+      }
+   }
 }

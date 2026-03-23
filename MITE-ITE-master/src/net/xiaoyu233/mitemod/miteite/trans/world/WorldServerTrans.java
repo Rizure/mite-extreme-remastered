@@ -20,7 +20,8 @@ import java.util.Random;
 
 @Mixin(WorldServer.class)
 public abstract class WorldServerTrans extends World {
-   @Shadow protected abstract EntityInsentient tryCreateNewLivingEntityCloseTo(int x, int y, int z, int min_distance, int max_distance, Class entity_living_class, EnumCreatureType enum_creature_type);
+   @Shadow
+   protected abstract EntityInsentient tryCreateNewLivingEntityCloseTo(int x, int y, int z, int min_distance, int max_distance, Class entity_living_class, EnumCreatureType enum_creature_type);
 
    @Shadow
    public boolean levelSaving;
@@ -88,9 +89,10 @@ public abstract class WorldServerTrans extends World {
 
 //   @Overwrite
 //   protected void onEntityAdded(Entity par1Entity) {
-////      if(par1Entity instanceof EntityZombieBoss) {
-////         ((EntityZombieBoss) par1Entity).healAndBroadcast();
-////      }
+
+   /// /      if(par1Entity instanceof EntityZombieBoss) {
+   /// /         ((EntityZombieBoss) par1Entity).healAndBroadcast();
+   /// /      }
 //      super.onEntityAdded(par1Entity);
 //      this.entityIdMap.addKey(par1Entity.entityId, par1Entity);
 //      Entity[] var2 = par1Entity.getParts();
@@ -100,7 +102,6 @@ public abstract class WorldServerTrans extends World {
 //         }
 //      }
 //   }
-
    @Overwrite
    public Class getSuitableCreature(EnumCreatureType creature_type, int x, int y, int z) {
       boolean check_depth = this.isOverworld();
@@ -117,162 +118,192 @@ public abstract class WorldServerTrans extends World {
       boolean can_spawn_ghast_on_surface = false;
       boolean can_spawn_ancient_bone_lord_on_surface = is_blood_moon_day;
 
-      for(int attempt = 0; attempt < 16; ++attempt) {
+      for (int attempt = 0; attempt < 16; ++attempt) {
          List possible_creatures = this.getChunkProvider().getPossibleCreatures(creature_type, x, y, z);
          if (possible_creatures == null || possible_creatures.isEmpty()) {
             return null;
          }
 
-         BiomeMeta entry = (BiomeMeta)WeightedRandom.getRandomItem(this.rand, possible_creatures);
+         BiomeMeta entry = (BiomeMeta) WeightedRandom.getRandomItem(this.rand, possible_creatures);
          Class entity_class = entry.entityClass;
          if (entity_class == EntityCreeper.class) {
             if (!this.hasSkylight() || this.isDaytime() || this.rand.nextInt(4) == 0 || !this.isOutdoors(x, y, z)) {
-               if(this.isUnderworld() && this.rand.nextInt(20) == 0) {
-                  return EntityInfernalCreeper.class;
+               if (this.isUnderworld()) {
+                  return EntityStalkerCreeper.class;
                } else if (check_depth && ((this.rand.nextInt(40) >= y && this.rand.nextFloat() < 0.5F) || (is_blood_moon_day && this.rand.nextInt(5) == 0))) {
-                  return EntityInfernalCreeper.class;
+                  return EntityStalkerCreeper.class;
                }
                return entity_class;
             }
+         } else if (entity_class == EntityStalkerCreeper.class) {
+            if (this.isUnderworld() && this.rand.nextInt(20) == 0) {
+               return EntityInfernalCreeper.class;
+            }
+            return entity_class;
          } else if (entity_class == EntitySlime.class) {
             if (!this.blockTypeIsAbove(Block.stone, x, y, z)) {
                return entity_class;
             }
-         } else if (entity_class == EntityGhoul.class) {
-            if (!check_depth || y <= 56 || can_spawn_ghouls_on_surface) {
-               return entity_class;
-            }
-         } else if (entity_class == EntityJelly.class) {
-            if (this.blockTypeIsAbove(Block.stone, x, y, z)) {
-               return entity_class;
-            }
-         } else if (entity_class == EntityWight.class) {
-            if (!check_depth || y <= 48 || can_spawn_wights_on_surface) {
-               return entity_class;
-            }
+            return null;
          } else if (entity_class == EntityGiantZombie.class) {
             if (can_spawn_giant_on_surface) {
                return entity_class;
             }
+            return null;
+         } else if (entity_class == EntityGhoul.class) {
+            if (!check_depth || y <= 56 || can_spawn_ghouls_on_surface) {
+               return entity_class;
+            }
+            return null;
+         } else if (entity_class == EntityJelly.class) {
+            if (this.blockTypeIsAbove(Block.stone, x, y, z)) {
+               return entity_class;
+            }
+            return null;
+         } else if (entity_class == EntityWight.class) {
+            if (!check_depth || y <= 48 || can_spawn_wights_on_surface) {
+               return entity_class;
+            }
+            return null;
+         } else if (entity_class == EntityGiantZombie.class) {
+            if (can_spawn_giant_on_surface) {
+               return entity_class;
+            }
+            return null;
          } else if (entity_class == EntityVampireBat.class) {
             if (!check_depth || y <= 48 || is_blood_moon_up) {
                return entity_class;
             }
+            return null;
          } else if (entity_class == EntityRevenant.class) {
             if (can_spawn_revenants_on_surface || !check_depth || y <= 44) {
-               if(this.rand.nextInt(4) == 0){
+               if (this.rand.nextInt(4) == 0) {
                   return EntityZombieLord.class;
                }
                return entity_class;
             }
-         } else {
-            if (entity_class == EntityExchanger.class) {
-               if(getDayOfOverworld() >= 16 || y <= 40){
-                  return entity_class;
-               }
-               return EntitySkeleton.class;
+            return null;
+         } else if (entity_class == EntityExchanger.class) {
+            if (getDayOfOverworld() >= 16 || y <= 40) {
+               return entity_class;
             }
-            if (entity_class == EntityMirrorSkeleton.class) {
-               if(getDayOfOverworld() >= 16 || y <= 40){
-                  return entity_class;
-               }
-               return EntitySkeleton.class;
+            return EntitySkeleton.class;
+         } else if (entity_class == EntityMirrorSkeleton.class) {
+            if (getDayOfOverworld() >= 16 || y <= 40) {
+               return entity_class;
             }
-            if (entity_class == EntityZombieLord.class) {
-               if(getDayOfOverworld() >= 16 || y <= 40){
-                  return entity_class;
-               }
-               return EntityZombie.class;
+            return EntitySkeleton.class;
+         } else if (entity_class == EntityZombieLord.class) {
+            if (getDayOfOverworld() >= 16 || y <= 40) {
+               return entity_class;
             }
-            if (entity_class == EntityZombieDoor.class) {
-               if(getDayOfOverworld() >= 16 || y <= 40){
-                  if (check_depth && (this.rand.nextInt(40) >= y) && this.rand.nextInt(3) != 0) {
-                      return EntityZombieExploder.class;
-                  }
-                  return entity_class;
+            return EntityZombie.class;
+         } else if (entity_class == EntityZombieDoor.class) {
+            if (getDayOfOverworld() >= 16 || y <= 40) {
+               if (check_depth && (this.rand.nextInt(40) >= y) && this.rand.nextInt(3) != 0) {
+                  return EntityZombieExploder.class;
                }
-               return EntityZombie.class;
+               return entity_class;
             }
-
-            if (entity_class == EntityInvisibleStalker.class) {
-               if (!check_depth || y <= 40) {
-                  return entity_class;
+            return EntityZombie.class;
+         } else if (entity_class == EntityInvisibleStalker.class) {
+            if (!check_depth || y <= 40) {
+               return entity_class;
+            }
+            return null;
+         } else if (entity_class == EntityEarthElemental.class) {
+            if (!check_depth || y <= 40) {
+               if (this.rand.nextInt(10) == 0) {
+                  return EntityOreElemental.class;
                }
-            } else if (entity_class == EntityEarthElemental.class) {
-               if (!check_depth || y <= 40) {
-                  if(this.rand.nextInt(10) == 0) {
-                     return EntityOreElemental.class;
-                  }
-                  return entity_class;
-               }
-            } else if (entity_class == EntityOreElemental.class) {
-               if (!check_depth || y <= 40) {
-                  return entity_class;
-               }
-            } else if (entity_class == EntityBlob.class) {
-               if ((!check_depth || y <= 40) && this.blockTypeIsAbove(Block.stone, x, y, z)) {
-                  return entity_class;
-               }
-            } else if (entity_class == EntityOoze.class) {
-               if ((!check_depth || y <= 32) && this.getBlock(x, y - 1, z) == Block.stone && this.blockTypeIsAbove(Block.stone, x, y, z)) {
-                  return entity_class;
-               }
-            } else if (entity_class == EntityNightwing.class) {
-               if (!check_depth || y <= 32 || is_blood_moon_up) {
-                  return entity_class;
-               }
-            } else if (entity_class == EntityBoneLord.class) {
-               if (can_spawn_bone_lords_on_surface || !check_depth || y <= 32) {
-                  return entity_class;
-               }
-            } else if (entity_class == EntityPudding.class) {
-               if ((!check_depth || y <= 24) && this.getBlock(x, y - 1, z) == Block.stone && this.blockTypeIsAbove(Block.stone, x, y, z)) {
-                  return entity_class;
-               }
-            } else if (entity_class != EntityDemonSpider.class && entity_class != EntityPhaseSpider.class) {
-               if (entity_class == EntityHellhound.class) {
-                  if (!check_depth || y <= 32) {
-                     return entity_class;
-                  }
-               } else if (entity_class == EntityShadow.class) {
-                  if (!check_depth || y <= 32 || can_spawn_shadows_on_surface) {
-                     return entity_class;
-                  }
-               } else if (entity_class == EntitySpider.class) {
-                  if (!this.hasSkylight() || this.rand.nextInt(4) != 0 || !this.isOutdoors(x, y, z)) {
-                     return entity_class;
-                  }
-               } else if (entity_class == EntityWoodSpider.class) {
-                  if ((this.canBlockSeeTheSky(x, y, z) || this.blockTypeIsAbove(Block.leaves, x, y, z) || this.blockTypeIsAbove(Block.wood, x, y, z)) && this.blockTypeIsNearTo(Block.wood.blockID, x, y, z, 5, 2) && this.blockTypeIsNearTo(Block.leaves.blockID, x, y + 5, z, 5, 5)) {
-                     return entity_class;
-                  }
-               }else if (entity_class == EntityBlackWidowSpider.class) {
-                    if (this.rand.nextFloat() >= 0.5F) {
-                        return entity_class;
-                    }
-               } else if (entity_class == EntityGhast.class){
-                  if(this.isTheNether()) {
-                     for (Object value : this.loadedEntityList) {
-                        Entity entity = (Entity) value;
-                        if (entity instanceof EntityGhast) {
-                           if (entity.getDistanceSqToBlock(x, y, z) < 2304.0D && this.rand.nextFloat() < 0.8F) {
-                              entity_class = null;
-                           }
-                        }
+               return entity_class;
+            }
+            return null;
+         } else if (entity_class == EntityOreElemental.class) {
+            if (!check_depth || y <= 40) {
+               return entity_class;
+            }
+            return null;
+         } else if (entity_class == EntityBlob.class) {
+            if ((!check_depth || y <= 40) && this.blockTypeIsAbove(Block.stone, x, y, z)) {
+               return entity_class;
+            }
+            return null;
+         } else if (entity_class == EntityOoze.class) {
+            if ((!check_depth || y <= 32) && this.getBlock(x, y - 1, z) == Block.stone && this.blockTypeIsAbove(Block.stone, x, y, z)) {
+               return entity_class;
+            }
+            return null;
+         } else if (entity_class == EntityNightwing.class) {
+            if (!check_depth || y <= 32 || is_blood_moon_up) {
+               return entity_class;
+            }
+            return null;
+         } else if (entity_class == EntityBoneLord.class) {
+            if (can_spawn_bone_lords_on_surface || !check_depth || y <= 32) {
+               return entity_class;
+            }
+            return null;
+         } else if (entity_class == EntityPudding.class) {
+            if ((!check_depth || y <= 24) && this.getBlock(x, y - 1, z) == Block.stone && this.blockTypeIsAbove(Block.stone, x, y, z)) {
+               return entity_class;
+            }
+            return null;
+         } else if (entity_class == EntityHellhound.class) {
+            if (!check_depth || y <= 32) {
+               return entity_class;
+            }
+            return null;
+         } else if (entity_class == EntityShadow.class) {
+            if (!check_depth || y <= 32 || can_spawn_shadows_on_surface) {
+               return entity_class;
+            }
+            return null;
+         } else if (entity_class == EntitySpider.class) {
+            if (!this.hasSkylight() || this.rand.nextInt(4) != 0 || !this.isOutdoors(x, y, z)) {
+               return entity_class;
+            }
+            return null;
+         } else if (entity_class == EntityWoodSpider.class) {
+            if ((this.canBlockSeeTheSky(x, y, z) || this.blockTypeIsAbove(Block.leaves, x, y, z) || this.blockTypeIsAbove(Block.wood, x, y, z)) && this.blockTypeIsNearTo(Block.wood.blockID, x, y, z, 5, 2) && this.blockTypeIsNearTo(Block.leaves.blockID, x, y + 5, z, 5, 5)) {
+               return entity_class;
+            }
+            return null;
+         } else if (entity_class == EntityBlackWidowSpider.class) {
+            if (this.rand.nextBoolean()) {
+               return entity_class;
+            }
+            return null;
+         } else if (entity_class == EntityGhast.class) {
+            if (this.isTheNether()) {
+               for (Object value : this.loadedEntityList) {
+                  Entity entity = (Entity) value;
+                  if (entity instanceof EntityGhast) {
+                     if (entity.getDistanceSqToBlock(x, y, z) < 2304.0D && this.rand.nextFloat() < 0.8F) {
+                        entity_class = null;
                      }
-                  } else if(this.isOverworld()) {
-                     entity_class = null;
                   }
-                  return  entity_class;
-               } else{
-                    return entity_class;
                }
-            } else if (!check_depth || y <= 32 || is_blood_moon_up) {
-                return entity_class;
+            } else if (this.isOverworld()) {
+               entity_class = null;
             }
+            return entity_class;
+         } else if (entity_class == EntityDemonSpider.class) {
+            if (!check_depth || y <= 32 || is_blood_moon_up) {
+               return entity_class;
+            }
+            return null;
+         } else if (entity_class == EntityPhaseSpider.class) {
+            if (!check_depth || y <= 32) {
+               if(this.rand.nextInt(check_depth ? 10 : 2) == 0){
+                  return EntityEnderSpider.class;
+               }
+               return entity_class;
+            }
+            return null;
          }
+         return entity_class;
       }
-
       return null;
    }
 
@@ -298,7 +329,7 @@ public abstract class WorldServerTrans extends World {
    private void signalAllPlayersToStartFallingAsleep() {
    }
 
-//   @Overwrite
+   //   @Overwrite
 //   public void tick() {
 //      if (this.no_hostile_mob_spawning_counter > 0 && Minecraft.inDevMode() && this.no_hostile_mob_spawning_counter % 200 == 0) {
 //         System.out.println("no_hostile_mob_spawning_counter=" + this.no_hostile_mob_spawning_counter);
@@ -382,8 +413,9 @@ public abstract class WorldServerTrans extends World {
            "tickBlocksAndAmbiance"
    }, constant = @Constant(intValue = 100000))
    private static int ModifyThunderFrequencyInNormal(int value) {
-         return 25000;
-      }
+      return 25000;
+   }
+
    @ModifyConstant(method = {
            "tickBlocksAndAmbiance"
    }, constant = @Constant(intValue = 20000))
@@ -392,7 +424,7 @@ public abstract class WorldServerTrans extends World {
    }
 
 
-//   @Overwrite
+   //   @Overwrite
 //   protected void tickBlocksAndAmbiance() {
 //      super.tickBlocksAndAmbiance();
 //      int var1 = 0;
@@ -494,6 +526,7 @@ public abstract class WorldServerTrans extends World {
    private boolean shouldRandomBlockTicksBePerformed() {
       return false;
    }
+
    @Shadow
    public boolean placeSnowfallAt(int x, int y, int z) {
       return false;

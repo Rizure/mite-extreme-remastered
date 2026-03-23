@@ -6,9 +6,9 @@ import org.spongepowered.asm.mixin.Overwrite;
 
 @Mixin(EnumQuality.class)
 public class EnumQualityTrans {
-    @Overwrite
-    public float getDurabilityModifier() {
-        //To remove quality modifier
-        return 1.0f;
-    }
+   @Overwrite
+   public float getDurabilityModifier() {
+      //To remove quality modifier
+      return 1.0f;
+   }
 }

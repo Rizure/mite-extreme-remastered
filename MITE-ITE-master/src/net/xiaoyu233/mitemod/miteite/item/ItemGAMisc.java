@@ -5,75 +5,93 @@ import net.minecraft.*;
 import java.util.List;
 
 public class ItemGAMisc extends Item {
-    String tag = "";
-    public ItemGAMisc(int id, String tag) {
-        super(id, Materials.invincible, "miscItem");
-        this.tag = tag;
-        this.setMaxStackSize(64);
-        this.setCreativeTab(CreativeModeTab.tabMisc);
-    }
-    @Override
-    public boolean isHarmedByAcid() {
-        return false;
-    }
+   String tag = "";
 
-    @Override
-    public boolean canCatchFire() {
-        return false;
-    }
-    public void addInformation(ItemStack item_stack, EntityPlayer player, List info, boolean extended_info, Slot slot) {
-        if (extended_info) {
-            info.add(" ");
-            switch (this.tag) {
-                case "pants":
-                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("《海角之恋》", new Object[0]));
-                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("胖次东南飞，五里一徘徊", new Object[0]));
-                    break;
-                case "bad_apple":
-                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("BAD APPLE ! !", new Object[0]));
-                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("Lotus Land Story", new Object[0]));
-                    break;
-                case "gowther":
-                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("Goat's Sin of Lust", new Object[0]));
-                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("Gowther", new Object[0]));
-                    break;
-                case "merlin":
-                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("Boar's Sin of Gluttony", new Object[0]));
-                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("Merlin", new Object[0]));
-                    break;
-                case "ban":
-                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("Fox's Sin of Greed", new Object[0]));
-                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("Ban", new Object[0]));
-                    break;
-                case "king":
-                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("Grizzly's Sin of Sloth", new Object[0]));
-                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("King", new Object[0]));
-                    break;
-                case "meliodas":
-                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("Dragon's Sin of Wrath", new Object[0]));
-                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("Meliodas", new Object[0]));
-                    break;
-                case "diane":
-                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("Serpent's Sin of Envy", new Object[0]));
-                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("Diane", new Object[0]));
-                    break;
-                case "escanor":
-                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("Lion's Sin of Pride", new Object[0]));
-                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("Escanor", new Object[0]));
-                    break;
-                case "cracked_key":
-                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("唔哦哦哦哦哦哦！", new Object[0]));
-                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("Niiiiiiiiice!!!", new Object[0]));
-                    break;
-                case "headstone_bag":
-                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("???:她是我唯一的家人了", new Object[0]));
-                    info.add(EnumChatFormat.BROWN + Translator.getFormatted("???:那你用得还蛮快的", new Object[0]));
-                    info.add(EnumChatFormat.BLUE + Translator.getFormatted("在死亡时生成一个方块保存背包物品", new Object[0]));
-                    info.add(EnumChatFormat.BLUE + Translator.getFormatted("该方块并不防爆", new Object[0]));
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
+   public ItemGAMisc(int id, String tag) {
+      super(id, Materials.invincible, "miscItem");
+      this.tag = tag;
+      this.setMaxStackSize(64);
+      this.setCreativeTab(CreativeModeTab.tabMisc);
+      this.setCraftingDifficultyAsComponent(25.0F);
+   }
+
+   @Override
+   public boolean isHarmedByAcid() {
+      return false;
+   }
+
+   @Override
+   public boolean canCatchFire() {
+      return false;
+   }
+
+   public void addInformation(ItemStack item_stack, EntityPlayer player, List info, boolean extended_info, Slot slot) {
+      if (extended_info) {
+         info.add(" ");
+         switch (this.tag) {
+            case "pants":
+               info.add(EnumChatFormat.BROWN + Translator.getFormatted("《海角之恋》", new Object[0]));
+               info.add(EnumChatFormat.BROWN + Translator.getFormatted("胖次东南飞，五里一徘徊", new Object[0]));
+               info.add(EnumChatFormat.BROWN + Translator.getFormatted("98逸", new Object[0]));
+               break;
+            case "bad_apple":
+               info.add(EnumChatFormat.BROWN + Translator.getFormatted("BAD APPLE ! !", new Object[0]));
+               info.add(EnumChatFormat.BROWN + Translator.getFormatted("Lotus Land Story", new Object[0]));
+               info.add(EnumChatFormat.BLUE + Translator.getFormatted("用于代替苹果合成金苹果", new Object[0]));
+               break;
+            case "gowther":
+               info.add(EnumChatFormat.BROWN + Translator.getFormatted("Goat's Sin of Lust", new Object[0]));
+               info.add(EnumChatFormat.BROWN + Translator.getFormatted("Gowther", new Object[0]));
+               info.add(EnumChatFormat.BLUE + Translator.getFormatted("用于升级宝镐", new Object[0]));
+               break;
+            case "merlin":
+               info.add(EnumChatFormat.BROWN + Translator.getFormatted("Boar's Sin of Gluttony", new Object[0]));
+               info.add(EnumChatFormat.BROWN + Translator.getFormatted("Merlin", new Object[0]));
+               info.add(EnumChatFormat.BLUE + Translator.getFormatted("用于升级宝镐", new Object[0]));
+               break;
+            case "ban":
+               info.add(EnumChatFormat.BROWN + Translator.getFormatted("Fox's Sin of Greed", new Object[0]));
+               info.add(EnumChatFormat.BROWN + Translator.getFormatted("Ban", new Object[0]));
+               info.add(EnumChatFormat.BLUE + Translator.getFormatted("用于升级宝镐", new Object[0]));
+               break;
+            case "king":
+               info.add(EnumChatFormat.BROWN + Translator.getFormatted("Grizzly's Sin of Sloth", new Object[0]));
+               info.add(EnumChatFormat.BROWN + Translator.getFormatted("King", new Object[0]));
+               info.add(EnumChatFormat.BLUE + Translator.getFormatted("用于升级宝镐", new Object[0]));
+               break;
+            case "meliodas":
+               info.add(EnumChatFormat.BROWN + Translator.getFormatted("Dragon's Sin of Wrath", new Object[0]));
+               info.add(EnumChatFormat.BROWN + Translator.getFormatted("Meliodas", new Object[0]));
+               info.add(EnumChatFormat.BLUE + Translator.getFormatted("用于升级宝镐", new Object[0]));
+               break;
+            case "diane":
+               info.add(EnumChatFormat.BROWN + Translator.getFormatted("Serpent's Sin of Envy", new Object[0]));
+               info.add(EnumChatFormat.BROWN + Translator.getFormatted("Diane", new Object[0]));
+               info.add(EnumChatFormat.BLUE + Translator.getFormatted("用于升级宝镐", new Object[0]));
+               break;
+            case "escanor":
+               info.add(EnumChatFormat.BROWN + Translator.getFormatted("Lion's Sin of Pride", new Object[0]));
+               info.add(EnumChatFormat.BROWN + Translator.getFormatted("Escanor", new Object[0]));
+               info.add(EnumChatFormat.BLUE + Translator.getFormatted("用于升级宝镐", new Object[0]));
+               break;
+            case "cracked_key":
+               info.add(EnumChatFormat.BROWN + Translator.getFormatted("唔哦哦哦哦哦哦！", new Object[0]));
+               info.add(EnumChatFormat.BROWN + Translator.getFormatted("Niiiiiiiiice!!!", new Object[0]));
+               info.add(EnumChatFormat.BLUE + Translator.getFormatted("需要振金粒修复", new Object[0]));
+               break;
+            case "headstone_bag":
+               info.add(EnumChatFormat.BROWN + Translator.getFormatted("???:她是我唯一的家人了", new Object[0]));
+               info.add(EnumChatFormat.BROWN + Translator.getFormatted("???:那你用得还蛮快的", new Object[0]));
+               info.add(EnumChatFormat.BLUE + Translator.getFormatted("在死亡时生成一个方块保存背包物品", new Object[0]));
+               info.add(EnumChatFormat.BLUE + Translator.getFormatted("该方块并不防爆", new Object[0]));
+               break;
+            case "psi_core":
+               info.add(EnumChatFormat.BROWN + Translator.getFormatted("飞升赛博坦", new Object[0]));
+               info.add(EnumChatFormat.BLUE + Translator.getFormatted("用于合成地精扇", new Object[0]));
+               break;
+            default:
+               break;
+         }
+      }
+   }
 }

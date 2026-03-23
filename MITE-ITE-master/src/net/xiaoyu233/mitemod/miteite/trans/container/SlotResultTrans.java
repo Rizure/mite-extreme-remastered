@@ -17,20 +17,21 @@ public class SlotResultTrans {
    @Shadow
    private EntityPlayer thePlayer;
 
-   @Shadow public CraftingResult crafting_result;
+   @Shadow
+   public CraftingResult crafting_result;
 
-   @Redirect(method = "modifyStackForRightClicks",at = @At(value = "INVOKE",target = "Lnet/minecraft/ItemStack;setQuality(Lnet/minecraft/EnumQuality;)Lnet/minecraft/ItemStack;"))
-   private ItemStack redirectRemoveSetQuality(ItemStack caller, EnumQuality quality){
+   @Redirect(method = "modifyStackForRightClicks", at = @At(value = "INVOKE", target = "Lnet/minecraft/ItemStack;setQuality(Lnet/minecraft/EnumQuality;)Lnet/minecraft/ItemStack;"))
+   private ItemStack redirectRemoveSetQuality(ItemStack caller, EnumQuality quality) {
       //Do nothing to remove it!
       return caller;
    }
 
-   @Redirect(method = "canPlayerCraftItem",at = @At(value = "INVOKE",target = "Lnet/minecraft/InventoryCrafting;hasDamagedItem()Z"))
-   private boolean removeDamageLimitation(InventoryCrafting caller){
+   @Redirect(method = "canPlayerCraftItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/InventoryCrafting;hasDamagedItem()Z"))
+   private boolean removeDamageLimitation(InventoryCrafting caller) {
       aah recipe = this.crafting_result.recipe;
-      if (recipe instanceof ShapedRecipes){
+      if (recipe instanceof ShapedRecipes) {
          return !(((ShapedRecipes) recipe).isExtendsNBT()) && caller.hasDamagedItem();
-      }else if (recipe instanceof ShapelessRecipes){
+      } else if (recipe instanceof ShapelessRecipes) {
          return !((ShapelessRecipes) recipe).isExtendsNBT() && caller.hasDamagedItem();
       }
       return caller.hasDamagedItem();
@@ -41,8 +42,8 @@ public class SlotResultTrans {
       par1ItemStack.onCrafting(this.thePlayer.worldObj, this.thePlayer, this.amountCrafted);
       this.amountCrafted = 0;
       Item item = par1ItemStack.getItem();
-      Block block = item instanceof ItemBlock ? ((ItemBlock)item).getBlock() : null;
-      if (block instanceof BlockFurnace && ((BlockFurnace)block).isOven()) {
+      Block block = item instanceof ItemBlock ? ((ItemBlock) item).getBlock() : null;
+      if (block instanceof BlockFurnace && ((BlockFurnace) block).isOven()) {
          this.thePlayer.addStat(AchievementList.buildOven, 1);
       } else if (par1ItemStack.itemID == Block.workbench.blockID) {
          Material tool_material = BlockWorkbench.getToolMaterial(par1ItemStack.getItemSubtype());
@@ -68,7 +69,7 @@ public class SlotResultTrans {
             } else if (item instanceof ItemTool && item.getAsTool().isEffectiveAgainstBlock(Block.obsidian, 0)) {
                this.thePlayer.addStat(AchievementList.buildBetterPickaxe, 1);
                if (this.thePlayer.worldObj instanceof WorldServer) {
-                  this.thePlayer.worldObj.getWorldInfo().fullfillVillageCondition(16, (WorldServer)this.thePlayer.worldObj);
+                  this.thePlayer.worldObj.getWorldInfo().fullfillVillageCondition(16, (WorldServer) this.thePlayer.worldObj);
                }
 
                if (item.getAsTool().isEffectiveAgainstBlock(Block.blockMithril, 0)) {
@@ -94,7 +95,7 @@ public class SlotResultTrans {
                      this.thePlayer.triggerAchievement(AchievementList.flour);
                   } else if (item instanceof ItemBowl && (item == Item.bowlSalad || ItemBowl.isSoupOrStew(item))) {
                      this.thePlayer.triggerAchievement(AchievementList.fineDining);
-                  } else if (item == Items.VIBRANIUM_INGOT) {
+                  } else if (item == Items.ingotVibranium) {
                      this.thePlayer.triggerAchievement(Achievements.vibraniumIngot);
                   } else if (block == Blocks.anvilVibranium) {
                      this.thePlayer.triggerAchievement(Achievements.vibraniumAnvil);

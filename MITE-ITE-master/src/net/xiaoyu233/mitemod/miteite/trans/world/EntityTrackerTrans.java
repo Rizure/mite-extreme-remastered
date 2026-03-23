@@ -26,7 +26,7 @@ public class EntityTrackerTrans {
    public void trackEntity(Entity par1Entity) {
       if (par1Entity instanceof ServerPlayer) {
          this.trackEntity(par1Entity, 512, 2);
-         ServerPlayer var2 = (ServerPlayer)par1Entity;
+         ServerPlayer var2 = (ServerPlayer) par1Entity;
 
          for (Object trackedEntity : this.trackedEntities) {
             EntityTrackerEntry var4 = (EntityTrackerEntry) trackedEntity;
@@ -56,13 +56,9 @@ public class EntityTrackerTrans {
          this.trackEntity(par1Entity, 64, 10, true);
       } else if (par1Entity instanceof EntityGelatinousSphere) {
          this.trackEntity(par1Entity, 64, 10, true);
-      }
-      
-      else if (par1Entity instanceof EntityGrenade) {
+      } else if (par1Entity instanceof EntityGrenade) {
          this.trackEntity(par1Entity, 64, 10, true);
-      }
-      
-      else if (par1Entity instanceof EntityPotion) {
+      } else if (par1Entity instanceof EntityPotion) {
          this.trackEntity(par1Entity, 64, 10, true);
       } else if (par1Entity instanceof EntityThrownExpBottle) {
          this.trackEntity(par1Entity, 64, 10, true);

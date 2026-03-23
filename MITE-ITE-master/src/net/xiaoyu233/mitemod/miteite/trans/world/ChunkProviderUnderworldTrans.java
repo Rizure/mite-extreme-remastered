@@ -10,12 +10,13 @@ import java.util.Random;
 
 @Mixin(ChunkProviderUnderworld.class)
 public class ChunkProviderUnderworldTrans {
-    @Shadow
-    private Random hellRNG;
-    @Shadow
-    private World worldObj;
-    @Overwrite
-    public void replaceBlocksForBiome(int par1, int par2, byte[] par3ArrayOfByte) {
-        //Remove one layer of bedrock....Might be
-    }
+   @Shadow
+   private Random hellRNG;
+   @Shadow
+   private World worldObj;
+
+   @Overwrite
+   public void replaceBlocksForBiome(int par1, int par2, byte[] par3ArrayOfByte) {
+      //Remove one layer of bedrock....Might be
+   }
 }

@@ -5,6 +5,7 @@ import net.xiaoyu233.mitemod.miteite.block.BlockColorful;
 import net.xiaoyu233.mitemod.miteite.block.Blocks;
 import net.xiaoyu233.mitemod.miteite.item.Materials;
 import net.xiaoyu233.mitemod.miteite.util.ReflectHelper;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -18,6 +19,8 @@ import java.lang.ref.Reference;
 
 @Mixin(Block.class)
 public abstract class BlockTrans {
+   @Shadow @Final public static Block melon;
+
    @ModifyConstant(method = {
            "<clinit>",
            "getBlock(Ljava/lang/String;)Lnet/minecraft/Block;",
@@ -25,6 +28,7 @@ public abstract class BlockTrans {
    private static int injected(int value) {
       return 1024;
    }
+
    @Inject(method = "<clinit>", at = @At(value = "NEW",
            target = "(Lnet/minecraft/Block;[Ljava/lang/String;)Lnet/minecraft/ItemMantleOrCore;"))
    private static void injectClinit(CallbackInfo callback) {
@@ -34,9 +38,12 @@ public abstract class BlockTrans {
       Item.itemsList[Blocks.blockColorfulDoubleSlabGroup2.blockID] = (new ItemStep(Blocks.blockColorfulSingleSlabGroup2, Blocks.blockColorfulDoubleSlabGroup2, true)).setUnlocalizedName("colorfulSlab");
    }
 
-   @Shadow protected Block setResistance(float par1){
+   @Shadow
+   protected Block setResistance(float par1) {
       return null;
-   };
+   }
+
+   ;
 
    @Overwrite
    public void reportInvalidMetadata(int metadata) {
@@ -44,8 +51,8 @@ public abstract class BlockTrans {
 //      (new Exception()).printStackTrace();
    }
 
-   public String getItemDisplayName(ItemStack itemStack){
-      if(itemStack != null) {
+   public String getItemDisplayName(ItemStack itemStack) {
+      if (itemStack != null) {
          return ("" + LocaleI18n.translateToLocal(itemStack.getItem().getUnlocalizedNameInefficiently(itemStack) + ".name")).trim();
       } else {
          return "nothing";
@@ -61,7 +68,7 @@ public abstract class BlockTrans {
       return this.setResistance(v);
    }
 
-   public Block setBlockLightLevel(float v){
+   public Block setBlockLightLevel(float v) {
       return this.setLightValue(v);
    }
 

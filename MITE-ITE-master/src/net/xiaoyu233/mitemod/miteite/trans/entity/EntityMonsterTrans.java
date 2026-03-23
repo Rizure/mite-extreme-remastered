@@ -25,34 +25,35 @@ public abstract class EntityMonsterTrans extends EntityInsentient implements IMo
    public boolean[] picked_up_a_held_item_array;
    private boolean attackCauseFire;
    private int fireParticleTick;
+
    public EntityMonsterTrans(World par1World) {
       super(par1World);
    }
 
-   @Redirect(method = "isValidLightLevel(Lnet/minecraft/EntityInsentient;)Z", at=@At(value = "INVOKE", target = "Ljava/util/Random;nextInt(I)I", ordinal = 1))
+   @Redirect(method = "isValidLightLevel(Lnet/minecraft/EntityInsentient;)Z", at = @At(value = "INVOKE", target = "Ljava/util/Random;nextInt(I)I", ordinal = 1))
    private static int randLightValue(Random random, int lightValue) {
       return random.nextInt(lightValue + 1);
    }
 
    @Redirect(method = {"attackEntityAsMob(Lnet/minecraft/Entity;)Lnet/minecraft/EntityDamageResult;"},
-            at = @At(value = "INVOKE",target = "Lnet/minecraft/AttributeInstance;getAttributeValue()D"))
-   private double redirectEntityDamageGet(AttributeInstance caller){
-      if (this.getHeldItem() instanceof ItemTool){
+           at = @At(value = "INVOKE", target = "Lnet/minecraft/AttributeInstance;getAttributeValue()D"))
+   private double redirectEntityDamageGet(AttributeInstance caller) {
+      if (this.getHeldItem() instanceof ItemTool) {
          return (caller.getAttributeValue() + (double) this.getHeldItemStack().getGemMaxNumeric(GemModifierTypes.damage)) * this.getWeaponDamageBoost();
       }
       return caller.getAttributeValue();
    }
 
    @Redirect(method = {"attackEntityAsMob(Lnet/minecraft/EntityInsentient;Lnet/minecraft/Entity;)Lnet/minecraft/EntityDamageResult;"},
-           at = @At(value = "INVOKE",target = "Lnet/minecraft/AttributeInstance;getAttributeValue()D"))
-   private static double redirectEntityDamageGetStatic(AttributeInstance caller,EntityInsentient attacker, Entity target){
-      if (attacker != null && attacker.getHeldItem() instanceof ItemTool){
+           at = @At(value = "INVOKE", target = "Lnet/minecraft/AttributeInstance;getAttributeValue()D"))
+   private static double redirectEntityDamageGetStatic(AttributeInstance caller, EntityInsentient attacker, Entity target) {
+      if (attacker != null && attacker.getHeldItem() instanceof ItemTool) {
          return (caller.getAttributeValue() + (double) attacker.getHeldItemStack().getGemMaxNumeric(GemModifierTypes.damage)) * attacker.getWeaponDamageBoost();
       }
       return caller.getAttributeValue();
    }
 
-   @Inject(method = "attackEntityFrom",at = @At("HEAD"))
+   @Inject(method = "attackEntityFrom", at = @At("HEAD"))
    public void attackEntityFrom(Damage damage, CallbackInfoReturnable<EntityDamageResult> c) {
       if ((Configs.wenscConfig.mobDefense.ConfigValue)
               && damage.getResponsibleEntityP() != null
@@ -60,7 +61,7 @@ public abstract class EntityMonsterTrans extends EntityInsentient implements IMo
               && this.rand.nextInt(2) > 0
               && !damage.bypassesMundaneArmor()) {
          damage.scaleAmount(0.5F);
-         if (Configs.wenscConfig.mobDisarmWhenDefence.ConfigValue){
+         if (Configs.wenscConfig.mobDisarmWhenDefence.ConfigValue) {
             this.tryDisarmTarget(damage.getResponsibleEntityP());
          }
          this.getWorld().playSoundAtEntity(this, "mob.irongolem.hit", 1.0F, 1.0F);
@@ -89,13 +90,13 @@ public abstract class EntityMonsterTrans extends EntityInsentient implements IMo
    }
 
    protected void dropEquipment(boolean recently_hit_by_player, int par2) {
-         for(int var3 = 0; var3 < this.getInventory().length; ++var3) {
-            ItemStack var4 = this.getEquipmentInSlot(var3);
-            if (var4 != null && (!var4.isItemStackDamageable() || this.picked_up_a_held_item_array[var3] && var4.getRemainingDurability() > var4.getMaxDamage() / 4)) {
-               this.dropItemStack(var4, 0.0F);
-               this.setCurrentItemOrArmor(var3, null);
-            }
+      for (int var3 = 0; var3 < this.getInventory().length; ++var3) {
+         ItemStack var4 = this.getEquipmentInSlot(var3);
+         if (var4 != null && (!var4.isItemStackDamageable() || this.picked_up_a_held_item_array[var3] && var4.getRemainingDurability() > var4.getMaxDamage() / 4)) {
+            this.dropItemStack(var4, 0.0F);
+            this.setCurrentItemOrArmor(var3, null);
          }
+      }
    }
 
    protected void addRandomArmor() {
@@ -109,24 +110,24 @@ public abstract class EntityMonsterTrans extends EntityInsentient implements IMo
          MonsterUtil.addRandomEnchantment(this.getRNG(),
                  item_stack,
                  (int) (5.0F + (
-                         this.worldObj.getDayOfOverworld() * 0.15f) +  (5 - this.rand.nextInt(10)) * this.rand.nextFloat()),
-                 Math.min(2 + dayOfWorld/24,15),
-                 Math.min(1 + dayOfWorld/72,4));
+                         this.worldObj.getDayOfOverworld() * 0.15f) + (5 - this.rand.nextInt(10)) * this.rand.nextFloat()),
+                 Math.min(2 + dayOfWorld / 24, 15),
+                 Math.min(1 + dayOfWorld / 72, 4));
       }
 
    }
 
    protected void generateRandomParticles(EnumParticle particle) {
-      for(int var2 = 0; var2 < 5; ++var2) {
+      for (int var2 = 0; var2 < 5; ++var2) {
          double var3 = this.rand.nextGaussian() * 0.02D;
          double var5 = this.rand.nextGaussian() * 0.02D;
          double var7 = this.rand.nextGaussian() * 0.02D;
-         this.worldObj.spawnParticle(particle, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 1.0D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, var3, var5, var7);
+         this.worldObj.spawnParticle(particle, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + 1.0D + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, var3, var5, var7);
       }
 
    }
 
-   protected float getChanceOfCausingFire(){
+   protected float getChanceOfCausingFire() {
       return 0;
    }
 
@@ -136,8 +137,8 @@ public abstract class EntityMonsterTrans extends EntityInsentient implements IMo
       this.picked_up_a_held_item_array = super.picked_up_a_held_item_array;
 
       try {
-         this.setEntityAttribute(GenericAttributes.maxHealth, this.getEntityAttributeValue(GenericAttributes.maxHealth)) ;
-         this.setEntityAttribute(GenericAttributes.attackDamage, this.getEntityAttributeValue(GenericAttributes.attackDamage)) ;
+         this.setEntityAttribute(GenericAttributes.maxHealth, this.getEntityAttributeValue(GenericAttributes.maxHealth));
+         this.setEntityAttribute(GenericAttributes.attackDamage, this.getEntityAttributeValue(GenericAttributes.attackDamage));
       } catch (NullPointerException var2) {
          this.setEntityAttribute(GenericAttributes.maxHealth, GenericAttributes.maxHealth.getDefaultValue());
          this.setEntityAttribute(GenericAttributes.attackDamage, GenericAttributes.attackDamage.getDefaultValue());
@@ -147,15 +148,15 @@ public abstract class EntityMonsterTrans extends EntityInsentient implements IMo
       this.setEntityAttribute(GenericAttributes.attackDamage);
    }
 
-   protected float getDisarmingChance(ItemStack itemStack){
+   protected float getDisarmingChance(ItemStack itemStack) {
       return EnchantmentManager.getEnchantmentLevelFraction(Enchantment.disarming, itemStack) * 0.4f;
    }
 
    @Inject(locals = LocalCapture.CAPTURE_FAILHARD,
            method = "attackEntityAsMob(Lnet/minecraft/Entity;)Lnet/minecraft/EntityDamageResult;",
-           at = @At(value = "INVOKE",shift = At.Shift.BEFORE,
+           at = @At(value = "INVOKE", shift = At.Shift.BEFORE,
                    target = "Lnet/minecraft/EntityMonster;isFrenzied()Z"))
-   private void injectCirtAttack(Entity target, CallbackInfoReturnable<EntityDamageResult> cir, ItemStack held_item, Damage damage){
+   private void injectCirtAttack(Entity target, CallbackInfoReturnable<EntityDamageResult> cir, ItemStack held_item, Damage damage) {
       float critBouns = 0.0F;
       boolean critical = false;
       if (EnchantmentManager.hasEnchantment(this.getHeldItemStack(), Enchantments.CRIT)) {
@@ -167,16 +168,16 @@ public abstract class EntityMonsterTrans extends EntityInsentient implements IMo
          damage.scaleAmount(1.5F);
          damage.addAmount(critBouns);
       }
-      if (this.attackCauseFire && target instanceof EntityPlayer && this.getHeldItem() instanceof ItemTool){
+      if (this.attackCauseFire && target instanceof EntityPlayer && this.getHeldItem() instanceof ItemTool) {
          target.setFire(8);
       }
    }
 
    @Inject(method = "attackEntityAsMob(Lnet/minecraft/Entity;)Lnet/minecraft/EntityDamageResult;",
-          at = @At(value = "INVOKE",
-                  target = "Lnet/minecraft/EnchantmentManager;getFireAspectModifier(Lnet/minecraft/EntityLiving;)I",
-                  shift = At.Shift.BEFORE))
-   private void injectDisarming(Entity target, CallbackInfoReturnable<EntityDamageResult> callback){
+           at = @At(value = "INVOKE",
+                   target = "Lnet/minecraft/EnchantmentManager;getFireAspectModifier(Lnet/minecraft/EntityLiving;)I",
+                   shift = At.Shift.BEFORE))
+   private void injectDisarming(Entity target, CallbackInfoReturnable<EntityDamageResult> callback) {
       if (Configs.wenscConfig.mobDisarmWhenAttack.ConfigValue) {
          this.tryDisarmTarget(target);
       }
@@ -190,12 +191,17 @@ public abstract class EntityMonsterTrans extends EntityInsentient implements IMo
    public void dropContainedItems() {
    }
 
-   @Inject(method = "onUpdate",at = @At("RETURN"))
+   @Inject(method = "onUpdate", at = @At("RETURN"))
    private void injectUpdate(CallbackInfo callback) {
-      if (attackCauseFire){
-         if (fireParticleTick == 0){
-            this.generateRandomParticles(EnumParticle.flame);
-            fireParticleTick = 20;
+      if (attackCauseFire) {
+         if (fireParticleTick == 0) {
+            if(!this.onServer()){
+               this.spawnParticle(EnumParticle.flame,0.05F);
+            }
+            if(this.onServer()){
+               this.entityFX(EnumEntityFX.smoke);
+            }
+            fireParticleTick = 10;
          }
       }
    }
@@ -205,7 +211,7 @@ public abstract class EntityMonsterTrans extends EntityInsentient implements IMo
       if (!this.isAIEnabled()) {
          Minecraft.setErrorMessage("isTargetWithinStrikingDistance: doesn't handle old AI mobs yet");
          return false;
-      } else if ((Object)(this) instanceof EntityAnimal) {
+      } else if ((Object) (this) instanceof EntityAnimal) {
          double var2 = this.width * 1.75F * this.width * 1.75F + target.width;
          if (this.getHeldItemStack() != null) {
             var2 += this.getHeldItemStack().getItem().getReachBonus();
@@ -213,11 +219,11 @@ public abstract class EntityMonsterTrans extends EntityInsentient implements IMo
 
          return this.getDistanceSq(target.posX, target.boundingBox.minY, target.posZ) <= var2;
       } else {
-          if(this.isRiding()){
-              return this.getDistance(target.posX, target.posY, target.posZ) <= (double) this.getReach() * 1.75F;
-          }
-         return this.getDistance(target.posX, this.posY, target.posZ) <= (double)this.getReach() &&
-                 MathUtil.isInRange(target.boundingBox.minY,this.boundingBox.minY - 0.5f,this.boundingBox.maxY + 0.5f);
+         if (this.isRiding()) {
+            return this.getDistance(target.posX, target.posY, target.posZ) <= (double) this.getReach() * 1.75F;
+         }
+         return this.getDistance(target.posX, this.posY, target.posZ) <= (double) this.getReach() &&
+                 MathUtil.isInRange(target.boundingBox.minY, this.boundingBox.minY - 0.5f, this.boundingBox.maxY + 0.5f);
       }
    }
 
@@ -231,19 +237,19 @@ public abstract class EntityMonsterTrans extends EntityInsentient implements IMo
       }
    }
 
-   @Inject(method = "onLivingUpdate",at = @At("RETURN"))
+   @Inject(method = "onLivingUpdate", at = @At("RETURN"))
    public void onLivingUpdate(CallbackInfo callbackInfo) {
-      if(this.getTarget() != null && !(this.getTarget() instanceof EntityPlayer) && this.getTicksExistedWithOffset() % 300 == 0){
+      if (this.getTarget() != null && !(this.getTarget() instanceof EntityPlayer) && this.getTicksExistedWithOffset() % 300 == 0) {
          this.setTarget((EntityLiving) null);
       }
-      if (this.fireParticleTick > 0){
+      if (this.fireParticleTick > 0) {
          this.fireParticleTick--;
       }
    }
 
    @Override
    public GroupDataEntity onSpawnWithEgg(GroupDataEntity par1EntityLivingData) {
-      if (Configs.wenscConfig.mobAttackCauseFire.ConfigValue && this.getChanceOfCausingFire() > this.rand.nextFloat()){
+      if (Configs.wenscConfig.mobAttackCauseFire.ConfigValue && this.getChanceOfCausingFire() > this.rand.nextFloat()) {
          this.attackCauseFire = true;
       }
       return super.onSpawnWithEgg(par1EntityLivingData);
@@ -252,31 +258,31 @@ public abstract class EntityMonsterTrans extends EntityInsentient implements IMo
    @Override
    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
       super.readEntityFromNBT(par1NBTTagCompound);
-      if (par1NBTTagCompound.hasKey("AttackCauseFire")){
+      if (par1NBTTagCompound.hasKey("AttackCauseFire")) {
          this.attackCauseFire = par1NBTTagCompound.getBoolean("AttackCauseFire");
       }
    }
 
-   protected void tryDisarmTarget(Entity target){
+   protected void tryDisarmTarget(Entity target) {
       if (this.onServer() && target instanceof EntityLiving) {
-         EntityLiving entity_living_base = (EntityLiving)target;
+         EntityLiving entity_living_base = (EntityLiving) target;
          ItemStack item_stack_to_drop = entity_living_base.getHeldItemStack();
          if (item_stack_to_drop != null && this.rand.nextFloat() < this.getDisarmingChance(this.getHeldItemStack())) {
-            if (entity_living_base instanceof EntityInsentient){
-               EntityInsentient entity_living = (EntityInsentient)entity_living_base;
+            if (entity_living_base instanceof EntityInsentient) {
+               EntityInsentient entity_living = (EntityInsentient) entity_living_base;
                if (entity_living.canBeDisarmed()) {
                   entity_living.dropItemStack(item_stack_to_drop, entity_living.height / 2.0F).delayBeforeCanPickup = 20;
                   entity_living.clearMatchingEquipmentSlot(item_stack_to_drop);
                   entity_living.ticks_disarmed = 40;
                }
-            }else if (entity_living_base instanceof EntityPlayer){
+            } else if (entity_living_base instanceof EntityPlayer) {
                EntityPlayer player = (EntityPlayer) entity_living_base;
-               if (!player.isBlocking()){
+               if (!player.isBlocking()) {
                   EntityItem entityItem = player.dropItemStack(item_stack_to_drop, player.height / 2.0F);
                   Vec3D lookVec = player.getLookVec();
                   entityItem.delayBeforeCanPickup = 20;
                   //Rotate 90 degrees,to the right side of the player
-                  entityItem.addVelocity(-lookVec.zCoord * 0.4,0,lookVec.xCoord  * 0.4);
+                  entityItem.addVelocity(-lookVec.zCoord * 0.4, 0, lookVec.xCoord * 0.4);
                   player.setHeldItemStack(null);
                }
             }
@@ -287,6 +293,6 @@ public abstract class EntityMonsterTrans extends EntityInsentient implements IMo
    @Override
    public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
       super.writeEntityToNBT(par1NBTTagCompound);
-      par1NBTTagCompound.setBoolean("AttackCauseFire",this.attackCauseFire);
+      par1NBTTagCompound.setBoolean("AttackCauseFire", this.attackCauseFire);
    }
 }

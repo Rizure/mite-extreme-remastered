@@ -63,7 +63,7 @@ public class ChunkProviderHellTrans {
       int var7;
       int var8;
       int var9;
-      for(var6 = 0; var6 < 8; ++var6) {
+      for (var6 = 0; var6 < 8; ++var6) {
          var7 = var4 + this.hellRNG.nextInt(16) + 8;
          var8 = this.hellRNG.nextInt(120) + 4;
          var9 = var5 + this.hellRNG.nextInt(16) + 8;
@@ -73,7 +73,7 @@ public class ChunkProviderHellTrans {
       var6 = this.hellRNG.nextInt(this.hellRNG.nextInt(10) + 1) + 1;
 
       int var10;
-      for(var7 = 0; var7 < var6; ++var7) {
+      for (var7 = 0; var7 < var6; ++var7) {
          var8 = var4 + this.hellRNG.nextInt(16) + 8;
          var9 = this.hellRNG.nextInt(120) + 4;
          var10 = var5 + this.hellRNG.nextInt(16) + 8;
@@ -82,14 +82,14 @@ public class ChunkProviderHellTrans {
 
       var6 = this.hellRNG.nextInt(this.hellRNG.nextInt(10) + 1);
 
-      for(var7 = 0; var7 < var6; ++var7) {
+      for (var7 = 0; var7 < var6; ++var7) {
          var8 = var4 + this.hellRNG.nextInt(16) + 8;
          var9 = this.hellRNG.nextInt(120) + 4;
          var10 = var5 + this.hellRNG.nextInt(16) + 8;
          (new WorldGenLightStone1()).generate(this.worldObj, this.hellRNG, var8, var9, var10);
       }
 
-      for(var7 = 0; var7 < 10; ++var7) {
+      for (var7 = 0; var7 < 10; ++var7) {
          var8 = var4 + this.hellRNG.nextInt(16) + 8;
          var9 = this.hellRNG.nextInt(128);
          var10 = var5 + this.hellRNG.nextInt(16) + 8;
@@ -103,7 +103,7 @@ public class ChunkProviderHellTrans {
          (new WorldGenFlowers(Block.mushroomBrown.blockID)).generate(this.worldObj, this.hellRNG, var7, var8, var9);
       }
 
-      for(int i = 0; i < 16; ++i) {
+      for (int i = 0; i < 16; ++i) {
          var7 = var4 + this.hellRNG.nextInt(16) + 8;
          var8 = this.hellRNG.nextInt(128);
          var9 = var5 + this.hellRNG.nextInt(16) + 8;
@@ -113,7 +113,7 @@ public class ChunkProviderHellTrans {
       WorldGenMinable var12 = new WorldGenMinable(Block.oreNetherQuartz.blockID, 9, Block.netherrack.blockID);
 
       int var11;
-      for(var8 = 0; var8 < 16; ++var8) {
+      for (var8 = 0; var8 < 16; ++var8) {
          var9 = var4 + this.hellRNG.nextInt(16);
          var10 = this.hellRNG.nextInt(80) + 35;
          var11 = var5 + this.hellRNG.nextInt(16);
@@ -123,7 +123,7 @@ public class ChunkProviderHellTrans {
       if (this.worldObj.getWorldInfo().getEarliestMITEReleaseRunIn() >= 139) {
          var12 = (new WorldGenMinable(Block.oreGold.blockID, 8, Block.netherrack.blockID)).setMinableBlockMetadata(2);
 
-         for(var8 = 0; var8 < 2; ++var8) {
+         for (var8 = 0; var8 < 2; ++var8) {
             var9 = var4 + this.hellRNG.nextInt(16);
             var10 = this.hellRNG.nextInt(80) + 35;
             var11 = var5 + this.hellRNG.nextInt(16);
@@ -131,11 +131,11 @@ public class ChunkProviderHellTrans {
          }
       }
 
-      if(Configs.wenscConfig.netherAdamantiumMaxCountPerChunk.ConfigValue > 0 && Configs.wenscConfig.netherAdamantiumMaxCountPerVein.ConfigValue > 0) {
+      if (Configs.wenscConfig.netherAdamantiumMaxCountPerChunk.ConfigValue > 0 && Configs.wenscConfig.netherAdamantiumMaxCountPerVein.ConfigValue > 0) {
          var12 = (new WorldGenMinable(Blocks.netherAdamantiumOre.blockID, Configs.wenscConfig.netherAdamantiumMaxCountPerVein.ConfigValue, Block.netherrack.blockID)).setMinableBlockMetadata(0);
 
          int count = this.hellRNG.nextInt(Configs.wenscConfig.netherAdamantiumMaxCountPerChunk.ConfigValue) + 1;
-         for(var8 = 0; var8 < count; ++var8) {
+         for (var8 = 0; var8 < count; ++var8) {
             var9 = var4 + this.hellRNG.nextInt(16);
             var10 = this.hellRNG.nextInt(80) + 35;
             var11 = var5 + this.hellRNG.nextInt(16);
@@ -148,7 +148,7 @@ public class ChunkProviderHellTrans {
          var12 = (new WorldGenMinable(Block.silverfish.blockID, 8, Block.netherrack.blockID)).setMinableBlockMetadata(3);
          int num_veins = this.hellRNG.nextInt(7) + 2;
 
-         for(var8 = 0; var8 < num_veins; ++var8) {
+         for (var8 = 0; var8 < num_veins; ++var8) {
             var9 = var4 + this.hellRNG.nextInt(16);
             var10 = this.hellRNG.nextInt(108) + 10;
             var11 = var5 + this.hellRNG.nextInt(16);
@@ -156,7 +156,7 @@ public class ChunkProviderHellTrans {
          }
       }
 
-      for(var8 = 0; var8 < 16; ++var8) {
+      for (var8 = 0; var8 < 16; ++var8) {
          var9 = var4 + this.hellRNG.nextInt(16);
          var10 = this.hellRNG.nextInt(108) + 10;
          var11 = var5 + this.hellRNG.nextInt(16);

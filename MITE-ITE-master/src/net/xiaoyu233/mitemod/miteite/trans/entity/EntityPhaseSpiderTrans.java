@@ -13,45 +13,46 @@ import org.spongepowered.asm.mixin.Shadow;
 @Mixin(EntityPhaseSpider.class)
 public class EntityPhaseSpiderTrans extends EntityWoodSpider {
 
-    @Shadow
-    int num_evasions;
+   @Shadow
+   int num_evasions;
 
-    public EntityPhaseSpiderTrans(World world) {
-        super(world);
-    }
+   public EntityPhaseSpiderTrans(World world) {
+      super(world);
+   }
 
-    @Overwrite
-    public EntityDamageResult attackEntityFrom(Damage damage) {
-        boolean can_evade = true;
-        DamageSource damage_source = damage.getSource();
-        boolean has_phasedefend = false;
-        if(damage_source != null){
-            ItemStack item_stack = damage_source.getItemAttackedWith();
-            if (item_stack != null  && this.rand.nextFloat() < ToolModifierTypes.URBAN_LEGEND.getModifierValue(item_stack.getTagCompound())) {
-                has_phasedefend = true;
-            }
-        }
-        if (damage.isFallDamage() || damage.isFireDamage() || damage.isPoison() || has_phasedefend) {
-            can_evade = false;
-        }
+   @Overwrite
+   public EntityDamageResult attackEntityFrom(Damage damage) {
+      boolean can_evade = true;
+      DamageSource damage_source = damage.getSource();
+      boolean has_phasedefend = false;
+      if (damage_source != null) {
+         ItemStack item_stack = damage_source.getItemAttackedWith();
+         if (item_stack != null && this.rand.nextFloat() < ToolModifierTypes.URBAN_LEGEND.getModifierValue(item_stack.getTagCompound())) {
+            has_phasedefend = true;
+         }
+      }
+      if (damage.isFallDamage() || damage.isFireDamage() || damage.isPoison() || has_phasedefend) {
+         can_evade = false;
+      }
 
-        if (can_evade && this.num_evasions > 0) {
-            --this.num_evasions;
-            Entity entity = this.getTarget();
-            if (entity == null) {
-                entity = damage.getResponsibleEntityP();
-            }
+      if (can_evade && this.num_evasions > 0) {
+         --this.num_evasions;
+         Entity entity = this.getTarget();
+         if (entity == null) {
+            entity = damage.getResponsibleEntityP();
+         }
 
-            if (this.tryTeleportAwayFrom(entity, 3.0)) {
-                return null;
-            }
-        }
+         if (this.tryTeleportAwayFrom(entity, 3.0)) {
+            return null;
+         }
+      }
 
-        return super.attackEntityFrom(damage);
-    }
-    @Shadow
-    public boolean tryTeleportAwayFrom(Entity entity, double min_distance) {
-        return false;
-    }
+      return super.attackEntityFrom(damage);
+   }
+
+   @Shadow
+   public boolean tryTeleportAwayFrom(Entity entity, double min_distance) {
+      return false;
+   }
 
 }

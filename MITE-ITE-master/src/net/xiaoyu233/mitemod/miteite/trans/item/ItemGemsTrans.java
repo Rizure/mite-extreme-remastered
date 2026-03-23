@@ -26,6 +26,7 @@ public class ItemGemsTrans extends Item {
                  : 0)));
       }
    }
+
    @Overwrite
    public static boolean onItemRightClick(EntityPlayer player, ItemStack item_stack, float partial_tick, boolean ctrl_is_down) {
       int xp_value = getExperienceValueWhenSacrificed(item_stack);
@@ -38,16 +39,16 @@ public class ItemGemsTrans extends Item {
             if (item_stack.getItem() == netherQuartz && player.getExperienceLevel() >= Configs.wenscConfig.quartzMaxExpLevel.ConfigValue) {
                return false;
             }
-            if(ctrl_is_down){
+            if (ctrl_is_down) {
                int amount = player.getHeldItemStack().stackSize;
                player.causeBreakingItemEffect(var10001, var10002.currentItem);
-               for(int i = 0; i < amount; i++){
-                   player.convertOneOfHeldItem((ItemStack)null);
+               for (int i = 0; i < amount; i++) {
+                  player.convertOneOfHeldItem((ItemStack) null);
                }
                player.addExperience(xp_value * amount);
-            }else {
+            } else {
                player.causeBreakingItemEffect(var10001, var10002.currentItem);
-               player.convertOneOfHeldItem((ItemStack)null);
+               player.convertOneOfHeldItem((ItemStack) null);
                player.addExperience(xp_value);
             }
 

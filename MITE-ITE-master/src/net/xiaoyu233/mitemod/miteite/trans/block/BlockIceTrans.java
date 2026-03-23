@@ -7,18 +7,21 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
 @Mixin(BlockIce.class)
-public class BlockIceTrans extends Block{
-    protected BlockIceTrans(int par1, Material par2Material, BlockConstants constants) {
-        super(par1, par2Material, constants);
-    }
+public class BlockIceTrans extends Block {
+   protected BlockIceTrans(int par1, Material par2Material, BlockConstants constants) {
+      super(par1, par2Material, constants);
+   }
 
-    @Overwrite
-    public int dropBlockAsEntityItem(BlockBreakInfo info) {
-        ItemStack itemStack = info.getHarvesterItemStack();
-        float unnaturalModifierValue = ToolModifierTypes.UNNATURAL_MODIFIER.getModifierValue(itemStack.getTagCompound());
-        if(unnaturalModifierValue > 0){
+   @Overwrite
+   public int dropBlockAsEntityItem(BlockBreakInfo info) {
+      ItemStack itemStack = info.getHarvesterItemStack();
+      if(itemStack != null){
+         float unnaturalModifierValue = ToolModifierTypes.UNNATURAL_MODIFIER.getModifierValue(itemStack.getTagCompound());
+         if (unnaturalModifierValue > 0) {
             this.dropBlockAsEntityItem(info, Items.powder_freeze);
-        }
-        return 0;
-    }
+         }
+         return 0;
+      }
+      return 0;
+   }
 }

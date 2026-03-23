@@ -14,11 +14,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(MobEffectList.class)
 public class MobEffectListTrans {
-    @Shadow
-    @Final
-    public static MobEffectList weakness;
-    @Inject(method = "<clinit>",at = @At("RETURN"))
-    private static void injectClinit(CallbackInfo callback){
-        weakness.func_111184_a(GenericAttributes.attackDamage, "22653B89-116E-49DC-9B6B-9971489B5BE5", -0.2, 1);
-    }
+   @Shadow
+   @Final
+   public static MobEffectList weakness;
+
+   @Inject(method = "<clinit>", at = @At("RETURN"))
+   private static void injectClinit(CallbackInfo callback) {
+      weakness.func_111184_a(GenericAttributes.attackDamage, "22653B89-116E-49DC-9B6B-9971489B5BE5", -0.2, 1);
+   }
 }

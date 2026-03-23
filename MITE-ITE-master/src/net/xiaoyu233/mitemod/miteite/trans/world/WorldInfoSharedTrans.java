@@ -6,11 +6,15 @@ import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(WorldInfoShared.class)
 public abstract class WorldInfoSharedTrans {
-    @Shadow private long[] totalTime;
+   @Shadow
+   private long[] totalTime;
 
-    @Shadow protected static int getWorldIndexForDimensionId(int dimension_id){
-        return 0;
-    };
+   @Shadow
+   protected static int getWorldIndexForDimensionId(int dimension_id) {
+      return 0;
+   }
+
+   ;
 
 //    @Overwrite
 //    public void setTotalWorldTime(World world, long total_world_time) {

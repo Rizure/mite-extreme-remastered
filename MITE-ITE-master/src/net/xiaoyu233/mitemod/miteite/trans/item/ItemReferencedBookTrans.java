@@ -23,7 +23,7 @@ public class ItemReferencedBookTrans extends ItemWrittenBook {
    public void a(int par1, CreativeModeTab par2CreativeTabs, List par3List) {
       int maxIndex = 9;
 
-      for(int i1 = 1; i1 <= maxIndex; ++i1) {
+      for (int i1 = 1; i1 <= maxIndex; ++i1) {
          par3List.add(this.generateBookT(i1));
       }
 

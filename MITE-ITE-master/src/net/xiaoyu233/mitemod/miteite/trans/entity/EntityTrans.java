@@ -13,12 +13,17 @@ import java.util.List;
 
 @Mixin(Entity.class)
 public abstract class EntityTrans {
-   @Shadow public abstract boolean canCatchFire();
+   @Shadow
+   public abstract boolean canCatchFire();
 
-   @Shadow @Final public AxisAlignedBB boundingBox;
-   @Shadow public World worldObj;
+   @Shadow
+   @Final
+   public AxisAlignedBB boundingBox;
+   @Shadow
+   public World worldObj;
    private int netherrackWalkTime = 0;
-   @Shadow public int ticksExisted;
+   @Shadow
+   public int ticksExisted;
    @Shadow
    public double posX;
    @Shadow
@@ -41,9 +46,11 @@ public abstract class EntityTrans {
    @Shadow
    protected void entityInit() {
    }
-   public int getFireTick(){
-       return this.fire;
+
+   public int getFireTick() {
+      return this.fire;
    }
+
    @Overwrite
    public boolean isInFire() {
       if (this.worldObj.isTheNether() &&
@@ -85,27 +92,27 @@ public abstract class EntityTrans {
          double original_center_y = (this.boundingBox.minY + this.boundingBox.maxY) / 2.0;
          double center_x = this.posX;
          double center_z = this.posZ;
-         int x = center_x < 0.0 ? (int)center_x - 1 : (int)center_x;
-         int y = original_center_y < 0.0 ? (int)original_center_y - 1 : (int)original_center_y;
-         int z = center_z < 0.0 ? (int)center_z - 1 : (int)center_z;
+         int x = center_x < 0.0 ? (int) center_x - 1 : (int) center_x;
+         int y = original_center_y < 0.0 ? (int) original_center_y - 1 : (int) original_center_y;
+         int z = center_z < 0.0 ? (int) center_z - 1 : (int) center_z;
          List collisions;
          if (!this.worldObj.isBlockFullSolidCube(x, y, z) || this.worldObj.getBlock(x, y, z) == Block.cauldron) {
-            collisions = this.worldObj.getCollidingBlockBounds(this.boundingBox, ReflectHelper.dyCast(Entity.class,this));
+            collisions = this.worldObj.getCollidingBlockBounds(this.boundingBox, ReflectHelper.dyCast(Entity.class, this));
             if (collisions.isEmpty()) {
                return 0;
             }
          }
 
-         if (ReflectHelper.dyCast(EntityItem.class,this) instanceof EntityItem
+         if (ReflectHelper.dyCast(EntityItem.class, this) instanceof EntityItem
                  && (this.worldObj.getBlock(x, y, z) instanceof BlockLeaves || this.worldObj.getBlock(x, y, z) instanceof BlockLeaves1)) {
-            collisions = this.worldObj.getCollidingBlockBounds(this.boundingBox, ReflectHelper.dyCast(Entity.class,this));
+            collisions = this.worldObj.getCollidingBlockBounds(this.boundingBox, ReflectHelper.dyCast(Entity.class, this));
             if (collisions.isEmpty()) {
                return 0;
             }
          }
 
-         int max_escape_range = ReflectHelper.dyCast(EntityExperienceOrb.class,this) instanceof EntityExperienceOrb ? 2 : 1;
-         if (ReflectHelper.dyCast(EntityLivestock.class,this) instanceof EntityLivestock || this.isEntityPlayer()) {
+         int max_escape_range = ReflectHelper.dyCast(EntityExperienceOrb.class, this) instanceof EntityExperienceOrb ? 2 : 1;
+         if (ReflectHelper.dyCast(EntityLivestock.class, this) instanceof EntityLivestock || this.isEntityPlayer()) {
             max_escape_range = 3;
          }
 
@@ -115,9 +122,9 @@ public abstract class EntityTrans {
          boolean[] is_candidate_block = new boolean[matrix_size * matrix_size * matrix_size];
 
          int dy;
-         for(int dx = -max_escape_range; dx <= max_escape_range; ++dx) {
-            for(dy = -max_escape_range; dy <= max_escape_range; ++dy) {
-               for(int dz = -max_escape_range; dz <= max_escape_range; ++dz) {
+         for (int dx = -max_escape_range; dx <= max_escape_range; ++dx) {
+            for (dy = -max_escape_range; dy <= max_escape_range; ++dy) {
+               for (int dz = -max_escape_range; dz <= max_escape_range; ++dz) {
                   if (this.worldObj.blockExists(x + dx, y + dy, z + dz) && !this.worldObj.isBlockFullSolidCube(x + dx, y + dy, z + dz)) {
                      can_escape = true;
                      is_candidate_block[dx + max_escape_range + (dy + max_escape_range) * matrix_size + (dz + max_escape_range) * matrix_size_sq] = true;
@@ -130,28 +137,28 @@ public abstract class EntityTrans {
             return -1;
          } else {
             AxisAlignedBB trial_bounding_box = this.boundingBox.copy();
-            dy = (int)(Math.random() * 2.147483647E9);
+            dy = (int) (Math.random() * 2.147483647E9);
             float range = 0.1F;
 
-            while((range += 0.001F) < (float)(max_escape_range + 1)) {
+            while ((range += 0.001F) < (float) (max_escape_range + 1)) {
                ++dy;
-               double dPosX = RNG.double_1[dy & 32767] * (double)range * 2.0 - (double)range;
+               double dPosX = RNG.double_1[dy & 32767] * (double) range * 2.0 - (double) range;
                ++dy;
-               double dPosY = RNG.double_1[dy & 32767] * (double)range * 2.0 - (double)range;
+               double dPosY = RNG.double_1[dy & 32767] * (double) range * 2.0 - (double) range;
                ++dy;
-               double dPosZ = RNG.double_1[dy & 32767] * (double)range * 2.0 - (double)range;
+               double dPosZ = RNG.double_1[dy & 32767] * (double) range * 2.0 - (double) range;
                center_x = this.posX + dPosX;
                double center_y = original_center_y + dPosY;
                center_z = this.posZ + dPosZ;
-               int trial_x = center_x < 0.0 ? (int)center_x - 1 : (int)center_x;
-               int trial_y = center_y < 0.0 ? (int)center_y - 1 : (int)center_y;
-               int trial_z = center_z < 0.0 ? (int)center_z - 1 : (int)center_z;
+               int trial_x = center_x < 0.0 ? (int) center_x - 1 : (int) center_x;
+               int trial_y = center_y < 0.0 ? (int) center_y - 1 : (int) center_y;
+               int trial_z = center_z < 0.0 ? (int) center_z - 1 : (int) center_z;
                int dx = trial_x - x;
                int var0 = trial_y - y;
                int dz = trial_z - z;
                if (dx >= -max_escape_range && dx <= max_escape_range && var0 >= -max_escape_range && var0 <= max_escape_range && dz >= -max_escape_range && dz <= max_escape_range && is_candidate_block[dx + max_escape_range + (var0 + max_escape_range) * matrix_size + (dz + max_escape_range) * matrix_size_sq]) {
                   trial_bounding_box.setBounds(this.boundingBox.minX + dPosX, this.boundingBox.minY + dPosY, this.boundingBox.minZ + dPosZ, this.boundingBox.maxX + dPosX, this.boundingBox.maxY + dPosY, this.boundingBox.maxZ + dPosZ);
-                  collisions = this.worldObj.getCollidingBlockBounds(trial_bounding_box, ReflectHelper.dyCast(Entity.class,this));
+                  collisions = this.worldObj.getCollidingBlockBounds(trial_bounding_box, ReflectHelper.dyCast(Entity.class, this));
                   if (collisions.isEmpty()) {
                      this.setPosition(this.posX + dPosX, this.posY + dPosY, this.posZ + dPosZ);
                      this.send_position_update_immediately = true;

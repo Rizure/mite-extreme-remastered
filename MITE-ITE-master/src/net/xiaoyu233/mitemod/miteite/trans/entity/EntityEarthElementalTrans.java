@@ -42,8 +42,8 @@ public abstract class EntityEarthElementalTrans extends EntityAnimalWatcher {
       return 0;
    }
 
-   @Inject(method = "<clinit>" ,at =  @At("HEAD"))
-   private static void injectTypeRegister(CallbackInfo ci){
+   @Inject(method = "<clinit>", at = @At("HEAD"))
+   private static void injectTypeRegister(CallbackInfo ci) {
       WOOD = getType(Block.planks, false);
    }
 
@@ -59,12 +59,12 @@ public abstract class EntityEarthElementalTrans extends EntityAnimalWatcher {
       super.applyEntityAttributes();
       int day = this.getWorld() != null ? Math.max(this.getWorld().getDayOfOverworld(), 0) : 0;
       this.setEntityAttribute(GenericAttributes.followRange, 20.0D);
-      this.setEntityAttribute(GenericAttributes.movementSpeed, 0.2D * Constant.getNormalMobModifier("Speed",day,this.worldObj.isOverworld()));
-      this.setEntityAttribute(GenericAttributes.attackDamage, 15.0D * Constant.getNormalMobModifier("Damage",day,this.worldObj.isOverworld()));
-      if (this.getWorld().isTheNether()){
-         this.setEntityAttribute(GenericAttributes.maxHealth, 40.0D * Constant.getNormalMobModifier("Health",day,this.worldObj.isOverworld()));
-      }else {
-         this.setEntityAttribute(GenericAttributes.maxHealth, 30.0D * Constant.getNormalMobModifier("Health",day,this.worldObj.isOverworld()));
+      this.setEntityAttribute(GenericAttributes.movementSpeed, 0.2D * Constant.getNormalMobModifier("Speed", day, this.worldObj.isOverworld()));
+      this.setEntityAttribute(GenericAttributes.attackDamage, 15.0D * Constant.getNormalMobModifier("Damage", day, this.worldObj.isOverworld()));
+      if (this.getWorld().isTheNether()) {
+         this.setEntityAttribute(GenericAttributes.maxHealth, 40.0D * Constant.getNormalMobModifier("Health", day, this.worldObj.isOverworld()));
+      } else {
+         this.setEntityAttribute(GenericAttributes.maxHealth, 30.0D * Constant.getNormalMobModifier("Health", day, this.worldObj.isOverworld()));
       }
    }
 
@@ -153,9 +153,12 @@ public abstract class EntityEarthElementalTrans extends EntityAnimalWatcher {
       return i;
    }
 
-   @Shadow @Final public static int NETHERRACK_MAGMA;
+   @Shadow
+   @Final
+   public static int NETHERRACK_MAGMA;
 
-   @Shadow protected abstract void entityInit();
+   @Shadow
+   protected abstract void entityInit();
 
    @Overwrite
    public void setTypeForBlock(Block block, boolean heated) {

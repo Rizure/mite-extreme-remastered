@@ -17,8 +17,8 @@ public class ItemBowTrans extends Item {
    @Shadow
    private Material reinforcement_material;
 
-   @Inject(method = "<init>",at = @At("RETURN"))
-   private void injectInit(CallbackInfo callbackInfo){
+   @Inject(method = "<init>", at = @At("RETURN"))
+   private void injectInit(CallbackInfo callbackInfo) {
       this.setMaxDamage(reinforcement_material == Materials.vibranium ? 512 : (reinforcement_material == Material.mithril ? 128 : (reinforcement_material == Material.ancient_metal ? 64 : 32)));
    }
 
@@ -41,7 +41,7 @@ public class ItemBowTrans extends Item {
            at = @At(
                    value = "INVOKE",
                    target = "Lnet/minecraft/Item;setMaxDamage(I)Lnet/minecraft/Item;"))
-   private void redirectSetMaxDamage(){
+   private void redirectSetMaxDamage() {
       if (reinforcement_material == Materials.vibranium) {
          this.setMaxDamage(512);
       } else {

@@ -19,7 +19,7 @@ public abstract class EnchantmentWeaponDamageTrans extends Enchantment {
             return item instanceof ItemSword;
          } else if (this != Enchantment.smite) {
             return false;
-         // 亡灵杀手
+            // 亡灵杀手
          } else {
             return item.getClass() == ItemWarHammer.class || (item.getHardestMetalMaterial() == Materials.vibranium && item instanceof ItemCudgel); // 这里是继承类，不能直接判==
          }
