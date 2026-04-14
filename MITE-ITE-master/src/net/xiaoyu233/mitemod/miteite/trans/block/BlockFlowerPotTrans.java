@@ -70,21 +70,21 @@ public class BlockFlowerPotTrans extends Block {
          int metadata = par1World.getBlockMetadata(par2, par3, par4);
          if (par1World.getBlock(par2,par3,par4) instanceof BlockFlowerPotSapling){
             if (BlockFlowerPotSapling.getPlantForMeta(metadata) != null) {
-               par1World.spawnEntityInWorld(new EntityItem(par1World, par2 + par5Random.nextGaussian() * 0.5F, par3, par4 + par5Random.nextGaussian() * 0.5F, BlockFlowerPotSapling.getPlantForMeta(metadata)));
+               par1World.spawnEntityInWorld(new EntityItem(par1World, par2 + 0.5F, par3, par4 + 0.5F, BlockFlowerPotSapling.getPlantForMeta(metadata)));
                if(par5Random.nextInt(10) == 0)
-                  par1World.spawnEntityInWorld(new EntityItem(par1World, par2 + par5Random.nextGaussian() * 0.5F, par3, par4 + par5Random.nextGaussian() * 0.5F, new ItemStack(Item.goldNugget)));
+                  par1World.spawnEntityInWorld(new EntityItem(par1World, par2 + 0.5F, par3, par4 + 0.5F, new ItemStack(Item.goldNugget)));
             }
          } else if (par1World.getBlock(par2,par3,par4) instanceof BlockFlowerPotMulti){
             if (BlockFlowerPotMulti.getPlantForMeta(metadata) != null) {
-               par1World.spawnEntityInWorld(new EntityItem(par1World, par2 + par5Random.nextGaussian() * 0.5F, par3, par4 + par5Random.nextGaussian() * 0.5F, BlockFlowerPotMulti.getPlantForMeta(metadata)));
+               par1World.spawnEntityInWorld(new EntityItem(par1World, par2 + 0.5F, par3, par4 + 0.5F, BlockFlowerPotMulti.getPlantForMeta(metadata)));
                if(par5Random.nextInt(10) == 0)
-                  par1World.spawnEntityInWorld(new EntityItem(par1World, par2 + par5Random.nextGaussian() * 0.5F, par3, par4 + par5Random.nextGaussian() * 0.5F, new ItemStack(Item.goldNugget)));
+                  par1World.spawnEntityInWorld(new EntityItem(par1World, par2 + 0.5F, par3, par4 + 0.5F, new ItemStack(Item.goldNugget)));
             }
          } else if (par1World.getBlock(par2,par3,par4) instanceof BlockFlowerPot){
             if (BlockFlowerPot.getPlantForMeta(metadata) != null) {
-               par1World.spawnEntityInWorld(new EntityItem(par1World, par2 + par5Random.nextGaussian() * 0.5F, par3, par4 + par5Random.nextGaussian() * 0.5F, BlockFlowerPot.getPlantForMeta(metadata)));
+               par1World.spawnEntityInWorld(new EntityItem(par1World, par2 + 0.5F, par3, par4 + 0.5F, BlockFlowerPot.getPlantForMeta(metadata)));
                if(par5Random.nextInt(10) == 0)
-                  par1World.spawnEntityInWorld(new EntityItem(par1World, par2 + par5Random.nextGaussian() * 0.5F, par3, par4 + par5Random.nextGaussian() * 0.5F, new ItemStack(Item.goldNugget)));
+                  par1World.spawnEntityInWorld(new EntityItem(par1World, par2 + 0.5F, par3, par4 + 0.5F, new ItemStack(Item.goldNugget)));
             }
          }
          return true;
