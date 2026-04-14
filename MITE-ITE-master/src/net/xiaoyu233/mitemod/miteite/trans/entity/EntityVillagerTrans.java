@@ -77,11 +77,11 @@ public abstract class EntityVillagerTrans extends EntityAgeable implements IMerc
    private static void addMerchantItem(MerchantRecipeList par0MerchantRecipeList, int par1, Random par2Random, float par3) {
    }
 
-   private static void forEmeraldShard(MerchantRecipeList par0MerchantRecipeList, int par1, Random par2Random, float par3) {
-      if (par2Random.nextFloat() < par3) {
-         par0MerchantRecipeList.add(new MerchantRecipe(new ItemStack(par1, Configs.wenscConfig.villagerWoolToEmeraldShardCount.ConfigValue), new ItemStack(Item.shardEmerald, Configs.wenscConfig.villagerWoolToEmeraldShardShardCount.ConfigValue)));
-      }
-   }
+//   private static void forEmeraldShard(MerchantRecipeList par0MerchantRecipeList, int par1, Random par2Random, float par3) {
+//      if (par2Random.nextFloat() < par3) {
+//         par0MerchantRecipeList.add(new MerchantRecipe(new ItemStack(par1, Configs.wenscConfig.villagerWoolToEmeraldShardCount.ConfigValue), new ItemStack(Item.shardEmerald, Configs.wenscConfig.villagerWoolToEmeraldShardShardCount.ConfigValue)));
+//      }
+//   }
 
    @Shadow
    public EntityVillager func_90012_b(EntityAgeable par1EntityAgeable) {
@@ -172,7 +172,7 @@ public abstract class EntityVillagerTrans extends EntityAgeable implements IMerc
       switch (this.getProfession()) {
          case 0:
             addMerchantItem(var2, Item.wheat.itemID, this.rand, this.adjustProbability(0.9F));
-            forEmeraldShard(var2, Block.cloth.blockID, this.rand, this.adjustProbability(0.5F));
+            addMerchantItem(var2, Block.cloth.blockID, this.rand, this.adjustProbability(0.5F));
             addMerchantItem(var2, Item.chickenRaw.itemID, this.rand, this.adjustProbability(0.5F));
             addMerchantItem(var2, Item.fishCooked.itemID, this.rand, this.adjustProbability(0.4F));
             addBlacksmithItem(var2, Item.bread.itemID, this.rand, this.adjustProbability(0.9F));

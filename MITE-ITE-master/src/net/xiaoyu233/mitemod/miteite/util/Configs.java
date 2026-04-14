@@ -53,19 +53,19 @@ public class Configs {
       public static ConfigItem<Integer> steppedMobDamageProgressIncreaseDay = new ConfigItem("steppedMobDamageProgressIncreaseDay_v0.1.0", 64, "单次渐进伤害增幅每提升1点所需天数(整数)", 32, 512);
       public static ConfigItem<Integer> fishingXp = new ConfigItem("fishingXp", 5, "钓鱼经验(整数)", 1, 10);
       public static ConfigItem<Integer> inRainDebuffTime = new ConfigItem("inRainDebuffTime", 3600, "雨中获得负面效果所需时长(整数)", 0, 1000000);
-      //        public static ConfigItem <Float> timeSpeedInDay = new ConfigItem("timeSpeedInDay", 1.0F, "白天时间流速(小数)", 0.25f ,2.0f);
-//        public static ConfigItem <Float> timeSpeedInNight = new ConfigItem("timeSpeedInNight", 1.0F, "夜晚时间流速(小数)", 0.25f ,2.0f);
-      public static ConfigItem<Integer> playerDefenseCooldown = new ConfigItem("playerDefenseCooldown", 160, "玩家格挡冷却(tick)", 0, 320);
-      public static ConfigItem<Integer> playerDefenceMaxTime = new ConfigItem("playerDefenceMaxTime", 80, "玩家格挡最大时间(tick)", 0, 160);
+//      public static ConfigItem <Float> timeSpeedInDay = new ConfigItem("timeSpeedInDay", 1.0F, "白天时间流速(小数)", 0.25f ,2.0f);
+//      public static ConfigItem <Float> timeSpeedInNight = new ConfigItem("timeSpeedInNight", 1.0F, "夜晚时间流速(小数)", 0.25f ,2.0f);
+//      public static ConfigItem<Integer> playerDefenseCooldown = new ConfigItem("playerDefenseCooldown", 160, "玩家格挡冷却(tick)", 0, 320);
+//      public static ConfigItem<Integer> playerDefenceMaxTime = new ConfigItem("playerDefenceMaxTime", 80, "玩家格挡最大时间(tick)", 0, 160);
       public static ConfigItem<Boolean> playerDisarmPlayer = new ConfigItem("playerDisarmPlayer", true, "玩家缴械玩家");
-      public static ConfigItem<Boolean> boostEnhance = new ConfigItem("boostEnhance", true, "怪物强化速度翻倍");
+//      public static ConfigItem<Boolean> boostEnhance = new ConfigItem("boostEnhance", true, "怪物强化速度翻倍");
       public static ConfigItem<Float> enhanceMultiply = new ConfigItem("enhanceMultiply", 1.0F, "怪物强化速度倍率", 0.0F, 4.0F);
       public static ConfigItem<Boolean> annihilationSkeletonSpawnInLight = new ConfigItem("annihilationSkeletonSpawnInLight", false, "主世界湮灭骷髅在光照处生成");
       public static ConfigItem<Integer> ancientBoneLordSpawnLimitDay = new ConfigItem("ancientBoneLordSpawnLimitDay", 192, "主世界生成远古骷髅公爵所需天数(整数)", 0, 384);
-      public static ConfigItem<Integer> wanderingWitchSpawnChanceOverworld = new ConfigItem("wanderingWitchSpawnChanceOverworld", 25, "主世界流浪女巫生成成功概率百分比(整数)", 0, 50);
-      public static ConfigItem<Integer> wanderingWitchSpawnLimitDayOverworld = new ConfigItem("wanderingWitchSpawnLimitDayOverworld", 96, "主世界流浪女巫生成天数限制(整数)", 96, 500);
-      public static ConfigItem<Integer> wanderingWitchSpawnLimitDayOther = new ConfigItem("wanderingWitchSpawnLimitDayOther", 64, "地狱及地下世界流浪女巫生成天数限制(整数)", 64, 500);
-      public static ConfigItem<Integer> wanderingWitchSpawnChanceUnderworld = new ConfigItem("wanderingWitchSpawnChanceUnderworld", 50, "地下世界流浪女巫生成成功概率百分比(整数)", 0, 100);
+//      public static ConfigItem<Integer> wanderingWitchSpawnChanceOverworld = new ConfigItem("wanderingWitchSpawnChanceOverworld", 25, "主世界流浪女巫生成成功概率百分比(整数)", 0, 50);
+      public static ConfigItem<Integer> wanderingWitchSpawnLimitDayOverworld = new ConfigItem("wanderingWitchSpawnLimitDayOverworld", 96, "主世界流浪女巫生成天数限制(整数)", 96, 512);
+      public static ConfigItem<Integer> wanderingWitchSpawnLimitDayOther = new ConfigItem("wanderingWitchSpawnLimitDayOther", 64, "地狱及地下世界流浪女巫生成天数限制(整数)", 64, 512);
+//      public static ConfigItem<Integer> wanderingWitchSpawnChanceUnderworld = new ConfigItem("wanderingWitchSpawnChanceUnderworld", 50, "地下世界流浪女巫生成成功概率百分比(整数)", 0, 100);
       public static ConfigItem<Boolean> underworldRandomTeleport = new ConfigItem("underworldRandomTeleport", false, "地下世界随机传送(开关)");
       public static ConfigItem<Integer> underworldRandomTeleportTimeNew = new ConfigItem("underworldRandomTeleportTimeNew", 132000, "地下世界随机传送时间(tick)", 0, 1000000);
       public static ConfigItem<Boolean> underworldDebuff = new ConfigItem("underworldDebuff", false, "地下世界负面效果(开关)");
@@ -96,8 +96,8 @@ public class Configs {
       public static ConfigItem<Boolean> batPoisonAttack = new ConfigItem("batPoisonAttack", true, "吸血蝙蝠攻击使玩家中毒");
       public static ConfigItem<Boolean> infernalCreeperBoost = new ConfigItem("infernalCreeperBoost", true, "增强地狱爬行者爆炸威力");
       public static ConfigItem<Boolean> wolvesAttackPlayersWithMeat = new ConfigItem("wolvesAttackPlayersWithMeat", true, "狼攻击快捷栏有肉的玩家");
-      public static ConfigItem<Integer> villagerWoolToEmeraldShardCount = new ConfigItem("villagerWoolToEmeraldShardCount", 4, "村民用羊毛换绿宝石碎片-羊毛所需数量", 1, 8);
-      public static ConfigItem<Integer> villagerWoolToEmeraldShardShardCount = new ConfigItem("villagerWoolToEmeraldShardShardCount", 1, "村民用羊毛换绿宝石碎片-绿宝石碎片获得数量", 1, 9);
+//      public static ConfigItem<Integer> villagerWoolToEmeraldShardCount = new ConfigItem("villagerWoolToEmeraldShardCount", 4, "村民用羊毛换绿宝石碎片-羊毛所需数量", 1, 8);
+//      public static ConfigItem<Integer> villagerWoolToEmeraldShardShardCount = new ConfigItem("villagerWoolToEmeraldShardShardCount", 1, "村民用羊毛换绿宝石碎片-绿宝石碎片获得数量", 1, 9);
       public static ConfigItem<Boolean> canBoostIronGolem = new ConfigItem("canBoostIronGolem", true, "可以强化铁傀儡");
       public static ConfigItem<Boolean> mobDefense = new ConfigItem("mobDefense", true, "怪物格挡");
       public static ConfigItem<Boolean> mobDisarmWhenDefence = new ConfigItem("mobDisarmWhenDefence", false, "怪物格挡时若有缴械附魔有几率缴械");
@@ -112,10 +112,6 @@ public class Configs {
       public static ConfigItem<Float> slimeAttackDamageBonus = new ConfigItem("slimeAttackDamageBonus", 1f, "绿色史莱姆伤害加成", 0f, 8f);
       public static ConfigItem<Integer> giantZombieSpawnZombieCooldown = new ConfigItem("giantZombieSpawnZombieCooldown", 300, "巨型僵尸生成僵尸间隔(tick)", 20, 1200);
       public static ConfigItem<Integer> animalIllToDeathTime = new ConfigItem("animalIllToDeathTime", 144000, "生物生病死亡时间(tick)", 72000, 288000);
-      public static ConfigItem<Integer> breedXpChicken = new ConfigItem("breedXpChicken", 5, "鸡繁殖获得经验", 1, 10);
-      public static ConfigItem<Integer> breedXpSheep = new ConfigItem("breedXpSheep", 5, "羊繁殖获得经验", 1, 10);
-      public static ConfigItem<Integer> breedXpPig = new ConfigItem("breedXpPig", 5, "猪繁殖获得经验", 1, 10);
-      public static ConfigItem<Integer> breedXpCow = new ConfigItem("breedXpCow", 5, "牛繁殖获得经验", 1, 10);
       public static ConfigItem<Integer> emeraldFrequencyBigHills = new ConfigItem("emeraldFrequencyBigHills", 6, "山地绿宝石矿每区块最少生成个数", 0, 12);
       public static ConfigItem<Boolean> overworldAdamantiteOre = new ConfigItem("overworldAdamantiteOre", false, "主世界生成艾德曼");
 
@@ -147,7 +143,7 @@ public class Configs {
       public static ConfigItem<Boolean> logPlayersInteractWithPortal = new ConfigItem("logPlayersInteractWithPortal", true, "玩家通过传送门时发送警告(开关)");
       public static ConfigItem<Integer> underworldGateOpenDay = new ConfigItem("underworldGateOpenDay", 32, "地下世界传送门多少天可以打开(主世界天数)", 16, 64);
       public static ConfigItem<Integer> netherGateOpenDay = new ConfigItem("netherGateOpenDay", 48, "地狱传送门多少天可以打开(主世界天数)", 24, 96);
-      public static ConfigItem<Boolean> isAfterDeathKeep = new ConfigItem("isAfterDeathKeep", false, "是否死亡不掉落");
+//      public static ConfigItem<Boolean> isAfterDeathKeep = new ConfigItem("isAfterDeathKeep", false, "是否死亡不掉落");
       public static ConfigItem<Boolean> isCloseShop = new ConfigItem("isCloseShop", false, "关闭商店系统");
       public static ConfigItem<Float> plantGrowthRate = new ConfigItem("plantGrowthRate_v0.0.9", 0.5F, "作物生长速度倍率", 0f, 4f);
       public static ConfigItem<Integer> whichDayGenVillage = new ConfigItem("whichDayGenVillage", 24, "多少天生成村庄", 1, 96);
@@ -157,13 +153,14 @@ public class Configs {
       //        public static ConfigItem <Integer> creeperFuseTime = new ConfigItem("creeperFuseTime", 30, "苦力怕蓄力时间(tick)", 20,100);
       public static ConfigItem<Integer> FlyingSkeletonSpawningWeight = new ConfigItem("FlyingSkeletonSpawningWeight", 5, "飞行骷髅生成权重", 0, 100);
       public static ConfigItem<Boolean> enhanceMobsArmor = new ConfigItem("EnhanceMobsArmor", true, "怪物穿着护甲强化");
-      public static ConfigItem<Boolean> allowInfLeveling = new ConfigItem<>("allowInfLeveling", false, "保留副属性无限升级特性");
+      public static ConfigItem<Boolean> allowInfLeveling = new ConfigItem<>("allowInfLeveling", false, "允许副属性无限升级");
       public static ConfigItem<Float> modifierCurveDisturbance = new ConfigItem<>("modifierCurveDisturbance", 0.25F, "副属性升级曲线扰动", 0F, 1F);
       public static ConfigItem<Float> mobSpawningOffset = new ConfigItem<>("mobSpawningOffset", 0.0F, "怪物生成速率加成", 0.0F, 3.0F);
       public static ConfigItem<Boolean> mobSpawningEvent = new ConfigItem<>("mobSpawningEvent", false, "启用怪物休战期/进攻期设定");
       public static ConfigItem<Boolean> veinSizeIncreasesWithDepth = new ConfigItem<>("veinSizeIncreasesWithDepth", true, "矿物随层数降低矿脉增大");
       public static ConfigItem<Integer> ridingSkeletonSpawningWeight = new ConfigItem<>("RidingSkeletonSpawningWeight", 10, "古尸骑手生成权重", 0, 100);
       public static ConfigItem<Float> energeticBoostLimit = new ConfigItem<>("EnergeticBoostLimit",3.0F,"海纳百川增伤上限", 1.0F, 10.0F);
+      public static ConfigItem<Boolean> boostBlaze = new ConfigItem<>("boostBlaze",true,"增强烈焰人");
 //        public static ConfigItem <String> md5String = new ConfigItem("md5String", new lh("wensc").a("busy"), "MD5");
 
    }
@@ -186,15 +183,15 @@ public class Configs {
 //        wenscMap.put("firstDayLongerDayTime", wenscConfig.firstDayLongerDayTime);
 //        wenscMap.put("timeSpeedInDay",wenscConfig.timeSpeedInDay);
 //        wenscMap.put("timeSpeedInNight",wenscConfig.timeSpeedInNight);
-      wenscMap.put("playerDefenseCooldown", wenscConfig.playerDefenseCooldown);
-      wenscMap.put("playerDefenceMaxTime", wenscConfig.playerDefenceMaxTime);
+//      wenscMap.put("playerDefenseCooldown", wenscConfig.playerDefenseCooldown);
+//      wenscMap.put("playerDefenceMaxTime", wenscConfig.playerDefenceMaxTime);
       wenscMap.put("playerDisarmPlayer", wenscConfig.playerDisarmPlayer);
       wenscMap.put("annihilationSkeletonSpawnInLight", wenscConfig.annihilationSkeletonSpawnInLight);
       wenscMap.put("ancientBoneLordSpawnLimitDay", wenscConfig.ancientBoneLordSpawnLimitDay);
-      wenscMap.put("wanderingWitchSpawnChanceOverworld", wenscConfig.wanderingWitchSpawnChanceOverworld);
+//      wenscMap.put("wanderingWitchSpawnChanceOverworld", wenscConfig.wanderingWitchSpawnChanceOverworld);
       wenscMap.put("wanderingWitchSpawnLimitDayOverworld", wenscConfig.wanderingWitchSpawnLimitDayOverworld);
       wenscMap.put("wanderingWitchSpawnLimitDayOther", wenscConfig.wanderingWitchSpawnLimitDayOther);
-      wenscMap.put("wanderingWitchSpawnChanceUnderworld", wenscConfig.wanderingWitchSpawnChanceUnderworld);
+//      wenscMap.put("wanderingWitchSpawnChanceUnderworld", wenscConfig.wanderingWitchSpawnChanceUnderworld);
       wenscMap.put("underworldRandomTeleport", wenscConfig.underworldRandomTeleport);
       wenscMap.put("underworldRandomTeleportTimeNew", wenscConfig.underworldRandomTeleportTimeNew);
       wenscMap.put("underworldDebuff", wenscConfig.underworldDebuff);
@@ -225,8 +222,8 @@ public class Configs {
       wenscMap.put("batPoisonAttack", wenscConfig.batPoisonAttack);
       wenscMap.put("infernalCreeperBoost", wenscConfig.infernalCreeperBoost);
       wenscMap.put("wolvesAttackPlayersWithMeat", wenscConfig.wolvesAttackPlayersWithMeat);
-      wenscMap.put("villagerWoolToEmeraldShardCount", wenscConfig.villagerWoolToEmeraldShardCount);
-      wenscMap.put("villagerWoolToEmeraldShardShardCount", wenscConfig.villagerWoolToEmeraldShardShardCount);
+//      wenscMap.put("villagerWoolToEmeraldShardCount", wenscConfig.villagerWoolToEmeraldShardCount);
+//      wenscMap.put("villagerWoolToEmeraldShardShardCount", wenscConfig.villagerWoolToEmeraldShardShardCount);
       wenscMap.put("canBoostIronGolem", wenscConfig.canBoostIronGolem);
       wenscMap.put("mobDefense", wenscConfig.mobDefense);
       wenscMap.put("mobDisarmWhenDefence", wenscConfig.mobDisarmWhenDefence);
@@ -241,10 +238,6 @@ public class Configs {
       wenscMap.put("slimeAttackDamageBonus", wenscConfig.slimeAttackDamageBonus);
       wenscMap.put("giantZombieSpawnZombieCooldown", wenscConfig.giantZombieSpawnZombieCooldown);
       wenscMap.put("animalIllToDeathTime", wenscConfig.animalIllToDeathTime);
-      wenscMap.put("breedXpChicken", wenscConfig.breedXpChicken);
-      wenscMap.put("breedXpSheep", wenscConfig.breedXpSheep);
-      wenscMap.put("breedXpPig", wenscConfig.breedXpPig);
-      wenscMap.put("breedXpCow", wenscConfig.breedXpCow);
       wenscMap.put("emeraldFrequencyBigHills", wenscConfig.emeraldFrequencyBigHills);
 
       wenscMap.put("copperFrequencyOverworld_v0.0.5", wenscConfig.copperFrequencyOverworld);
@@ -276,7 +269,7 @@ public class Configs {
       wenscMap.put("logPlayersInteractWithPortal", wenscConfig.logPlayersInteractWithPortal);
       wenscMap.put("underworldGateOpenDay", wenscConfig.underworldGateOpenDay);
       wenscMap.put("netherGateOpenDay", wenscConfig.netherGateOpenDay);
-      wenscMap.put("isAfterDeathKeep", wenscConfig.isAfterDeathKeep);
+//      wenscMap.put("isAfterDeathKeep", wenscConfig.isAfterDeathKeep);
       wenscMap.put("isCloseShop", wenscConfig.isCloseShop);
       wenscMap.put("plantGrowthRate_v0.0.9", wenscConfig.plantGrowthRate);
       wenscMap.put("whichDayGenVillage", wenscConfig.whichDayGenVillage);
@@ -294,6 +287,9 @@ public class Configs {
       wenscMap.put("mobSpawningEvent", wenscConfig.mobSpawningEvent);
       wenscMap.put("veinSizeIncreasesWithDepth", wenscConfig.veinSizeIncreasesWithDepth);
       wenscMap.put("RidingSkeletonSpawningWeight", wenscConfig.ridingSkeletonSpawningWeight);
+      wenscMap.put("EnergeticBoostLimit",wenscConfig.energeticBoostLimit);
+      wenscMap.put("boostBlaze",wenscConfig.boostBlaze);
+
 //        wenscMap.put("md5", wenscConfig.md5String);
 
       String filePth = "MITE-Extreme-Remastered.cfg";

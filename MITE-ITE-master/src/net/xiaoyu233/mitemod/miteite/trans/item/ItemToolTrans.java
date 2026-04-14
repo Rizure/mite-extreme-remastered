@@ -3,9 +3,7 @@ package net.xiaoyu233.mitemod.miteite.trans.item;
 import com.google.common.collect.Multimap;
 import net.minecraft.*;
 import net.xiaoyu233.mitemod.miteite.item.*;
-import net.xiaoyu233.mitemod.miteite.util.Configs;
-import net.xiaoyu233.mitemod.miteite.util.ReflectHelper;
-import net.xiaoyu233.mitemod.miteite.util.StringUtil;
+import net.xiaoyu233.mitemod.miteite.util.*;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -34,9 +32,9 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
    @Inject(method = "<init>", at = @At("RETURN"))
    private void injectInitExpForLevel(int par1, Material material, CallbackInfo callbackInfo) {
       if (material == Material.copper || material == Material.silver || material == Material.gold) {
-         this.expForLevel = this.createExpForLevel(300, 75, 25);
+         this.expForLevel = this.createExpForLevel(200, 50, 25);
       } else if (material == Material.iron) {
-         this.expForLevel = this.createExpForLevel(300, 75, 25);
+         this.expForLevel = this.createExpForLevel(300, 75, 50);
       } else if (material == Material.ancient_metal) {
          this.expForLevel = this.createExpForLevel(450, 150, 75);
       } else if (material == Material.mithril) {
@@ -203,10 +201,10 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
       return super.getMaxDamage(item_stack);
    }
 
-   @Overwrite
-   public int getMaxItemUseDuration(ItemStack par1ItemStack) {
-      return Configs.wenscConfig.playerDefenceMaxTime.ConfigValue;
-   }
+//   @Overwrite
+//   public int getMaxItemUseDuration(ItemStack par1ItemStack) {
+//      return Configs.wenscConfig.playerDefenceMaxTime.ConfigValue;
+//   }
 
    public float getMeleeDamageBonus(ItemStack stack) {
       return this.getCombinedDamageVsEntity() + ToolModifierTypes.DAMAGE_MODIFIER.getModifierValue(stack.stackTagCompound) + this.getEnhancedDamage(stack);
@@ -290,10 +288,10 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
       Block block = info.block;
       ItemStack item_stack = info.getHarvesterItemStack();
       if(item_stack != null){
-         this.performGeologyEffect(info,item_stack);
-         this.performGoldizeEffect(info,item_stack);
-         this.performSteadyEffect(info,item_stack);
-         this.performBlessedOfNatureEffect(info,item_stack);
+         ModifierUtil.performGeologyEffect(info,item_stack);
+         GemUtil.performGoldizeEffect(info,item_stack);
+         ModifierUtil.performSteadyEffect(info,item_stack);
+         ModifierUtil.performBlessedOfNatureEffect(info,item_stack);
       }
       if (item_stack.isItemStackDamageable() && !block.isPortable(info.world, info.getHarvester(), info.x, info.y, info.z) && !info.isResponsiblePlayerInCreativeMode() && info.getBlockHardness() > 0.0F && this.getStrVsBlock(block, info.getMetadata()) > 1.0F) {
          if (!(item_stack.getItem() instanceof ItemSword) && this.isEffectiveAgainstBlock(info.block, info.getMetadata()) && !item_stack.getItem().isMaxToolLevel(item_stack)) {
@@ -443,104 +441,19 @@ public class ItemToolTrans extends Item implements IUpgradableItem {
       return false;
    }
 
-   @Override
-   public void onItemUseFinish(ItemStack item_stack, World world, EntityPlayer player) {
-//      super.onItemUseFinish(item_stack, world, player);
-      if (player.onServer()) {
-         player.setDefenseCooldown(Configs.wenscConfig.playerDefenseCooldown.ConfigValue);
-      }
-   }
+//   @Override
+//   public void onItemUseFinish(ItemStack item_stack, World world, EntityPlayer player) {
+////      super.onItemUseFinish(item_stack, world, player);
+//      if (player.onServer()) {
+//         player.setDefenseCooldown(Configs.wenscConfig.playerDefenseCooldown.ConfigValue);
+//      }
+//   }
 
-   @Override
-   public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4) {
-      super.onPlayerStoppedUsing(par1ItemStack, par2World, par3EntityPlayer, par4);
-      if (par3EntityPlayer.onServer()) {
-         par3EntityPlayer.setDefenseCooldown(Configs.wenscConfig.playerDefenseCooldown.ConfigValue);
-      }
-   }
-
-   private void performGeologyEffect(BlockBreakInfo info, ItemStack item_stack){
-      Block block = info.block;
-      float expReward = 0;
-      if (block instanceof BlockOre && info.getMetadata() != 1) {
-         expReward = ToolModifierTypes.GEOLOGY.getModifierValue(item_stack.getTagCompound());
-         if (expReward != 0) {
-            ItemStack dropItemStack = new ItemStack(info.block);
-            ItemStack smeltingResult = RecipesFurnace.smelting().getSmeltingResult(dropItemStack, 5);
-            if (smeltingResult != null) {
-               int expectedExperience = smeltingResult.getExperienceReward();
-               if(expectedExperience != 0){
-                  info.world.spawnEntityInWorld(new EntityExperienceOrb(info.world, info.drop_x, info.drop_y + 0.5D, info.drop_z, (int) (smeltingResult.getExperienceReward() * expReward)));
-               }
-            }
-         }
-      }
-   }
-
-   private void performSteadyEffect(BlockBreakInfo info, ItemStack item_stack){
-      Block block = info.block;
-      float expReward = 0;
-      expReward = ToolModifierTypes.STEADY.getModifierValue(item_stack.getTagCompound()) * block.getBlockHardness(0);
-      if (!block.isPortable(null, null, 0, 0, 0)) {
-         int expReward_int = (int) (Math.min(expReward, 4.0F));
-         for (int var1 = 0; var1 < expReward_int; var1++) {
-            info.world.spawnEntityInWorld(new EntityExperienceOrb(info.world, info.drop_x, info.drop_y + 0.5D, info.drop_z, 1));
-         }
-         if (itemRand.nextFloat() < expReward - expReward_int) {
-            info.world.spawnEntityInWorld(new EntityExperienceOrb(info.world, info.drop_x, info.drop_y + 0.5D, info.drop_z, 1));
-         }
-      }
-   }
-
-   private void performGoldizeEffect(BlockBreakInfo info, ItemStack item_stack){
-      Block block = info.block;
-      if (info.getResponsiblePlayer() instanceof EntityPlayer) {
-         float goldChance = info.getHarvesterItemStack().getGemMaxNumeric(GemModifierTypes.goldize) * block.getBlockHardness(0);
-         if (!block.isPortable(null, null, 0, 0, 0)) {
-            int goldCount = (int) (Math.min(goldChance, 2.0F));
-            for (int var1 = 0; var1 < goldCount; var1++) {
-               info.world.spawnEntityInWorld(new EntityItem(info.world, info.x, info.y, info.z, new ItemStack(Item.goldNugget, 1)));
-            }
-            if (itemRand.nextFloat() < goldChance - goldCount) {
-               info.world.spawnEntityInWorld(new EntityItem(info.world, info.x, info.y, info.z, new ItemStack(Item.goldNugget, 1)));
-            }
-         }
-      }
-   }
-
-   private void performBlessedOfNatureEffect(BlockBreakInfo info, ItemStack item_stack){
-      Block block = info.block;
-      float modifierBoostByHardness = block.getBlockHardness(0);
-      if(modifierBoostByHardness < 1.0F){
-         modifierBoostByHardness = 1.0F;
-      }
-      float baseModifierValue = ToolModifierTypes.BLESS_OF_NATURE.getModifierValue(info.getHarvesterItemStack().getTagCompound());
-      if (itemRand.nextFloat() < modifierBoostByHardness * baseModifierValue) {
-         info.getResponsiblePlayer().getFoodStats().addSatiation(2);
-         info.getResponsiblePlayer().getFoodStats().addNutrition(1);
-         if(info.getResponsiblePlayer().onServer()){
-            info.getResponsiblePlayer().getAsEntityPlayerMP().addProtein(1600);
-            info.getResponsiblePlayer().getAsEntityPlayerMP().addPhytonutrients(1600);
-         }
-         if (itemRand.nextFloat() < modifierBoostByHardness * baseModifierValue) {
-            info.getResponsiblePlayer().heal(1);
-         }
-         if(info.block instanceof BlockCrops && ((BlockCrops) info.block).isMature(info.getMetadata())){
-            for(int dx = -2; dx <= 2; dx++){
-               for(int dz = -2; dz <= 2; dz++){
-                  Block anotherCrops = info.world.getBlock(info.x + dx, info.y, info.z + dz);
-                  int metadata = info.world.getBlockMetadata(info.x + dx, info.y, info.z + dz);
-                  if(anotherCrops instanceof BlockCrops && itemRand.nextFloat() < baseModifierValue && dx * dz == 0){
-                     info.world.setBlockMetadata(info.x + dx, info.y, info.z + dz, ((BlockCrops)anotherCrops).incrementGrowth(metadata), 2);
-                     info.world.playAuxSFX(2005,info.x + dx, info.y, info.z + dz, 0);
-                  }
-                  if(anotherCrops instanceof BlockCrops && ((BlockCrops) anotherCrops).isBlighted(metadata) && itemRand.nextFloat() < baseModifierValue * 2){
-                     info.world.setBlockMetadata(info.x + dx, info.y, info.z + dz, ((BlockCrops)anotherCrops).setBlighted(metadata, false), 2);
-                     info.world.playAuxSFX(2005,info.x + dx, info.y, info.z + dz, 0);
-                  }
-               }
-            }
-         }
-      }
-   }
+//   @Override
+//   public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4) {
+//      super.onPlayerStoppedUsing(par1ItemStack, par2World, par3EntityPlayer, par4);
+//      if (par3EntityPlayer.onServer()) {
+//         par3EntityPlayer.setDefenseCooldown(Configs.wenscConfig.playerDefenseCooldown.ConfigValue);
+//      }
+//   }
 }

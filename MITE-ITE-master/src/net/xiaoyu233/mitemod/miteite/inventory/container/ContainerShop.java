@@ -70,7 +70,9 @@ public class ContainerShop extends Container {
                player.money = two.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
                var4.putStack(null);
             } else {
-               player.addChatMessage("商店不支持售出此商品");
+               if(player.onServer()){
+                  player.addChatMessage("商店不支持售出此商品");
+               }
             }
          }
       }

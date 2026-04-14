@@ -429,16 +429,38 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
    public void attackTargetEntityWithCurrentItem(Entity target) {
       if (!this.isImmuneByGrace() && target.canAttackWithItem()) {
          boolean critical = this.willDeliverCriticalStrike();
-         float critBonus = 0.0F;
+         float critBonus = 1.0F;
          ItemStack heldItemStack = this.getHeldItemStack();
 
          //Check for crit enchantment
-         if (EnchantmentManager.hasEnchantment(heldItemStack, Enchantments.CRIT) && !(target instanceof EntityZombieBoss)) {
+         if (EnchantmentManager.hasEnchantment(heldItemStack, Enchantments.CRIT)) {
             int critLevel = EnchantmentManager.getEnchantmentLevel(Enchantments.CRIT, heldItemStack);
-            critical = this.rand.nextInt(10) < critLevel;
+            critical |= this.rand.nextInt(10) < critLevel;
             if (critical) {
-               critBonus = (float) critLevel;
+               critBonus += critLevel * 0.1F;
             }
+         }
+
+         float smiteAmp = 0;
+         if (target.isEntityUndead() && heldItemStack != null) {
+            smiteAmp += ToolModifierTypes.SMITE.getModifierValue(heldItemStack.getTagCompound());
+         }
+
+         float baneOfArthropodAmp = 0;
+         if (target.isEntityLivingBase() && target.getAsEntityLivingBase().getCreatureAttribute() == EnumMonsterType.ARTHROPOD && heldItemStack != null) {
+            baneOfArthropodAmp += ToolModifierTypes.BANE_OF_ARTHROPOD.getModifierValue(heldItemStack.getTagCompound());
+         }
+
+         float damage = (critBonus * this.calcRawMeleeDamageVs(target, critical, this.isSuspendedInLiquid()) + smiteAmp + baneOfArthropodAmp + (heldItemStack != null ? heldItemStack.getGemMaxNumeric(GemModifierTypes.damage) : 0f));
+
+         float urbanLegendAmp = 80.0F;
+         if (target instanceof EntityEnderman) {
+            if (heldItemStack != null) {
+               urbanLegendAmp *= ToolModifierTypes.URBAN_LEGEND.getModifierValue(heldItemStack.getTagCompound());
+            }else {
+               urbanLegendAmp *= 0F;
+            }
+            damage += urbanLegendAmp;
          }
 
          //Check for indomitable modifier
@@ -454,28 +476,7 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
                }
             }
          }
-
-         float smiteAmp = 0;
-         if (target.isEntityUndead() && heldItemStack != null) {
-            smiteAmp += ToolModifierTypes.SMITE.getModifierValue(heldItemStack.getTagCompound());
-         }
-
-         float baneOfArthropodAmp = 0;
-         if (target.isEntityLivingBase() && target.getAsEntityLivingBase().getCreatureAttribute() == EnumMonsterType.ARTHROPOD && heldItemStack != null) {
-            baneOfArthropodAmp += ToolModifierTypes.BANE_OF_ARTHROPOD.getModifierValue(heldItemStack.getTagCompound());
-         }
-
-         float damage = (critBonus + this.calcRawMeleeDamageVs(target, critical, this.isSuspendedInLiquid()) + smiteAmp + baneOfArthropodAmp + (heldItemStack != null ? heldItemStack.getGemMaxNumeric(GemModifierTypes.damage) : 0f));
-
-         float urbanLegendAmp = 80.0F;
-         if (target instanceof EntityEnderman) {
-            if (heldItemStack != null) {
-               urbanLegendAmp *= ToolModifierTypes.URBAN_LEGEND.getModifierValue(heldItemStack.getTagCompound());
-            }else {
-               urbanLegendAmp *= 0F;
-            }
-            damage += urbanLegendAmp;
-         }
+         damage *= indomitableAmp;
 
          //Check for energetic modifier
          float energeticAmp = 1.0F;
@@ -487,8 +488,8 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
                   energeticAmp += (this.getEnergeticAmp() * value);
                }
             }
-            if(energeticAmp > 3.0F){
-               energeticAmp = 3.0F;
+            if(energeticAmp > Configs.wenscConfig.energeticBoostLimit.getConfigValue()){
+               energeticAmp = Configs.wenscConfig.energeticBoostLimit.getConfigValue();
             }
          }
          damage *= energeticAmp;
@@ -1196,7 +1197,7 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
          if (currentItemStack != null) {
             if (currentItemStack.getItemDamage() < currentItemStack.getMaxDamage() - 40) {
                this.dynamicCoreLevel = ((ItemDynamicCore) currentItemStack.getItem()).level;
-               if (!this.worldObj.isRemote) {
+               if (this.onServer()) {
                   currentItemStack.tryDamageItem(DamageSource.causePlayerDamage(ReflectHelper.dyCast(this)), 40, ReflectHelper.dyCast(this));
                }
             } else {
@@ -1221,14 +1222,18 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
                   int heal_amount = (int) Math.max(player.getMaxHealth() / 200.0F * level, 1);
                   if (player.getHealthFraction() < 1.0F && currentItemStack.getItemDamage() < (currentItemStack.getMaxDamage() - (player.getMaxHealth() * 20))) {
                      player.heal(heal_amount);
-                     currentItemStack.tryDamageItem(DamageSource.causePlayerDamage(ReflectHelper.dyCast(this)), (int) player.getMaxHealth() * 20, ReflectHelper.dyCast(this));
+                     if(this.onServer()) {
+                        currentItemStack.tryDamageItem(DamageSource.causePlayerDamage(ReflectHelper.dyCast(this)), (int) player.getMaxHealth() * 20, ReflectHelper.dyCast(this));
+                     }
                   }
                }
             }
             int heal_amount = (int) Math.max(this.getMaxHealth() / 100.0F * level, 1);
             if (this.getHealthFraction() < 1.0F && currentItemStack.getItemDamage() < (currentItemStack.getMaxDamage() - (this.getMaxHealth() * 20))) {
                this.heal(heal_amount);
-               currentItemStack.tryDamageItem(DamageSource.causePlayerDamage(ReflectHelper.dyCast(this)), (int) this.getMaxHealth() * 20, ReflectHelper.dyCast(this));
+               if(this.onServer()){
+                  currentItemStack.tryDamageItem(DamageSource.causePlayerDamage(ReflectHelper.dyCast(this)), (int) this.getMaxHealth() * 20, ReflectHelper.dyCast(this));
+               }
             }
          }
       }
@@ -1240,7 +1245,9 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
             int amplifier = (int) (this.getMaxHealth() / 4.0F) * level / 100;
             if (currentItemStack.getItemDamage() < (currentItemStack.getMaxDamage() - (this.getMaxHealth() * 20)) && amplifier > 0) {
                this.addPotionEffect(new MobEffect(MobEffectList.field_76444_x.id, 600, amplifier - 1));
-               currentItemStack.tryDamageItem(DamageSource.causePlayerDamage(ReflectHelper.dyCast(this)), (int) this.getMaxHealth() * 20, ReflectHelper.dyCast(this));
+               if(this.onServer()){
+                  currentItemStack.tryDamageItem(DamageSource.causePlayerDamage(ReflectHelper.dyCast(this)), (int) this.getMaxHealth() * 20, ReflectHelper.dyCast(this));
+               }
             }
          }
       }
@@ -1590,6 +1597,10 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
 
    @Shadow
    protected abstract void onEnchantmentCritical(Entity target);
+
+   public int getUnderworldDebuffTime(){
+      return this.underworldDebuffTime;
+   }
 
 //   @Shadow
    //Seems like nothing need to be changed

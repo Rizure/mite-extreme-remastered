@@ -10,7 +10,7 @@ import javax.annotation.Nonnull;
 import java.util.Random;
 
 @Mixin(SlotArmor.class)
-public class SlotArmorTrans extends Container {
+public class ContainerEnchantmentTableTrans extends Container {
    @Shadow
    private int posX;
    @Shadow
@@ -18,7 +18,7 @@ public class SlotArmorTrans extends Container {
    @Shadow
    private int posZ;
 
-   public SlotArmorTrans(EntityPlayer player) {
+   public ContainerEnchantmentTableTrans(EntityPlayer player) {
       super(player);
    }
 

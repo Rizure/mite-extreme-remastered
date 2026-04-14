@@ -24,6 +24,7 @@ class EntityZombieTrans extends EntityAnimalWatcher {
    @Shadow
    private boolean is_smart;
    private int spawn_bat_counter;
+   private boolean is_leader;
 
    @Inject(method = "<init>", at = @At("RETURN"))
    public void injectCtor(CallbackInfo callbackInfo) {
@@ -45,11 +46,13 @@ class EntityZombieTrans extends EntityAnimalWatcher {
    @Inject(method = "readEntityFromNBT", at = @At("RETURN"))
    private void injectReadNBT(NBTTagCompound par1NBTTagCompound, CallbackInfo callbackInfo) {
       par1NBTTagCompound.setInteger("spawnBatCounter", this.spawn_bat_counter);
+      par1NBTTagCompound.setBoolean("isLeader", this.is_leader);
    }
 
    @Inject(method = "writeEntityToNBT", at = @At("RETURN"))
    private void injectWriteNBT(NBTTagCompound par1NBTTagCompound, CallbackInfo callbackInfo) {
       this.spawn_bat_counter = par1NBTTagCompound.getInteger("spawnBatCounter");
+      this.is_leader = par1NBTTagCompound.getBoolean("isLeader");
    }
 
    @Inject(method = "onUpdate", at = @At("RETURN"))
@@ -73,6 +76,12 @@ class EntityZombieTrans extends EntityAnimalWatcher {
             this.spawn_bat_counter = -1;
          }
       }
+   }
+
+   @Inject(method = "onSpawnWithEgg", at = @At(value = "INVOKE", target = "Lnet/minecraft/AttributeInstance;applyModifier(Lnet/minecraft/AttributeModifier;)V", ordinal = 2, shift = At.Shift.AFTER))
+   private void healToFullHealthForLeader(CallbackInfoReturnable callbackInfo){
+      this.healByPercentage(1);
+      this.is_leader = true;
    }
 
    @Shadow

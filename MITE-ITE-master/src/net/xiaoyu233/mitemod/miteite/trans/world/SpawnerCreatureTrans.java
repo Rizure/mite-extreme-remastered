@@ -5,6 +5,10 @@ import net.xiaoyu233.mitemod.miteite.util.Configs;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -35,6 +39,74 @@ public class SpawnerCreatureTrans {
    @Shadow
    private float tryHangBatFromCeiling(World world, EntityBat bat, int x, int y, int z, float pos_x, float pos_y, float pos_z) {
       return 0.0F;
+   }
+
+   @Overwrite
+   private void setEligibleChunksForSpawning(WorldServer world, boolean for_hostile_mobs) {
+      this.eligibleChunksForSpawning.clear();
+      boolean is_daytime = world.isDaytime();
+      boolean is_full_moon = world.isFullMoon();
+      boolean is_blood_moon = world.isBloodMoon(false);
+      boolean detected_player_nearby = false;
+
+      for(int i = 0; i < world.playerEntities.size(); ++i) {
+         EntityPlayer player = (EntityPlayer)world.playerEntities.get(i);
+         for(int j = 0; j < i; ++j) {
+            EntityPlayer player_nearby = (EntityPlayer)world.playerEntities.get(j);
+            double sq_dx = (player_nearby.posX - player.posX) * (player_nearby.posX - player.posX);
+            double sq_dz = (player_nearby.posZ - player.posZ) * (player_nearby.posZ - player.posZ);
+            if(sq_dx <= 10000.0D && sq_dz <= 10000.0D){
+               detected_player_nearby = true;
+            }
+         }
+         if(detected_player_nearby){
+            detected_player_nearby = false;
+            continue;
+         }
+         if (!player.isGhost() && !player.isZevimrgvInTournament() && !player.isDead && !(player.getHealth() <= 0.0F)) {
+            if (for_hostile_mobs) {
+               int density_limit;
+               if (world.provider.dimensionId == 0) {
+                  density_limit = (int)(8.0F * (1.0F + (float)(64 - player.getFootBlockPosY()) / 16.0F));
+                  int minimum_density_limit = 8;
+                  if (!is_daytime) {
+                     if (is_blood_moon) {
+                        minimum_density_limit = minimum_density_limit * 4;
+                     } else if (is_full_moon) {
+                        minimum_density_limit = minimum_density_limit * 2;
+                     }
+                  }
+
+                  if (density_limit < minimum_density_limit) {
+                     density_limit = minimum_density_limit;
+                  }
+               } else {
+                  density_limit = 8;
+               }
+
+               density_limit = (int)((float)density_limit + (float)density_limit * world.getStrongholdProximity(player.getBlockPosX(), player.getBlockPosZ()));
+               if (world.getEntitiesWithinAABB(IMonster.class, player.boundingBox.expand((double)32.0F, (double)8.0F, (double)32.0F)).size() > density_limit) {
+                  continue;
+               }
+            }
+
+            int chunk_x = player.getChunkPosX();
+            int chunk_z = player.getChunkPosZ();
+
+            for(int delta_chunk_x = -8; delta_chunk_x <= 8; ++delta_chunk_x) {
+               for(int delta_chunk_z = -8; delta_chunk_z <= 8; ++delta_chunk_z) {
+                  boolean is_at_edge = delta_chunk_x == -8 || delta_chunk_x == 8 || delta_chunk_z == -8 || delta_chunk_z == 8;
+                  ChunkCoordIntPair chunk_coord = new ChunkCoordIntPair(chunk_x + delta_chunk_x, chunk_z + delta_chunk_z);
+                  if (!is_at_edge) {
+                     this.eligibleChunksForSpawning.put(chunk_coord, false);
+                  } else if (!this.eligibleChunksForSpawning.containsKey(chunk_coord)) {
+                     this.eligibleChunksForSpawning.put(chunk_coord, true);
+                  }
+               }
+            }
+         }
+      }
+
    }
 
    @Overwrite

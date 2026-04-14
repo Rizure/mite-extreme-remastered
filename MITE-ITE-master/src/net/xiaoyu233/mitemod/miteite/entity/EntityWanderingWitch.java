@@ -65,20 +65,17 @@ public class EntityWanderingWitch extends EntityWitch {
    @Override
    public boolean getCanSpawnHere(boolean perform_light_check) {
       boolean chanceSpawn = false;
+      int day = this.worldObj.getDayOfOverworld();
       if (this.worldObj.isOverworld()) {
-         chanceSpawn = this.rand.nextInt(100) < Configs.wenscConfig.wanderingWitchSpawnChanceOverworld.ConfigValue;
+         chanceSpawn = this.rand.nextInt(4) == 0;
+         chanceSpawn &= this.isOutdoors();
+         chanceSpawn &= day > Configs.wenscConfig.wanderingWitchSpawnLimitDayOverworld.ConfigValue;
       }
       if (this.worldObj.isUnderworld()) {
-         chanceSpawn = this.rand.nextInt(100) < Configs.wenscConfig.wanderingWitchSpawnChanceUnderworld.ConfigValue;
+         chanceSpawn = this.rand.nextBoolean();
+         chanceSpawn &= day > Configs.wenscConfig.wanderingWitchSpawnLimitDayOther.ConfigValue;
       }
-      if (chanceSpawn) {
-         if (this.getWorld().isOverworld()) {
-            return super.getCanSpawnHere(perform_light_check) && this.worldObj.getDayOfOverworld() > Configs.wenscConfig.wanderingWitchSpawnLimitDayOverworld.ConfigValue;
-         } else {
-            return super.getCanSpawnHere(perform_light_check) && this.worldObj.getDayOfOverworld() > Configs.wenscConfig.wanderingWitchSpawnLimitDayOther.ConfigValue;
-         }
-      }
-      return false;
+      return chanceSpawn;
    }
 
    public void onAllyBatsDeath() {
@@ -233,5 +230,9 @@ public class EntityWanderingWitch extends EntityWitch {
 
    protected boolean canDespawn() {
       return !this.cursedPlayer;
+   }
+
+   public int getMaxSpawnedInChunk() {
+      return 1;
    }
 }

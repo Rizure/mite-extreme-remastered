@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.SoftOverride;
 
 @Mixin(EntityChicken.class)
-public abstract class EntityChickenTrans extends EntityLivestockTrans {
+public abstract class EntityChickenTrans extends EntityAnimal {
    public EntityChickenTrans(World world) {
       super(world);
    }
@@ -16,10 +16,10 @@ public abstract class EntityChickenTrans extends EntityLivestockTrans {
       return this.riddenByEntity == null ? super.getAIMoveSpeed() : 0.0875F;
    }
 
-   @SoftOverride
-   public int getBreedExp() {
-      return Configs.wenscConfig.breedXpChicken.ConfigValue;
-   }
+//   @SoftOverride
+//   public int getBreedExp() {
+//      return Configs.wenscConfig.breedXpChicken.ConfigValue;
+//   }
 
    public boolean onEntityRightClicked(EntityPlayer player, ItemStack item_stack) {
       if (super.onEntityRightClicked(player, item_stack)) {

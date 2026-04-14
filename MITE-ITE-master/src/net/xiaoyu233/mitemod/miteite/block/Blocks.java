@@ -98,6 +98,8 @@ public class Blocks extends Block {
    public static final BlockExtendedToolbench blockExtendedToolbench = (BlockExtendedToolbench) new BlockExtendedToolbench(getNextBlockIDExtend()).setStepSound_(soundWoodFootstep).setUnlocalizedName("workbench");
    public static final BlockExtremeWorkbench blockRemasteredToolbench = new BlockExtremeWorkbench(getNextBlockIDExtend());
    public static final BlockBamboo blockBamboo = (BlockBamboo) new BlockBamboo(getNextBlockIDExtend()).setStepSound_(soundGrassFootstep);
+   public static final BlockFlowerPotSapling flowerPotSapling = (BlockFlowerPotSapling) new BlockFlowerPotSapling(getNextBlockIDExtend()).setBlockHardness(0.0F).setStepSound_(Block.soundPowderFootstep).setUnlocalizedName("flowerPot");
+
    static {
       try {
          Field field = Block.class.getDeclaredField("is_normal_cube_lookup");
@@ -211,6 +213,9 @@ public class Blocks extends Block {
 
       registerItemBlock(blockExtendedToolbench,"toolbench");
       registerItemBlock(blockRemasteredToolbench,"toolbench");
+
+      flowerPotSapling.setUnlocalizedName("flowerPot");
+//      registerItemBlock(flowerPotSapling,"flowerPot");
    }
 
    private static void registerItemBlock(Item blockColorfulSlab1, String colorfulSlab) {

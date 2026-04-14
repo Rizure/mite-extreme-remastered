@@ -55,9 +55,9 @@ public class EntityZombieDoor extends EntityZombie {
             this.dropItem(Items.voucherDestruction);
          }
          int day = this.getWorld().getDayOfOverworld();
-         int diamond_count = Math.min((day + 16) / 32, 3);
+         int diamond_count = Math.min((day + this.danger_level * 4) / 8, 12);
          for (int i1 = 0; i1 < diamond_count; i1++) {
-            this.dropItem(Item.emerald);
+            this.dropItemStack(new ItemStack(Items.dyePowder, 1, 4));
          }
          this.dropItem(Items.zombieBrain);
       }

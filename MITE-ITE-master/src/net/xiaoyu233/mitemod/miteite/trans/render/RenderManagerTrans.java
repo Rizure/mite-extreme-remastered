@@ -31,7 +31,6 @@ public class RenderManagerTrans {
       this.q.put(EntityAncientDragon.class, new RenderAncientDragon());
       this.q.put(EntityAnnihilationSkeleton.class, new RenderAnnihilationSkeleton());
       this.q.put(EntityWanderingWitch.class, new RenderWanderingWitch());
-//      this.q.put(EntityThunderMan.class, new RenderEntityThunderMan());
       this.q.put(EntityZombieBoss.class, new RenderZombieBoss());
       this.q.put(EntitySpiderKing.class, new RenderSpiderKing(1.45F));
       this.q.put(EntitySpiderQueen.class, new RenderSpiderQueen(1.45F));

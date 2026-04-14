@@ -19,18 +19,6 @@ public abstract class RecipesArmorTrans {
    @Shadow
    private CraftingManager crafting_manager;
 
-   @Shadow
-   protected abstract void addBootsRecipe(Item boots, Item component);
-
-   @Shadow
-   protected abstract void addCuirassRecipe(Item cuirass, Item component);
-
-   @Shadow
-   protected abstract void addHelmetRecipe(Item helmet, Item component);
-
-   @Shadow
-   protected abstract void addLeggingsRecipe(Item leggings, Item component);
-
    @Inject(method = "addRecipes", at = @At("RETURN"))
    public void appendToolBenchCraftingRecipe(CraftingManager par1CraftingManager, CallbackInfo callbackInfo){
       ((CraftingManagerInvoker) this.crafting_manager).addRecipeP(new ItemStack(Blocks.blockExtendedToolbench, 1,0), true, new Object[]{
@@ -49,6 +37,15 @@ public abstract class RecipesArmorTrans {
               'I', ingotMiteGa,
               'P',Block.planks}
       ).setMaterialToCheckToolBenchHardnessAgainst(Materials.adamantium);
+      int plank_subtype, i;
+      for (i = 0; i < Block.workbench.getNumSubBlocks(); ++i) {
+         Material tool_material = BlockWorkbench.getToolMaterial(i);
+         if (tool_material != Material.flint && tool_material != Material.obsidian) {
+            for (plank_subtype = 4; plank_subtype < 8; ++plank_subtype) {
+               ((CraftingManagerInvoker) this.crafting_manager).addRecipeP(new ItemStack(Block.workbench, 1, i), true, new Object[]{"IL", "s#", 'I', ItemIngot.getMatchingItem(ItemIngot.class, tool_material), 'L', Item.leather, 's', Item.stick, '#', new ItemStack(Block.planks, 1, plank_subtype)});
+            }
+         }
+      }
    }
 
 //   @Overwrite

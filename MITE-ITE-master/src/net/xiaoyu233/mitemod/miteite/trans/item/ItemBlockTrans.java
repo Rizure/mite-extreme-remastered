@@ -7,8 +7,11 @@ import net.xiaoyu233.mitemod.miteite.block.Blocks;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
 
@@ -72,6 +75,13 @@ public abstract class ItemBlockTrans extends Item {
          return block != Block.woodenButton && block != Block.deadBush ? block.blockMaterial.canBurnAsFuelSource() : true;
       } else {
          return true;
+      }
+   }
+
+   @Inject(method = "getItemStackForStatsIcon", at = @At("HEAD"), cancellable = true)
+   private void inject(CallbackInfoReturnable<ItemStack> cir) {
+      if (this.getBlock() == Blocks.flowerPotSapling) {
+         cir.setReturnValue(new ItemStack(Item.flowerPot.itemID, 1, 0));
       }
    }
 

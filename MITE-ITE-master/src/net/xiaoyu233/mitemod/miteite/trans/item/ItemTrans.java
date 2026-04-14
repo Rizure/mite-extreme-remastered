@@ -118,12 +118,13 @@ public abstract class ItemTrans {
       if (tagCompound != null) {
          if (tagCompound.hasKey("using_exp")) {
             tagCompound.setInteger("using_exp", tagCompound.getInteger("using_exp") + exp);
+            int current_exp = tagCompound.getInteger("using_exp");
             if (tagCompound.hasKey("using_level")) {
                int currentLevel = tagCompound.getInteger("using_level");
                int nextLevelExpReq = this.getExpReqForLevel(currentLevel, this.isWeapon(stack.getItem()));
                if (tagCompound.getInteger("using_exp") >= nextLevelExpReq) {
+                  tagCompound.setInteger("using_exp", current_exp - nextLevelExpReq);
                   tagCompound.setInteger("using_level", currentLevel + 1);
-                  tagCompound.setInteger("using_exp", 0);
                   if (!player.worldObj.isRemote) {
                      player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "已升级,当前等级:" + (currentLevel + 1)).setColor(EnumChatFormat.DARK_AQUA));
                   }
@@ -154,13 +155,13 @@ public abstract class ItemTrans {
       return effectLevel;
    }
 
-   @Overwrite
-   public final int getMaxDamage(EnumQuality quality) {
-      if (!this.isDamageable()) {
-         Minecraft.setErrorMessage("getMaxDamage: item is not damageable, " + this);
-      }
-      return this.maxDamage;
-   }
+//   @Overwrite
+//   public final int getMaxDamage(EnumQuality quality) {
+//      if (!this.isDamageable()) {
+//         Minecraft.setErrorMessage("getMaxDamage: item is not damageable, " + this);
+//      }
+//      return this.maxDamage;
+//   }
 
    @Shadow
    public ItemBlock getAsItemBlock() {

@@ -105,9 +105,8 @@ public class ItemFan extends ItemTool {
    public void addInformation(ItemStack item_stack, EntityPlayer player, List info, boolean extended_info, Slot slot) {
       if (extended_info) {
          info.add(" ");
-         info.add(EnumChatFormat.BROWN + Translator.getFormatted("决赛圈淘汰王1v1", new Object[0]));
-         info.add(EnumChatFormat.BROWN + Translator.getFormatted("一个开透一个开锁", new Object[0]));
-         info.add(EnumChatFormat.BROWN + Translator.getFormatted("我在天上看得一清二楚", new Object[0]));
+         info.add(EnumChatFormat.BROWN + Translator.getFormatted("快快来降降温度", new Object[0]));
+         info.add(EnumChatFormat.BROWN + Translator.getFormatted("我急需降降温度", new Object[0]));
          info.add(EnumChatFormat.BLUE + Translator.getFormatted("位于快捷栏时免疫摔落", new Object[0]));
          info.add(EnumChatFormat.BLUE + Translator.getFormatted("右键手动范围除草", new Object[0]));
          info.add(EnumChatFormat.BLUE + Translator.getFormatted("并收取周遭的掉落物", new Object[0]));

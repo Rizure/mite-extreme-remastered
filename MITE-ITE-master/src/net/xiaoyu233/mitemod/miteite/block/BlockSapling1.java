@@ -7,7 +7,7 @@ import net.xiaoyu233.mitemod.miteite.world.WorldGenTreesWithTreeId;
 import java.util.Random;
 
 public class BlockSapling1 extends BlockPlant {
-   public static final String[] WOOD_TYPES = new String[]{"maple", "cherry", "maple", "maple"};
+   public static final String[] WOOD_TYPES = new String[]{"maple", "cherry", "jacaranda", "magic"};
    private IIcon[] unlocalizedName;
    public static final int OAK_TREE = 0;
    public static final int SPRUCE_TREE = 1;
@@ -31,7 +31,7 @@ public class BlockSapling1 extends BlockPlant {
       if (super.updateTick(par1World, par2, par3, par4, par5Random)) {
          return true;
       } else {
-         return par1World.getBlockLightValue(par2, par3 + 1, par4) >= 9 && par5Random.nextInt(28) == 0 ? this.markOrGrowMarked(par1World, par2, par3, par4, par5Random) : false;
+         return par1World.getBlockLightValue(par2, par3 + 1, par4) >= 9 && par5Random.nextInt(28) == 0 && this.markOrGrowMarked(par1World, par2, par3, par4, par5Random);
       }
    }
 

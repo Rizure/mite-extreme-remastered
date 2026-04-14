@@ -20,7 +20,6 @@ public class BiomeDecoratorTrans {
    private static final int COPPER_FREQUENCY_UNDERWORLD = Configs.wenscConfig.copperFrequencyUnderworld.ConfigValue;
    private static final int DIAMOND_FREQUENCY_OVERWORLD = Configs.wenscConfig.diamondFrequencyOverworld.ConfigValue;
    private static final int DIAMOND_FREQUENCY_UNDERWORLD = Configs.wenscConfig.diamondFrequencyUnderworld.ConfigValue;
-
    private static final int FANCY_RED_FREQUENCY_UNDERWORLD = Configs.wenscConfig.fancyRedFrequencyUnderworld.ConfigValue;
    private static final int GOLD_FREQUENCY_OVERWORLD = Configs.wenscConfig.goldFrequencyOverworld.ConfigValue;
    private static final int GOLD_FREQUENCY_UNDERWORLD = Configs.wenscConfig.goldFrequencyUnderworld.ConfigValue;
@@ -37,25 +36,11 @@ public class BiomeDecoratorTrans {
    private static final int COAL_FREQUENCY_OVERWORLD = Configs.wenscConfig.coalFrequencyOverworld.ConfigValue;
    private static final boolean veinSizeIncreasesWithDepth = Configs.wenscConfig.veinSizeIncreasesWithDepth.ConfigValue;
    @Shadow
-   public boolean generateLakes;
-   @Shadow
    protected WorldGenMinable adamantiteGen;
-   @Shadow
-   protected WorldGenerator bigMushroomGen;
-   @Shadow
-   protected BiomeBase biome;
-   @Shadow
-   protected WorldGenPlants bush_gen;
-   @Shadow
-   protected WorldGenerator cactusGen;
    @Shadow
    protected int chunk_X;
    @Shadow
    protected int chunk_Z;
-   @Shadow
-   protected WorldGenerator clayGen = new WorldGenClay(4);
-   @Shadow
-   protected int clayPerChunk;
    @Shadow
    protected WorldGenMinable coalGen;
    @Shadow
@@ -69,13 +54,7 @@ public class BiomeDecoratorTrans {
    @Shadow
    protected WorldGenMinable dirtGen;
    @Shadow
-   protected int flowersPerChunk;
-   @Shadow
    protected WorldGenMinable goldGen;
-   @Shadow
-   protected int grassPerChunk;
-   @Shadow
-   protected WorldGenerator gravelAsSandGen;
    @Shadow
    protected WorldGenMinable gravelGen;
    @Shadow
@@ -85,36 +64,13 @@ public class BiomeDecoratorTrans {
    @Shadow
    protected WorldGenMinable mithrilGen;
    @Shadow
-   protected WorldGenerator mushroomBrownGen;
-   @Shadow
-   protected WorldGenerator mushroomRedGen;
-   @Shadow
-   protected WorldGenFlowers plantRedGen;
-   @Shadow
-   protected WorldGenerator plantYellowGen;
-   @Shadow
    protected Random randomGenerator;
    @Shadow
    protected WorldGenMinable redstoneGen;
    @Shadow
-   protected WorldGenerator reedGen;
-   @Shadow
-   protected WorldGenerator sandGen;
-   @Shadow
-   protected int sandPerChunk;
-   @Shadow
-   protected int sandPerChunk2;
-   @Shadow
    protected WorldGenMinable silverGen;
    @Shadow
    protected WorldGenMinable silverfishGen;
-   @Shadow
-   protected int treesPerChunk;
-   @Shadow
-   protected WorldGenerator waterlilyGen;
-   @Shadow
-   protected int waterlilyPerChunk;
-   private final ReentrantLock lock = new ReentrantLock();
 
    @Overwrite
    public void decorate(World par1World, Random par2Random, int par3, int par4) {
@@ -155,37 +111,6 @@ public class BiomeDecoratorTrans {
    }
 
    public BiomeDecoratorTrans(BiomeBase par1BiomeGenBase) {
-      this.sandGen = new WorldGenSand(7, Block.sand.blockID);
-      this.gravelAsSandGen = new WorldGenSand(6, Block.gravel.blockID);
-      this.plantYellowGen = new WorldGenFlowers(Block.plantYellow.blockID);
-      this.plantRedGen = new WorldGenFlowers(Block.plantRed.blockID);
-      this.mushroomBrownGen = new WorldGenFlowers(Block.mushroomBrown.blockID);
-      this.mushroomRedGen = new WorldGenFlowers(Block.mushroomRed.blockID);
-      this.bigMushroomGen = new WorldGenHugeMushroom();
-      this.reedGen = new WorldGenReed();
-      this.cactusGen = new WorldGenCactus();
-      this.waterlilyGen = new WorldGenWaterLily();
-      this.flowersPerChunk = 2;
-      this.grassPerChunk = 1;
-      this.sandPerChunk = 1;
-      this.sandPerChunk2 = 3;
-      this.clayPerChunk = 1;
-      this.generateLakes = true;
-      this.biome = par1BiomeGenBase;
-      this.dirtGen = new WorldGenMinable(Block.dirt.blockID, 32);
-      this.gravelGen = new WorldGenMinable(Block.gravel.blockID, 32);
-      this.coalGen = new WorldGenMinable(Block.oreCoal.blockID, 16);
-      this.copperGen = new WorldGenMinable(Block.oreCopper.blockID, 6);
-      this.silverGen = new WorldGenMinable(Block.oreSilver.blockID, 6);
-      this.goldGen = new WorldGenMinable(Block.oreGold.blockID, 4);
-      this.ironGen = new WorldGenMinable(Block.oreIron.blockID, 6);
-      this.mithrilGen = new WorldGenMinable(Block.oreMithril.blockID, 3);
-      this.adamantiteGen = new WorldGenMinable(Block.oreAdamantium.blockID, 2);
-      this.redstoneGen = new WorldGenMinable(Block.oreRedstone.blockID, 5);
-      this.diamondGen = new WorldGenMinable(Block.oreDiamond.blockID, 3);
-      this.lapisGen = new WorldGenMinable(Block.oreLapis.blockID, 2);
-      this.silverfishGen = new WorldGenMinable(Block.silverfish.blockID, 2);
-      this.bush_gen = new WorldGenPlants(Block.bush);
    }
 
    @Shadow

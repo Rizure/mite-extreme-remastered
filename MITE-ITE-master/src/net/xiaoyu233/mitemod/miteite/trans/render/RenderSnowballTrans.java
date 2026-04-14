@@ -1,7 +1,6 @@
 package net.xiaoyu233.mitemod.miteite.trans.render;
 
 import net.minecraft.Entity;
-import net.minecraft.EntityGelatinousSphere;
 import net.minecraft.Item;
 import net.minecraft.bgx;
 import net.xiaoyu233.mitemod.miteite.entity.EntityGrenade;
@@ -12,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(bgx.class)
-public class RenderSnowballMixin {
+public class RenderSnowballTrans {
    @Shadow
    private Item a;
 

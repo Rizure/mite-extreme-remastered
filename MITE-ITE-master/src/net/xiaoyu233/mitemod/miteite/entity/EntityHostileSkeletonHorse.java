@@ -34,8 +34,8 @@ public class EntityHostileSkeletonHorse extends EntityHorse implements IMonster 
                   this.attackEntityFrom(new Damage(DamageSource.absolute, 1000F));
                }
             } else {
-               if (this.riddenByEntity instanceof EntityMonster) {
-                  ((EntityMonster) this.riddenByEntity).addPotionEffect(new MobEffect(MobEffectList.damageBoost.id, 120, 0));
+               if (this.riddenByEntity instanceof EntityLongdead && !(this.riddenByEntity instanceof EntityLongdeadGuardian)) {
+                  ((EntityLongdead) this.riddenByEntity).setFrenziedByBoneLordCountdown(120);
                }
             }
          }

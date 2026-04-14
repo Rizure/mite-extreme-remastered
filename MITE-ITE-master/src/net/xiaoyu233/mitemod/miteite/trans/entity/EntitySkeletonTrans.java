@@ -67,9 +67,9 @@ public class EntitySkeletonTrans extends EntityMonster implements IRangedEntity 
             super.setCurrentItemOrArmor(0, (new ItemStack(Item.daggerRustedIron)).randomizeForMob(this, false));
          }
       } else {
-         this.setCombatTask();
          super.setCurrentItemOrArmor(0, (new ItemStack(this.getSkeletonType() == 2 ? (this.getRNG().nextInt(6) == 0 ? Items.clubIron : Items.clubWood) : Item.bow)).randomizeForMob(this, true));
       }
+      this.setCombatTask();
    }
 
    @Overwrite
@@ -237,14 +237,12 @@ public class EntitySkeletonTrans extends EntityMonster implements IRangedEntity 
 
    @Inject(method = "onSpawnWithEgg", at = @At("RETURN"))
    private void ModifyWitherSkeleton(CallbackInfoReturnable<GroupDataEntity> callbackInfo) {
-      int skeleton_type = this.forced_skeleton_type >= 0 ? this.forced_skeleton_type : this.getRandomSkeletonType(super.worldObj);
-      if (skeleton_type == WITHER_SKELETON_ID) {
-         int day_of_world = MinecraftServer.F().getOverworld().getDayOfOverworld();
+      if (this.getSkeletonType() == WITHER_SKELETON_ID) {
+         int day_of_world = this.worldObj.getDayOfOverworld();
          MonsterUtil.addDefaultWeapon(day_of_world + 16, this);
          MonsterUtil.addDefaultArmor(day_of_world + 16, this, true);
-         this.setEntityAttribute(GenericAttributes.attackDamage, 12 * Constant.getNormalMobModifier("Damage", day_of_world, this.worldObj.isOverworld()));
-         this.setEntityAttribute(GenericAttributes.maxHealth, 24 * Constant.getNormalMobModifier("Health", day_of_world, this.worldObj.isOverworld()));
-         this.setEntityAttribute(GenericAttributes.movementSpeed, 0.27D * Constant.getNormalMobModifier("Speed", day_of_world, this.worldObj.isOverworld()));
+         this.applyEntityAttributes();
+         this.healByPercentage(1F);
       }
    }
 

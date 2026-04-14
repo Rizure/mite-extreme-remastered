@@ -5,8 +5,10 @@ import net.minecraft.ItemIngot;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(ItemIngot.class)
-public class ItemIngotTransform extends Item {
+public class ItemIngotTrans extends Item {
+
    public String getResourceLocationPrefix() {
       return "ingots/";
    }
+
 }

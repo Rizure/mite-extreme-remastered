@@ -47,7 +47,9 @@ public class SlotShop extends Slot {
                      var5.setStackSize(maxStackSize);
                      entity_player.inventory.addItemStackToInventoryOrDropIt(var5);
                   } else {
-                     entity_player.addChatMessage("余额不足");
+                     if(entity_player.onServer()){
+                        entity_player.addChatMessage("余额不足");
+                     }
                   }
                }
             } else {
@@ -61,10 +63,14 @@ public class SlotShop extends Slot {
                   containerShop.player.money -= buyPrice;
                   entity_player.inventory.addItemStackToInventoryOrDropIt(new ItemStack(var5.itemID, 1, var5.getItemSubtype()));
                } else {
-                  containerShop.player.addChatMessage("余额不足");
+                  if(containerShop.player.onServer()){
+                     containerShop.player.addChatMessage("余额不足");
+                  }
                }
             } else {
-               containerShop.player.addChatMessage("商店不支持购买此商品");
+               if(containerShop.player.onServer()) {
+                  containerShop.player.addChatMessage("商店不支持购买此商品");
+               }
             }
          }
       }

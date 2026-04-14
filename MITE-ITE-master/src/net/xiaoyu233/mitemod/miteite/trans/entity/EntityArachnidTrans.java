@@ -41,42 +41,4 @@ public class EntityArachnidTrans extends EntityMonster {
          callbackInfo.cancel();
       }
    }
-//    @Inject(method = "onUpdate",at = @At(value = "INVOKE",shift = At.Shift.AFTER,target = "getNearestEntityCollision"))
-//    public void InjectUpdate_test(CallbackInfo callbackInfo){
-//        System.out.println("omg");
-//    }
-//    @Overwrite
-//    public void onUpdate() {
-//        super.onUpdate();
-//        if (!this.worldObj.isRemote && this.canClimbWalls()) {
-//            this.setBesideClimbableBlock(this.isCollidedHorizontally);
-//        }
-//
-//        if (!this.worldObj.isRemote) {
-//            this.checkSwitchingToPeaceful();
-//            if (this.num_webs > 0 && this.getTicksExistedWithOffset() % this.getTicksBetweenWebThrows() == 0) {
-//                Entity target = this.getEntityToAttack();
-//                if (target instanceof EntityLiving) {
-//                    double distance = (double)this.getDistanceToEntity(target);
-//                    if (distance <= (double)8.0F) {
-//                        EntityLiving elb_target = (EntityLiving)target;
-//                        Raycast raycast = (new Raycast(this.worldObj, this.getEyePos(), elb_target.getEyePos())).setForThrownWeb((Entity)null).performVsBlocks();
-//                        if (raycast.hasBlockCollision()) {
-//                            raycast.setLimit(elb_target.getFootPosPlusFractionOfHeight(0.25F));
-//                            raycast.performVsBlocks();
-//                        }
-//
-//                        RaycastCollision rc = raycast.getBlockCollision();
-//                        if (rc == null) {
-//                            raycast.setOriginator(this).performVsEntities();
-//                            rc = raycast.getNearestEntityCollision();
-//                            if (rc.getEntityHit() == target) {
-//                                this.attackEntityWithRangedAttack((EntityLiving)target, 1.0F);
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
 }

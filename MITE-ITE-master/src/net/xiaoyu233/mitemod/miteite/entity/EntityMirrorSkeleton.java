@@ -59,6 +59,29 @@ public class EntityMirrorSkeleton extends EntitySkeleton {
       this.setEntityAttribute(GenericAttributes.attackDamage, 1);
    }
 
+   public float predictDamageBoostToSelf(){
+      ItemStack itemStack = this.getHeldItemStack();
+      float damageFactor = 0.0F;
+      if(itemStack != null){
+         if(itemStack.getItem() instanceof ItemCudgel){
+            damageFactor += 0.5F;
+         }
+         if(itemStack.getItem() instanceof ItemWarHammer){
+            damageFactor += 0.5F;
+         }
+         if(itemStack.getEnchantmentLevel(Enchantment.smite) > 0){
+            int level = itemStack.getEnchantmentLevel(Enchantment.smite);
+            while (level-- > 0){
+               damageFactor += 0.05F;
+            }
+         }
+         if(itemStack.getMaterialForRepairs() == Material.silver){
+            damageFactor += 0.25F;
+         }
+      }
+      return damageFactor;
+   }
+
    public void onUpdate() {
       super.onUpdate();
       if (this.onServer()) {

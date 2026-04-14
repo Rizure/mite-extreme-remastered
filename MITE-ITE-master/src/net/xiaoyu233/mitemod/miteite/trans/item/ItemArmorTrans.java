@@ -104,6 +104,17 @@ public abstract class ItemArmorTrans extends Item implements IDamageableItem, IU
             }
          }
 
+         if (damage_source != null && damage_source.isFireDamage()){
+            for (ItemStack item_stack : armors) {
+               if (item_stack != null) {
+                  Item item = item_stack.getItem();
+                  if (item.isArmor()) {
+                     total_defense += ArmorModifierTypes.FIRE_PROTECTION_MODIFIER.getModifierValue(item_stack.stackTagCompound);
+                  }
+               }
+            }
+         }
+
          total_defense = MathHelper.tryFitToNearestInteger(total_defense, 1.0E-4F);
          return total_defense;
       }

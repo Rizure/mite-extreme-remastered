@@ -125,7 +125,7 @@ public class Items extends Item {
    public static final ItemFood hugeSpiderLeg = (new ItemGAFood(Constant.getNextItemID(), Material.meat, 4, 4, 0, true, true, false, "spider_leg")).setAlwaysEdible().setAnimalProduct().setPotionEffect(MobEffectList.poison.id, 12, 0, 0.9F);
    public static final ItemFood coldSpiderLeg = (new ItemGAFood(Constant.getNextItemID(), Material.meat, 6, 6, 0, true, true, false, "cold_spider_leg")).setAlwaysEdible().setAnimalProduct().setPotionEffect(MobEffectList.moveSpeed.id, 240, 1, 1.0F);
    public static final ItemGAMisc badApple = new ItemGAMisc(Constant.getNextItemID(), "bad_apple");
-   public static final ItemEnhanceStone VIBRANIUM_ENHANCE_STONE = (ItemEnhanceStone) new ItemEnhanceStone(ItemEnhanceStone.Types.vibranium);
+   public static final ItemEnhanceStone enhanceStoneVibranium = (ItemEnhanceStone) new ItemEnhanceStone(ItemEnhanceStone.Types.vibranium);
    //淫欲
    public static final ItemGAMisc gowther = new ItemGAMisc(Constant.getNextItemID(), "gowther");
    //暴食
@@ -203,7 +203,12 @@ public class Items extends Item {
    public static void registerItems() {
       register("obsidian_stick", obsidianStick, CreativeModeTab.tabMaterials);
       register("vibranium", ingotVibranium, CreativeModeTab.tabMaterials);
-      register("vibranium_nugget", vibraniumNugget, CreativeModeTab.tabMaterials);
+
+//      register("vibranium", vibraniumNugget, CreativeModeTab.tabMaterials);
+      vibraniumNugget.setResourceLocation(vibraniumNugget.getResourceLocationPrefix() + vibraniumNugget.getHardestMetalMaterial().getName());
+      vibraniumNugget.setUnlocalizedName("vibranium_nugget");
+      vibraniumNugget.setCreativeTab(CreativeModeTab.tabMaterials);
+
       register("vibranium_helmet", helmetVibranium);
       register("vibranium_chestplate", cuirassVibranium);
       register("vibranium_leggings", leggingsVibranium);
@@ -222,7 +227,7 @@ public class Items extends Item {
       register("enhance_stone/mithril", enhanceStoneMithril, CreativeModeTab.tabMaterials);
       register("enhance_stone/adamantium", enhanceStoneAdamantium, CreativeModeTab.tabMaterials);
       register("enhance_stone/universal", enhanceStoneUniversal, CreativeModeTab.tabMaterials);
-      register("enhance_stone/vibranium", VIBRANIUM_ENHANCE_STONE, CreativeModeTab.tabMaterials);
+      register("enhance_stone/vibranium", enhanceStoneVibranium, CreativeModeTab.tabMaterials);
 
       register("forging_template/copper", forgingTemplatesCopper, CreativeModeTab.tabMaterials);
       register("forging_template/silver", forgingTemplatesSilver, CreativeModeTab.tabMaterials);
@@ -339,7 +344,10 @@ public class Items extends Item {
       register("psi_core",psiCore);
 
       register("ga",ingotMiteGa, CreativeModeTab.tabMaterials);
-      register("ga_nugget",miteGaNugget, CreativeModeTab.tabMaterials);
+//      register("ga",miteGaNugget, CreativeModeTab.tabMaterials);
+      miteGaNugget.setResourceLocation(miteGaNugget.getResourceLocationPrefix() + miteGaNugget.getHardestMetalMaterial().getName());
+      miteGaNugget.setUnlocalizedName("ga_nugget");
+      miteGaNugget.setCreativeTab(CreativeModeTab.tabMaterials);
       register("ga_fan",miteGaFan);
 
       register("towards_pickaxe", towards_Pickaxe);
@@ -383,6 +391,8 @@ public class Items extends Item {
       register.registerShapelessRecipe(new ItemStack(Items.daHuanDan), true, Items.xiaoHuanDan, Items.xiaoHuanDan, Items.xiaoHuanDan, Item.sugar);
       register.registerShapelessRecipe(new ItemStack(Items.buguDan), true, Items.daHuanDan, new ItemStack(Block.leaves, 1, 0), Block.mushroomBrown, Block.plantYellow);
       register.registerShapelessRecipe(new ItemStack(Items.buguDan), true, Items.daHuanDan, new ItemStack(Block.leaves, 1, 2), Block.mushroomBrown, Block.plantYellow);
+      register.registerShapelessRecipe(new ItemStack(Items.buguDan), true, Items.daHuanDan, new ItemStack(Block.leaves, 1, 0), Block.mushroomBrown, Block.plantRed);
+      register.registerShapelessRecipe(new ItemStack(Items.buguDan), true, Items.daHuanDan, new ItemStack(Block.leaves, 1, 2), Block.mushroomBrown, Block.plantRed);
       register.registerShapelessRecipe(new ItemStack(Items.wuzhiDan, 8), true, new Object[]{Items.buguDan, Item.redstone, Block.plantYellow, new ItemStack(Block.plantRed, 1, 0), new ItemStack(Block.plantRed, 1, 1), new ItemStack(Block.plantRed, 1, 2), new ItemStack(Block.plantRed, 1, 5), new ItemStack(Block.plantRed, 1, 7), new ItemStack(Block.plantRed, 1, 8)});
       register.registerShapelessRecipe(new ItemStack(Items.wuzhiDan, 1), true, new Object[]{Items.buguDan, Item.redstone, Item.potato, Item.carrot, Item.onion, Block.mushroomBrown});
       register.registerShapelessRecipe(new ItemStack(Items.chikitan, 2), true, new Object[]{Item.emerald, Item.emerald, Block.plantYellow, Item.egg, Items.buguDan});
@@ -858,12 +868,6 @@ public class Items extends Item {
               'L', Item.silk,
               'N', vibraniumNugget,
               'A', bowAncientMetal);
-      register.registerShapedRecipe(new ItemStack(Item.emerald),
-              true,
-              "SS",
-              "SS",
-              'S', Item.shardEmerald);
-      register.registerShapelessRecipe(new ItemStack(Item.shardEmerald, 4), true, Item.emerald);
       register.registerShapedRecipe(new ItemStack(enhanceStoneIron),
               true,
               " C ",
@@ -891,7 +895,7 @@ public class Items extends Item {
               'D', Item.diamond,
               'M', Item.ingotMithril,
               'A', Item.ingotAdamantium);
-      register.registerShapedRecipe(new ItemStack(VIBRANIUM_ENHANCE_STONE),
+      register.registerShapedRecipe(new ItemStack(enhanceStoneVibranium),
               true,
               "DAD",
               "MVM",

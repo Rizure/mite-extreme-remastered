@@ -425,7 +425,7 @@ item.bamboo.name=金雷竹
 tile.gem_setting.name=宝石镶嵌台
 container.crafting.needsRemoveGems=请先移除宝石
 
-tile.extreme_workbench.name=重制工作台
+tile.extreme_workbench.name=点立得工作台
 
 tile.leaves1.maple.name=枫树树叶
 tile.log1.maple.name=枫树木

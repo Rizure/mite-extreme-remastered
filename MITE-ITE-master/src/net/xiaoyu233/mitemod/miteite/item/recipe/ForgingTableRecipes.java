@@ -31,7 +31,7 @@ public class ForgingTableRecipes {
       } else if (material == Material.adamantium) {
          return Items.enhanceStoneAdamantium;
       } else if (material == Materials.vibranium) {
-         return Items.VIBRANIUM_ENHANCE_STONE;
+         return Items.enhanceStoneVibranium;
       } else {
          return Items.enhanceStoneUniversal;
       }
@@ -78,6 +78,7 @@ public class ForgingTableRecipes {
               setAxeDurabilityCost((int) (forgee_material.getDurability() * 800.0F)).
               setHammerDurabilityCost((int) (forgee_material.getDurability() * 1000.0F)).
               setTimeReq(600 + forgee_material.getMinHarvestLevel() * 200).
+              setQualityReward(EnumQuality.values()[Math.min(7, (upgrade_level + 1) / 2 + 2)]).
               addFaultFeedback(DowngradeFeedback.of(66)).
               addFaultFeedback(DurabilityFeedback.of(DurabilityFeedback.Type.ofPercentage(666))).
               addMaterials(items).
@@ -92,6 +93,7 @@ public class ForgingTableRecipes {
               setAxeDurabilityCost((int) (forgee_material.getDurability() * 800.0F)).
               setHammerDurabilityCost((int) (forgee_material.getDurability() * 1000.0F)).
               setTimeReq(1200 + forgee_material.getMinHarvestLevel() * 300).
+              setQualityReward(EnumQuality.values()[Math.min(7, (upgrade_level + 1) / 2 + 2)]).
               addFaultFeedback(DowngradeFeedback.of(0)).
               addFaultFeedback(DurabilityFeedback.of(DurabilityFeedback.Type.ofPercentage(20))).
               addMaterials(items).
@@ -119,20 +121,20 @@ public class ForgingTableRecipes {
                  new ItemStack(Item.ingotGold, 1),
                  new ItemStack(Items.dyePowder, 1, 4));
          registerUpgradingRecipe(Material.iron, Material.iron, i, ForgingTableLevel.IRON,
-                 new ItemStack(Items.enhanceStoneIron, 1),
-                 new ItemStack(Items.emerald, 1));
+                 new ItemStack(Items.ironNugget, 4),
+                 new ItemStack(Items.shardEmerald, 3));
          registerUpgradingRecipe(Material.ancient_metal, Material.ancient_metal, i, ForgingTableLevel.MITHRIL,
-                 new ItemStack(Items.enhanceStoneIron, 2),
-                 new ItemStack(Items.emerald, 1));
+                 new ItemStack(Items.ancientMetalNugget, 4),
+                 new ItemStack(Items.shardEmerald, 3));
          registerUpgradingRecipe(Material.mithril, Material.mithril, i, ForgingTableLevel.MITHRIL,
-                 new ItemStack(Items.ingotMithril, 1),
+                 new ItemStack(Items.mithrilNugget, 3),
                  new ItemStack(Items.diamond, 1));
          registerUpgradingRecipe(Material.adamantium, Material.adamantium, i, ForgingTableLevel.ADAMANTIUM,
-                 new ItemStack(Items.adamantiumNugget, 1),
+                 new ItemStack(Items.adamantiumNugget, 3),
                  new ItemStack(Items.fancyRed, 1));
          registerUpgradingRecipe(Materials.vibranium, Materials.vibranium, i, ForgingTableLevel.VIBRANIUM,
-                 new ItemStack(Items.vibraniumNugget, 1),
-                 new ItemStack(Items.fancyRed, 1));
+                 new ItemStack(Items.vibraniumNugget, 2),
+                 new ItemStack(Items.fancyRed, 2));
       }
 
       for (int i = 0; i < 15; i++) {
@@ -308,40 +310,40 @@ public class ForgingTableRecipes {
       registerForgingRecipe(Materials.vibranium, Materials.vibranium, 2, ForgingTableLevel.VIBRANIUM,
               new ItemStack(Item.ingotMithril, 3),
               new ItemStack(Item.ingotAdamantium, 3),
-              new ItemStack(Items.VIBRANIUM_ENHANCE_STONE, 1));
+              new ItemStack(Items.enhanceStoneVibranium, 1));
       registerForgingRecipe(Materials.vibranium, Materials.vibranium, 3, ForgingTableLevel.VIBRANIUM,
               new ItemStack(Item.ingotMithril, 4),
               new ItemStack(Item.ingotAdamantium, 3),
-              new ItemStack(Items.VIBRANIUM_ENHANCE_STONE, 1));
+              new ItemStack(Items.enhanceStoneVibranium, 1));
       registerForgingRecipe(Materials.vibranium, Materials.vibranium, 4, ForgingTableLevel.VIBRANIUM,
               new ItemStack(Item.ingotMithril, 4),
               new ItemStack(Item.ingotAdamantium, 4),
-              new ItemStack(Items.VIBRANIUM_ENHANCE_STONE, 1));
+              new ItemStack(Items.enhanceStoneVibranium, 1));
       registerForgingRecipe(Materials.vibranium, Materials.vibranium, 5, ForgingTableLevel.VIBRANIUM,
               new ItemStack(Item.ingotMithril, 4),
               new ItemStack(Item.ingotAdamantium, 4),
               new ItemStack(Items.ingotVibranium, 1),
-              new ItemStack(Items.VIBRANIUM_ENHANCE_STONE, 1));
+              new ItemStack(Items.enhanceStoneVibranium, 1));
       registerForgingRecipe(Materials.vibranium, Materials.vibranium, 6, ForgingTableLevel.VIBRANIUM,
               new ItemStack(Item.ingotMithril, 4),
               new ItemStack(Item.ingotAdamantium, 4),
               new ItemStack(Items.ingotVibranium, 2),
-              new ItemStack(Items.VIBRANIUM_ENHANCE_STONE, 1));
+              new ItemStack(Items.enhanceStoneVibranium, 1));
       registerForgingRecipe(Materials.vibranium, Materials.vibranium, 7, ForgingTableLevel.VIBRANIUM,
               new ItemStack(Item.ingotMithril, 4),
               new ItemStack(Item.ingotAdamantium, 4),
               new ItemStack(Items.ingotVibranium, 2),
-              new ItemStack(Items.VIBRANIUM_ENHANCE_STONE, 2));
+              new ItemStack(Items.enhanceStoneVibranium, 2));
       registerForgingRecipe(Materials.vibranium, Materials.vibranium, 8, ForgingTableLevel.VIBRANIUM,
               new ItemStack(Item.ingotMithril, 6),
               new ItemStack(Item.ingotAdamantium, 4),
               new ItemStack(Items.ingotVibranium, 2),
-              new ItemStack(Items.VIBRANIUM_ENHANCE_STONE, 2));
+              new ItemStack(Items.enhanceStoneVibranium, 2));
       registerForgingRecipe(Materials.vibranium, Materials.vibranium, 9, ForgingTableLevel.VIBRANIUM,
               new ItemStack(Item.ingotMithril, 6),
               new ItemStack(Item.ingotAdamantium, 6),
               new ItemStack(Items.ingotVibranium, 2),
-              new ItemStack(Items.VIBRANIUM_ENHANCE_STONE, 2));
+              new ItemStack(Items.enhanceStoneVibranium, 2));
 
    }
 

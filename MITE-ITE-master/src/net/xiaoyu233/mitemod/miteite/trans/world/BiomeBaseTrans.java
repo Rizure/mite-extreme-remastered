@@ -5,6 +5,7 @@ import net.xiaoyu233.fml.util.ReflectHelper;
 import net.xiaoyu233.mitemod.miteite.block.Blocks;
 import net.xiaoyu233.mitemod.miteite.entity.*;
 import net.xiaoyu233.mitemod.miteite.trans.entity.EntityGiantZombieTrans;
+import net.xiaoyu233.mitemod.miteite.util.Configs;
 import net.xiaoyu233.mitemod.miteite.world.WorldGenBigTreeWithIDAndMeta;
 import net.xiaoyu233.mitemod.miteite.world.WorldGenCherry;
 import net.xiaoyu233.mitemod.miteite.world.WorldGenTreesWithTreeId;
@@ -23,51 +24,9 @@ import java.util.Random;
 @Mixin(BiomeBase.class)
 public class BiomeBaseTrans {
    @Shadow
-   @Final
-   public int biomeID;
-   @Shadow
-   @Final
-   private boolean enableRain;
-   @Shadow
-   public int field_76754_C;
-   @Shadow
-   public byte fillerBlock;
-   @Shadow
-   public float maxHeight;
-   @Shadow
-   public float minHeight;
-   @Shadow
-   public float rainfall;
-   @Shadow
-   public float temperature;
-   @Shadow
-   public BiomeDecorator theBiomeDecorator;
-   @Shadow
-   public byte topBlock;
-   @Shadow
-   public int waterColorMultiplier;
-   @Shadow
-   protected List spawnableCaveCreatureList;
-   @Shadow
-   protected List spawnableCreatureList;
-   @Shadow
    protected List spawnableMonsterList;
-   @Shadow
-   protected List spawnableWaterCreatureList;
-   @Shadow
-   protected WorldGenBigTree worldGeneratorBigTree;
-   @Shadow
-   protected WorldGenForest worldGeneratorForest;
-
-   protected WorldGenTreesWithTreeId worldGeneratorTreesWithTreeId;
-
-   @Shadow
-   protected WorldGenSwampTree worldGeneratorSwamp;
-   @Shadow
-   protected WorldGenTrees worldGeneratorTrees;
 
    protected BiomeBaseTrans(int par1) {
-
    }
 
    @Inject(method = "<init>", at = @At("RETURN"))
@@ -77,7 +36,6 @@ public class BiomeBaseTrans {
       this.spawnableMonsterList.add(new BiomeMeta(EntityAncientBoneLord.class, 10, 1, 1));
       this.spawnableMonsterList.add(new BiomeMeta(EntityZombieLord.class, 1, 1, 1));
       this.spawnableMonsterList.add(new BiomeMeta(EntityOreElemental.class, 1, 1, 1));
-//      this.spawnableMonsterList.add(new BiomeMeta(EntityAnnihilationSkeleton.class, 1, 1, 1));
       this.spawnableMonsterList.add(new BiomeMeta(EntityWanderingWitch.class, 1, 4, 4));
       this.spawnableMonsterList.add(new BiomeMeta(EntityZombieDoor.class, 2, 4, 4));
       this.spawnableMonsterList.add(new BiomeMeta(EntityExchanger.class, 2, 2, 4));
@@ -117,8 +75,17 @@ public class BiomeBaseTrans {
       }
    }
 
-   @Shadow
-   private BiomeDecorator createBiomeDecorator() {
-      return null;
+   @Inject(method = "decorate", at = @At("RETURN"))
+   private void generateCommonEmeraldOres(World par1World, Random par2Random, int par3, int par4, CallbackInfo callbackInfo){
+      int var5 = Configs.wenscConfig.emeraldFrequencyBigHills.ConfigValue + par2Random.nextInt(3);
+      for (int var6 = 0; var6 < var5; ++var6) {
+         int var7 = par3 + par2Random.nextInt(16);
+         int var8 = par2Random.nextInt(28) + 4;
+         int var9 = par4 + par2Random.nextInt(16);
+         int var10 = par1World.getBlockId(var7, var8, var9);
+         if (var10 == Block.stone.blockID) {
+            par1World.setBlock(var7, var8, var9, Block.oreEmerald.blockID, 0, 2);
+         }
+      }
    }
 }

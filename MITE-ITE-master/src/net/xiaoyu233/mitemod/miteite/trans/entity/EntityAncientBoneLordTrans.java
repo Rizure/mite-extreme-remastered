@@ -75,8 +75,7 @@ public class EntityAncientBoneLordTrans extends EntityBoneLordTrans {
       if (!this.getWorld().isOverworld()) {
          return super.getCanSpawnHere(perform_light_check);
       } else {
-         Vec3D pos = this.getFootPos();
-         return this.getWorld().isBloodMoon24HourPeriod() && this.getWorld().getDayOfOverworld() >= Configs.wenscConfig.ancientBoneLordSpawnLimitDay.ConfigValue && !(this.getWorld().getClosestEntityLivingBase(this, new Class[]{EntityAncientBoneLord.class}, 64.0D, false, false) instanceof EntityAncientBoneLord) && this.getWorld().getBlock(pos.getBlockX(), pos.getBlockY(), pos.getBlockZ()) != Block.waterMoving && !this.getWorld().anySolidBlockIn(this.boundingBox);
+         return super.getCanSpawnHere(perform_light_check) && this.getWorld().isBloodMoon(true) && this.getWorld().getDayOfOverworld() >= Configs.wenscConfig.ancientBoneLordSpawnLimitDay.ConfigValue;
       }
    }
 

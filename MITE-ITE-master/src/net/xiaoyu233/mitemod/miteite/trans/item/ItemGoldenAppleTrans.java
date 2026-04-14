@@ -25,7 +25,7 @@ public class ItemGoldenAppleTrans extends ItemFood {
    protected void onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
       if (par1ItemStack.getItemSubtype() > 0) {
          if (!par2World.isRemote) {
-            if (itemRand.nextInt(8) == 0) {
+            if (itemRand.nextInt(4) == 0) {
                par3EntityPlayer.inventory.addItemStackToInventoryOrDropIt(Items.escanor.getItemStackForStatsIcon());
             }
             par3EntityPlayer.addPotionEffect(new MobEffect(MobEffectList.regeneration.id, 1200, 1));

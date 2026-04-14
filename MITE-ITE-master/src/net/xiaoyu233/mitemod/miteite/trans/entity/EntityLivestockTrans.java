@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntityLivestock.class)
-public abstract class EntityLivestockTrans extends EntityAnimalTrans {
+public abstract class EntityLivestockTrans extends EntityAnimal {
    private int illnessToDeathCounter;
 
    public EntityLivestockTrans(World par1World) {

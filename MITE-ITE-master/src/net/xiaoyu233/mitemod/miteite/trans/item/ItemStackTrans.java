@@ -76,25 +76,24 @@ public class ItemStackTrans {
       if (par2 && slot instanceof SlotShop) {
          if (slot.getHasStack()) {
             ItemStack itemStack = slot.getStack();
-            list.add(EnumChatFormat.AQUA + "售出价格:" + EnumChatFormat.WHITE + itemStack.getPrice().soldPrice);
-            list.add(EnumChatFormat.AQUA + "购买价格:" + EnumChatFormat.WHITE + itemStack.getPrice().buyPrice);
+            if(itemStack.getPrice().soldPrice > 0F){
+               list.add(EnumChatFormat.AQUA + "售出价格:" + EnumChatFormat.WHITE + itemStack.getPrice().soldPrice);
+            }
+            if(itemStack.getPrice().buyPrice > 0F){
+               list.add(EnumChatFormat.AQUA + "购买价格:" + EnumChatFormat.WHITE + itemStack.getPrice().buyPrice);
+            }
          }
       }
    }
 
    @Shadow
    public int getMaxStackSize() {
-      return this.getItem().getItemStackLimit(this.subtype, this.damage);
+      return 0;
    }
 
    @Shadow
    public boolean isItemEnchanted() {
-      return this.stackTagCompound != null && this.stackTagCompound.hasKey("ench");
-   }
-
-   @Overwrite
-   public boolean isRepairItem() {
-      return this.getItem() instanceof ItemNugget || this.getItem() instanceof ItemRedstone;
+      return false;
    }
 
    @Shadow
@@ -183,9 +182,6 @@ public class ItemStackTrans {
             }
          }
       } else {
-//         if(!(this.getItem() instanceof ItemRingKiller)) {
-//
-//         }
          var1.putAll(this.getItem().getAttrModifiers(ReflectHelper.dyCast(this)));
       }
 

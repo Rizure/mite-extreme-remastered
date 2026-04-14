@@ -18,7 +18,7 @@ public class BlockBamboo extends Block {
    }
    public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity) {
       boolean isCommonMonster = par5Entity instanceof EntityZombie || par5Entity instanceof EntitySpider || par5Entity instanceof EntityCreeper || par5Entity instanceof EntitySkeleton;
-      if (par1World.isWorldServer() && isCommonMonster && this.Random.nextInt(300) == 1) {
+      if (par1World.isWorldServer() && isCommonMonster && this.Random.nextInt(300) == 0) {
          WorldServer var20 = (WorldServer) par1World;
          var20.addWeatherEffect(new EntityLightning(var20, par2, par3, par4));
          par1World.spawnEntityInWorld(new EntityLightning(par1World, par2, par3, par4));

@@ -22,12 +22,12 @@ public class EntityRevenantTrans extends EntityZombie {
       super.dropFewItems(recently_hit_by_player, damage_source);
       if (recently_hit_by_player) {
          int day = this.getWorld().getDayOfOverworld();
-         int count = Math.min(day / 8, 6);
+         int diamond_count = Math.min((day) / 32, 2);
          if (this.rand.nextInt(4) == 0) {
             this.dropItem(Items.voucherOverlord);
          }
-         for (int i1 = 0; i1 < count; i1++) {
-            this.dropItemStack(new ItemStack(Items.dyePowder, 1, 4));
+         for (int i1 = 0; i1 < diamond_count; i1++) {
+            this.dropItem(Item.emerald);
          }
          this.dropItem(Items.zombieBrain);
       }
@@ -56,6 +56,11 @@ public class EntityRevenantTrans extends EntityZombie {
             MonsterUtil.addDefaultTool(day_of_world + 16, this);
          }
       }
+   }
+
+   @Overwrite
+   public int getMaxSpawnedInChunk() {
+      return 4;
    }
 
    @Overwrite

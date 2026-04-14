@@ -9,7 +9,12 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
 @Mixin(ItemNugget.class)
-public class ItemNuggetTrans {
+public class ItemNuggetTrans extends Item{
+
+   public String getResourceLocationPrefix() {
+      return "nuggets/";
+   }
+
    @Overwrite
    public ItemNugget getForMaterial(Material material) {
       return material == Material.copper ? Item.copperNugget :

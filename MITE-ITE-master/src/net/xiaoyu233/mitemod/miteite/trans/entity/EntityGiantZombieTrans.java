@@ -37,7 +37,7 @@ public class EntityGiantZombieTrans extends EntityMonster {
       int day = this.worldObj.getDayOfOverworld();
       this.getEntityAttribute(GenericAttributes.attackDamage).setAttribute(14 * Constant.getBossMobModifier("Health", day));
       this.getEntityAttribute(GenericAttributes.maxHealth).setAttribute(80 * Constant.getBossMobModifier("Damage", day));
-      this.getEntityAttribute(GenericAttributes.movementSpeed).setAttribute(0.3D * Constant.getBossMobModifier("Speed", day));
+      this.getEntityAttribute(GenericAttributes.movementSpeed).setAttribute(0.23D * Constant.getBossMobModifier("Speed", day));
    }
 
    @Override
@@ -59,20 +59,26 @@ public class EntityGiantZombieTrans extends EntityMonster {
 
    protected void dropFewItems(boolean recently_hit_by_player, DamageSource damage_source) {
       if (recently_hit_by_player) {
-         for (int i = 0; i < 4 + this.rand.nextInt(2); i++) {
+         int looting = damage_source.getLootingModifier();
+         for (int i = 0; i < 9 + this.rand.nextInt(2 + looting); i++) {
             this.dropItem(Item.ancientMetalNugget);
          }
          if (this.getWorld().getDayOfOverworld() > 63) {
             this.dropItem(Item.ingotMithril);
          }
-         for (int i = 0; i < 12 + this.rand.nextInt(5); i++) {
+         for (int i = 0; i < 12 + this.rand.nextInt(5 + looting * 2); i++) {
             this.dropItem(Item.rottenFlesh);
          }
-         for (int i = 0; i < 2 + this.rand.nextInt(3); i++) {
+         for (int i = 0; i < 2 + this.rand.nextInt(3 + looting); i++) {
             this.dropItem(Items.zombieBrain);
          }
-         for (int i = 0; i < 8 + this.rand.nextInt(5); i++) {
+         for (int i = 0; i < 8 + this.rand.nextInt(5 + looting * 2); i++) {
             this.dropItem(Item.bone);
+         }
+         for (int i = 0; i < 3 + this.rand.nextInt(1 + looting); i++) {
+            if (this.rand.nextBoolean()){
+               this.dropItem(Items.enhanceStoneIron);
+            }
          }
       }
       super.dropFewItems(recently_hit_by_player, damage_source);
@@ -89,8 +95,7 @@ public class EntityGiantZombieTrans extends EntityMonster {
    }
 
    public boolean getCanSpawnHere(boolean perform_light_check) {
-      Vec3D pos = this.getFootPos();
-      return !this.getWorld().anySolidBlockIn(this.boundingBox.addCoord(0.0D, 1.0D, 0.0D)) && this.getWorld().getClosestEntityLivingBase(this, new Class[]{this.getClass()}, 96.0D, false, false) == null && this.getWorld().getBlock(pos.getBlockX(), pos.getBlockY(), pos.getBlockZ()) != Block.waterMoving;
+      return this.isOutdoors() && this.getWorld().isBloodMoon(true);
    }
 
    @Override
@@ -109,6 +114,14 @@ public class EntityGiantZombieTrans extends EntityMonster {
    @Override
    protected String getLivingSound() {
       return "mob.zombie.say";
+   }
+
+   protected float getSoundPitch(String sound) {
+      return super.getSoundPitch(sound) * 0.6F;
+   }
+
+   protected float getSoundVolume(String sound) {
+      return super.getSoundVolume(sound) * 16.0F;
    }
 
    @Override

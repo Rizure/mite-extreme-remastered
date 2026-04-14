@@ -58,7 +58,7 @@ public abstract class EntityMonsterTrans extends EntityInsentient implements IMo
       if ((Configs.wenscConfig.mobDefense.ConfigValue)
               && damage.getResponsibleEntityP() != null
               && (this.getHeldItem() instanceof ItemTool || this.getHeldItem() instanceof ItemDoor)
-              && this.rand.nextInt(2) > 0
+              && this.rand.nextInt(2) == 0
               && !damage.bypassesMundaneArmor()) {
          damage.scaleAmount(0.5F);
          if (Configs.wenscConfig.mobDisarmWhenDefence.ConfigValue) {
@@ -92,7 +92,7 @@ public abstract class EntityMonsterTrans extends EntityInsentient implements IMo
    protected void dropEquipment(boolean recently_hit_by_player, int par2) {
       for (int var3 = 0; var3 < this.getInventory().length; ++var3) {
          ItemStack var4 = this.getEquipmentInSlot(var3);
-         if (var4 != null && (!var4.isItemStackDamageable() || this.picked_up_a_held_item_array[var3] && var4.getRemainingDurability() > var4.getMaxDamage() / 4)) {
+         if (var4 != null && (!var4.isItemStackDamageable() || this.picked_up_a_held_item_array[var3])) {
             this.dropItemStack(var4, 0.0F);
             this.setCurrentItemOrArmor(var3, null);
          }

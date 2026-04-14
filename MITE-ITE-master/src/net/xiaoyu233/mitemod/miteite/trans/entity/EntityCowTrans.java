@@ -7,16 +7,16 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.SoftOverride;
 
 @Mixin(EntityCow.class)
-public abstract class EntityCowTrans extends EntityLivestockTrans {
+public abstract class EntityCowTrans extends EntityAnimal {
 
    public EntityCowTrans(World world) {
       super(world);
    }
 
-   @SoftOverride
-   public int getBreedExp() {
-      return Configs.wenscConfig.breedXpCow.ConfigValue;
-   }
+//   @SoftOverride
+//   public int getBreedExp() {
+//      return Configs.wenscConfig.breedXpCow.ConfigValue;
+//   }
 
    public float getAIMoveSpeed() {
       return this.riddenByEntity == null ? super.getAIMoveSpeed() : 0.075F;

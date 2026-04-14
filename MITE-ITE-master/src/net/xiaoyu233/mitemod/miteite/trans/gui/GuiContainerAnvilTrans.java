@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 @Mixin(awz.class)
-public class GuiContainerAnvil extends awy implements ICrafting {
+public class GuiContainerAnvilTrans extends awy implements ICrafting {
    public EntityPlayer player;
    @Shadow
    private ContainerAnvil u;
@@ -20,11 +20,11 @@ public class GuiContainerAnvil extends awy implements ICrafting {
    private TileEntityAnvil tile_entity_anvil;
 
    @Inject(method = "<init>", at = @At("RETURN"))
-   public void GuiContainerAnvilTrans(EntityPlayer player, int par3, int par4, int par5, CallbackInfo callbackInfo) {
+   public void detectPlayer(EntityPlayer player, int par3, int par4, int par5, CallbackInfo callbackInfo) {
       this.player = player;
    }
 
-   public GuiContainerAnvil(Container par1Container) {
+   public GuiContainerAnvilTrans(Container par1Container) {
       super(par1Container);
    }
 

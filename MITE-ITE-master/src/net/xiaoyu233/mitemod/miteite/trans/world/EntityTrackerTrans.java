@@ -56,8 +56,6 @@ public class EntityTrackerTrans {
          this.trackEntity(par1Entity, 64, 10, true);
       } else if (par1Entity instanceof EntityGelatinousSphere) {
          this.trackEntity(par1Entity, 64, 10, true);
-      } else if (par1Entity instanceof EntityGrenade) {
-         this.trackEntity(par1Entity, 64, 10, true);
       } else if (par1Entity instanceof EntityPotion) {
          this.trackEntity(par1Entity, 64, 10, true);
       } else if (par1Entity instanceof EntityThrownExpBottle) {
@@ -92,6 +90,8 @@ public class EntityTrackerTrans {
          this.trackEntity(par1Entity, 256, Integer.MAX_VALUE, false);
       } else if (par1Entity instanceof EntityRideMarker) {
          this.trackEntity(par1Entity, 80, 3, true);
+      } else if (par1Entity instanceof EntityGrenade) {
+         this.trackEntity(par1Entity, 64, 10, true);
       }
 
    }

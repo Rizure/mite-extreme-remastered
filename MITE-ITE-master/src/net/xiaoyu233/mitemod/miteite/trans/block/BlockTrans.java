@@ -36,6 +36,7 @@ public abstract class BlockTrans {
       Item.itemsList[Blocks.blockColorfulDoubleSlabGroup1.blockID] = (new ItemStep(Blocks.blockColorfulSingleSlabGroup1, Blocks.blockColorfulDoubleSlabGroup1, true)).setUnlocalizedName("colorfulSlab");
       Item.itemsList[Blocks.blockColorfulSingleSlabGroup2.blockID] = (new ItemStep(Blocks.blockColorfulSingleSlabGroup2, Blocks.blockColorfulDoubleSlabGroup2, false)).setUnlocalizedName("colorfulSlab");
       Item.itemsList[Blocks.blockColorfulDoubleSlabGroup2.blockID] = (new ItemStep(Blocks.blockColorfulSingleSlabGroup2, Blocks.blockColorfulDoubleSlabGroup2, true)).setUnlocalizedName("colorfulSlab");
+      Item.itemsList[Blocks.flowerPotSapling.blockID] = new ItemBlock(Blocks.flowerPotSapling);
    }
 
    @Shadow

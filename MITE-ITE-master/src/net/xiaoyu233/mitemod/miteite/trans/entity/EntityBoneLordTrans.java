@@ -25,9 +25,9 @@ public class EntityBoneLordTrans extends EntitySkeletonTrans {
       super.dropFewItems(recently_hit_by_player, damage_source);
       if (recently_hit_by_player) {
          int day = this.getWorld().getDayOfOverworld();
-         int count = Math.min(day / 8, 6);
-         for (int i1 = 0; i1 < count; i1++) {
-            this.dropItemStack(new ItemStack(Items.dyePowder, 1, 4));
+         int diamond_count = Math.min((day) / 32, 2);
+         for (int i1 = 0; i1 < diamond_count; i1++) {
+            this.dropItem(Item.emerald);
          }
       }
    }

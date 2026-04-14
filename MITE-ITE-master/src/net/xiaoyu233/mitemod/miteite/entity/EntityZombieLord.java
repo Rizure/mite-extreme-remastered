@@ -59,7 +59,7 @@ public class EntityZombieLord extends EntityRevenant {
    }
 
    public int getMaxSpawnedInChunk() {
-      return 2;
+      return 1;
    }
 
    @Override
