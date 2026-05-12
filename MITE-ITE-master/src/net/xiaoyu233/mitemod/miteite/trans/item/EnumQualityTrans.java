@@ -15,10 +15,10 @@ public class EnumQualityTrans {
    @Overwrite
    public float getDurabilityModifier() {
       if(this.durability_modifier > 1.0F){
-         this.durability_modifier -= 1.0F;
-         this.durability_modifier /= 2.0F;
-         this.durability_modifier += 1.0F;
-         return this.durability_modifier;
+         float modified_durability = this.durability_modifier - 1.0F;
+         modified_durability /= 2.0F;
+         modified_durability += 1.0F;
+         return modified_durability;
       }
       return this.durability_modifier;
    }

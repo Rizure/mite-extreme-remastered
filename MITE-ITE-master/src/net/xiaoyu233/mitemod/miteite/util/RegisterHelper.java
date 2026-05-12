@@ -145,6 +145,7 @@ public class RegisterHelper {
       Items.getItem(Blocks.dirt.blockID).setSoldPrice(0.5D);
       Items.getItem(Blocks.sand.blockID).setSoldPrice(0.5D);
       Items.getItem(Blocks.cobblestone.blockID).setSoldPrice(2.5D);
+      Items.getItem(Block.netherrack.blockID).setSoldPrice(2.5D);
       Items.getItem(Blocks.stone.blockID).setSoldPrice(5D);
       Items.getItem(Blocks.cobblestoneWall.blockID).setSoldPrice(1.5D);
       Items.getItem(Blocks.wood.blockID).setSoldPrice(5D);

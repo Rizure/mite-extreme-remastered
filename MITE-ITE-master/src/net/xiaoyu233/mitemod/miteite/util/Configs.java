@@ -63,8 +63,8 @@ public class Configs {
       public static ConfigItem<Boolean> annihilationSkeletonSpawnInLight = new ConfigItem("annihilationSkeletonSpawnInLight", false, "主世界湮灭骷髅在光照处生成");
       public static ConfigItem<Integer> ancientBoneLordSpawnLimitDay = new ConfigItem("ancientBoneLordSpawnLimitDay", 192, "主世界生成远古骷髅公爵所需天数(整数)", 0, 384);
 //      public static ConfigItem<Integer> wanderingWitchSpawnChanceOverworld = new ConfigItem("wanderingWitchSpawnChanceOverworld", 25, "主世界流浪女巫生成成功概率百分比(整数)", 0, 50);
-      public static ConfigItem<Integer> wanderingWitchSpawnLimitDayOverworld = new ConfigItem("wanderingWitchSpawnLimitDayOverworld", 96, "主世界流浪女巫生成天数限制(整数)", 96, 512);
-      public static ConfigItem<Integer> wanderingWitchSpawnLimitDayOther = new ConfigItem("wanderingWitchSpawnLimitDayOther", 64, "地狱及地下世界流浪女巫生成天数限制(整数)", 64, 512);
+      public static ConfigItem<Integer> wanderingWitchSpawnLimitDayOverworld = new ConfigItem("wanderingWitchSpawnLimitDayOverworld", 96, "主世界流浪女巫生成天数限制(整数)", 32, 512);
+      public static ConfigItem<Integer> wanderingWitchSpawnLimitDayOther = new ConfigItem("wanderingWitchSpawnLimitDayOther", 64, "地狱及地下世界流浪女巫生成天数限制(整数)", 32, 512);
 //      public static ConfigItem<Integer> wanderingWitchSpawnChanceUnderworld = new ConfigItem("wanderingWitchSpawnChanceUnderworld", 50, "地下世界流浪女巫生成成功概率百分比(整数)", 0, 100);
       public static ConfigItem<Boolean> underworldRandomTeleport = new ConfigItem("underworldRandomTeleport", false, "地下世界随机传送(开关)");
       public static ConfigItem<Integer> underworldRandomTeleportTimeNew = new ConfigItem("underworldRandomTeleportTimeNew", 132000, "地下世界随机传送时间(tick)", 0, 1000000);
@@ -161,6 +161,7 @@ public class Configs {
       public static ConfigItem<Integer> ridingSkeletonSpawningWeight = new ConfigItem<>("RidingSkeletonSpawningWeight", 10, "古尸骑手生成权重", 0, 100);
       public static ConfigItem<Float> energeticBoostLimit = new ConfigItem<>("EnergeticBoostLimit",3.0F,"海纳百川增伤上限", 1.0F, 10.0F);
       public static ConfigItem<Boolean> boostBlaze = new ConfigItem<>("boostBlaze",true,"增强烈焰人");
+      public static ConfigItem<Boolean> boostGhast = new ConfigItem<>("boostGhast",false,"恶魂5连发火球");
 //        public static ConfigItem <String> md5String = new ConfigItem("md5String", new lh("wensc").a("busy"), "MD5");
 
    }
@@ -289,6 +290,7 @@ public class Configs {
       wenscMap.put("RidingSkeletonSpawningWeight", wenscConfig.ridingSkeletonSpawningWeight);
       wenscMap.put("EnergeticBoostLimit",wenscConfig.energeticBoostLimit);
       wenscMap.put("boostBlaze",wenscConfig.boostBlaze);
+      wenscMap.put("boostGhast",wenscConfig.boostGhast);
 
 //        wenscMap.put("md5", wenscConfig.md5String);
 

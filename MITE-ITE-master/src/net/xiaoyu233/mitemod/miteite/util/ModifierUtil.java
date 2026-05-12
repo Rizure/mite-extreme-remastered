@@ -13,7 +13,7 @@ public class ModifierUtil {
    public static void performGeologyEffect(BlockBreakInfo info, ItemStack item_stack){
       Block block = info.block;
       float expReward = 0;
-      if (block instanceof BlockOre && info.getMetadata() != 1) {
+      if (block instanceof BlockOre && (info.getMetadata() & 1) != 1) {
          expReward = ToolModifierTypes.GEOLOGY.getModifierValue(item_stack.getTagCompound());
          if (expReward != 0) {
             ItemStack dropItemStack = new ItemStack(info.block);

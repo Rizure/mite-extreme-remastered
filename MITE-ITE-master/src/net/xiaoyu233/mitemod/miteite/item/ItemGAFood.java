@@ -78,6 +78,9 @@ public class ItemGAFood extends ItemFood {
             par3EntityPlayer.addPotionEffect(new MobEffect(MobEffectList.field_76443_y.id, 180 * 20, 4));
          }
       }
+      if (Objects.equals(this.tag, "detoxifying")) {
+         par3EntityPlayer.removePotionEffect(MobEffectList.poison.id);
+      }
    }
 
    public void addInformation(ItemStack item_stack, EntityPlayer player, List info, boolean extended_info, Slot slot) {
@@ -133,6 +136,9 @@ public class ItemGAFood extends ItemFood {
             case "dahuan":
                info.add(EnumChatFormat.BROWN + Translator.getFormatted("我总算明白为什么烤鱼的", new Object[0]));
                info.add(EnumChatFormat.BROWN + Translator.getFormatted("周围会刷新冰山师姐了", new Object[0]));
+               break;
+            case "detoxifying":
+               info.add(EnumChatFormat.BROWN + Translator.getFormatted("牛奶+蜘蛛眼=?", new Object[0]));
                break;
             default:
                break;

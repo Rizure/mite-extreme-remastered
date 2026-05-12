@@ -60,21 +60,21 @@ public class ItemRingKiller extends Item {
    public int getRingKillerSkillCoolDownTime(ItemStack itemStack) {
       switch (itemStack.getItemSubtype()) {
          case 0:
-            return (13 - this.level * 2) * 20;
+            return (7 - this.level) * 15;
          case 1:
-            return (7 - this.level) * 10;
+            return 5 + 5 * (7 - this.level);
          case 2:
          default:
-            return (13 - this.level * 2) * 20;
+            return 5 + (7 - this.level) * 15;
       }
    }
 
    public float getRingKillerSkillRange(ItemStack itemStack) {
       switch (itemStack.getItemSubtype()) {
          case 0:
-            return 4.0F;
+            return 4.5F;
          case 1:
-            return 2.5F;
+            return 3.0F;
          case 2:
          default:
             return 6.0F;
@@ -84,12 +84,12 @@ public class ItemRingKiller extends Item {
    public float getRingKillerSkillDamage(ItemStack itemStack) {
       switch (itemStack.getItemSubtype()) {
          case 0:
-            return this.level + 4.0F;
+            return this.level + 5.0F;
          case 1:
-            return this.level + 1.0F;
+            return this.level + 2.0F;
          case 2:
          default:
-            return this.level + 2.0F;
+            return this.level + 3.0F;
       }
    }
 

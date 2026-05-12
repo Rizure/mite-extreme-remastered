@@ -77,14 +77,16 @@ public class BiomeBaseTrans {
 
    @Inject(method = "decorate", at = @At("RETURN"))
    private void generateCommonEmeraldOres(World par1World, Random par2Random, int par3, int par4, CallbackInfo callbackInfo){
-      int var5 = Configs.wenscConfig.emeraldFrequencyBigHills.ConfigValue + par2Random.nextInt(3);
-      for (int var6 = 0; var6 < var5; ++var6) {
-         int var7 = par3 + par2Random.nextInt(16);
-         int var8 = par2Random.nextInt(28) + 4;
-         int var9 = par4 + par2Random.nextInt(16);
-         int var10 = par1World.getBlockId(var7, var8, var9);
-         if (var10 == Block.stone.blockID) {
-            par1World.setBlock(var7, var8, var9, Block.oreEmerald.blockID, 0, 2);
+      if (par1World.isOverworld()) {
+         int var5 = Configs.wenscConfig.emeraldFrequencyBigHills.ConfigValue + par2Random.nextInt(3);
+         for (int var6 = 0; var6 < var5; ++var6) {
+            int var7 = par3 + par2Random.nextInt(16);
+            int var8 = par2Random.nextInt(28) + 4;
+            int var9 = par4 + par2Random.nextInt(16);
+            int var10 = par1World.getBlockId(var7, var8, var9);
+            if (var10 == Block.stone.blockID) {
+               par1World.setBlock(var7, var8, var9, Block.oreEmerald.blockID, 0, 2);
+            }
          }
       }
    }

@@ -23,7 +23,7 @@ public class EntityDamageSourceTrans extends DamageSource{
       String var3 = "death.attack." + (this.is_hand_damage ? "hand_damage" : this.damageType);
       String var4 = var3 + ".item";
       return var2 != null && var2.hasDisplayName() && LocaleI18n.func_94522_b(var4) ?
-              ChatMessage.createFromTranslationWithSubstitutions(var4, new Object[]{ChatMessage.createFromTranslationKey(par1EntityLivingBase.getEntityName()),ChatMessage.createFromTranslationKey(entity.getEntityName()), var2.getDisplayName()}) :
+              ChatMessage.createFromTranslationWithSubstitutions(var4, new Object[]{ChatMessage.createFromTranslationKey(par1EntityLivingBase.getEntityName()),ChatMessage.createFromTranslationKey(entity.getEntityName()), ChatMessage.createFromTranslationKey(var2.getDisplayName())}) :
               ChatMessage.createFromTranslationWithSubstitutions(var3, new Object[]{ChatMessage.createFromTranslationKey(par1EntityLivingBase.getEntityName()),ChatMessage.createFromTranslationKey(entity.getEntityName())});
    }
 }

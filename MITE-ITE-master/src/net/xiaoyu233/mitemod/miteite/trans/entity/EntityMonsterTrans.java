@@ -1,7 +1,6 @@
 package net.xiaoyu233.mitemod.miteite.trans.entity;
 
 import net.minecraft.*;
-import net.xiaoyu233.fml.util.ReflectHelper;
 import net.xiaoyu233.mitemod.miteite.item.GemModifierTypes;
 import net.xiaoyu233.mitemod.miteite.item.enchantment.Enchantments;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
@@ -17,7 +16,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import java.util.Arrays;
 import java.util.Random;
 
 @Mixin(EntityMonster.class)
@@ -159,8 +157,8 @@ public abstract class EntityMonsterTrans extends EntityInsentient implements IMo
    private void injectCirtAttack(Entity target, CallbackInfoReturnable<EntityDamageResult> cir, ItemStack held_item, Damage damage) {
       float critBouns = 0.0F;
       boolean critical = false;
-      if (EnchantmentManager.hasEnchantment(this.getHeldItemStack(), Enchantments.CRIT)) {
-         int critLevel = EnchantmentManager.getEnchantmentLevel(Enchantments.CRIT, this.getHeldItemStack());
+      if (EnchantmentManager.hasEnchantment(this.getHeldItemStack(), Enchantments.enchantmentCrit)) {
+         int critLevel = EnchantmentManager.getEnchantmentLevel(Enchantments.enchantmentCrit, this.getHeldItemStack());
          critical = this.rand.nextInt(10) < critLevel;
          critBouns = (float) critLevel;
       }

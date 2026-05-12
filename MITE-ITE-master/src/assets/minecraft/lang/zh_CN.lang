@@ -19,6 +19,7 @@ item.vibranium_bow.name=振金弓
 item.ga.name=地精锭
 item.ga_nugget.name=地精粒
 item.ga_fan.name=地精扇
+item.gotchachest.name=灵石储物箱
 
 item.enhance_stone/iron.name=抛光石
 item.enhance_stone/mithril.name=精锻石
@@ -153,6 +154,7 @@ enchantment.fixed=固定
 enchantment.chain=连锁
 enchantment.phasedefend=相位反制
 enchantment.luckOfTheSea=海之眷顾
+enchantment.purify=净化
 
 entity.EntityZombieLord.name=僵尸领主
 entity.EntityAnnihilationSkeleton.name=湮灭骷髅
@@ -409,6 +411,7 @@ item.suspicious_stew.name=腐肉汤
 item.zombie_brain_cooked.name=熟僵尸脑子
 item.spider_leg.name=很大的蜘蛛腿
 item.spider_leg_b.name=很冰的大猪腿
+item.drug_td.name=褪毒丹
 
 item.color_bag.name=彩色喵爪
 item.end_scroll.name=末影卷轴

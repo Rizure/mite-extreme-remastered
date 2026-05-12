@@ -36,7 +36,7 @@ public class WorldGenMinableTrans {
          float relative_height;
          if (block == Block.dirt) {
             do {
-               relative_height = rand.nextFloat() * rand.nextFloat();
+               relative_height = rand.nextFloat();
             } while (relative_height <= rand.nextFloat());
          } else if (block == Block.gravel) {
             do {
@@ -53,7 +53,7 @@ public class WorldGenMinableTrans {
          } else if (block instanceof BlockOre) {
             do {
                relative_height = rand.nextFloat();
-            } while (relative_height <= rand.nextFloat());
+            } while (relative_height >= rand.nextFloat());
             if (block == Block.oreCopper && rand.nextBoolean()) {
                relative_height = rand.nextFloat() * 0.6F + 0.4F;
             }

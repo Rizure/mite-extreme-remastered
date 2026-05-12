@@ -100,8 +100,14 @@ public abstract class DamageTrans {
          float amount_dealt_to_armor = Math.min(target.getProtectionFromArmor(this.getSource(), false), this.amount);
          target.tryDamageArmorP(this.getSource(), amount_dealt_to_armor, result);
          DebugAttack.setDamageDealtToArmor(amount_dealt_to_armor);
-         float piercing = Enchantment.piercing.getLevelFraction(this.getItemAttackedWith()) * 5.0F;
+         float piercing_frac = Enchantment.piercing.getLevelFraction(this.getItemAttackedWith());
+         float piercing = piercing_frac * 5.0F;
          float effective_protection = Math.max(total_protection - piercing, 0.0F);
+         float predict_percentage_piercing_amount = total_protection * 0.75F * piercing_frac;
+         if(!(target instanceof EntityPlayer) && predict_percentage_piercing_amount > piercing){
+            effective_protection = Math.max(0.0F, total_protection * (1 - 0.75F * piercing_frac));
+            piercing = total_protection * 0.75F * piercing_frac;
+         }
          DebugAttack.setPiercing(piercing);
          if (target instanceof EntityPlayer && effective_protection >= this.amount) {
             delta = (int) (effective_protection - this.amount);

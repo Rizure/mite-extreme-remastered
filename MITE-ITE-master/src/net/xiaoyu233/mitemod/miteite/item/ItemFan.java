@@ -47,7 +47,7 @@ public class ItemFan extends ItemTool {
             if (entityMonster != null && !(entityMonster instanceof EntityZombieBoss) && !(entityMonster instanceof EntityPlayer)) {
                if(!(((EntityInsentient)entityMonster).hasCustomNameTag()) && !(entityMonster instanceof EntityLivestock) && !(entityMonster instanceof EntityVillager)){
                   entityMonster.attackEntityFrom(new Damage(DamageSource.causeIndirectMagicDamage(entityMonster, player.getAsPlayer()), 1.0F));
-                  entityMonster.addVelocity(-MathHelper.sin(player.rotationYaw * 3.1415927F / 180.0F) * 2.5F, 0.3D, MathHelper.cos(player.rotationYaw * 3.1415927F / 180.0F) * 2.5F);
+                  entityMonster.addVelocity(MathHelper.sin(entityMonster.rotationYaw * 3.1415927F / 180.0F) * 2.5F, 0.3D, -MathHelper.cos(entityMonster.rotationYaw * 3.1415927F / 180.0F) * 2.5F);
                   player.tryDamageHeldItem(DamageSource.generic, 200);
                }
             }
@@ -63,6 +63,10 @@ public class ItemFan extends ItemTool {
                      BlockBreakInfo info = new BlockBreakInfo(player.worldObj,x + dx,y + dy,z + dz).setHarvestedBy(player);
                      info.dropBlockAsEntityItem(true);
                      player.tryDamageHeldItem(DamageSource.generic, this.getToolDecayFromBreakingBlock(info));
+                  }
+                  if(block instanceof BlockFlower){
+                     BlockBreakInfo info = new BlockBreakInfo(player.worldObj,x + dx,y + dy,z + dz).setHarvestedBy(player);
+                     info.dropBlockAsEntityItem(true);
                   }
                }
             }

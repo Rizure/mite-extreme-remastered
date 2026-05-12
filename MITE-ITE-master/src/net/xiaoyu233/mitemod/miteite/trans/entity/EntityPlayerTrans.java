@@ -1,10 +1,7 @@
 package net.xiaoyu233.mitemod.miteite.trans.entity;
 
-import com.sun.org.apache.bcel.internal.generic.GETFIELD;
 import net.minecraft.*;
-import net.xiaoyu233.fml.relaunch.server.Main;
 import net.xiaoyu233.mitemod.miteite.achievement.Achievements;
-import net.xiaoyu233.mitemod.miteite.block.BlockSpawn;
 import net.xiaoyu233.mitemod.miteite.block.Blocks;
 import net.xiaoyu233.mitemod.miteite.entity.EntityRideMarker;
 import net.xiaoyu233.mitemod.miteite.entity.EntityZombieBoss;
@@ -20,7 +17,6 @@ import net.xiaoyu233.mitemod.miteite.util.BlockPos;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
 import net.xiaoyu233.mitemod.miteite.util.Constant;
 import net.xiaoyu233.mitemod.miteite.util.ReflectHelper;
-import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -433,8 +429,8 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
          ItemStack heldItemStack = this.getHeldItemStack();
 
          //Check for crit enchantment
-         if (EnchantmentManager.hasEnchantment(heldItemStack, Enchantments.CRIT)) {
-            int critLevel = EnchantmentManager.getEnchantmentLevel(Enchantments.CRIT, heldItemStack);
+         if (EnchantmentManager.hasEnchantment(heldItemStack, Enchantments.enchantmentCrit)) {
+            int critLevel = EnchantmentManager.getEnchantmentLevel(Enchantments.enchantmentCrit, heldItemStack);
             critical |= this.rand.nextInt(10) < critLevel;
             if (critical) {
                critBonus += critLevel * 0.1F;
@@ -645,7 +641,7 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
          ItemStack[] var3 = this.getWornItems();
          List<ItemStack> readyEmergencyItemList = new ArrayList<>();
          for (ItemStack wornItem : var3) {
-            if (wornItem != null && wornItem.hasEnchantment(Enchantments.EMERGENCY, false)) {
+            if (wornItem != null && wornItem.hasEnchantment(Enchantments.enchantmentEmergency, false)) {
                if (wornItem.getEmergencyCooldown() <= 0) {
                   readyEmergencyItemList.add(wornItem);
                } else {
@@ -911,7 +907,7 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
       } else {
          float block_reach = 2.75F;
          ItemStack item_stack = this.getHeldItemStack();
-         int enchantmentLevel = EnchantmentManager.getEnchantmentLevel(Enchantments.EXTEND, item_stack);
+         int enchantmentLevel = EnchantmentManager.getEnchantmentLevel(Enchantments.enchantmentExtend, item_stack);
          return item_stack == null ? block_reach : block_reach + item_stack.getItem().getReachBonus(block, metadata) + (float) enchantmentLevel * 0.25F;
       }
    }
@@ -940,10 +936,10 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
          ItemStack item_stack = this.getHeldItemStack();
          int enchantmentLevel;
          if (context == EnumEntityReachContext.FOR_MELEE_ATTACK) {
-            enchantmentLevel = EnchantmentManager.getEnchantmentLevel(Enchantments.EXTEND, item_stack);
+            enchantmentLevel = EnchantmentManager.getEnchantmentLevel(Enchantments.enchantmentExtend, item_stack);
             return entity.adjustPlayerReachForAttacking(ReflectHelper.dyCast(this), 1.5F + height_advantage + (item_stack == null ? 0.0F : item_stack.getItem().getReachBonus())) + (float) enchantmentLevel * 0.25F;
          } else if (context == EnumEntityReachContext.FOR_INTERACTION) {
-            enchantmentLevel = EnchantmentManager.getEnchantmentLevel(Enchantments.EXTEND, item_stack);
+            enchantmentLevel = EnchantmentManager.getEnchantmentLevel(Enchantments.enchantmentExtend, item_stack);
             return entity.adjustPlayerReachForInteraction(ReflectHelper.dyCast(this), 2.5F + height_advantage + (item_stack == null ? 0.0F : item_stack.getItem().getReachBonus(entity)) + (float) enchantmentLevel * 0.25F);
          } else {
             Minecraft.setErrorMessage("getReach: invalid context");
@@ -1180,7 +1176,7 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
          EntityLiving entityMonster = targets.get(i) instanceof EntityMonster || targets.get(i) instanceof EntityBat ? (EntityLiving) targets.get(i) : null;
          if (entityMonster != null && (!EntityEnderman.class.isInstance(entityMonster) && !EntitySilverfish.class.isInstance(entityMonster) && !EntityZombieBoss.class.isInstance(entityMonster))) {
             entityMonster.attackEntityFrom(new Damage(DamageSource.causeIndirectMagicDamage(entityMonster, this.getAsPlayer()), damage));
-            entityMonster.addVelocity(-MathHelper.sin(this.rotationYaw * 3.1415927F / 180.0F) * 0.75F * 0.5F, 0.1D, MathHelper.cos(this.rotationYaw * 3.1415927F / 180.0F) * 0.75F * 0.5F);
+            entityMonster.addVelocity(MathHelper.sin(entityMonster.rotationYaw * 3.1415927F / 180.0F) * 0.75F * 0.5F, 0.1D, -MathHelper.cos(entityMonster.rotationYaw * 3.1415927F / 180.0F) * 0.75F * 0.5F);
          }
       }
    }
@@ -1272,7 +1268,7 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
 
       // 服务端
       if (this.onServer()) {
-         switch (this.getEnhanceLevel()) {
+         switch ((this.getEnhanceLevel() + 2) / 3) {
             case 11:
                this.triggerAchievement(Achievements.Achievement_x0);
             case 10:
@@ -1297,10 +1293,10 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
                this.triggerAchievement(Achievements.Achievement_zhujidan);
             default:
          }
-         if (this.getEnhanceLevel() >= 12) {
+         if (this.getEnhanceLevel() >= 16) {
             this.addPotionEffect(new MobEffect(MobEffectList.field_76443_y.id, 180 * 20, 4));
          }
-         if (this.getEnhanceLevel() >= 16) {
+         if (this.getEnhanceLevel() >= 13) {
             if(ReflectHelper.dyCast(this) instanceof ServerPlayer){
                this.getAsEntityPlayerMP().addProtein(2);
                this.getAsEntityPlayerMP().addPhytonutrients(2);

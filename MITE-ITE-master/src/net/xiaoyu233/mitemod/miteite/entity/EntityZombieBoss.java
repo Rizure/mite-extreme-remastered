@@ -12,8 +12,8 @@ import java.util.*;
 import static net.minecraft.Enchantment.enchantmentsList;
 
 public class EntityZombieBoss extends EntityZombie implements IBossbarEntity {
-   //    private Enchantment [] enhanceSpecialBookList = new Enchantment[] {Enchantment.protection, Enchantment.sharpness,  Enchantment.fortune, Enchantment.harvesting, Enchantments.EXTEND, Enchantment.efficiency, Enchantment.vampiric, Enchantment.butchering, Enchantment.featherFalling};
-//    private Enchantment [] nonLevelsBookList = new Enchantment[] {Enchantments.enchantmentFixed, Enchantments.enchantmentChain, Enchantments.EMERGENCY};
+   //    private Enchantment [] enhanceSpecialBookList = new Enchantment[] {Enchantment.protection, Enchantment.sharpness,  Enchantment.fortune, Enchantment.harvesting, Enchantments.enchantmentExtend, Enchantment.efficiency, Enchantment.vampiric, Enchantment.butchering, Enchantment.featherFalling};
+//    private Enchantment [] nonLevelsBookList = new Enchantment[] {Enchantments.enchantmentFixed, Enchantments.enchantmentChain, Enchantments.enchantmentEmergency};
    private ArrayList<Enchantment> enhanceSpecialBookList = new ArrayList<>();
    private ArrayList<Enchantment> nonLevelsBookList = new ArrayList<>();
 

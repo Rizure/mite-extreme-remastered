@@ -19,17 +19,17 @@ public class EntityCaveSpiderTrans extends EntityArachnid {
       this.setEntityAttribute(GenericAttributes.attackDamage, 5 * Constant.getNormalMobModifier("Damage", day));
    }
 
-   @Overwrite
-   public EntityDamageResult attackEntityAsMob(Entity target) {
-      EntityDamageResult result = super.attackEntityAsMob(target);
-      if (result != null && !result.entityWasDestroyed()) {
-         if (target instanceof EntityLiving) {
-            target.getAsEntityLivingBase().addPotionEffect(new MobEffect(MobEffectList.poison.id, 480, 1));
-         }
-
-         return result;
-      } else {
-         return result;
-      }
-   }
+//   @Overwrite
+//   public EntityDamageResult attackEntityAsMob(Entity target) {
+//      EntityDamageResult result = super.attackEntityAsMob(target);
+//      if (result != null && !result.entityWasDestroyed()) {
+//         if (target instanceof EntityLiving) {
+//            target.getAsEntityLivingBase().addPotionEffect(new MobEffect(MobEffectList.poison.id, 480, 1));
+//         }
+//
+//         return result;
+//      } else {
+//         return result;
+//      }
+//   }
 }

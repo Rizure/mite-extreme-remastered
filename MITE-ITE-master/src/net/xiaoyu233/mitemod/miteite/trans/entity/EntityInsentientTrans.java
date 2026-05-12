@@ -6,7 +6,6 @@ import net.xiaoyu233.mitemod.miteite.item.ToolModifierTypes;
 import net.xiaoyu233.mitemod.miteite.item.enchantment.Enchantments;
 import net.xiaoyu233.mitemod.miteite.util.Configs;
 import net.xiaoyu233.mitemod.miteite.util.ReflectHelper;
-import org.lwjgl.Sys;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -241,7 +240,7 @@ public abstract class EntityInsentientTrans extends EntityLiving {
                   Integer time = this.playerSteppedCountMap.get(responsibleEntity);
                   damage.setAmount((float) (damage.getAmount() +
                           //Increase per lvl: enchantment + player base
-                          (time * EnchantmentManager.getEnchantmentLevel(Enchantments.CONQUEROR, itemAttackedWith) * 2) +
+                          (time * EnchantmentManager.getEnchantmentLevel(Enchantments.enchantmentConqueror, itemAttackedWith) * 2) +
                           (Math.min(max, time * Math.max(0, player.getExperienceLevel()) * 0.1))));
                   this.playerSteppedCountMap.put(player, time + 1);
                } else {

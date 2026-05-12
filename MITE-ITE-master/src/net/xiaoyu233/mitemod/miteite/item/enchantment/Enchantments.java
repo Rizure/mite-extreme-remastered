@@ -13,18 +13,19 @@ import static net.minecraft.Enchantment.enchantmentsList;
 
 public class Enchantments {
    //    public static final Enchantment DEFENCED = new EnchantmentDefence(getNextEnchantmentID(), yq.c,20);
-   public static final Enchantment CRIT = new EnchantmentCrit(getNextEnchantmentID(), yq.c, 10);
-   public static final Enchantment EXTEND = new EnchantmentExtend(getNextEnchantmentID(), yq.c, 10);
-   public static final Enchantment EMERGENCY = new EnchantmentEmergency(getNextEnchantmentID(), yq.c, 15);
-   public static final Enchantment CONQUEROR = new EnchantmentConqueror(getNextEnchantmentID(), yq.c, 15);
-   public static final Enchantment BEHEADING = new EnchantmentBeheading(getNextEnchantmentID(), yq.c, 10);
+   public static final Enchantment enchantmentCrit = new EnchantmentCrit(getNextEnchantmentID(), yq.c, 10);
+   public static final Enchantment enchantmentExtend = new EnchantmentExtend(getNextEnchantmentID(), yq.c, 10);
+   public static final Enchantment enchantmentEmergency = new EnchantmentEmergency(getNextEnchantmentID(), yq.c, 15);
+   public static final Enchantment enchantmentConqueror = new EnchantmentConqueror(getNextEnchantmentID(), yq.c, 15);
+   public static final Enchantment enchantmentBeheading = new EnchantmentBeheading(getNextEnchantmentID(), yq.c, 10);
    public static final Enchantment enchantmentPhaseDefend = new EnchantmentPhaseDefend(getNextEnchantmentID(), yq.c, 15);
    public static final Enchantment enchantmentChain = new EnchantmentChain(getNextEnchantmentID(), yq.b, 10);
    public static final Enchantment enchantmentLuckOfTheSea = new EnchantmentLuckOfTheSea(getNextEnchantmentID(), yq.b, 10);
+   public static final Enchantment enchantmentPurify = new EnchantmentPurify(getNextEnchantmentID(), yq.b, 10);
    public static List<Enchantment> individualEnchantments = new ArrayList<>();
 
    public static void registerEnchantments() {
-      Enchantments.registerEnchantmentsUnsafe(enchantmentPhaseDefend, CRIT, EXTEND, EMERGENCY, CONQUEROR, BEHEADING, enchantmentChain, enchantmentLuckOfTheSea);
+      Enchantments.registerEnchantmentsUnsafe(enchantmentPhaseDefend, enchantmentCrit, enchantmentExtend, enchantmentEmergency, enchantmentConqueror, enchantmentBeheading, enchantmentChain, enchantmentLuckOfTheSea, enchantmentPurify);
    }
 
    public static void registerEnchantmentsUnsafe(Enchantment... enchantments) {

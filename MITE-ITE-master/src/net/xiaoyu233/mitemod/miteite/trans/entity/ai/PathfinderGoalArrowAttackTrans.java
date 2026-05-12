@@ -29,7 +29,7 @@ public abstract class PathfinderGoalArrowAttackTrans extends PathfinderGoal {
    private void requestAvailableHoldingPlace(CallbackInfo callbackInfo){
       this.entityHost.getNavigator().clearPathEntity();
       double radius = 12.0;
-      int maxAttempts = 4;
+      int maxAttempts = 8;
       Random rand = this.entityHost.getRNG(); // 使用实体自带的随机数生成器
       World world = this.entityHost.worldObj;
       Vec3D targetEyePos = this.attackTarget.getEyePos();
@@ -46,8 +46,7 @@ public abstract class PathfinderGoalArrowAttackTrans extends PathfinderGoal {
          // 获取候选位置的地面高度（保证实体可以站立）
          int blockX = MathHelper.floor_double(candidateX);
          int blockZ = MathHelper.floor_double(candidateZ);
-         int groundY = world.getTopSolidOrLiquidBlock(blockX, blockZ);
-         double candidateY = groundY; // 站在方块顶部
+         double candidateY = world.getTopSolidOrLiquidBlock(blockX, blockZ); // 站在方块顶部
 
          // 计算候选位置的眼睛高度
          Vec3D eyePos = Vec3D.createVectorHelper(candidateX, candidateY + this.entityHost.getEyeHeight(), candidateZ);
@@ -65,7 +64,7 @@ public abstract class PathfinderGoalArrowAttackTrans extends PathfinderGoal {
 
       if (!foundHoldPlace) {
          // 没找到任何可见位置，停止移动（清除当前路径）
-         this.entityHost.getNavigator().tryMoveToEntityLiving(this.attackTarget, this.entityMoveSpeed * 0.4F);
+         this.entityHost.getNavigator().tryMoveToEntityLiving(this.attackTarget, this.entityMoveSpeed * 0.6F);
       }
       this.entityHost.getLookHelper().setLookPosition(this.attackTarget.posX, this.attackTarget.posY + (double)this.attackTarget.getEyeHeight(), this.attackTarget.posZ, 10.0F, (float)this.entityHost.getVerticalFaceSpeed());
    }

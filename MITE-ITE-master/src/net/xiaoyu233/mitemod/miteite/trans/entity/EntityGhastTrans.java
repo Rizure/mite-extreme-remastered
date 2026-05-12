@@ -2,6 +2,7 @@ package net.xiaoyu233.mitemod.miteite.trans.entity;
 
 import net.minecraft.*;
 import net.xiaoyu233.mitemod.miteite.entity.EntityLargeFireballNonExplodeBlock;
+import net.xiaoyu233.mitemod.miteite.util.Configs;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -112,27 +113,22 @@ public class EntityGhastTrans extends EntityFlying implements IMonster {
             }
 
             ++this.attackCounter;
-            if (this.attackCounter == 15) {
+            if (this.attackCounter >= 15 && (this.attackCounter + 5) % 10 == 0) {
                double distance_sq = super.getCenterPoint().squareDistanceTo(target_center);
-               float lead = (float) Math.pow(distance_sq, 0.44D);
+               float lead = (float)Math.pow(distance_sq, 0.44);
                lead *= 0.5F + super.rand.nextFloat();
                target_center.xCoord = this.targetedEntity.getPredictedPosX(lead);
                target_center.zCoord = this.targetedEntity.getPredictedPosZ(lead);
-               super.worldObj.playAuxSFXAtEntity(null, 1008, (int) super.posX, (int) super.posY, (int) super.posZ, 0);
-
-               //Triple shot
-//               for(int i = 3; i > 0; --i) {
-               //No triple shots anymore
+               super.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1008, (int)super.posX, (int)super.posY, (int)super.posZ, 0);
                EntityLargeFirebal var17 = new EntityLargeFireballNonExplodeBlock(super.worldObj, this, target_center, 4.0F);
                var17.field_92057_e = this.explosionStrength;
-               var17.accelerationX *= 1.15d;
-               var17.accelerationY *= 1.15d;
-               var17.accelerationZ *= 1.15d;
-
+               var17.accelerationX *= 1.15;
+               var17.accelerationY *= 1.15;
+               var17.accelerationZ *= 1.15;
                super.worldObj.spawnEntityInWorld(var17);
-//               }
-
-               this.attackCounter = -35;
+               if (this.attackCounter > 50 || !Configs.wenscConfig.boostGhast.ConfigValue) {
+                  this.attackCounter = -35;
+               }
             }
          } else if (this.attackCounter > 0) {
             --this.attackCounter;

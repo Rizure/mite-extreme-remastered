@@ -114,9 +114,6 @@ public abstract class PlayerInteractManagerTrans {
                            int felling = EnchantmentManager.getTreeFellingModifier(this.thisPlayerMP) * 4;
                            this.tree_felling_in_progress = true;
                            this.fellTree(this.theWorld, x, y, z, felling);
-//                                    for(int dy = 1; dy <= felling && this.theWorld.getBlockId(x, y + dy, z) == Block.wood.blockID; ++dy) {
-//                                        this.tryHarvestBlock(x, y + dy, z);
-//                                    }
                            this.tree_felling_in_progress = false;
                         }
 
@@ -200,13 +197,11 @@ public abstract class PlayerInteractManagerTrans {
       int level = tier == 1 ? 3 : tier == 2 ? 6 : tier == 3 ? 42 : tier == 4 ? 54 : toBreak.length;
       for (int i = 0; i + 2 < level; i += 3) {
          Block stone = world.getBlock(pos_x + toBreak[i], pos_y + toBreak[i + 1], pos_z + toBreak[i + 2]);
-         if (stone instanceof BlockStone || stone instanceof BlockBloodStone) {
-            thisPlayerMP.inventory.addItemStackToInventoryOrDropIt(new ItemStack(Block.cobblestone));
-            world.setBlockToAir(pos_x + toBreak[i], pos_y + toBreak[i + 1], pos_z + toBreak[i + 2]);
+         if (stone instanceof BlockStone) {
+            this.tryHarvestBlock(pos_x + toBreak[i], pos_y + toBreak[i + 1], pos_z + toBreak[i + 2]);
          }
          if (stone instanceof BlockBloodStone) {
-            thisPlayerMP.inventory.addItemStackToInventoryOrDropIt(new ItemStack(Block.netherrack));
-            world.setBlockToAir(pos_x + toBreak[i], pos_y + toBreak[i + 1], pos_z + toBreak[i + 2]);
+            this.tryHarvestBlock(pos_x + toBreak[i], pos_y + toBreak[i + 1], pos_z + toBreak[i + 2]);
          }
       }
    }

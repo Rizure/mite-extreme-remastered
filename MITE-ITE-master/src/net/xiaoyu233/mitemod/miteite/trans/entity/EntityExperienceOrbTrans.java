@@ -41,12 +41,12 @@ public class EntityExperienceOrbTrans extends Entity {
    private void mergeNearbyXPOrbs(CallbackInfo ci) {
       EntityExperienceOrb self = (EntityExperienceOrb) (Object)this;
       if (!self.onServer() || self.isDead) return;
-      if (self.xpOrbAge % 60 != 0 || self.xpOrbAge < 200) return;
+      if (self.xpOrbAge % 20 != 0 || self.xpOrbAge < 120) return;
       double mergeRadius = 0.5D;
       for (Object obj : self.worldObj.getEntitiesWithinAABB(EntityExperienceOrb.class, self.boundingBox.expand(mergeRadius, mergeRadius, mergeRadius))) {
          EntityExperienceOrb other = (EntityExperienceOrb) obj;
          if (other == self || other.isDead) continue;
-         if (self.player_this_belongs_to != null) continue;
+         if (other.player_this_belongs_to != null || self.player_this_belongs_to != null) continue;
          int total_value = other.getXpValue() + self.getXpValue();
          if (total_value > 32767) continue;
          if (other.getXpValue() >= self.getXpValue()) {

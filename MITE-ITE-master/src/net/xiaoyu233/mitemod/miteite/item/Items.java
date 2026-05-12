@@ -118,7 +118,7 @@ public class Items extends Item {
    public static final ItemFood spicyStrip = new ItemGAFood(Constant.getNextItemID(), Materials.dough, 2, 2, 0, false, false, false, "spicy_strip").setPotionEffect(MobEffectList.hunger.id, 16, 1, 1.0F);
    public static final ItemFood zombieBrain = new ItemGAFood(Constant.getNextItemID(), Materials.meat, 1, 2, 0, true, false, false, "zombie_brain").setPotionEffect(MobEffectList.poison.id, 22, 0, 0.9F).setAnimalProduct();
    public static final ItemFood riskyAgent = new ItemGAFood(Constant.getNextItemID(), Materials.meat, 4, 4, 0, true, false, false, "risky_agent").setAlwaysEdible().setAnimalProduct();
-   public static final ItemFood suspiciousStew = new ItemGAFood(Constant.getNextItemID(), Material.vegetable, 6, 4, 0, false, false, true, "suspicious_stew").setAlwaysEdible().setPlantProduct();
+   public static final ItemFood suspiciousStew = new ItemGAFood(Constant.getNextItemID(), Material.vegetable, 6, 4, 0, false, false, false, "suspicious_stew").setAlwaysEdible();
    public static final ItemExplosion c4 = new ItemExplosion(Constant.getNextItemID(), Material.circuits, "c4");
    public static final ItemFood zombieBrainCooked = new ItemGAFood(Constant.getNextItemID(), Material.meat, 2, 4, 0, true, true, false, "zombie_brain_cooked").setPotionEffect(MobEffectList.nightVision.id, 60, 0, 0.9F).setAnimalProduct().setAlwaysEdible();
    public static final ItemFood wuzhiDan = (new ItemGAFood(Constant.getNextItemID(), Materials.vegetable, 0, 20, 0, true, true, true, "wuzhi")).setPlantProduct().setAlwaysEdible();
@@ -181,6 +181,10 @@ public class Items extends Item {
    public static final ItemGAMisc psiCore = new ItemGAMisc(Constant.getNextItemID(),"psi_core");
    public static final ItemFan miteGaFan = new ItemFan(Constant.getNextItemID(),Materials.mitega);
    public static final ItemBamboo bamboo = (ItemBamboo) new ItemBamboo(Constant.getNextItemID(),Blocks.blockBamboo,"bamboo").setCreativeTab(CreativeModeTab.tabMaterials);
+
+   public static final ItemStoneBag stoneBag = new ItemStoneBag(Constant.getNextItemID());
+
+   public static final ItemFood detoxifyingPill = new ItemGAFood(Constant.getNextItemID(), Materials.cheese, 2, 1, 0, true, false, false, "detoxifying").setAlwaysEdible();
 
    private static Item register(String resourceLocation, Item item, CreativeModeTab tab) {
       item.setResourceLocation(item.getResourceLocationPrefix() + resourceLocation);
@@ -366,6 +370,10 @@ public class Items extends Item {
       register("chibi_creeper_soul",chibiCreeperSoul);
 
       register("bamboo",bamboo);
+
+      register("gotchachest",stoneBag);
+
+      register("drug_td",detoxifyingPill);
       Constant.initItemArray();
    }
 
@@ -383,12 +391,13 @@ public class Items extends Item {
                if (flower_type != 6) {
                   register.registerShapelessRecipe(new ItemStack(Items.chikitan, 2), true, new Object[]{Item.emerald, Item.emerald, new ItemStack(Block.plantRed, 1, flower_type), Item.egg, Items.buguDan});
                   register.registerShapelessRecipe(new ItemStack(Items.riskyAgent, 1), true, new Object[]{Items.zombieBrainCooked, Items.zombieBrainCooked, Items.zombieBrainCooked, new ItemStack(Block.plantRed, 1, flower_type)});
-                  register.registerShapelessRecipe(new ItemStack(Items.suspiciousStew, 1), true, new Object[]{Items.buguDan, Item.rottenFlesh, Item.spiderEye, new ItemStack(Item.dyePowder, 1, 15)});
+                  register.registerShapelessRecipe(new ItemStack(Items.suspiciousStew, 1), true, new Object[]{Items.daHuanDan, Item.rottenFlesh, Item.spiderEye, new ItemStack(Item.dyePowder, 1, 15)});
                }
             }
          }
       }
       register.registerShapelessRecipe(new ItemStack(Items.daHuanDan), true, Items.xiaoHuanDan, Items.xiaoHuanDan, Items.xiaoHuanDan, Item.sugar);
+      register.registerShapelessRecipe(new ItemStack(Items.detoxifyingPill, 4), true, Items.xiaoHuanDan, Items.xiaoHuanDan, Items.xiaoHuanDan, Items.xiaoHuanDan, Item.spiderEye, Item.bowlMilk);
       register.registerShapelessRecipe(new ItemStack(Items.buguDan), true, Items.daHuanDan, new ItemStack(Block.leaves, 1, 0), Block.mushroomBrown, Block.plantYellow);
       register.registerShapelessRecipe(new ItemStack(Items.buguDan), true, Items.daHuanDan, new ItemStack(Block.leaves, 1, 2), Block.mushroomBrown, Block.plantYellow);
       register.registerShapelessRecipe(new ItemStack(Items.buguDan), true, Items.daHuanDan, new ItemStack(Block.leaves, 1, 0), Block.mushroomBrown, Block.plantRed);
@@ -466,6 +475,15 @@ public class Items extends Item {
               'C',Items.psiCore,
               'S',Item.stick,
               'P',Item.paper);
+
+      register.registerShapedRecipe(new ItemStack(Items.stoneBag), true,
+              "ICI",
+              "IBI",
+              "ILI",
+              'C',Items.psiCore,
+              'I',Blocks.blockGotcha,
+              'B',Block.chest,
+              'L',Item.leather);
 
       register.registerShapelessRecipe(new ItemStack(Items.voucherClubCore, 1), true, Items.voucherFishing, Items.voucherVillager, Items.voucherPlanting);
 

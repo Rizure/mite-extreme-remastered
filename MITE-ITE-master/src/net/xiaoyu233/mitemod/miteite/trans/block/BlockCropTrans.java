@@ -68,6 +68,9 @@ public abstract class BlockCropTrans extends BlockGrowingPlant {
       if (info.world.rand.nextInt(50) == 0) {
          this.dropBlockAsEntityItem(info, new ItemStack(Items.voucherPlanting, 1));
       }
+
+      this.dropBlockAsEntityItem(info, this.getSeedItem(), 0, 1, 1.25F);
+
       if (info.getHarvesterItemStack() != null){
          ItemStack tool = info.getHarvesterItemStack();
          float rewarding = ToolModifierTypes.TREASURING.getModifierValue(info.getHarvesterItemStack().getTagCompound());

@@ -2,9 +2,7 @@ package net.xiaoyu233.mitemod.miteite.trans.entity;
 
 import net.minecraft.*;
 import net.xiaoyu233.fml.util.ReflectHelper;
-import net.xiaoyu233.mitemod.miteite.item.GemModifierTypes;
 import net.xiaoyu233.mitemod.miteite.item.enchantment.Enchantments;
-import net.xiaoyu233.mitemod.miteite.util.Configs;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -18,54 +16,13 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 @Mixin(EntityLiving.class)
 public abstract class EntityLivingTrans extends Entity {
    @Shadow
+   public abstract ItemStack getLeggings();
+
+   @Shadow
    public abstract void e(float par1);
 
    @Shadow
-   public int attackTime;
-   @Shadow
-   public float attackedAtYaw;
-   @Shadow
-   public float cameraPitch;
-   @Shadow
-   public int deathTime;
-   @Shadow
-   public int hurtTime;
-   @Shadow
-   public boolean isSwingInProgress;
-   @Shadow
-   public float limbSwingAmount;
-   @Shadow
-   public int maxHurtResistantTime;
-   @Shadow
-   public int maxHurtTime;
-   @Shadow
-   public float moveStrafing;
-   @Shadow
-   public double newPosY;
-   @Shadow
-   public float prevCameraPitch;
-   @Shadow
-   public float prevLimbSwingAmount;
-   @Shadow
-   public float prevRenderYawOffset;
-   @Shadow
-   public float prevRotationYawHead;
-   @Shadow
-   public float prevSwingProgress;
-   @Shadow
-   public float renderYawOffset;
-   @Shadow
-   public float rotationYawHead;
-   @Shadow
-   public float swingProgress;
-   @Shadow
    protected boolean isJumping;
-   @Shadow
-   protected float lastDamage;
-   @Shadow
-   protected int recentlyHit;
-   @Shadow
-   protected int scoreValue;
 
    public EntityLivingTrans(World par1World) {
       super(par1World);
@@ -81,6 +38,35 @@ public abstract class EntityLivingTrans extends Entity {
    @Shadow
    public double getFootPosY() {
       return this.posY;
+   }
+
+   @Shadow
+   public float getSilverArmorCoverage() {
+      return 0;
+   }
+
+   public float getPurifyModifier(){
+      ItemStack leggings = this.getLeggings();
+      int purify_level = 0;
+      if(leggings != null){
+         purify_level = EnchantmentManager.getEnchantmentLevel(Enchantments.enchantmentPurify, leggings);
+      }
+      return 0.2F * purify_level;
+   }
+
+   @Overwrite
+   public float getResistanceToPoison() {
+      return Math.min(1.0F, this.getSilverArmorCoverage() * 0.5F + getPurifyModifier());
+   }
+
+   @Overwrite
+   public float getResistanceToDrain() {
+      return Math.min(1.0F, this.getSilverArmorCoverage() * 0.5F + getPurifyModifier());
+   }
+
+   @Overwrite
+   public float getResistanceToShadow() {
+      return Math.min(1.0F, this.getSilverArmorCoverage() * 0.5F + getPurifyModifier());
    }
 
 
@@ -107,7 +93,7 @@ public abstract class EntityLivingTrans extends Entity {
       if (var2 instanceof EntityPlayer) {
          ItemStack heldItemStack = ((EntityPlayer) var2).getHeldItemStack();
          if (heldItemStack != null) {
-            float modifierValue = EnchantmentManager.getEnchantmentLevel(Enchantments.BEHEADING, heldItemStack) * 0.2F;
+            float modifierValue = EnchantmentManager.getEnchantmentLevel(Enchantments.enchantmentBeheading, heldItemStack) * 0.2F;
             if (modifierValue > 0.0F) {
                boolean dropHead = (float) this.rand.nextInt(100) < modifierValue * 100.0F;
                if (dropHead) {

@@ -3,7 +3,6 @@ package net.xiaoyu233.mitemod.miteite.trans.entity;
 import net.minecraft.*;
 import net.xiaoyu233.mitemod.miteite.item.Items;
 import net.xiaoyu233.mitemod.miteite.item.enchantment.Enchantments;
-import net.xiaoyu233.mitemod.miteite.util.Configs;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -65,7 +64,7 @@ public abstract class EntityVillagerTrans extends EntityAgeable implements IMerc
    }
 
    private void initEnhanceBookList() {
-      villagerEnhanceSpecialBookList = new Enchantment[]{Enchantments.enchantmentPhaseDefend, Enchantments.enchantmentLuckOfTheSea, Enchantment.protection, Enchantment.sharpness, Enchantment.fortune, Enchantment.harvesting, Enchantments.EXTEND, Enchantment.efficiency, Enchantment.vampiric, Enchantment.butchering, Enchantments.enchantmentChain, Enchantments.EMERGENCY};
+      villagerEnhanceSpecialBookList = new Enchantment[]{Enchantments.enchantmentPhaseDefend, Enchantments.enchantmentLuckOfTheSea, Enchantment.protection, Enchantment.sharpness, Enchantment.fortune, Enchantment.harvesting, Enchantments.enchantmentExtend, Enchantment.efficiency, Enchantment.vampiric, Enchantment.butchering, Enchantments.enchantmentChain, Enchantments.enchantmentEmergency};
       villagerEnhanceSimpleBookList = Arrays.stream(Enchantment.enchantmentsBookList).filter(enhance -> (enhance.getNumLevels() > 1 && !Arrays.stream(villagerEnhanceSpecialBookList).anyMatch(spcialEnhance -> spcialEnhance.effectId == enhance.effectId))).toArray();
    }
 

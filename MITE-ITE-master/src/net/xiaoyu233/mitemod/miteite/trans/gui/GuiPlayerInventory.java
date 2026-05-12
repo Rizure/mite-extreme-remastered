@@ -1,11 +1,8 @@
 package net.xiaoyu233.mitemod.miteite.trans.gui;
 
 import net.minecraft.*;
-import net.xiaoyu233.mitemod.miteite.item.ArmorModifierTypes;
 import net.xiaoyu233.mitemod.miteite.item.enchantment.Enchantments;
 import net.xiaoyu233.mitemod.miteite.network.CPacketSyncItems;
-import net.xiaoyu233.mitemod.miteite.trans.util.DamageTrans;
-import net.xiaoyu233.mitemod.miteite.util.ReflectHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -14,9 +11,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 @Mixin(axv.class)
 public class GuiPlayerInventory extends axp {
@@ -45,7 +40,7 @@ public class GuiPlayerInventory extends axp {
    @Overwrite
    protected void b(int par1, int par2) {
       String emergencyWords;
-      Object[] var3 = Arrays.stream(this.f.h.getWornItems()).filter(armor -> armor != null && armor.hasEnchantment(Enchantments.EMERGENCY, false)).toArray();
+      Object[] var3 = Arrays.stream(this.f.h.getWornItems()).filter(armor -> armor != null && armor.hasEnchantment(Enchantments.enchantmentEmergency, false)).toArray();
       if (var3.length > 0) {
          if (((ItemStack) var3[0]).getEmergencyCooldown() <= 0) {
             emergencyWords = "已就绪";

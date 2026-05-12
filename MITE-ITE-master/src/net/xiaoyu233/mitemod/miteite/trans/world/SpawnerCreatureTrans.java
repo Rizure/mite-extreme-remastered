@@ -115,7 +115,8 @@ public class SpawnerCreatureTrans {
          return 0.5F * (1.0F + Configs.wenscConfig.mobSpawningOffset.ConfigValue);
       } else {
          float hostile_mob_spawning_rate_modifier;
-         hostile_mob_spawning_rate_modifier = Math.abs((float) world.getTimeOfDay() - 12000.0F) / 6000.0F + (1.0F + Configs.wenscConfig.mobSpawningOffset.ConfigValue);
+         hostile_mob_spawning_rate_modifier = Math.abs((float) world.getTimeOfDay() - 12000.0F) / 6000.0F + (Configs.wenscConfig.mobSpawningOffset.ConfigValue);
+         hostile_mob_spawning_rate_modifier += Math.min(((float) world.getDayOfOverworld() / 48.0F), 1.0F);
          if (Configs.wenscConfig.mobSpawningEvent.ConfigValue) {
             if (world.decreased_hostile_mob_spawning_counter > 0) {
                --world.decreased_hostile_mob_spawning_counter;

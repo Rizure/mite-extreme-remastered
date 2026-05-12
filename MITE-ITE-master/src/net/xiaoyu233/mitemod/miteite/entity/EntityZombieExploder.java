@@ -125,7 +125,7 @@ public class EntityZombieExploder extends EntityZombie {
                            this.worldObj.createExplosion(this, this.posX + dx * div * delta, this.posY + 0.25F + dy * div * delta, this.posZ + dz * div * delta, 0.0F, 0.75F, false);
                         }
                      }
-                     this.lockdown_counter = 400;
+                     this.lockdown_counter = 200;
                   }
                }
             }
