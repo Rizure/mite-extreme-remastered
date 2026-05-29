@@ -376,7 +376,7 @@ public class TileEntityForgingTable extends TileEntity implements IInventory {
          this.isForging = true;
          this.maxTime = Math.round((float) this.usedRecipe.getTimeReq() / this.slots.getEffectivityFactorFromTool());
          this.currentFailCheckTime = this.getWorldObj().rand.nextInt(this.maxTime);
-         if(this.currentFailCheckTime - 200 <= 0){
+         if(this.currentFailCheckTime <= 200){
             if(this.maxTime >= 200){
                this.currentFailCheckTime = 200;
             }
@@ -400,8 +400,8 @@ public class TileEntityForgingTable extends TileEntity implements IInventory {
          ++this.forgingTime;
          this.slots.updateTime(this.forgingTime);
          if(this.forgingTime % 20 == 0){
-            if (this.currentFailCheckTime - this.forgingTime < 200 && this.forgingTime < this.currentFailCheckTime) {
-               this.getWorldObj().getAsWorldServer().playSoundAtBlock(this.xCoord, this.yCoord, this.zCoord, "random.anvil_land", 1.0F, 1F - MathHelper.clamp_float(((float) (this.currentFailCheckTime - this.forgingTime) / 200.0F), 0.0F, 1.0F) * 0.25F);
+            if (this.currentFailCheckTime - this.forgingTime < 200 && this.forgingTime < this.currentFailCheckTime && this.slots.getChanceOfFailure(this.usedRecipe) > 0) {
+               this.getWorldObj().getAsWorldServer().playSoundAtBlock(this.xCoord, this.yCoord, this.zCoord, "random.anvil_land", 1.0F, 1.6F - MathHelper.clamp_float(((float) (this.currentFailCheckTime - this.forgingTime) / 200.0F), 0.0F, 1.0F) * 0.3F);
             }else if(this.getWorldObj().rand.nextInt(10) == 0){
                if(this.forgingTime < this.currentFailCheckTime){
                   this.getWorldObj().getAsWorldServer().playSoundAtBlock(this.xCoord, this.yCoord, this.zCoord, "random.anvil_land", 1.0F, 1.5F);
@@ -411,7 +411,7 @@ public class TileEntityForgingTable extends TileEntity implements IInventory {
             }
          }
          if(this.forgingTime > this.currentFailCheckTime && this.forgingTime % 10 == 0 && this.currentFailCheckTime + 39 > this.forgingTime){
-            this.getWorldObj().getAsWorldServer().playSoundAtBlock(this.xCoord, this.yCoord, this.zCoord, "random.anvil_land", 1.0F, 1F);
+            this.getWorldObj().getAsWorldServer().playSoundAtBlock(this.xCoord, this.yCoord, this.zCoord, "random.anvil_land", 1.0F, 1.6F);
          }
          if (this.forgingTime == this.currentFailCheckTime) {
             if (this.getWorldObj().rand.nextInt(100) < this.slots.getChanceOfFailure(this.usedRecipe)) {

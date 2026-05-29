@@ -91,10 +91,13 @@ public class ForgingTableSlots extends InventorySubcontainer {
                int resultSize = current.getStack().stackSize - req.stackSize;
                if (resultSize > 0) {
                   current.getStack().setStackSize(resultSize);
+                  materialsRequired.set(j, null);
+               }else if (resultSize < 0) {
+                  materialsRequired.set(j, new ItemStack(req.getItem(), req.stackSize - current.getStack().stackSize));
+                  current.putStack(null);
                } else {
                   current.putStack(null);
                }
-               materialsRequired.set(j, null);
             }
          }
       }

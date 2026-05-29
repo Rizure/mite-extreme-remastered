@@ -62,7 +62,7 @@ public class ItemRingKiller extends Item {
          case 0:
             return (7 - this.level) * 15;
          case 1:
-            return 5 + 5 * (7 - this.level);
+            return 10 + 5 * (6 - this.level);
          case 2:
          default:
             return 5 + (7 - this.level) * 15;

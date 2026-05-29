@@ -66,7 +66,7 @@ public class ModifierUtil {
                   Block anotherCrops = info.world.getBlock(info.x + dx, info.y, info.z + dz);
                   int metadata = info.world.getBlockMetadata(info.x + dx, info.y, info.z + dz);
                   if(((BlockCrops) info.block).isMature(info.getMetadata())){
-                     if(anotherCrops instanceof BlockCrops && itemRand.nextFloat() < baseModifierValue && dx * dz == 0){
+                     if(anotherCrops instanceof BlockCrops && !((BlockCrops) anotherCrops).isDead() && itemRand.nextFloat() < baseModifierValue && dx * dz == 0){
                         info.world.setBlockMetadata(info.x + dx, info.y, info.z + dz, ((BlockCrops)anotherCrops).incrementGrowth(metadata), 2);
                         info.world.playAuxSFX(2005,info.x + dx, info.y, info.z + dz, 0);
                      }

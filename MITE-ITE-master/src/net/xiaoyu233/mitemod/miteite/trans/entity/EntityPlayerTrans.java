@@ -1145,8 +1145,9 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
          if(this.inventory.getHotbarSlotContainItem(Items.miteGaFan) != -1){
             int index = this.inventory.getHotbarSlotContainItem(Items.miteGaFan);
             if (this.inventory.getInventorySlotContents(index).getItemDamage() < Items.miteGaFan.getMaxDamage(EnumQuality.average) - 5000){
+               float amount = damage.getAmount();
                damage.setAmount(0);
-               this.inventory.getInventorySlotContents(index).tryDamageItem(this.worldObj,5000,true);
+               this.inventory.getInventorySlotContents(index).tryDamageItem(this.worldObj, (int) (200F * amount),true);
                this.makeSound("mob.bat.loop",1.0F,1.5F);
                this.sendChatToPlayer(ChatMessage.createFromText("[地精扇]").setColor(EnumChatFormat.LIGHT_PURPLE).appendComponent(ChatMessage.createFromTranslationKey("啦啦啦(～￣▽￣)～粉红的扇子飞舞=>").setColor(EnumChatFormat.GREEN)));
             }
