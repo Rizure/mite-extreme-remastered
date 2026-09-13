@@ -18,7 +18,7 @@ public interface ItemModifierTypes {
 
    int getModifierLevel(NBTTagCompound itemTag);
 
-   float getWeight();
+   int getWeight();
 
    String getNbtName();
 

@@ -83,10 +83,30 @@ public abstract class EntityEarthElementalTrans extends EntityAnimalWatcher {
 
    }
 
-   @Shadow
-   private Block getBlock() {
-      return null;
+   @Overwrite
+   public Block getBlock() {
+      return Block.getBlock(this.getType() & 1023);
    }
+
+   @Overwrite
+   protected int getDropItemId() {
+      return 0;
+   }
+
+   public void onDeathUpdate(){
+      super.onDeathUpdate();
+      if(this.deathTime == 20){
+         int standingBlockID = this.worldObj.getBlockId(this.getBlockPosX(),this.getBlockPosY(),this.getBlockPosZ());
+         Block dropBlock = this.getBlock();
+         int dropBlockID = dropBlock == Block.stone ? Block.cobblestone.blockID : dropBlock.blockID;
+         if (standingBlockID == 0) {
+            this.worldObj.setBlock(this.getBlockPosX(),this.getBlockPosY(),this.getBlockPosZ(),dropBlockID);
+         } else {
+            this.dropItem(this.getBlock().blockID, 1);
+         };
+      }
+   }
+
 
    @Shadow
    private int getType() {

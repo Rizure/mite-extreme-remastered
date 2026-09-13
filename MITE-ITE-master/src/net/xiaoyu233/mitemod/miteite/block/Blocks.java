@@ -99,6 +99,9 @@ public class Blocks extends Block {
    public static final BlockExtremeWorkbench blockRemasteredToolbench = new BlockExtremeWorkbench(getNextBlockIDExtend());
    public static final BlockBamboo blockBamboo = (BlockBamboo) new BlockBamboo(getNextBlockIDExtend()).setStepSound_(soundGrassFootstep);
    public static final BlockFlowerPotSapling flowerPotSapling = (BlockFlowerPotSapling) new BlockFlowerPotSapling(getNextBlockIDExtend()).setBlockHardness(0.0F).setStepSound_(Block.soundPowderFootstep).setUnlocalizedName("flowerPot");
+   public static final BlockManmadeIce packedIce = (BlockManmadeIce) new BlockManmadeIce(getNextBlockIDExtend()).setUnlocalizedName("packed_ice").setStepSound_(soundGlassFootstep);
+   public static final BlockBlueIce blueIce = (BlockBlueIce) new BlockBlueIce(getNextBlockIDExtend()).setUnlocalizedName("blue_ice").setStepSound_(soundGlassFootstep);
+   public static final BlockEndAltar endAltar = new BlockEndAltar(getNextBlockIDExtend());
 
    static {
       try {
@@ -215,6 +218,10 @@ public class Blocks extends Block {
       registerItemBlock(blockRemasteredToolbench,"toolbench");
 
       flowerPotSapling.setUnlocalizedName("flowerPot");
+
+      registerItemBlock(packedIce, "packed_ice");
+      registerItemBlock(blueIce, "blue_ice");
+      registerItemBlock(endAltar,"end_altar");
 //      registerItemBlock(flowerPotSapling,"flowerPot");
    }
 
@@ -292,6 +299,8 @@ public class Blocks extends Block {
       );
       register.registerShapelessRecipe(new ItemStack(blockEnhanceStoneIron, 1), true, new ItemStack(Items.enhanceStoneIron, 9));
       register.registerShapelessRecipe(new ItemStack(blockEnhanceStoneMithril, 1), true, new ItemStack(Items.enhanceStoneMithril, 9));
+      register.registerShapelessRecipe(new ItemStack(packedIce, 1), true, new ItemStack(Block.ice, 9));
+      register.registerShapelessRecipe(new ItemStack(blueIce, 1), true, new ItemStack(Blocks.packedIce, 9));
 
       register.registerShapelessRecipe(new ItemStack(blockFancyRed), true,
               new ItemStack(Items.fancyRed, 9));
@@ -355,6 +364,13 @@ public class Blocks extends Block {
                          'L', new ItemStack(Blocks.wood1,subtype < 6 ? subtype - 2 : subtype - 6)}
          );
       }
+      register.registerShapedRecipe(new ItemStack(Blocks.endAltar),true,
+              "GEG",
+              "STS",
+              'G',Items.gemYellow,
+              'E',Items.eyeOfEnder,
+              'S',Block.obsidian,
+              'T',Block.enchantmentTable);
 
 //      register.registerRestrictShapedRecipe(new ItemStack(Blocks.blockExtendedToolbench,1,0),true,true,
 //              "LI",

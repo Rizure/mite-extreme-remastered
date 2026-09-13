@@ -3,8 +3,10 @@ package net.xiaoyu233.mitemod.miteite.item;
 import net.minecraft.*;
 import net.minecraft.server.MinecraftServer;
 import net.xiaoyu233.mitemod.miteite.block.Blocks;
+import net.xiaoyu233.mitemod.miteite.entity.EntityBlizzard;
 import net.xiaoyu233.mitemod.miteite.entity.EntityFinalZombieBoss;
 import net.xiaoyu233.mitemod.miteite.entity.EntityZombieBoss;
+import net.xiaoyu233.mitemod.miteite.world.WorldGenBlizzardCave;
 import net.xiaoyu233.mitemod.miteite.world.WorldGenCherry;
 
 import java.util.Iterator;
@@ -133,6 +135,30 @@ public class ItemConsumables extends Item {
                }
             }
             return true;
+         } else if (consumable.getItem() == Items.blizzardRod){
+            RaycastCollision rc = player.getSelectedObject(partial_tick, false);
+            if (rc != null) {
+               if (rc.isBlock()) {
+                  if (rc.getBlockHitID() == Blocks.blueIce.blockID) {
+                     player.makeSound("mob.zombie.remedy", 1.0F, 0.75F);
+                     int x = rc.block_hit_x;
+                     int y = rc.block_hit_y;
+                     int z = rc.block_hit_z;
+                     EntityBlizzard blaze = new EntityBlizzard(player.worldObj, true);
+                     blaze.setPosition(x,y,z);
+                     blaze.refreshDespawnCounter(-9600);
+                     if(blaze.onServer()){
+                        blaze.entityFX(EnumEntityFX.summoned);
+                     }
+                     blaze.onSpawnWithEgg(null);
+                     player.worldObj.spawnEntityInWorld(blaze);
+                     if(!player.inCreativeMode()) {
+                        player.convertOneOfHeldItem((ItemStack) null);
+                     }
+                     return true;
+                  }
+               }
+            }
          }
       } else {
          player.bobItem();
@@ -178,6 +204,10 @@ public class ItemConsumables extends Item {
             info.add(EnumChatFormat.BROWN + Translator.getFormatted("无论如何都难免一炸", new Object[0]));
             info.add(EnumChatFormat.BROWN + Translator.getFormatted("那为何不试试自己控制它呢？", new Object[0]));
             info.add(EnumChatFormat.BLUE + Translator.getFormatted("使用以获得更强的急迫效果", new Object[0]));
+         }
+         if (Objects.equals(this.tag, "blizzard_rod")) {
+            info.add(EnumChatFormat.BROWN + Translator.getFormatted("我需要重新集结部队！", new Object[0]));
+            info.add(EnumChatFormat.BLUE + Translator.getFormatted("对准蓝冰创建一个无害暴雪人", new Object[0]));
          }
       }
    }

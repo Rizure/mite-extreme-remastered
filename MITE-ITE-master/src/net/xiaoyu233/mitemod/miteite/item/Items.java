@@ -186,6 +186,9 @@ public class Items extends Item {
 
    public static final ItemFood detoxifyingPill = new ItemGAFood(Constant.getNextItemID(), Materials.cheese, 2, 1, 0, true, false, false, "detoxifying").setAlwaysEdible();
 
+   public static final ItemConsumables blizzardRod = new ItemConsumables(Constant.getNextItemID(), Material.ice, "blizzard_rod");
+   public static final Item enderCompass = new ItemEndCompass(Constant.getNextItemID(),Material.ancient_metal);
+
    private static Item register(String resourceLocation, Item item, CreativeModeTab tab) {
       item.setResourceLocation(item.getResourceLocationPrefix() + resourceLocation);
       item.setUnlocalizedName(resourceLocation);
@@ -374,6 +377,9 @@ public class Items extends Item {
       register("gotchachest",stoneBag);
 
       register("drug_td",detoxifyingPill);
+
+      register("blizzard_rod",blizzardRod);
+      register("end_compass",enderCompass);
       Constant.initItemArray();
    }
 
@@ -446,7 +452,7 @@ public class Items extends Item {
       register.registerShapedRecipe(new ItemStack(clubAncientMetal, 1), true, new Object[]{"###", "#*#", " # ", '#', Items.ancientMetalNugget, '*', Items.ingotAncientMetal});
       register.registerShapedRecipe(new ItemStack(clubMithril, 1), true, new Object[]{"###", "#*#", " # ", '#', Items.mithrilNugget, '*', Items.ingotMithril});
       register.registerShapedRecipe(new ItemStack(clubAdamantium, 1), true, new Object[]{"###", "#*#", " # ", '#', Items.adamantiumNugget, '*', Items.ingotAdamantium});
-      register.registerShapedRecipe(new ItemStack(clubVibranium, 1), true, new Object[]{"###", "#*#", " A ", '#', Items.vibraniumNugget, '*', Items.ingotVibranium, 'A', Items.voucherClubCore});
+      register.registerShapedRecipe(new ItemStack(clubVibranium, 1), true, new Object[]{"###", "#*#", " #A", '#', Items.vibraniumNugget, '*', Items.ingotVibranium, 'A', Items.voucherClubCore});
 
       register.registerShapedRecipe(new ItemStack(itemDynamicCoreIron, 1), true, new Object[]{"ABA", "BCB", "DBD", 'A', Items.ingotIron, 'D', Blocks.blockIron, 'B', Blocks.glass, 'C', Blocks.blockRedstone});
       register.registerShapedRecipe(new ItemStack(itemDynamicCoreAncient_metal, 1), true, new Object[]{"ABA", "BCB", "DBD", 'A', Items.ingotAncientMetal, 'D', Blocks.blockAncientMetal, 'B', Blocks.glass, 'C', Items.itemDynamicCoreIron});
@@ -484,6 +490,14 @@ public class Items extends Item {
               'I',Blocks.blockGotcha,
               'B',Block.chest,
               'L',Item.leather);
+
+      register.registerShapedRecipe(new ItemStack(Items.enderCompass), true,
+              "MEM",
+              "ECE",
+              "MEM",
+              'M',Item.ingotAncientMetal,
+              'C',Item.compass,
+              'E',Item.eyeOfEnder);
 
       register.registerShapelessRecipe(new ItemStack(Items.voucherClubCore, 1), true, Items.voucherFishing, Items.voucherVillager, Items.voucherPlanting);
 
@@ -597,41 +611,125 @@ public class Items extends Item {
          Item lower_equipment;
          Item upper_equipment;
 
-         lower_equipment = getMatchingArmor(ItemHelmet.class, lowerTierLoop[i], false);
-         upper_equipment = getMatchingArmor(ItemHelmet.class, Material.iron, false);
-         register.registerShapedRecipe(new ItemStack(upper_equipment),
-                 true,
-                 "###",
-                 "#A#",
-                 '#', upper_ingot,
-                 'A', lower_equipment).extendsNBT();
-         lower_equipment = getMatchingArmor(ItemCuirass.class, lowerTierLoop[i], false);
-         upper_equipment = getMatchingArmor(ItemCuirass.class, Material.iron, false);
-         register.registerShapedRecipe(new ItemStack(upper_equipment),
-                 true,
-                 "###",
-                 "#A#",
-                 "###",
-                 '#', upper_ingot,
-                 'A', lower_equipment).extendsNBT();
-         lower_equipment = getMatchingArmor(ItemLeggings.class, lowerTierLoop[i], false);
-         upper_equipment = getMatchingArmor(ItemLeggings.class, Material.iron, false);
-         register.registerShapedRecipe(new ItemStack(upper_equipment),
-                 true,
-                 "###",
-                 "#A#",
-                 "# #",
-                 '#', upper_ingot,
-                 'A', lower_equipment).extendsNBT();
-         lower_equipment = getMatchingArmor(ItemBoots.class, lowerTierLoop[i], false);
-         upper_equipment = getMatchingArmor(ItemBoots.class, Material.iron, false);
-         register.registerShapedRecipe(new ItemStack(upper_equipment),
-                 true,
-                 "# #",
-                 "#A#",
-                 '#', upper_ingot,
-                 'A', lower_equipment).extendsNBT();
-
+         if(Configs.wenscConfig.isRecipeUpgradeArmors.ConfigValue){
+            lower_equipment = getMatchingArmor(ItemHelmet.class, lowerTierLoop[i], false);
+            upper_equipment = getMatchingArmor(ItemHelmet.class, Material.iron, false);
+            register.registerShapedRecipe(new ItemStack(upper_equipment),
+                    true,
+                    "###",
+                    "#A#",
+                    '#', upper_ingot,
+                    'A', lower_equipment).extendsNBT();
+            lower_equipment = getMatchingArmor(ItemCuirass.class, lowerTierLoop[i], false);
+            upper_equipment = getMatchingArmor(ItemCuirass.class, Material.iron, false);
+            register.registerShapedRecipe(new ItemStack(upper_equipment),
+                    true,
+                    "###",
+                    "#A#",
+                    "###",
+                    '#', upper_ingot,
+                    'A', lower_equipment).extendsNBT();
+            lower_equipment = getMatchingArmor(ItemLeggings.class, lowerTierLoop[i], false);
+            upper_equipment = getMatchingArmor(ItemLeggings.class, Material.iron, false);
+            register.registerShapedRecipe(new ItemStack(upper_equipment),
+                    true,
+                    "###",
+                    "#A#",
+                    "# #",
+                    '#', upper_ingot,
+                    'A', lower_equipment).extendsNBT();
+            lower_equipment = getMatchingArmor(ItemBoots.class, lowerTierLoop[i], false);
+            upper_equipment = getMatchingArmor(ItemBoots.class, Material.iron, false);
+            register.registerShapedRecipe(new ItemStack(upper_equipment),
+                    true,
+                    "# #",
+                    "#A#",
+                    '#', upper_ingot,
+                    'A', lower_equipment).extendsNBT();
+         }
+         if(Configs.wenscConfig.isRecipeUpgradeTools.ConfigValue){
+            lower_equipment = getMatchingItem(ItemPickaxe.class, lowerTierLoop[i]);
+            upper_equipment = getMatchingItem(ItemPickaxe.class, Material.iron);
+            if (lower_equipment != null && upper_equipment != null) {
+               register.registerShapedRecipe(new ItemStack(upper_equipment),
+                       true,
+                       "###",
+                       " A ",
+                       " S ",
+                       '#', upper_ingot,
+                       'A', lower_equipment,
+                       'S', fetchingStickByMaterial(Material.iron)).extendsNBT();
+            }
+            lower_equipment = getMatchingItem(ItemSword.class, lowerTierLoop[i]);
+            upper_equipment = getMatchingItem(ItemSword.class, Material.iron);
+            if (lower_equipment != null && upper_equipment != null) {
+               register.registerShapedRecipe(new ItemStack(upper_equipment),
+                       true,
+                       "#",
+                       "#",
+                       "A",
+                       '#', upper_ingot,
+                       'A', lower_equipment).extendsNBT();
+            }
+            lower_equipment = getMatchingItem(ItemShovel.class, lowerTierLoop[i]);
+            upper_equipment = getMatchingItem(ItemShovel.class, Material.iron);
+            if (lower_equipment != null && upper_equipment != null) {
+               register.registerShapedRecipe(new ItemStack(upper_equipment),
+                       true,
+                       "#",
+                       "A",
+                       "S",
+                       '#', upper_ingot,
+                       'S', fetchingStickByMaterial(Material.iron),
+                       'A', lower_equipment).extendsNBT();
+            }
+            lower_equipment = getMatchingItem(ItemAxe.class, lowerTierLoop[i]);
+            upper_equipment = getMatchingItem(ItemAxe.class, Material.iron);
+            if (lower_equipment != null && upper_equipment != null) {
+               register.registerShapedRecipe(new ItemStack(upper_equipment),
+                       true,
+                       "##",
+                       "A#",
+                       "S ",
+                       '#', upper_ingot,
+                       'S', fetchingStickByMaterial(Material.iron),
+                       'A', lower_equipment).extendsNBT();
+            }
+            lower_equipment = getMatchingItem(ItemDagger.class, lowerTierLoop[i]);
+            upper_equipment = getMatchingItem(ItemDagger.class, Material.iron);
+            if (lower_equipment != null && upper_equipment != null) {
+               register.registerShapedRecipe(new ItemStack(upper_equipment),
+                       true,
+                       "I",
+                       "A",
+                       'I', upper_ingot,
+                       'A', lower_equipment).extendsNBT();
+            }
+            lower_equipment = getMatchingItem(ItemWarHammer.class, lowerTierLoop[i]);
+            upper_equipment = getMatchingItem(ItemWarHammer.class, Material.iron);
+            if (lower_equipment != null && upper_equipment != null) {
+               register.registerShapedRecipe(new ItemStack(upper_equipment),
+                       true,
+                       "III",
+                       "IAI",
+                       " S ",
+                       'I', upper_ingot,
+                       'S', fetchingStickByMaterial(Material.iron),
+                       'A', lower_equipment).extendsNBT();
+            }
+            lower_equipment = getMatchingItem(ItemBattleAxe.class, lowerTierLoop[i]);
+            upper_equipment = getMatchingItem(ItemBattleAxe.class, Material.iron);
+            if (lower_equipment != null && upper_equipment != null) {
+               register.registerShapedRecipe(new ItemStack(upper_equipment),
+                       true,
+                       "I I",
+                       "IAI",
+                       " S ",
+                       'I', upper_ingot,
+                       'S', fetchingStickByMaterial(Material.iron),
+                       'A', lower_equipment).extendsNBT();
+            }
+         }
       }
 
       for (int i = 0; i + 1 < stdTierLoop.length; i++) {
@@ -639,142 +737,145 @@ public class Items extends Item {
          Item upper_nugget = getMatchingItem(ItemNugget.class, stdTierLoop[i + 1]);
          Item lower_equipment;
          Item upper_equipment;
+         if(Configs.wenscConfig.isRecipeUpgradeArmors.ConfigValue){
+            lower_equipment = getMatchingArmor(ItemHelmet.class, stdTierLoop[i], false);
+            upper_equipment = getMatchingArmor(ItemHelmet.class, stdTierLoop[i + 1], false);
+            if (lower_equipment != null && upper_equipment != null) {
+               register.registerShapedRecipe(new ItemStack(upper_equipment),
+                       true,
+                       "###",
+                       "#A#",
+                       '#', upper_ingot,
+                       'A', lower_equipment).extendsNBT();
+            }
 
-         lower_equipment = getMatchingArmor(ItemHelmet.class, stdTierLoop[i], false);
-         upper_equipment = getMatchingArmor(ItemHelmet.class, stdTierLoop[i + 1], false);
-         if (lower_equipment != null && upper_equipment != null) {
-            register.registerShapedRecipe(new ItemStack(upper_equipment),
-                    true,
-                    "###",
-                    "#A#",
-                    '#', upper_ingot,
-                    'A', lower_equipment).extendsNBT();
+            lower_equipment = getMatchingArmor(ItemCuirass.class, stdTierLoop[i], false);
+            upper_equipment = getMatchingArmor(ItemCuirass.class, stdTierLoop[i + 1], false);
+            if (lower_equipment != null && upper_equipment != null) {
+               register.registerShapedRecipe(new ItemStack(upper_equipment),
+                       true,
+                       "###",
+                       "#A#",
+                       "###",
+                       '#', upper_ingot,
+                       'A', lower_equipment).extendsNBT();
+            }
+            lower_equipment = getMatchingArmor(ItemLeggings.class, stdTierLoop[i], false);
+            upper_equipment = getMatchingArmor(ItemLeggings.class, stdTierLoop[i + 1], false);
+            if (lower_equipment != null && upper_equipment != null) {
+               register.registerShapedRecipe(new ItemStack(upper_equipment),
+                       true,
+                       "###",
+                       "#A#",
+                       "# #",
+                       '#', upper_ingot,
+                       'A', lower_equipment).extendsNBT();
+            }
+            lower_equipment = getMatchingArmor(ItemBoots.class, stdTierLoop[i], false);
+            upper_equipment = getMatchingArmor(ItemBoots.class, stdTierLoop[i + 1], false);
+            if (lower_equipment != null && upper_equipment != null) {
+               register.registerShapedRecipe(new ItemStack(upper_equipment),
+                       true,
+                       "# #",
+                       "#A#",
+                       '#', upper_ingot,
+                       'A', lower_equipment).extendsNBT();
+            }
          }
-
-         lower_equipment = getMatchingArmor(ItemCuirass.class, stdTierLoop[i], false);
-         upper_equipment = getMatchingArmor(ItemCuirass.class, stdTierLoop[i + 1], false);
-         if (lower_equipment != null && upper_equipment != null) {
-            register.registerShapedRecipe(new ItemStack(upper_equipment),
-                    true,
-                    "###",
-                    "#A#",
-                    "###",
-                    '#', upper_ingot,
-                    'A', lower_equipment).extendsNBT();
-         }
-         lower_equipment = getMatchingArmor(ItemLeggings.class, stdTierLoop[i], false);
-         upper_equipment = getMatchingArmor(ItemLeggings.class, stdTierLoop[i + 1], false);
-         if (lower_equipment != null && upper_equipment != null) {
-            register.registerShapedRecipe(new ItemStack(upper_equipment),
-                    true,
-                    "###",
-                    "#A#",
-                    "# #",
-                    '#', upper_ingot,
-                    'A', lower_equipment).extendsNBT();
-         }
-         lower_equipment = getMatchingArmor(ItemBoots.class, stdTierLoop[i], false);
-         upper_equipment = getMatchingArmor(ItemBoots.class, stdTierLoop[i + 1], false);
-         if (lower_equipment != null && upper_equipment != null) {
-            register.registerShapedRecipe(new ItemStack(upper_equipment),
-                    true,
-                    "# #",
-                    "#A#",
-                    '#', upper_ingot,
-                    'A', lower_equipment).extendsNBT();
-         }
-         lower_equipment = getMatchingItem(ItemPickaxe.class, stdTierLoop[i]);
-         upper_equipment = getMatchingItem(ItemPickaxe.class, stdTierLoop[i + 1]);
-         if (lower_equipment != null && upper_equipment != null) {
-            register.registerShapedRecipe(new ItemStack(upper_equipment),
-                    true,
-                    "###",
-                    " A ",
-                    " S ",
-                    '#', upper_ingot,
-                    'A', lower_equipment,
-                    'S', fetchingStickByMaterial(stdTierLoop[i + 1])).extendsNBT();
-         }
-         lower_equipment = getMatchingItem(ItemSword.class, stdTierLoop[i]);
-         upper_equipment = getMatchingItem(ItemSword.class, stdTierLoop[i + 1]);
-         if (lower_equipment != null && upper_equipment != null) {
-            register.registerShapedRecipe(new ItemStack(upper_equipment),
-                    true,
-                    "#",
-                    "#",
-                    "A",
-                    '#', upper_ingot,
-                    'A', lower_equipment).extendsNBT();
-         }
-         lower_equipment = getMatchingItem(ItemClubMetal.class, stdTierLoop[i]);
-         upper_equipment = getMatchingItem(ItemClubMetal.class, stdTierLoop[i + 1]);
-         if (lower_equipment != null && upper_equipment != null && stdTierLoop[i + 1] != Materials.vibranium) {
-            register.registerShapedRecipe(new ItemStack(upper_equipment),
-                    true,
-                    "NNN",
-                    "NIN",
-                    " A ",
-                    'N', upper_nugget,
-                    'I', upper_ingot,
-                    'A', lower_equipment).extendsNBT();
-         }
-         lower_equipment = getMatchingItem(ItemShovel.class, stdTierLoop[i]);
-         upper_equipment = getMatchingItem(ItemShovel.class, stdTierLoop[i + 1]);
-         if (lower_equipment != null && upper_equipment != null) {
-            register.registerShapedRecipe(new ItemStack(upper_equipment),
-                    true,
-                    "#",
-                    "A",
-                    "S",
-                    '#', upper_ingot,
-                    'S', fetchingStickByMaterial(stdTierLoop[i + 1]),
-                    'A', lower_equipment).extendsNBT();
-         }
-         lower_equipment = getMatchingItem(ItemAxe.class, stdTierLoop[i]);
-         upper_equipment = getMatchingItem(ItemAxe.class, stdTierLoop[i + 1]);
-         if (lower_equipment != null && upper_equipment != null) {
-            register.registerShapedRecipe(new ItemStack(upper_equipment),
-                    true,
-                    "##",
-                    "A#",
-                    "S ",
-                    '#', upper_ingot,
-                    'S', fetchingStickByMaterial(stdTierLoop[i + 1]),
-                    'A', lower_equipment).extendsNBT();
-         }
-         lower_equipment = getMatchingItem(ItemDagger.class, stdTierLoop[i]);
-         upper_equipment = getMatchingItem(ItemDagger.class, stdTierLoop[i + 1]);
-         if (lower_equipment != null && upper_equipment != null) {
-            register.registerShapedRecipe(new ItemStack(upper_equipment),
-                    true,
-                    "I",
-                    "A",
-                    'I', upper_ingot,
-                    'A', lower_equipment).extendsNBT();
-         }
-         lower_equipment = getMatchingItem(ItemWarHammer.class, stdTierLoop[i]);
-         upper_equipment = getMatchingItem(ItemWarHammer.class, stdTierLoop[i + 1]);
-         if (lower_equipment != null && upper_equipment != null) {
-            register.registerShapedRecipe(new ItemStack(upper_equipment),
-                    true,
-                    "III",
-                    "IAI",
-                    " S ",
-                    'I', upper_ingot,
-                    'S', fetchingStickByMaterial(stdTierLoop[i + 1]),
-                    'A', lower_equipment).extendsNBT();
-         }
-         lower_equipment = getMatchingItem(ItemBattleAxe.class, stdTierLoop[i]);
-         upper_equipment = getMatchingItem(ItemBattleAxe.class, stdTierLoop[i + 1]);
-         if (lower_equipment != null && upper_equipment != null) {
-            register.registerShapedRecipe(new ItemStack(upper_equipment),
-                    true,
-                    "I I",
-                    "IAI",
-                    " S ",
-                    'I', upper_ingot,
-                    'S', fetchingStickByMaterial(stdTierLoop[i + 1]),
-                    'A', lower_equipment).extendsNBT();
+         if(Configs.wenscConfig.isRecipeUpgradeTools.ConfigValue){
+            lower_equipment = getMatchingItem(ItemPickaxe.class, stdTierLoop[i]);
+            upper_equipment = getMatchingItem(ItemPickaxe.class, stdTierLoop[i + 1]);
+            if (lower_equipment != null && upper_equipment != null) {
+               register.registerShapedRecipe(new ItemStack(upper_equipment),
+                       true,
+                       "###",
+                       " A ",
+                       " S ",
+                       '#', upper_ingot,
+                       'A', lower_equipment,
+                       'S', fetchingStickByMaterial(stdTierLoop[i + 1])).extendsNBT();
+            }
+            lower_equipment = getMatchingItem(ItemSword.class, stdTierLoop[i]);
+            upper_equipment = getMatchingItem(ItemSword.class, stdTierLoop[i + 1]);
+            if (lower_equipment != null && upper_equipment != null) {
+               register.registerShapedRecipe(new ItemStack(upper_equipment),
+                       true,
+                       "#",
+                       "#",
+                       "A",
+                       '#', upper_ingot,
+                       'A', lower_equipment).extendsNBT();
+            }
+            lower_equipment = getMatchingItem(ItemClubMetal.class, stdTierLoop[i]);
+            upper_equipment = getMatchingItem(ItemClubMetal.class, stdTierLoop[i + 1]);
+            if (lower_equipment != null && upper_equipment != null && stdTierLoop[i + 1] != Materials.vibranium) {
+               register.registerShapedRecipe(new ItemStack(upper_equipment),
+                       true,
+                       "NNN",
+                       "NIN",
+                       " A ",
+                       'N', upper_nugget,
+                       'I', upper_ingot,
+                       'A', lower_equipment).extendsNBT();
+            }
+            lower_equipment = getMatchingItem(ItemShovel.class, stdTierLoop[i]);
+            upper_equipment = getMatchingItem(ItemShovel.class, stdTierLoop[i + 1]);
+            if (lower_equipment != null && upper_equipment != null) {
+               register.registerShapedRecipe(new ItemStack(upper_equipment),
+                       true,
+                       "#",
+                       "A",
+                       "S",
+                       '#', upper_ingot,
+                       'S', fetchingStickByMaterial(stdTierLoop[i + 1]),
+                       'A', lower_equipment).extendsNBT();
+            }
+            lower_equipment = getMatchingItem(ItemAxe.class, stdTierLoop[i]);
+            upper_equipment = getMatchingItem(ItemAxe.class, stdTierLoop[i + 1]);
+            if (lower_equipment != null && upper_equipment != null) {
+               register.registerShapedRecipe(new ItemStack(upper_equipment),
+                       true,
+                       "##",
+                       "A#",
+                       "S ",
+                       '#', upper_ingot,
+                       'S', fetchingStickByMaterial(stdTierLoop[i + 1]),
+                       'A', lower_equipment).extendsNBT();
+            }
+            lower_equipment = getMatchingItem(ItemDagger.class, stdTierLoop[i]);
+            upper_equipment = getMatchingItem(ItemDagger.class, stdTierLoop[i + 1]);
+            if (lower_equipment != null && upper_equipment != null) {
+               register.registerShapedRecipe(new ItemStack(upper_equipment),
+                       true,
+                       "I",
+                       "A",
+                       'I', upper_ingot,
+                       'A', lower_equipment).extendsNBT();
+            }
+            lower_equipment = getMatchingItem(ItemWarHammer.class, stdTierLoop[i]);
+            upper_equipment = getMatchingItem(ItemWarHammer.class, stdTierLoop[i + 1]);
+            if (lower_equipment != null && upper_equipment != null) {
+               register.registerShapedRecipe(new ItemStack(upper_equipment),
+                       true,
+                       "III",
+                       "IAI",
+                       " S ",
+                       'I', upper_ingot,
+                       'S', fetchingStickByMaterial(stdTierLoop[i + 1]),
+                       'A', lower_equipment).extendsNBT();
+            }
+            lower_equipment = getMatchingItem(ItemBattleAxe.class, stdTierLoop[i]);
+            upper_equipment = getMatchingItem(ItemBattleAxe.class, stdTierLoop[i + 1]);
+            if (lower_equipment != null && upper_equipment != null) {
+               register.registerShapedRecipe(new ItemStack(upper_equipment),
+                       true,
+                       "I I",
+                       "IAI",
+                       " S ",
+                       'I', upper_ingot,
+                       'S', fetchingStickByMaterial(stdTierLoop[i + 1]),
+                       'A', lower_equipment).extendsNBT();
+            }
          }
          lower_equipment = getMatchingItem(ItemEnhancedPickaxe.class, stdTierLoop[i]);
          upper_equipment = getMatchingItem(ItemEnhancedPickaxe.class, stdTierLoop[i + 1]);
@@ -795,16 +896,45 @@ public class Items extends Item {
                     'A', lower_equipment).extendsNBT();
          }
       }
-      register.registerShapedRecipe(new ItemStack(Items.clubVibranium),
-              true,
-              "NNN",
-              "NIN",
-              " AV",
-              'N', Items.vibraniumNugget,
-              'I', Items.ingotVibranium,
-              'A', Items.clubAdamantium,
-              'V', Items.voucherClubCore).extendsNBT();
-
+      if(Configs.wenscConfig.isRecipeUpgradeTools.ConfigValue){
+         register.registerShapedRecipe(new ItemStack(Items.clubVibranium),
+                 true,
+                 "NNN",
+                 "NIN",
+                 " AV",
+                 'N', Items.vibraniumNugget,
+                 'I', Items.ingotVibranium,
+                 'A', Items.clubAdamantium,
+                 'V', Items.voucherClubCore).extendsNBT();
+      }
+      if(!Configs.wenscConfig.isRecipeUpgradeArmors.ConfigValue){
+         register.registerShapedRecipe(new ItemStack(helmetVibranium),
+                 true,
+                 "###",
+                 "#A#",
+                 '#', ingotVibranium,
+                 'A', helmetAncientMetal);
+         register.registerShapedRecipe(new ItemStack(cuirassVibranium),
+                 true,
+                 "###",
+                 "#A#",
+                 "###",
+                 '#', ingotVibranium,
+                 'A', plateAncientMetal);
+         register.registerShapedRecipe(new ItemStack(leggingsVibranium),
+                 true,
+                 "###",
+                 "#A#",
+                 "# #",
+                 '#', ingotVibranium,
+                 'A', legsAncientMetal);
+         register.registerShapedRecipe(new ItemStack(bootsVibranium),
+                 true,
+                 "# #",
+                 "#A#",
+                 '#', ingotVibranium,
+                 'A', bootsAncientMetal);
+      }
       register.registerShapedRecipe(new ItemStack(pickaxeVibranium),
               true,
               "###",

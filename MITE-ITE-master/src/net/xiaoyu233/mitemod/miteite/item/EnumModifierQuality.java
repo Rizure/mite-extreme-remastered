@@ -8,7 +8,7 @@ public enum EnumModifierQuality {
    Rare(EnumChatFormat.BLUE, "Rare", 25),
    Epic(EnumChatFormat.DARK_PURPLE, "Epic", 5),
    Legend(EnumChatFormat.LIGHT_PURPLE, "Legend", 2),
-   ;
+   Unused(EnumChatFormat.LIGHT_GRAY,"Unused",0);
    public final EnumChatFormat color;
    public final String name;
    public final int standard_weight;

@@ -50,11 +50,11 @@ public abstract class BlockPortalTrans extends Block {
       }
 
       if (world.isTheNether()) {
-         y = 0;
+         y = 120;
 
          while (true) {
-            ++y;
-            if (y >= 123) {
+            --y;
+            if (y <= 0) {
                break;
             }
 
@@ -66,7 +66,7 @@ public abstract class BlockPortalTrans extends Block {
             }
          }
       } else if (world.isUnderworld()) {
-         y = 254;
+         y = 248;
 
          while (true) {
             --y;
@@ -186,16 +186,27 @@ public abstract class BlockPortalTrans extends Block {
             }
 
             int metadata = this.getPortalTypeBasedOnLocation(par1World, par2, par3, par4, true);
+            boolean portalAnnouncement = false;
 
             for (var7 = 0; var7 < 2; ++var7) {
                for (var8 = 0; var8 < 3; ++var8) {
                   if (metadata == 1) {
                      if (par1World.getDayOfOverworld() >= Configs.wenscConfig.underworldGateOpenDay.ConfigValue) {
                         par1World.setBlock(par2 + var5 * var7, par3 + var8, par4 + var6 * var7, Block.portal.blockID, metadata, 2);
+                     }else {
+                        if(!portalAnnouncement){
+                           portalAnnouncement = true;
+                           ((WorldServer) par1World).p().getConfigurationManager().sendChatMsg(ChatMessage.createFromTranslationWithSubstitutions("gameplay.portal_door.notdone", Configs.wenscConfig.underworldGateOpenDay.ConfigValue).setColor(EnumChatFormat.AQUA));
+                        }
                      }
                   } else if (metadata == 2) {
                      if (par1World.getDayOfOverworld() >= Configs.wenscConfig.netherGateOpenDay.ConfigValue) {
                         par1World.setBlock(par2 + var5 * var7, par3 + var8, par4 + var6 * var7, Block.portal.blockID, metadata, 2);
+                     } else {
+                        if(!portalAnnouncement){
+                           portalAnnouncement = true;
+                           ((WorldServer) par1World).p().getConfigurationManager().sendChatMsg(ChatMessage.createFromTranslationWithSubstitutions("gameplay.portal_door.notdone", Configs.wenscConfig.netherGateOpenDay.ConfigValue).setColor(EnumChatFormat.AQUA));
+                        }
                      }
                   } else {
                      par1World.setBlock(par2 + var5 * var7, par3 + var8, par4 + var6 * var7, Block.portal.blockID, metadata, 2);

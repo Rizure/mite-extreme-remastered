@@ -31,6 +31,7 @@ public class BiomeBaseTrans {
 
    @Inject(method = "<init>", at = @At("RETURN"))
    private void injectInit(CallbackInfo callbackInfo) {
+      this.spawnableMonsterList.add(new BiomeMeta(EntityMucusSpider.class, 40, 1, 4));
       this.spawnableMonsterList.add(new BiomeMeta(EntityGiantZombie.class, 10, 1, 1));
       this.spawnableMonsterList.add(new BiomeMeta(EntityGhast.class, 10, 1, 1));
       this.spawnableMonsterList.add(new BiomeMeta(EntityAncientBoneLord.class, 10, 1, 1));
@@ -40,7 +41,6 @@ public class BiomeBaseTrans {
       this.spawnableMonsterList.add(new BiomeMeta(EntityZombieDoor.class, 2, 4, 4));
       this.spawnableMonsterList.add(new BiomeMeta(EntityExchanger.class, 2, 2, 4));
       this.spawnableMonsterList.add(new BiomeMeta(EntityMirrorSkeleton.class, 5, 2, 4));
-      this.spawnableMonsterList.add(new BiomeMeta(EntityDragger.class, 2, 2, 4));
    }
 
    @Overwrite

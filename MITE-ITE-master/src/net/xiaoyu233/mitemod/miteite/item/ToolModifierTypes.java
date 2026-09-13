@@ -18,8 +18,8 @@ import java.util.function.Predicate;
 
 public enum ToolModifierTypes implements ItemModifierTypes {
    //Tool Modifiers
-   EFFICIENCY_MODIFIER(0.2F, "急速", EnumModifierQuality.Common, (ToolModifierTypes::isNotWeapon), 12),
    DURABILITY_MODIFIER(0.15F, "耐久", EnumModifierQuality.Common, (stack -> true), 5),
+   EFFICIENCY_MODIFIER(0.2F, "急速", EnumModifierQuality.Common, (ToolModifierTypes::isNotWeapon), 12),
    DAMAGE_MODIFIER(1.0F, "锋利", EnumModifierQuality.Common, stack -> hasNoOtherDamageModifier(stack, 2) && isWeapon(stack), 12),
    SMITE(2.0F, "神圣", EnumModifierQuality.Uncommon, stack -> hasNoOtherDamageModifier(stack, 0) && isWeapon(stack), 12),
    BANE_OF_ARTHROPOD(2.0F, "节肢杀手", EnumModifierQuality.Uncommon, stack -> hasNoOtherDamageModifier(stack, 1) && isWeapon(stack), 12),
@@ -94,7 +94,7 @@ public enum ToolModifierTypes implements ItemModifierTypes {
    }
 
    @Override
-   public float getWeight() {
+   public int getWeight() {
       return weight;
    }
 

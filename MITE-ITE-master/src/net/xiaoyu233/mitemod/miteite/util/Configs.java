@@ -162,6 +162,8 @@ public class Configs {
       public static ConfigItem<Float> energeticBoostLimit = new ConfigItem<>("EnergeticBoostLimit",3.0F,"海纳百川增伤上限", 1.0F, 10.0F);
       public static ConfigItem<Boolean> boostBlaze = new ConfigItem<>("boostBlaze",true,"增强烈焰人");
       public static ConfigItem<Boolean> boostGhast = new ConfigItem<>("boostGhast",false,"恶魂5连发火球");
+      public static ConfigItem<Boolean> isRecipeUpgradeTools = new ConfigItem<>("isRecipeUpgradeTools",false,"是否有工具升级配方");
+      public static ConfigItem<Boolean> isRecipeUpgradeArmors = new ConfigItem<>("isRecipeUpgradeArmors",true,"是否有盔甲升级配方");
 //        public static ConfigItem <String> md5String = new ConfigItem("md5String", new lh("wensc").a("busy"), "MD5");
 
    }
@@ -291,7 +293,8 @@ public class Configs {
       wenscMap.put("EnergeticBoostLimit",wenscConfig.energeticBoostLimit);
       wenscMap.put("boostBlaze",wenscConfig.boostBlaze);
       wenscMap.put("boostGhast",wenscConfig.boostGhast);
-
+      wenscMap.put("isRecipeUpgradeTools",wenscConfig.isRecipeUpgradeTools);
+      wenscMap.put("isRecipeUpgradeArmors",wenscConfig.isRecipeUpgradeArmors);
 //        wenscMap.put("md5", wenscConfig.md5String);
 
       String filePth = "MITE-Extreme-Remastered.cfg";

@@ -124,6 +124,11 @@ public abstract class WorldServerTrans extends World {
                return entity_class;
             }
             return EntitySkeleton.class;
+         } else if (entity_class == EntityMucusSpider.class) {
+            if (getDayOfOverworld() >= 16 || y <= 40) {
+               return entity_class;
+            }
+            return EntitySpider.class;
          } else if (entity_class == EntityZombieLord.class) {
             if (getDayOfOverworld() >= 16 || y <= 40) {
                return entity_class;

@@ -393,33 +393,35 @@ public abstract class ItemArmorTrans extends Item implements IDamageableItem, IU
                   //保证取一个新属性
                   if (available_modifiers.contains(obtained_modifiers.get(n))) {
                      available_modifiers.remove(obtained_modifiers.get(n));
-                     n = 0;
+                     n = -1;
                   }
                }
 //               System.out.println("检查：保证全新的属性available_modifiers:" + available_modifiers);
                modifierType = ModifierUtils.getModifierWithWeight(available_modifiers, player.getRNG());
-               this.addModifierLevelFor(modifiers, modifierType);
-               player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "获得了" + modifierType.color.toString() + modifierType.displayName + "§r属性"));
-               return;
+               if(modifierType != null){
+                  this.addModifierLevelFor(modifiers, modifierType);
+                  player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "获得了" + modifierType.color.toString() + modifierType.displayName + "§r属性"));
+                  continue;
+               } else {
+                  Minecraft.setErrorMessage("onItemLevelUp: No matching modifier to apply.");
+               }
             }
 
             //其他情况
-            for (int n = 0; n < obtained_modifiers.size(); n++) {
+            for (int n = 0; n < obtained_modifiers.size() && !Configs.wenscConfig.allowInfLeveling.ConfigValue; n++) {
                //删除已有的不兼容/已满级的副属性
                if (!(available_modifiers.contains(obtained_modifiers.get(n)))) {
                   obtained_modifiers.remove(obtained_modifiers.get(n));
-                  n = 0;
+                  n = -1;
                }
             }
 //            System.out.println("检查：可升级属性obtained_modifiers:" + obtained_modifiers);
             //升级已有的
             if (!obtained_modifiers.isEmpty()) {
                int n = itemRand.nextInt(obtained_modifiers.size());
-               if (Configs.wenscConfig.allowInfLeveling.ConfigValue || (obtained_modifiers.get(n).getMaxLevel() > modifiers.getInteger(obtained_modifiers.get(n).getNbtName()))) {
-                  player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "的" + obtained_modifiers.get(n).color.toString() + obtained_modifiers.get(n).displayName + "§r属性已升级到" +
-                          this.addModifierLevelFor(modifiers, obtained_modifiers.get(n))
-                          + "级"));
-               }
+               player.sendChatToPlayer(ChatMessage.createFromTranslationKey("你的" + stack.getMITEStyleDisplayName() + "的" + obtained_modifiers.get(n).color.toString() + obtained_modifiers.get(n).displayName + "§r属性已升级到" +
+                       this.addModifierLevelFor(modifiers, obtained_modifiers.get(n))
+                       + "级"));
             } else {
                Minecraft.setErrorMessage("onItemLevelUp: No matching modifier to upgrade/apply.");
             }

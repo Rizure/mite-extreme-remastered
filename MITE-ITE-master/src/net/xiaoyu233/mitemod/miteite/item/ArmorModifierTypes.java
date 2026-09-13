@@ -16,7 +16,8 @@ public enum ArmorModifierTypes implements ItemModifierTypes {
    FIRE_PROTECTION_MODIFIER(1.25F, "火焰保护", EnumModifierQuality.Uncommon, 4, (stack -> hasNotOtherProtectionModifier(stack, 0))),
    BLESSED_MODIFIER(1.0F, "神圣", EnumModifierQuality.Uncommon, 4, (stack -> true)),
    STEADY_MODIFIER(0.25F, "稳定", EnumModifierQuality.Rare, 4, (stack -> true)),
-   SUN_AFFINITY(0.05f, "领航", EnumModifierQuality.Rare, 4, itemStack -> itemStack.getItem() instanceof ItemBoots),
+   SUN_AFFINITY(0.05f, "领航", EnumModifierQuality.Unused, 4, itemStack -> itemStack.getItem() instanceof ItemBoots),
+   FLYING_GUARDIAN(0.075f, "神行", EnumModifierQuality.Rare, 4, itemStack -> itemStack.getItem() instanceof ItemBoots),
    INDOMITABLE(0.125f, "坚毅不倒", EnumModifierQuality.Rare, 4, itemStack -> itemStack.getItem() instanceof ItemCuirass),
    LEVITY(1.0f, "轻盈", EnumModifierQuality.Rare, 4, itemStack -> itemStack.getItem() instanceof ItemLeggings),
    NIGHT_AFFINITY(0.05f, "夜行", EnumModifierQuality.Rare, 4, itemStack -> itemStack.getItem() instanceof ItemHelmet),
@@ -98,7 +99,7 @@ public enum ArmorModifierTypes implements ItemModifierTypes {
    }
 
    @Override
-   public float getWeight() {
+   public int getWeight() {
       return this.weight;
    }
 

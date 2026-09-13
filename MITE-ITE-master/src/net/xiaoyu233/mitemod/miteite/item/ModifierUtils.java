@@ -43,19 +43,19 @@ public class ModifierUtils {
 
    public static ArrayList<ToolModifierTypes> getAllToolModifiers(ItemStack stack) {
       ArrayList<ToolModifierTypes> toolModifierTypes = Lists.newArrayList(ToolModifierTypes.values());
-      toolModifierTypes.removeIf((modifierType) -> !modifierType.canApplyTo(stack));
+      toolModifierTypes.removeIf((modifierType) -> !modifierType.canApplyTo(stack) || modifierType.getWeight() == 0);
       return toolModifierTypes;
    }
 
    public static ArrayList<ArmorModifierTypes> getAllArmorModifiers(ItemStack stack) {
       ArrayList<ArmorModifierTypes> armorModifierTypes = Lists.newArrayList(ArmorModifierTypes.values());
-      armorModifierTypes.removeIf((modifierType) -> !modifierType.canApplyTo(stack));
+      armorModifierTypes.removeIf((modifierType) -> !modifierType.canApplyTo(stack) || modifierType.getWeight() == 0);
       return armorModifierTypes;
    }
 
    public static ArrayList<ArmorModifierTypes> getAllCanBeAppliedArmorModifiers(ItemStack stack) {
       ArrayList<ArmorModifierTypes> armorModifierTypes = Lists.newArrayList(ArmorModifierTypes.values());
-      armorModifierTypes.removeIf((modifierType) -> !modifierType.canApplyTo(stack));
+      armorModifierTypes.removeIf((modifierType) -> !modifierType.canApplyTo(stack) || modifierType.getWeight() == 0);
       if (stack.stackTagCompound != null) {
          armorModifierTypes.removeIf((armorModifierTypes1) -> armorModifierTypes1.getModifierLevel(stack.stackTagCompound) >= armorModifierTypes1.getMaxLevel());
       }

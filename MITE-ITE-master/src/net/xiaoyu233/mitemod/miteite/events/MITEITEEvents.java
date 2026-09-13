@@ -417,7 +417,8 @@ public class MITEITEEvents {
       player.sendChatToPlayer(ChatMessage.createFromTranslationKey("[MITE-Extreme-REMASTERED]:").setColor(EnumChatFormat.WHITE)
               .appendComponent(ChatMessage.createFromTranslationKey("MITE-Extreme-REMASTERED由 ").setColor(EnumChatFormat.DARK_AQUA))
               .appendComponent(ChatMessage.createFromTranslationKey("Rikalzery").setColor(EnumChatFormat.WHITE))
-              .appendComponent(ChatMessage.createFromTranslationKey(" 重写,").setColor(EnumChatFormat.DARK_AQUA)));
+              .appendComponent(ChatMessage.createFromTranslationKey(" 重写,").setColor(EnumChatFormat.DARK_AQUA))
+              .appendComponent(ChatMessage.createFromTranslationKey(" 交流/发布群聊：1060828791").setColor(EnumChatFormat.DARK_AQUA)));
       player.sendChatToPlayer(ChatMessage.createFromTranslationKey("[MITE-Extreme-REMASTERED]:").setColor(EnumChatFormat.WHITE)
               .appendComponent(ChatMessage.createFromTranslationKey("MITE-Extreme由 ").setColor(EnumChatFormat.DARK_AQUA))
               .appendComponent(ChatMessage.createFromTranslationKey("wensc,洛小雨").setColor(EnumChatFormat.WHITE))

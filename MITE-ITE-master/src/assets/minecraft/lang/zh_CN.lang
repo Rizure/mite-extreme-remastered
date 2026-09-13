@@ -173,6 +173,8 @@ entity.EntityHostileSkeletonHorse.name=骷髅马
 entity.EntityZombiePigmanLord.name=猪人领主
 entity.EntityStalkerCreeper.name=潜伏爬行者
 entity.EntityEnderSpider.name=终结蜘蛛
+entity.EntityMucusSpider.name=粘液蜘蛛
+entity.EntityBlizzard.name=暴雪人
 
 gui.forgingTable.mode=切换模式
 gui.forgingTable.modeInfo=当前模式
@@ -207,6 +209,7 @@ forging.failFeedback.durability.amount=丢失%s的耐久度
 forging.failFeedback.durability.percentage=丢失百分之%s的耐久度
 forging.failFeedback.downgrade=降低装备%s级强化等级
 gameplay.portal_door.interact=玩家§n%s正在通过传送门
+gameplay.portal_door.notdone=通往目的地的传送门需要在%s天后启动
 command.sleep_check.msg=还有以下玩家未睡觉:
 command.sleep_check.none=所有玩家均已躺下
 container.workbench.boost=合成速度提升:
@@ -263,6 +266,9 @@ tile.fancy_red_block.name=红钻块
 tile.fancy_red.name=红钻矿石
 item.fancy_red.name=红钻
 item.shardFancyRed.name=红钻碎片
+
+tile.packed_ice.name=浮冰
+tile.blue_ice.name=蓝冰
 
 item.enhance_gem_phase1.damage.name=三角攻击宝石
 item.enhance_gem_phase2.damage.name=四角攻击宝石
@@ -425,6 +431,10 @@ item.chibi_creeper_baby.name=苦力宝宝
 
 item.bamboo.name=金雷竹
 
+item.blizzard_rod.name=暴雪棒
+
+item.end_compass.name=终末指南针
+
 tile.gem_setting.name=宝石镶嵌台
 container.crafting.needsRemoveGems=请先移除宝石
 
@@ -462,6 +472,8 @@ tile.slab.group5.light_blue.name=彩石台阶
 tile.slab.group5.magenta.name=彩石台阶
 tile.slab.group5.orange.name=彩石台阶
 tile.slab.group5.white.name=彩石台阶
+
+tile.end_altar.name=末影祭坛
 
 container.shop=商店
 container.shop.money=余额:%s

@@ -30,13 +30,19 @@ public class PlayerAbilitiesTrans {
             if (boots != null) {
                modifier_factor += ArmorModifierTypes.SUN_AFFINITY.getModifierValue(boots.getTagCompound());
             }
-         } else {
-            ItemStack helmet = this.player.getHelmet();
-            if (helmet != null) {
-               modifier_factor += ArmorModifierTypes.NIGHT_AFFINITY.getModifierValue(helmet.getTagCompound());
-            }
          }
       }
+      ItemStack helmet = this.player.getHelmet();
+      if (helmet != null) {
+         int lightValue = this.player.worldObj.getBlockLightValue(player.getBlockPosX(),player.getBlockPosY(),player.getBlockPosZ());
+         lightValue = 15 - lightValue;
+         modifier_factor += (float) lightValue / 15.0F * ArmorModifierTypes.NIGHT_AFFINITY.getModifierValue(helmet.getTagCompound());
+      }
+      ItemStack boots = this.player.getBoots();
+      if (boots != null && this.player.resetAttackMapTimer <= 0) {
+         modifier_factor += ArmorModifierTypes.FLYING_GUARDIAN.getModifierValue(boots.getTagCompound());
+      }
+
       modifier_factor += this.player.getGemSumNumeric(GemModifierTypes.polish) * (1.0F - this.player.getHealthFraction());
       callbackInfoReturnable.setReturnValue(modifier_factor * callbackInfoReturnable.getReturnValue());
    }

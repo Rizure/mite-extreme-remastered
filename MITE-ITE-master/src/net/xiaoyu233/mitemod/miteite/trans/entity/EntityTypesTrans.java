@@ -56,6 +56,8 @@ public class EntityTypesTrans {
       addMapping(EntityHostileSkeletonHorse.class, "EntityHostileSkeletonHorse", 219);
       addMapping(EntityStalkerCreeper.class, "EntityStalkerCreeper", 220);
       addMapping(EntityEnderSpider.class, "EntityEnderSpider", 221);
+      addMapping(EntityMucusSpider.class, "EntityMucusSpider", 222);
+      addMapping(EntityBlizzard.class, "EntityBlizzard", 223);
 //      addMapping(EntityThunderMan.class, "EntityThunderMan", 209);
 
    }

@@ -21,6 +21,9 @@ public class RenderManagerTrans {
    @Shadow
    private final Map<Class<? extends Entity>, bgm> q = new HashMap<>();
 
+   @Shadow
+   public static double c;
+
    private RenderManagerTrans() {
    }
 
@@ -38,6 +41,8 @@ public class RenderManagerTrans {
       this.q.put(EntityEnderSpider.class, new RenderEnderSpider(1.0F));
       this.q.put(EntityStalkerCreeper.class, new RenderStalkerCreeper());
       this.q.put(EntityGrenade.class, new bgx(Items.grenade));
+      this.q.put(EntityMucusSpider.class, new RenderMucusSpider(1.0F));
+      this.q.put(EntityBlizzard.class, new RenderBlizzard());
       for (bgm o : this.q.values()) {
          o.a(ReflectHelper.dyCast(bgl.class, this));
       }

@@ -31,6 +31,7 @@ public class RegisterHelper {
    public static void registerCraftingDifficulty() {
       ghastTear.setCraftingDifficultyAsComponent(25.0F);
       book.setCraftingDifficultyAsComponent(100.0F);
+      compass.setCraftingDifficultyAsComponent(10000.0F);
    }
 
    public static void registerPrice() {
