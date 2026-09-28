@@ -55,14 +55,14 @@ public abstract class EntityMonsterTrans extends EntityInsentient implements IMo
    public void attackEntityFrom(Damage damage, CallbackInfoReturnable<EntityDamageResult> c) {
       if ((Configs.wenscConfig.mobDefense.ConfigValue)
               && damage.getResponsibleEntityP() != null
-              && (this.getHeldItem() instanceof ItemTool || this.getHeldItem() instanceof ItemDoor)
+              && (this.getHeldItem() instanceof ItemTool)
               && this.rand.nextInt(2) == 0
               && !damage.bypassesMundaneArmor()) {
          damage.scaleAmount(0.5F);
          if (Configs.wenscConfig.mobDisarmWhenDefence.ConfigValue) {
             this.tryDisarmTarget(damage.getResponsibleEntityP());
          }
-         this.getWorld().playSoundAtEntity(this, "mob.irongolem.hit", 1.0F, 1.0F);
+         this.getWorld().playSoundAtEntity(this, "mob.zombie.metal", 0.5F, 1.0F);
       }
    }
 

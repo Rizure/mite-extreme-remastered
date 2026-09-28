@@ -50,6 +50,10 @@ public class EntityBlizzard extends EntityMonster {
         return 1.0F;
     }
 
+   public int c(float par1) {
+      return 15728880;
+   }
+
     protected float getSoundPitch(String sound) {
         return super.getSoundPitch(sound) * 0.5F;
     }

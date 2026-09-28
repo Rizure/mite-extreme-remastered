@@ -13,15 +13,18 @@ public class EntityZombieDoor extends EntityZombie {
    private boolean modifiedAttribute = false;
    private final Item[] doorList = new Item[]{Items.doorWood, Items.doorGold, Items.doorCopper, Items.doorSilver, Items.doorIron, Items.doorAncientMetal, Items.doorMithril, Items.doorAdamantium};
    private int danger_level;
+   private int absorption_point;
 
    public EntityZombieDoor(World par1World) {
       super(par1World);
       this.danger_level = Constant.GARandom.nextInt(doorList.length);
+      this.absorption_point = 80 + (int) (Math.pow(this.danger_level, 1.5) * 7);
    }
 
    public EntityZombieDoor(World par1World, int danger_level) {
       super(par1World);
       this.danger_level = danger_level;
+      this.absorption_point = 80 + (int) (Math.pow(this.danger_level, 1.5) * 7);
    }
 
    @Override
@@ -41,7 +44,49 @@ public class EntityZombieDoor extends EntityZombie {
 
    @Override
    public boolean canBeDisarmed() {
-      return false;
+      return true;
+   }
+
+   @Override
+   public EntityDamageResult attackEntityFrom(Damage damage) {
+      boolean sounded = false;
+      if (damage.isArrowDamage() && this.getHeldItem() instanceof ItemDoor) {
+         damage.setAmount(0f);
+      } else if (this.getHeldItem() instanceof ItemDoor && !damage.bypassesMundaneArmor()) {
+         Entity damage_source = damage.getResponsibleEntityP();
+         int damageBlocked = 0;
+         if(this.absorption_point > 0){
+            if (damage_source != null && Math.abs(this.posY - damage.getResponsibleEntityP().posY) >= 2.0D) {
+               if(this.getHeldItem() == Item.doorWood){
+                  this.getWorld().playSoundAtEntity(this,"mob.zombie.wood",1.0F,1.0F);
+               }else {
+                  this.getWorld().playSoundAtEntity(this, "mob.zombie.metal", 0.5F, 1.0F);
+               }
+               sounded = true;
+               damage.scaleAmount(0.5F);
+            }
+            if (damage_source != null && isInFieldOfViewByAngle(this.posX, this.posZ, this.rotationYaw, damage_source.posX, damage_source.posZ, 60.0F)) {
+               if (!sounded) {
+                  if (this.getHeldItem() == Item.doorWood) {
+                     this.getWorld().playSoundAtEntity(this, "mob.zombie.wood", 1.0F, 1.0F);
+                  } else {
+                     this.getWorld().playSoundAtEntity(this, "mob.zombie.metal", 0.5F, 1.0F);
+                  }
+               }
+               damageBlocked += (int) damage.getAmount();
+               this.absorption_point -= damageBlocked;
+               if (this.absorption_point <= 0) {
+                  if (this.getHeldItem() != Item.doorWood) {
+                     this.getWorld().playSoundAtEntity(this, "mob.zombie.metal", 1.0F, 1.0F);
+                  }
+                  this.getWorld().playSoundAtEntity(this, "mob.zombie.woodbreak", 1.0F, 1.0F);
+                  this.setHeldItemStack(null);
+               }
+               damage.setKnockbackOnly();
+            }
+         }
+      }
+      return super.attackEntityFrom(damage);
    }
 
    @Override
@@ -66,6 +111,7 @@ public class EntityZombieDoor extends EntityZombie {
    public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
       super.writeEntityToNBT(par1NBTTagCompound);
       par1NBTTagCompound.setByte("danger_level", (byte) this.danger_level);
+      par1NBTTagCompound.setShort("absorption_point", (short) this.absorption_point);
       par1NBTTagCompound.setShort("spawnCounter", (short) this.spawnCounter);
       par1NBTTagCompound.setByte("spawnSums", (byte) this.spawnSums);
       par1NBTTagCompound.setBoolean("modifiedAttribute", this.modifiedAttribute);
@@ -77,6 +123,7 @@ public class EntityZombieDoor extends EntityZombie {
       this.spawnSums = par1NBTTagCompound.getByte("spawnSums");
       this.danger_level = par1NBTTagCompound.getByte("danger_level");
       this.modifiedAttribute = par1NBTTagCompound.getBoolean("modifiedAttribute");
+      this.absorption_point = par1NBTTagCompound.getShort("absorption_point");
    }
 
    @Override
@@ -132,5 +179,28 @@ public class EntityZombieDoor extends EntityZombie {
             }
          }
       }
+   }
+
+   public static boolean isInFieldOfViewByAngle(double entityX, double entityZ, float yaw,
+                                                double targetX, double targetZ,
+                                                float halfAngleDeg) {
+      double dx = targetX - entityX;
+      double dz = targetZ - entityZ;
+
+      if (dx * dx + dz * dz < 1.0E-8) {
+         return true;
+      }
+
+      // 目标方向对应的 yaw
+      float targetYaw = (float) Math.toDegrees(Math.atan2(-dx, dz));
+
+      // 角度差，归一化到 [-180, 180]
+      float delta = targetYaw - yaw;
+      delta = ((delta % 360.0F) + 360.0F) % 360.0F;  // 先到 [0, 360)
+      if (delta > 180.0F) {
+         delta -= 360.0F;                          // 再到 (-180, 180]
+      }
+
+      return Math.abs(delta) <= halfAngleDeg;
    }
 }

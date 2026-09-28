@@ -129,9 +129,9 @@ public class EntityDragger extends EntitySkeleton {
                      }
                   }
                   if (this.dragStrength % 125 == 0) {
-
-                     this.entityToAttack.attackEntityFrom(new Damage(DamageSource.causeMobDamage(this), 1.0F));
-
+                     Damage drag_effect = new Damage(DamageSource.causeMobDamage(this), 1.0F);
+                     drag_effect.setKnockbackOnly();
+                     this.entityToAttack.attackEntityFrom(drag_effect);
                   }
                   this.entityToAttack.addVelocity(-dx / r, 0.0D, -dz / r);
                }

@@ -20,7 +20,7 @@ public class StatisticListTrans {
            "initUsableStats"
    }, constant = @Constant(intValue = 256))
    private static int injected(int value) {
-      return 1024;
+      return net.xiaoyu233.mitemod.miteite.util.Constant.blockIDLimit;
    }
 
    @Inject(method = "replaceAllSimilarBlocks([Lnet/minecraft/Statistic;)V", at = @At("RETURN"))

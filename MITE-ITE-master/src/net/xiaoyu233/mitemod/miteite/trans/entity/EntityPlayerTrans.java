@@ -191,9 +191,9 @@ public abstract class EntityPlayerTrans extends EntityLiving implements ICommand
 //      return 1f;
 //   }
 
-   public int c(float par1) {
-      return 15728880;
-   }
+//   public int c(float par1) {
+//      return 15728880;
+//   }
 
    @Overwrite
    public void getOutOfBed(Entity entity_to_look_at) {

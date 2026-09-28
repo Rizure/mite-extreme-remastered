@@ -85,7 +85,7 @@ public abstract class EntityEarthElementalTrans extends EntityAnimalWatcher {
 
    @Overwrite
    public Block getBlock() {
-      return Block.getBlock(this.getType() & 1023);
+      return Block.getBlock(this.getType() & (Constant.blockIDLimit - 1));
    }
 
    @Overwrite

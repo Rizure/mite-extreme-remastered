@@ -28,6 +28,6 @@ public class ReferenceFileWriterTrans {
            "writeBlockRenderTypeFile"
    }, constant = @Constant(intValue = 256))
    private static int injected(int value) {
-      return 1024;
+      return net.xiaoyu233.mitemod.miteite.util.Constant.blockIDLimit;
    }
 }

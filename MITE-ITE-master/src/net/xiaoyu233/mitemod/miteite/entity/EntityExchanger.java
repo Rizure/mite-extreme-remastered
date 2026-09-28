@@ -93,7 +93,7 @@ public class EntityExchanger extends EntitySkeleton {
 
          if (this.entityToAttack == null) {
             entityToAttack = this.getClosestVulnerablePlayer(32F);
-            if (entityToAttack != null) {
+            if (entityToAttack != null && entityToAttack instanceof EntityPlayer) {
                this.worldObj.playSoundAtEntity(this.entityToAttack, "mob.endermen.stare", 1.0F, 1.0F);
                this.entityToAttack.entityFX(EnumEntityFX.curse_effect_learned);
                ((EntityPlayer) entityToAttack).sendChatToPlayer(ChatMessage.createFromTranslationKey("[转移骷髅] ").setColor(EnumChatFormat.BLUE).appendComponent(ChatMessage.createFromTranslationKey("你已被转移束锁定，3秒后转移").setColor(EnumChatFormat.YELLOW)));
@@ -101,7 +101,7 @@ public class EntityExchanger extends EntitySkeleton {
             this.teleportDelay = 0;
          } else {
             if (entityToAttack.isDead || getDistanceToEntity(entityToAttack) > 32F) {
-               if (entityToAttack != null) {
+               if (entityToAttack != null && entityToAttack instanceof EntityPlayer) {
                   ((EntityPlayer) entityToAttack).sendChatToPlayer(ChatMessage.createFromTranslationKey("[转移骷髅] ").setColor(EnumChatFormat.BLUE).appendComponent(ChatMessage.createFromTranslationKey("已丢失目标").setColor(EnumChatFormat.GREEN)));
                }
                this.entityToAttack = null;
